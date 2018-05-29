@@ -1,6 +1,37 @@
 <?php
 class dao 
 {
+	function get_listado_persona($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+		$sql = "SELECT 	idpersona, 
+						(tipo_documento.sigla ||'-'||nro_documento) as documento, 
+						cuil, 
+						legajo, 
+						(apellido||', '||nombres) as persona, 
+       					correo, 
+       					cbu, 
+       					fecha_nacimiento, 
+       					idlocalidad, 
+       					calle, altura, 
+       					piso, 
+       					depto, 
+       					idestado_civil
+  				FROM public.persona
+  				inner join tipo_documento using(idtipo_documento)
+  				where
+  					$where
+  				order by
+  					descripcion";
+  		return consultar_fuente($sql);
+	}
+
+
+
+
 	function get_listado_tipo_socio($where = null)
 	{
 		if (!isset($where))
@@ -257,7 +288,39 @@ class dao
 		}
 	}
 
-	
+	function get_listado_parentesco($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+  		$sql = "SELECT 	idparentesco, 
+  						descripcion, 
+  						bolsita_escolar
+  				FROM public.parentesco
+   				WHERE
+  					$where
+  				order by 
+  					parentesco.descripcion";
+  		return consultar_fuente($sql);
+  	}
+
+  	function get_listado_tipo_telefono($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+  		$sql = "SELECT idtipo_telefono, 
+  						descripcion
+ 				 FROM 
+ 				 	public.tipo_telefono
+   				WHERE
+  					$where
+  				order by 
+  					tipo_telefono.descripcion";
+  		return consultar_fuente($sql);
+  	}
 
   
 }

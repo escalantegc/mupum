@@ -1,6 +1,6 @@
 <?php
 require_once('dao.php');
-class ci_estado_civil extends mupum_ci
+class ci_parentesco extends mupum_ci
 {
 	protected $s__where;
 	protected $s__datos_filtro;
@@ -18,14 +18,14 @@ class ci_estado_civil extends mupum_ci
 			
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El estado civil esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("El parentesco esta siendo referenciado, no puede eliminarlo",'error');
 				
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_estado_civil'))
+			if(strstr($mensaje_log,'idx_parentesco'))
 			{
-				toba::notificacion()->agregar("El estado civil ya esta registrado.",'info');
+				toba::notificacion()->agregar("El parentesco ya esta registrado.",'info');
 				
 			} 
 			
@@ -46,26 +46,44 @@ class ci_estado_civil extends mupum_ci
 	}
 
 	//-----------------------------------------------------------------------------------
-	//---- frm --------------------------------------------------------------------------
+	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm(ei_frm_estado_civil $form)
+	function conf__cuadro(mupum_ei_cuadro $cuadro)
 	{
-		if ($this->cn()->hay_cursor_dt_estado_civil())
+		if(isset($this->s__datos_filtro))
 		{
-			$datos = $this->cn()->get_dt_estado_civil();
-			$form->set_datos($datos);
+			$datos = dao::get_listado_parentesco($this->s__where);
+		}else{
+			$datos = dao::get_listado_parentesco();
 		}
+		$cuadro->set_datos($datos);
 	}
 
-	function evt__frm__modificacion($datos)
+	function evt__cuadro__seleccion($seleccion)
 	{
-		if ($this->cn()->hay_cursor_dt_estado_civil())
-		{
-			$this->cn()->set_dt_estado_civil($datos);
-		} else {
-			$this->cn()->agregar_dt_estado_civil($datos);
+		$this->cn()->cargar_dt_parentesco($seleccion);
+		$this->cn()->set_cursor_dt_parentesco($seleccion);
+		$this->set_pantalla('pant_edicion');
+	}
+
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->cn()->cargar_dt_parentesco($seleccion);
+		$this->cn()->eliminar_dt_parentesco($seleccion);
+		try{
+			$this->cn()->guardar_dr_parametros();
+				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("El parentesco esta siendo referenciado, no puede eliminarlo",'error');
+				
+			} 		
 		}
+		$this->cn()->resetear_dr_parametros();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -92,44 +110,26 @@ class ci_estado_civil extends mupum_ci
 	}
 
 	//-----------------------------------------------------------------------------------
-	//---- cuadro -----------------------------------------------------------------------
+	//---- frm --------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__cuadro(mupum_ei_cuadro $cuadro)
+	function conf__frm(mupum_ei_formulario $form)
 	{
-		if(isset($this->s__datos_filtro))
+		if ($this->cn()->hay_cursor_dt_parentesco())
 		{
-			$datos = dao::get_listado_estado_civil($this->s__where);
-		}else{
-			$datos = dao::get_listado_estado_civil();
+			$datos = $this->cn()->get_dt_parentesco();
+			$form->set_datos($datos);
 		}
-		$cuadro->set_datos($datos);
 	}
 
-	function evt__cuadro__seleccion($seleccion)
+	function evt__frm__modificacion($datos)
 	{
-		$this->cn()->cargar_dt_estado_civil($seleccion);
-		$this->cn()->set_cursor_dt_estado_civil($seleccion);
-		$this->set_pantalla('pant_edicion');
-	}
-
-	function evt__cuadro__borrar($seleccion)
-	{
-		$this->cn()->cargar_dt_estado_civil($seleccion);
-		$this->cn()->eliminar_dt_estado_civil($seleccion);
-		try{
-			$this->cn()->guardar_dr_parametros();
-				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("El estado civil esta siendo referenciado, no puede eliminarlo",'error');
-				
-			} 		
+				if ($this->cn()->hay_cursor_dt_parentesco())
+		{
+			$this->cn()->set_dt_parentesco($datos);
+		} else {
+			$this->cn()->agregar_dt_parentesco($datos);
 		}
-		$this->cn()->resetear_dr_parametros();
-		$this->set_pantalla('pant_inicial');
 	}
 
 }

@@ -447,6 +447,59 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_estado_civil')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_estado_civil')->eliminar_fila($id[0]);
 	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-PARENTESCO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_parentesco($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_parentesco')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_parentesco')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_parentesco')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_parentesco($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_parentesco')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_parentesco')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_parentesco()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_parentesco')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_parentesco()
+	{
+		$this->dep('dr_parametros')->tabla('dt_parentesco')->resetear_cursor();
+	}
+
+	function get_dt_parentesco()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_parentesco')->get();
+	}
+
+	function set_dt_parentesco($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_parentesco')->set($datos);
+	}
+
+	function agregar_dt_parentesco($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_parentesco')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_parentesco')->set_cursor($id);
+	}	
+
+	function eliminar_dt_parentesco($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_parentesco')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_parentesco')->eliminar_fila($id[0]);
+	}	
 }
 
 ?>

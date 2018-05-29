@@ -101,6 +101,21 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 --- FIN Grupo de desarrollo 0
 
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000007', --dep_id
+	'4256', --objeto_consumidor
+	'106000008', --objeto_proveedor
+	'dt_telefono_por_persona', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+--- FIN Grupo de desarrollo 106
+
 ------------------------------------------------------------
 -- apex_objeto_datos_rel_asoc
 ------------------------------------------------------------
@@ -140,6 +155,25 @@ INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador
 );
 --- FIN Grupo de desarrollo 0
 
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador, padre_proyecto, padre_objeto, padre_id, padre_clave, hijo_proyecto, hijo_objeto, hijo_id, hijo_clave, cascada, orden) VALUES (
+	'mupum', --proyecto
+	'4256', --objeto
+	'106000001', --asoc_id
+	NULL, --identificador
+	'mupum', --padre_proyecto
+	'4257', --padre_objeto
+	'dt_persona', --padre_id
+	NULL, --padre_clave
+	'mupum', --hijo_proyecto
+	'106000008', --hijo_objeto
+	'dt_telefono_por_persona', --hijo_id
+	NULL, --hijo_clave
+	NULL, --cascada
+	'3'  --orden
+);
+--- FIN Grupo de desarrollo 106
+
 ------------------------------------------------------------
 -- apex_objeto_rel_columnas_asoc
 ------------------------------------------------------------
@@ -148,7 +182,7 @@ INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_obje
 	'4256', --objeto
 	'50', --asoc_id
 	'4257', --padre_objeto
-	'943', --padre_clave
+	'106000005', --padre_clave
 	'4258', --hijo_objeto
 	'958'  --hijo_clave
 );
@@ -157,7 +191,16 @@ INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_obje
 	'4256', --objeto
 	'51', --asoc_id
 	'4257', --padre_objeto
-	'943', --padre_clave
+	'106000005', --padre_clave
 	'4259', --hijo_objeto
 	'963'  --hijo_clave
+);
+INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
+	'mupum', --proyecto
+	'4256', --objeto
+	'106000001', --asoc_id
+	'4257', --padre_objeto
+	'106000005', --padre_clave
+	'106000008', --hijo_objeto
+	'106000002'  --hijo_clave
 );
