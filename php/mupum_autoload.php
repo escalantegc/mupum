@@ -18,6 +18,7 @@ class mupum_autoload
 	}
 
 	static protected $clases = array(
+		'dao' => 'dao.php',
 		'mupum_ci' => 'extension_toba/componentes/mupum_ci.php',
 		'mupum_cn' => 'extension_toba/componentes/mupum_cn.php',
 		'mupum_datos_relacion' => 'extension_toba/componentes/mupum_datos_relacion.php',
@@ -37,6 +38,17 @@ class mupum_autoload
 		'mupum_servicio_web' => 'extension_toba/componentes/mupum_servicio_web.php',
 		'mupum_comando' => 'extension_toba/mupum_comando.php',
 		'mupum_modelo' => 'extension_toba/mupum_modelo.php',
+		'ci_login' => 'login/ci_login.php',
+		'cuadro_autologin' => 'login/cuadro_autologin.php',
+		'pant_login' => 'login/pant_login.php',
+		'mupum_autoload' => 'mupum_autoload.php',
+		'ci_estado_civil' => 'parametros/ci_estado_civil.php',
+		'ci_tipo_documento' => 'parametros/ci_tipo_documento.php',
+		'ci_tipo_socio' => 'parametros/ci_tipo_socio.php',
+		'cn_parametros' => 'parametros/cn_parametros.php',
+		'ei_frm_estado_civil' => 'parametros/ei_frm_estado_civil.php',
+		'ei_frm_tipo_documento' => 'parametros/ei_frm_tipo_documento.php',
+		'ei_frm_tipo_socio' => 'parametros/ei_frm_tipo_socio.php',
 	);
 }
 ?>
