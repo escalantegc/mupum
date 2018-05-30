@@ -56,7 +56,7 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 	'localidad', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
-	'0', --modificar_claves
+	'1', --modificar_claves
 	'mupum', --fuente_datos_proyecto
 	'mupum', --fuente_datos
 	'1', --permite_actualizacion_automatica
@@ -75,7 +75,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'106000011', --col_id
 	'idlocalidad', --columna
 	'E', --tipo
-	'1', --pk
+	'0', --pk
 	NULL, --secuencia
 	NULL, --largo
 	NULL, --no_nulo
@@ -103,7 +103,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'106000013', --col_id
 	'descripcion', --columna
 	'C', --tipo
-	'0', --pk
+	'1', --pk
 	'', --secuencia
 	'100', --largo
 	NULL, --no_nulo
