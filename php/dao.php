@@ -322,6 +322,45 @@ class dao
   		return consultar_fuente($sql);
   	}
 
+  	function get_listado_estado($categoria_estado = null)
+  	{
+  		$categoria_estado = quote("%{$categoria_estado}%");
+  		$sql = "SELECT 	estado.idestado, 
+  						estado.descripcion
+
+  				FROM 
+  					public.estado
+  				inner join categoria_estado using (idcategoria_estado)
+  				WHERE
+  					categoria_estado.descripcion ilike $categoria_estado ";
+  		return consultar_fuente($sql);
+
+  	}
+
+  	function get_listado_afiliacion($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+  		$sql = "SELECT 	afiliacion.idafiliacion, 
+						afiliacion.idpersona, 
+						tipo_socio.descripcion  as tipo, 
+						estado.descripcion as estado, 
+						fecha_solicitud, 
+						fecha_alta, 
+						fecha_baja, 
+						afiliacion.activa
+				  FROM
+				  		public.afiliacion
+				  inner join estado using (idestado)
+				  inner join tipo_socio using (idtipo_socio)
+				  WHERE
+  					$where
+  				  order by 
+  					afiliacion.fecha_alta";
+  		return consultar_fuente($sql);
+  	}
   
 }
 ?>

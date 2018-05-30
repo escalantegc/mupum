@@ -35,7 +35,18 @@ class ci_socios_pestanias extends mupum_ci
 			{
 				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
 				
+			} 		
+
+			if(strstr($mensaje_log,'idx_afiliacion'))
+			{
+				toba::notificacion()->agregar("El socio no puede tener mas de una afiliacion activa.",'info');
+				
 			} 
+			if ($this->get_cn()->hay_cursor_dt_afiliacion())
+			{
+				$this->get_cn()->resetear_cursor_dt_afiliacion();
+
+			}
 			
 		}
 		
