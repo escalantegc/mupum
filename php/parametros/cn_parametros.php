@@ -500,6 +500,114 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_parentesco')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_parentesco')->eliminar_fila($id[0]);
 	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CATEGORIA ESTADO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_categoria_estado($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_categoria_estado')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_categoria_estado')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_categoria_estado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_categoria_estado($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_estado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_estado')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_categoria_estado()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_estado')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_categoria_estado()
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_estado')->resetear_cursor();
+	}
+
+	function get_dt_categoria_estado()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_estado')->get();
+	}
+
+	function set_dt_categoria_estado($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_estado')->set($datos);
+	}
+
+	function agregar_dt_categoria_estado($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_estado')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_categoria_estado')->set_cursor($id);
+	}	
+
+	function eliminar_dt_categoria_estado($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_estado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_estado')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-ESTADO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_estado($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_estado')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_estado')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_estado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_estado($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_estado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_estado')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_estado()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_estado')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_estado()
+	{
+		$this->dep('dr_parametros')->tabla('dt_estado')->resetear_cursor();
+	}
+
+	function get_dt_estado()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_estado')->get();
+	}
+
+	function set_dt_estado($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_estado')->set($datos);
+	}
+
+	function agregar_dt_estado($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_estado')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_estado')->set_cursor($id);
+	}	
+
+	function eliminar_dt_estado($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_estado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_estado')->eliminar_fila($id[0]);
+	}	
+
+	
 }
 
 ?>

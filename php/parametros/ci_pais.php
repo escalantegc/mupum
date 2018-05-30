@@ -1,13 +1,44 @@
 <?php
-class ci_afiliacion extends mupum_ci
+require_once('dao.php');
+class ci_pais extends mupum_ci
 {
-	function get_cn()
-	{
-		return $this->controlador->cn();
-	}
+	protected $s__where;
+	protected $s__datos_filtro;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
+
+	function evt__procesar()
+	{
+		try{
+			$this->cn()->guardar_dr_parametros();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("El pais esta siendo referenciado, no puede eliminarlo",'error');
+				
+			} 
+
+			$mensaje_log= $error->get_mensaje_log();
+			if(strstr($mensaje_log,'idx_pais'))
+			{
+				toba::notificacion()->agregar("El pais ya esta registrado.",'info');
+				
+			} 
+			
+		}
+		$this->cn()->resetear_dr_parametros();
+		$this->set_pantalla('pant_inicial');
+	}
+
+	function evt__cancelar()
+	{
+		$this->cn()->resetear_dr_parametros();
+		$this->set_pantalla('pant_inicial');
+	}
 
 	function evt__nuevo()
 	{
@@ -20,45 +51,38 @@ class ci_afiliacion extends mupum_ci
 
 	function conf__cuadro(mupum_ei_cuadro $cuadro)
 	{
-		$persona = $this->get_cn()->get_dt_persona();
-		
 		if(isset($this->s__datos_filtro))
-		{	
-			$where = $this->s__where.' and afiliacion.idpersona ='.$persona['idpersona'];
-			$datos = dao::get_listado_afiliacion($where);
-		}else{
-			$where = ' afiliacion.idpersona ='.$persona['idpersona'];
-			$datos = dao::get_listado_afiliacion($where);
-			
-		}
-		if (is_array($datos))
 		{
-			$cuadro->set_datos($datos);
+			$datos = dao::get_listado_pais($this->s__where);
+		}else{
+			$datos = dao::get_listado_pais();
 		}
-		
+		$cuadro->set_datos($datos);
 	}
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->get_cn()->set_cursor_dt_afiliacion($seleccion);
+		$this->cn()->cargar_dt_pais($seleccion);
+		$this->cn()->set_cursor_dt_pais($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
 	function evt__cuadro__borrar($seleccion)
 	{
-		
-		$this->get_cn()->eliminar_dt_afiliacion($seleccion);
+		$this->cn()->cargar_dt_pais($seleccion);
+		$this->cn()->eliminar_dt_pais($seleccion);
 		try{
-			$this->get_cn()->cargar_dr_socio();
+			$this->cn()->guardar_dr_parametros();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("La afiliacion esta siendo referenciada, no puede eliminarla",'error');
+				toba::notificacion()->agregar("El pais esta siendo referenciado, no puede eliminarlo",'error');
 				
 			} 		
 		}
+		$this->cn()->resetear_dr_parametros();
 		$this->set_pantalla('pant_inicial');
 	}
 
@@ -89,37 +113,23 @@ class ci_afiliacion extends mupum_ci
 	//---- frm --------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm(mupum_ei_formulario $form)
+	function conf__frm(ei_frm_pais $form)
 	{
-		if ($this->get_cn()->hay_cursor_dt_afiliacion())
+		if ($this->cn()->hay_cursor_dt_pais())
 		{
-			$datos = $this->get_cn()->get_dt_afiliacion();
+			$datos = $this->cn()->get_dt_pais();
 			$form->set_datos($datos);
 		}
 	}
 
 	function evt__frm__modificacion($datos)
 	{
-		if ($this->get_cn()->hay_cursor_dt_afiliacion())
+		if ($this->cn()->hay_cursor_dt_pais())
 		{
-			
-			$this->get_cn()->resetear_cursor_dt_afiliacion();
-
+			$this->cn()->set_dt_pais($datos);
 		} else {
-			$this->get_cn()->agregar_dt_afiliacion($datos);
+			$this->cn()->agregar_dt_pais($datos);
 		}
-	}
-
-	function get_estados_segun_categoria()
-	{
-		return dao::get_listado_estado('AFILIACION');
-
-	}
-
-	function evt__volver()
-	{
-		$this->get_cn()->resetear_cursor_dt_afiliacion();
-		$this->set_pantalla('pant_inicial');
 	}
 
 }

@@ -206,7 +206,7 @@ class dao
   						localidad.idlocalidad,
   						pais.descripcion as pais,
   						provincia.descripcion as provincia,
-  						localidad.descripcion as localidad
+  						localidad.descripcion 
   				FROM 
   					public.localidad
   				inner join provincia using (idprovincia)
@@ -361,6 +361,41 @@ class dao
   					afiliacion.fecha_alta";
   		return consultar_fuente($sql);
   	}
-  
+
+  	function get_listado_categoria_estado($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+  		$sql = "SELECT idcategoria_estado, 
+  						descripcion
+  				FROM 
+  					public.categoria_estado
+   				WHERE
+  					$where
+  				order by 
+  					categoria_estado.descripcion";
+  		return consultar_fuente($sql);
+  	}
+
+  	function get_listado_estados($where = null)
+	{
+		if (!isset($where))
+		{
+			$where = '1 = 1';
+		}
+  		$sql = "SELECT 	estado.idestado, 
+						estado.descripcion,
+						categoria_estado.descripcion as categoria
+  				FROM 
+  					public.estado
+ 				inner join categoria_estado using (idcategoria_estado)
+ 				where
+ 					$where
+ 				order by 
+ 					categoria,estado.idestado";
+		return consultar_fuente($sql);
+  	}
 }
 ?>
