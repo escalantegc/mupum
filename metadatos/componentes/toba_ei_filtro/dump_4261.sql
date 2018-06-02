@@ -139,7 +139,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
-	'1', --orden
+	'4', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	NULL, --opciones_ef
@@ -197,7 +197,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
-	'2', --orden
+	'3', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	NULL, --opciones_ef
@@ -255,7 +255,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
-	'3', --orden
+	'1', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	NULL, --opciones_ef
@@ -313,7 +313,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
-	'4', --orden
+	'2', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	NULL, --opciones_ef

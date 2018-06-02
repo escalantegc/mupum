@@ -6,6 +6,23 @@ class ci_socios_pestanias extends mupum_ci
 		return $this->controlador->cn();
 	}
 	//-----------------------------------------------------------------------------------
+	//---- Configuraciones --------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf()
+	{
+		if ($this->get_cn()->hay_cursor_dt_persona())
+		{
+			$datos = $this->get_cn()->get_dt_persona();
+			$titulo = $datos['apellido'].', ' .$datos['nombres'] ; 
+			$titulo = '&nbsp;<font color= #fffcfc ><strong>Afiliado: ' . $titulo.'</strong></font></br>' .
+			   		  '&nbsp;<font color= #fffcfc ><strong>  Legajo: ' . $datos['legajo'].'</strong></font></br>' ;
+              
+           
+            $this->set_titulo($titulo);
+		}
+	}
+	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
@@ -112,6 +129,7 @@ class ci_socios_pestanias extends mupum_ci
 		$this->get_cn()->procesar_dt_telefono_por_persona($datos);
 	}
 
-}
 
+
+}
 ?>

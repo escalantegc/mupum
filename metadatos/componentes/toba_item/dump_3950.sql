@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[3950]--  Tipo Documento 
+--[3950]--  Tipo de Documento 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Tipo Documento', --nombre
+	'Tipo de Documento', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion

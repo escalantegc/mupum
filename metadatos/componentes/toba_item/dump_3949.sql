@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[3949]--  Tipo Socio 
+--[3949]--  Tipo de Socio 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Tipo Socio', --nombre
+	'Tipo de Socio', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
