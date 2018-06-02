@@ -23,7 +23,7 @@ class dao
   				FROM public.persona
   				inner join tipo_documento using(idtipo_documento)
   				where
-  					$where and persona.legajo is not null
+  					$where 
   				order by
   					descripcion";
   		return consultar_fuente($sql);
