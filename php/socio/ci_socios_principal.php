@@ -21,9 +21,9 @@ class ci_socios_principal extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_persona($this->s__where);
+			$datos = dao::get_listado_solicitud_afiliacion($this->s__where);
 		}else{
-			$datos = dao::get_listado_persona();
+			$datos = dao::get_listado_solicitud_afiliacion();
 		}
 		$cuadro->set_datos($datos);
 	}
@@ -31,7 +31,7 @@ class ci_socios_principal extends mupum_ci
 	function evt__cuadro__seleccion($seleccion)
 	{
 		$this->cn()->cargar_dr_socio($seleccion);
-		$this->cn()->set_cursor_dt_persona($seleccion);
+		$this->cn()->set_cursor_dt_afiliacion($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 

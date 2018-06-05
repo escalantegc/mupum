@@ -357,24 +357,51 @@ class dao
   {
     if (!isset($where))
     {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  afiliacion.idafiliacion, 
+          afiliacion.idpersona, 
+          tipo_socio.descripcion  as tipo, 
+          estado.descripcion as estado, 
+          fecha_solicitud, 
+          fecha_alta, 
+          fecha_baja, 
+          afiliacion.activa
+        FROM
+            public.afiliacion
+        inner join estado using (idestado)
+        inner join tipo_socio using (idtipo_socio)
+        WHERE
+          $where
+          order by 
+          afiliacion.fecha_alta";
+    return consultar_fuente($sql);
+  }  
+
+  function get_listado_solicitud_afiliacion($where = null)
+  {
+    if (!isset($where))
+    {
     	$where = '1 = 1';
     }
   	$sql = "SELECT 	afiliacion.idafiliacion, 
-  				afiliacion.idpersona, 
-  				tipo_socio.descripcion  as tipo, 
-  				estado.descripcion as estado, 
-  				fecha_solicitud, 
-  				fecha_alta, 
-  				fecha_baja, 
-  				afiliacion.activa
-  		  FROM
-  		  		public.afiliacion
-  		  inner join estado using (idestado)
-  		  inner join tipo_socio using (idtipo_socio)
-  		  WHERE
-  				$where
-  			  order by 
-  				afiliacion.fecha_alta";
+            				afiliacion.idpersona, 
+            				tipo_socio.descripcion  as tipo, 
+            				estado.descripcion as estado, 
+            				fecha_solicitud, 
+            				fecha_alta, 
+            				fecha_baja, 
+            				afiliacion.activa,
+                    persona.apellido||', '|| persona.nombres as persona
+      		  FROM
+      		  		public.afiliacion
+      		  inner join estado using (idestado)
+            inner join tipo_socio using (idtipo_socio)
+      		  inner join persona using (idpersona)
+      		  WHERE
+      				$where
+      			order by 
+      				afiliacion.fecha_alta";
   	return consultar_fuente($sql);
   }
 

@@ -376,7 +376,7 @@ class ci_login extends toba_ci
 		try{
 			$this->cn()->guardar_dr_registro();
 			$this->enviar_correo($this->s__persona);
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			toba::notificacion()->agregar("La solicitud de afiliacion ha sido enviada correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -401,7 +401,7 @@ class ci_login extends toba_ci
 
 			if(strstr($mensaje_log,'idx_afiliacion'))
 			{
-				toba::notificacion()->agregar("Usted ya hizo la solicitud de afiliacion.",'info');
+				toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion.",'info');
 				
 			} 
 		
