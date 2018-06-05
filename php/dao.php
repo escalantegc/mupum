@@ -8,18 +8,19 @@ class dao
 			$where = '1 = 1';
 		}
 		$sql = "SELECT 	idpersona, 
-						(tipo_documento.sigla ||'-'||nro_documento) as documento, 
+            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
+						 nro_documento, 
 						cuil, 
 						legajo, 
 						(apellido||', '||nombres) as persona, 
-       					correo, 
-       					cbu, 
-       					fecha_nacimiento, 
-       					idlocalidad, 
-       					calle, altura, 
-       					piso, 
-       					depto, 
-       					idestado_civil
+   					correo, 
+   					cbu, 
+   					fecha_nacimiento, 
+   					idlocalidad, 
+   					calle, altura, 
+   					piso, 
+   					depto, 
+   					idestado_civil
   				FROM public.persona
   				inner join tipo_documento using(idtipo_documento)
   				where

@@ -117,7 +117,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
 		{
-			$this->s__persona = dao::get_listado_persona($datos['idpersona']);
+			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
 			$this->cn()->set_dt_afiliacion($datos);
 
 		} else {
@@ -134,19 +134,19 @@ class ci_solicitud_afiliacion extends mupum_ci
 	function enviar_correo($persona)
 	{
 		$user = $persona['nro_documento']; 
-        $nombre = trim($persona['apellido']) .", " .trim($persona['nombres']);
+        $nombre = trim($persona['persona']);
         $clave= toba_usuario::generar_clave_aleatoria(8);
-        $atributos['email'] = $persona['email'];
+        $atributos['email'] = $persona['correo'];
 
         //Armo el mail nuevo &oacute;
         $asunto = "Afiliacion Concretada";
-        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
-        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> <br /><br />.
-						<p>Los datos para poder ingresar al sistema son:.</p><br>".
-						"<p>Usuario:</p>.".$user.".<br>".
-						"<p>Clave:</p>.".$clave.".<br>".
-						"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema</p><br>".
-           				"Saludos ATTE .- </br >  MUPUM</br>".
+        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br />
+        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> 
+						<p>Los datos para poder ingresar al sistema son:</p>".
+						"Usuario:".$user.
+						"Clave:".$clave.
+						"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+           				"Saludos ATTE .- MUPUM<".
           				"<p>No responda este correo, fue generado por sistema. </p>";
 
 
