@@ -6,7 +6,7 @@ class ci_login extends toba_ci
 	protected $en_popup = false;
 	protected $s__item_inicio;
 	private $es_cambio_contrasenia = false;
-	
+	protected $s__persona;
 	/**
 	 * Guarda el id de la operación original así se hace una redirección una vez logueado
 	 */
@@ -366,5 +366,145 @@ class ci_login extends toba_ci
 				';
 		}		
 	}
+	//-----------------------------------------------------------------------------------
+	//---- Eventos ----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function evt__procesar()
+	{
+		
+		try{
+			$this->cn()->guardar_dr_registro();
+			$this->enviar_correo($this->s__persona);
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("La persona esta siendo referenciado, no puede eliminarlo",'error');
+				
+			} 
+
+			$mensaje_log= $error->get_mensaje_log();
+			if(strstr($mensaje_log,'idx_documento'))
+			{
+				toba::notificacion()->agregar("La persona ya esta registrada.",'info');
+				
+			} 		
+
+			if(strstr($mensaje_log,'idx_legajo'))
+			{
+				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
+				
+			} 		
+
+			if(strstr($mensaje_log,'idx_afiliacion'))
+			{
+				toba::notificacion()->agregar("Usted ya hizo la solicitud de afiliacion.",'info');
+				
+			} 
+		
+			
+		}
+			$this->cn()->resetear_dr_registro();
+			$this->set_pantalla('login');
+	}
+
+	function evt__cancelar()
+	{
+		$this->cn()->resetear_dr_registro();
+		$this->set_pantalla('login');
+	}
+
+	function evt__datos__afiliacion()
+	{
+		$this->set_pantalla('pant_registro');
+	}
+	
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_afiliacion ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_afiliacion(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion())
+		{
+			$datos = $this->cn()->get_dt_afiliacion();
+			$form->set_datos($datos);
+		}
+			
+	}
+	
+	function evt__frm_afiliacion__modificacion($datos)
+	{
+		$estado = dao::get_listado_estado_afiliacion('SOLICITADA');
+		if (isset($estado[0]['idestado']))
+		{
+			$datos['idestado'] = $estado[0]['idestado'];
+			$datos['activa'] = 1;
+			$this->cn()->agregar_dt_afiliacion($datos);	
+		} else {
+			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
+
+		}
+		
+	}
+	//-----------------------------------------------------------------------------------
+	//---- frm_persona ------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_persona(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$datos = $this->cn()->get_dt_persona();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_persona__modificacion($datos)
+	{
+		$persona['idtipo_documento'] = $datos['idtipo_documento']; 
+		$persona['nro_documento'] = $datos['nro_documento']; 
+		$this->cn()->cargar_dr_registro($persona);
+		$resultado = $this->cn()->existe_dt_persona($persona);
+		if ($resultado == 'existe')
+		{
+			$this->cn()->set_cursor_dt_persona($persona);	
+		}
+		$this->s__persona = $datos;
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$this->cn()->set_dt_persona($datos);
+		} else {
+			$this->cn()->agregar_dt_persona($datos);
+		}
+	}
+
+
+	function enviar_correo($persona)
+	{
+        //Armo el mail nuevo &oacute;
+        $asunto = "Solicitud de afiliacion";
+        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
+        				<p>Por medio del presente le informos que la Solicitud de Afiliacion ha sido enviada correctamente </p> <br /><br />
+           				Saludos ATTE .- </br >  MUPUM</br>".
+          				"<p>No responda este correo, fue generado por sistema. </p>";
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                //--$mail->set_cc();
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+
+
 }
 ?>

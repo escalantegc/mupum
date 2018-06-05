@@ -100,10 +100,10 @@ class ci_afiliacion extends mupum_ci
 
 	function evt__frm__modificacion($datos)
 	{
-		if ($this->get_cn()->hay_cursor_dt_afiliacion())
+		if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
 		{
 			
-			$this->get_cn()->resetear_cursor_dt_afiliacion();
+			$this->get_cn()->set_dt_afiliacion($datos);
 
 		} else {
 			$this->get_cn()->agregar_dt_afiliacion($datos);
@@ -121,6 +121,9 @@ class ci_afiliacion extends mupum_ci
 		$this->get_cn()->resetear_cursor_dt_afiliacion();
 		$this->set_pantalla('pant_inicial');
 	}
+
+
+
 
 }
 ?>

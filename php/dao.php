@@ -39,7 +39,8 @@ class dao
 			$where = '1 = 1';
 		}
 		$sql = "SELECT 	idtipo_socio, 
-						descripcion
+						        descripcion,
+                    titular
   				FROM public.tipo_socio
   				where
   					$where
@@ -322,9 +323,23 @@ class dao
   		return consultar_fuente($sql);
   	}
 
-  	function get_listado_estado($categoria_estado = null)
+    function get_listado_estado($categoria_estado = null)
+    {
+      $categoria_estado = quote("%{$categoria_estado}%");
+      $sql = "SELECT  estado.idestado, 
+              estado.descripcion
+
+          FROM 
+            public.estado
+          inner join categoria_estado using (idcategoria_estado)
+          WHERE
+            categoria_estado.descripcion ilike $categoria_estado ";
+      return consultar_fuente($sql);
+
+    }
+  	function get_listado_estado_afiliacion($estado = null)
   	{
-  		$categoria_estado = quote("%{$categoria_estado}%");
+  		$estado = quote("%{$estado}%");
   		$sql = "SELECT 	estado.idestado, 
   						estado.descripcion
 
@@ -332,42 +347,43 @@ class dao
   					public.estado
   				inner join categoria_estado using (idcategoria_estado)
   				WHERE
-  					categoria_estado.descripcion ilike $categoria_estado ";
+  					categoria_estado.descripcion ilike '%afiliacion%' and
+            estado.descripcion ilike $estado";
   		return consultar_fuente($sql);
 
   	}
 
-  	function get_listado_afiliacion($where = null)
-	{
-		if (!isset($where))
-		{
-			$where = '1 = 1';
-		}
-  		$sql = "SELECT 	afiliacion.idafiliacion, 
-						afiliacion.idpersona, 
-						tipo_socio.descripcion  as tipo, 
-						estado.descripcion as estado, 
-						fecha_solicitud, 
-						fecha_alta, 
-						fecha_baja, 
-						afiliacion.activa
-				  FROM
-				  		public.afiliacion
-				  inner join estado using (idestado)
-				  inner join tipo_socio using (idtipo_socio)
-				  WHERE
-  					$where
-  				  order by 
-  					afiliacion.fecha_alta";
-  		return consultar_fuente($sql);
-  	}
+  function get_listado_afiliacion($where = null)
+  {
+    if (!isset($where))
+    {
+    	$where = '1 = 1';
+    }
+  	$sql = "SELECT 	afiliacion.idafiliacion, 
+  				afiliacion.idpersona, 
+  				tipo_socio.descripcion  as tipo, 
+  				estado.descripcion as estado, 
+  				fecha_solicitud, 
+  				fecha_alta, 
+  				fecha_baja, 
+  				afiliacion.activa
+  		  FROM
+  		  		public.afiliacion
+  		  inner join estado using (idestado)
+  		  inner join tipo_socio using (idtipo_socio)
+  		  WHERE
+  				$where
+  			  order by 
+  				afiliacion.fecha_alta";
+  	return consultar_fuente($sql);
+  }
 
-  	function get_listado_categoria_estado($where = null)
-	{
-		if (!isset($where))
-		{
-			$where = '1 = 1';
-		}
+  function get_listado_categoria_estado($where = null)
+  {
+  	if (!isset($where))
+  	{
+  		$where = '1 = 1';
+  	}
   		$sql = "SELECT idcategoria_estado, 
   						descripcion
   				FROM 
@@ -379,23 +395,38 @@ class dao
   		return consultar_fuente($sql);
   	}
 
-  	function get_listado_estados($where = null)
+  function get_listado_estados($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+        $sql = "SELECT  estado.idestado, 
+              estado.descripcion,
+              categoria_estado.descripcion as categoria
+            FROM 
+              public.estado
+          inner join categoria_estado using (idcategoria_estado)
+          where
+            $where
+          order by 
+            categoria,estado.idestado";
+      return consultar_fuente($sql);
+  }
+  
+  function get_tipo_socio_titular()
 	{
-		if (!isset($where))
-		{
-			$where = '1 = 1';
-		}
-  		$sql = "SELECT 	estado.idestado, 
-						estado.descripcion,
-						categoria_estado.descripcion as categoria
-  				FROM 
-  					public.estado
- 				inner join categoria_estado using (idcategoria_estado)
- 				where
- 					$where
- 				order by 
- 					categoria,estado.idestado";
-		return consultar_fuente($sql);
-  	}
+    		$sql = "SELECT  idtipo_socio, 
+                        descripcion, 
+                        titular
+                FROM 
+                  public.tipo_socio
+                where 
+                  titular = true";
+  		return consultar_fuente($sql);
+  }
+
+
+
 }
 ?>
