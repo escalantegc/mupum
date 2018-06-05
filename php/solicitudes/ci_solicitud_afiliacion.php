@@ -117,7 +117,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
 		{
-			$this->s__persona = dao::get_listado_persona($datos['idpersona']):
+			$this->s__persona = dao::get_listado_persona($datos['idpersona']);
 			$this->cn()->set_dt_afiliacion($datos);
 
 		} else {
@@ -142,7 +142,7 @@ class ci_solicitud_afiliacion extends mupum_ci
           				"<p>No responda este correo, fue generado por sistema. </p>";
 
         $user = $persona['nro_documento']; 
-        $nombre = trim($persona['apellido']) .", " .trim($persona['nombres'];
+        $nombre = trim($persona['apellido']) .", " .trim($persona['nombres']);
         $clave= toba_usuario::generar_clave_aleatoria(8);
         $atributos['email'] = $persona['email'];
 
