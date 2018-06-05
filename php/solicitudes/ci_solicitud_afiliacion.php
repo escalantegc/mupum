@@ -133,18 +133,21 @@ class ci_solicitud_afiliacion extends mupum_ci
 	
 	function enviar_correo($persona)
 	{
-        //Armo el mail nuevo &oacute;
-        $asunto = "Afiliacion Finalizada";
-        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
-        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> <br /><br />.
-						<p>Los datos para poder ingresar al sistema son:.</p>
-           				Saludos ATTE .- </br >  MUPUM</br>".
-          				"<p>No responda este correo, fue generado por sistema. </p>";
-
-        $user = $persona['nro_documento']; 
+		$user = $persona['nro_documento']; 
         $nombre = trim($persona['apellido']) .", " .trim($persona['nombres']);
         $clave= toba_usuario::generar_clave_aleatoria(8);
         $atributos['email'] = $persona['email'];
+
+        //Armo el mail nuevo &oacute;
+        $asunto = "Afiliacion Concretada";
+        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
+        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> <br /><br />.
+						<p>Los datos para poder ingresar al sistema son:.</p><br>".
+						"<p>Usuario:</p>.".$user.".<br>".
+						"<p>Clave:</p>.".$clave.".<br>".
+						"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema</p><br>".
+           				"Saludos ATTE .- </br >  MUPUM</br>".
+          				"<p>No responda este correo, fue generado por sistema. </p>";
 
 
         toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
