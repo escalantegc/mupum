@@ -11,10 +11,12 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function evt__procesar()
 	{
+		
 		try{
 			$this->cn()->guardar_dr_solicitudes();
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			$this->enviar_correo($this->s__persona[0]);
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -42,6 +44,10 @@ class ci_solicitud_afiliacion extends mupum_ci
 				toba::notificacion()->agregar("El socio no puede tener mas de una afiliacion activa.",'info');
 				
 			} 
+			if (strstr($mensaje_log,'apex_usuario_pk'))
+			{
+				toba::notificacion()->agregar('El usuario: '.$this->s__persona[0]['nro_documento'].' que quiere dar de alta ya existe', 'info');	
+			}
 			
 			
 		}
@@ -133,26 +139,31 @@ class ci_solicitud_afiliacion extends mupum_ci
 	
 	function enviar_correo($persona)
 	{
-		$user = $persona['nro_documento']; 
-        $nombre = trim($persona['persona']);
-        $clave= toba_usuario::generar_clave_aleatoria(8);
-        $atributos['email'] = $persona['correo'];
+		//try{
+			$user = $persona['nro_documento']; 
+	        $nombre = trim($persona['persona']);
+	        $clave= toba_usuario::generar_clave_aleatoria(8);
+	        $atributos['email'] = $persona['correo'];
 
-        //Armo el mail nuevo &oacute;
-        $asunto = "Afiliacion Concretada";
-        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br />
-        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> 
-						<p>Los datos para poder ingresar al sistema son:</p>".
-						"Usuario:".$user.
-						"Clave:".$clave.
-						"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
-           				"Saludos ATTE .- MUPUM<".
-          				"<p>No responda este correo, fue generado por sistema. </p>";
+	        //Armo el mail nuevo &oacute;
+	        $asunto = "Afiliacion Concretada";
+	        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br />
+	        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> 
+							<p>Los datos para poder ingresar al sistema son:</p>".
+							"Usuario:".$user. "<br>".
+							"Clave:".$clave.
+							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+	           				"Saludos ATTE .- MUPUM<".
+	          				"<p>No responda este correo, fue generado por sistema. </p>";
 
 
-        toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-        $perfil = 'afiliado';
-        toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+  
+        
+	     	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
+	        $perfil = 'afiliado';
+		    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+      
+
 
         try 
         {
