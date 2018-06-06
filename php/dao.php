@@ -116,7 +116,7 @@ class dao
 			$where = '1 = 1';
 		}
 		$sql = "SELECT 	idestado_civil, 
-						descripcion
+						        descripcion
   				FROM 
   					public.estado_civil	
   				WHERE
@@ -454,7 +454,70 @@ class dao
   		return consultar_fuente($sql);
   }
 
+  function cargar_calendario_reserva () {
+    
+    $sql = "SELECT  idsolicitud_reserva, 
+                    idafiliacion, 
+                    fecha, 
+                    idinstalacion, 
+                    estado.idestado, 
+                    idmotivo, 
+                    nro_personas,
+                    'RESERVA '||estado.descripcion as contenido, 
+                    fecha as dia
+            FROM 
+              public.solicitud_reserva
+              inner join estado using (idestado)";
 
+    $dias = consultar_fuente($sql);
+    $datos = null;
+    foreach ($dias as $dia) {
+      $datos[$dia['dia']] = array('dia'=> $dia['dia'], 'contenido'=> $dia['contenido'],'idsolicitud_reserva'=> $dia['idsolicitud_reserva']) ;
+    } 
+    return $datos;
+  }
+
+  function get_personas_afiliadas()
+  {
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                  persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            where 
+              activa = true";
+
+    return consultar_fuente($sql);
+
+  }
+
+  function get_listado_instalacion ($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql ="SELECT   idinstalacion, 
+                      nombre, 
+                      cantidad_maxima_personas
+              FROM 
+                public.instalacion;";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_motivos($categoria_motivo = null)
+  {
+    $categoria_motivo = quote("%{$categoria_motivo}%");
+    $sql = "SELECT  motivo.idmotivo, 
+                    motivo.descripcion  
+            FROM 
+                public.motivo
+            inner join categoria_motivo using(idcategoria_motivo)
+            where 
+                categoria_motivo.descripcion ilike $categoria_motivo";
+     return consultar_fuente($sql);
+  }
 
 }
 ?>

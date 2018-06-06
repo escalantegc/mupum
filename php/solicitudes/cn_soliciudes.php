@@ -140,6 +140,58 @@ class cn_soliciudes extends mupum_cn
 		$id = $this->dep('dr_solicitudes')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_solicitudes')->tabla('dt_afiliacion')->eliminar_fila($id[0]);
 	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-AFILACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_reserva($seleccion)
+	{
+		if(!$this->dep('dr_solicitudes')->tabla('dt_reserva')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_solicitudes')->tabla('dt_reserva')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_solicitudes')->tabla('dt_reserva')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_reserva($seleccion)
+	{
+		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_reserva()
+	{
+		return $this->dep('dr_solicitudes')->tabla('dt_reserva')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_reserva()
+	{
+		$this->dep('dr_solicitudes')->tabla('dt_reserva')->resetear_cursor();
+	}
+
+	function get_dt_reserva()
+	{
+		return $this->dep('dr_solicitudes')->tabla('dt_reserva')->get();
+	}
+
+	function set_dt_reserva($datos)
+	{
+		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set($datos);
+	}
+
+	function agregar_dt_reserva($datos)
+	{
+		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->nueva_fila($datos);
+		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set_cursor($id);
+	}	
+
+	function eliminar_dt_reserva($seleccion)
+	{
+		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_solicitudes')->tabla('dt_reserva')->eliminar_fila($id[0]);
+	}
 }
 
 ?>

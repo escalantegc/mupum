@@ -75,4 +75,16 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	'1'  --orden
 );
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000047', --dep_id
+	'106000044', --objeto_consumidor
+	'106000054', --objeto_proveedor
+	'dt_reserva', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'2'  --orden
+);
 --- FIN Grupo de desarrollo 106
