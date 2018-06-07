@@ -540,7 +540,8 @@ class dao
             inner join motivo using(idmotivo)
             inner join instalacion using(idinstalacion)
             where
-                $where";
+                $where
+            order by fecha desc";
       return consultar_fuente($sql);
 
   }
@@ -555,6 +556,7 @@ class dao
                       descripcion
               FROM 
                   public.forma_pago 
+              cargar_calendario_reserva
               where
                 $where";
       return consultar_fuente($sql);
