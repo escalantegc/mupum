@@ -605,8 +605,166 @@ class cn_parametros extends mupum_cn
 	{
 		$id = $this->dep('dr_parametros')->tabla('dt_estado')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_estado')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-INSTALACION	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_instalacion($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_instalacion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_instalacion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_instalacion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_instalacion($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_instalacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_instalacion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_instalacion()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_instalacion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_instalacion()
+	{
+		$this->dep('dr_parametros')->tabla('dt_instalacion')->resetear_cursor();
+	}
+
+	function get_dt_instalacion()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_instalacion')->get();
+	}
+
+	function set_dt_instalacion($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_instalacion')->set($datos);
+	}
+
+	function agregar_dt_instalacion($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_instalacion')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_instalacion')->set_cursor($id);
 	}	
 
+	function eliminar_dt_instalacion($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_instalacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_instalacion')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CATEGORIA DE MOTIVO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_categoria_motivo($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_categoria_motivo($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_motivo')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_categoria_motivo()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_motivo')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_categoria_motivo()
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->resetear_cursor();
+	}
+
+	function get_dt_categoria_motivo()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_motivo')->get();
+	}
+
+	function set_dt_categoria_motivo($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->set($datos);
+	}
+
+	function agregar_dt_categoria_motivo($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_motivo')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->set_cursor($id);
+	}	
+
+	function eliminar_dt_categoria_motivo($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_motivo')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_motivo')->eliminar_fila($id[0]);
+	}		
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-MOTIVO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_motivo($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_motivo')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_motivo')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_motivo')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_motivo($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_motivo')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_motivo()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_motivo')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_motivo()
+	{
+		$this->dep('dr_parametros')->tabla('dt_motivo')->resetear_cursor();
+	}
+
+	function get_dt_motivo()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_motivo')->get();
+	}
+
+	function set_dt_motivo($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_motivo')->set($datos);
+	}
+
+	function agregar_dt_motivo($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_motivo')->set_cursor($id);
+	}	
+
+	function eliminar_dt_motivo($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_motivo')->eliminar_fila($id[0]);
+	}	
 	
 }
 

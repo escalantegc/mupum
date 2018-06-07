@@ -500,7 +500,8 @@ class dao
       }
       $sql ="SELECT   idinstalacion, 
                       nombre, 
-                      cantidad_maxima_personas
+                      cantidad_maxima_personas,
+                      domicilio
               FROM 
                 public.instalacion;";
       return consultar_fuente($sql);
@@ -516,6 +517,25 @@ class dao
             inner join categoria_motivo using(idcategoria_motivo)
             where 
                 categoria_motivo.descripcion ilike $categoria_motivo";
+     return consultar_fuente($sql);
+  }  
+
+  function get_listado_motivo($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+    $sql = "SELECT  motivo.idmotivo, 
+                    motivo.descripcion,
+                    categoria_motivo.descripcion as categoria
+            FROM 
+                public.motivo
+            inner join categoria_motivo using(idcategoria_motivo)
+            where 
+                $where
+            order by
+                descripcion";
      return consultar_fuente($sql);
   }
 
@@ -558,7 +578,26 @@ class dao
                   public.forma_pago 
               cargar_calendario_reserva
               where
-                $where";
+                $where
+              order by
+                  descripcion";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_categoria_motivo($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql = "SELECT  idcategoria_motivo, 
+                      descripcion
+              FROM 
+                  public.categoria_motivo
+              where
+                $where
+                order by 
+                  descripcion";
       return consultar_fuente($sql);
   }
 }

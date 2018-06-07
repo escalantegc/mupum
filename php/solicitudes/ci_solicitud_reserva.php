@@ -46,6 +46,7 @@ class ci_solicitud_reserva extends mupum_ci
 		$this->s__fecha = $dia['dia'].'/'.$dia['mes'].'/'.$dia['anio'];
 		$this->s__mes = $dia['mes'];
 		$this->s__anio = $dia['anio'];	
+		
 		$reserva['idsolicitud_reserva'] = $dia['idsolicitud_reserva'];
 		if (isset($reserva['idsolicitud_reserva']))
 		{
