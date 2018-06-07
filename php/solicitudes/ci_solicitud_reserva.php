@@ -24,10 +24,19 @@ class ci_solicitud_reserva extends mupum_ci
 	{
 		$datos = dao::cargar_calendario_reserva();
 		$calendario->set_ver_contenidos(true);
-		$hoy = date('Y', mktime());
-		$calendario->set_rango_anios(2000,$hoy);
 		
+		$fecha = date('Y-m-j');
+		$nuevafecha = strtotime ( '+60 day' , strtotime ( $fecha ) ) ;
+		$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+		$hoy =  date("Y", strtotime($nuevafecha));  
+
+		$calendario->set_rango_anios(2016,$hoy);
 		$calendario->set_datos($datos);
+		$calendario->set_sab_seleccionable(true) ;
+		$calendario->set_dom_seleccionable(true) ;
+		$calendario->set_seleccionar_solo_dias_pasados(false) ;
+		$calendario->set_mostrar_semanas(false) ;
+		$calendario->set_resaltar_siempre_dia_actual(true) ;
 	}
 
 	function evt__calendario__seleccionar_dia($dia)
@@ -103,7 +112,7 @@ class ci_solicitud_reserva extends mupum_ci
 
 		$this->cn()->agregar_dt_reserva($datos);
 		try{
-			$this->cn()->guardar_dr_solicitudes();
+			$this->cn()->guardar_dr_reserva();
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -111,7 +120,7 @@ class ci_solicitud_reserva extends mupum_ci
 			toba::notificacion()->agregar('Tira el error '.$sql_state,'error');
 			 		
 		}
-		$this->cn()->resetear_dr_solicitudes();
+		$this->cn()->resetear_dr_reserva();
 		$this->set_pantalla('pant_inicial');
 		unset($this->s__dia);
 	}

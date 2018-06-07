@@ -23,6 +23,16 @@ class cn_soliciudes extends mupum_cn
 		$this->dep('dr_solicitudes')->resetear();
 	}
 
+	function guardar_dr_reserva()
+	{
+		$this->dep('dr_reserva')->sincronizar();
+	}
+
+	function resetear_dr_reserva()
+	{
+		$this->dep('dr_reserva')->resetear();
+	}
+
 	//-----------------------------------------------------------------------------------
 	//---- DT-PERSONA -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -140,57 +150,85 @@ class cn_soliciudes extends mupum_cn
 		$id = $this->dep('dr_solicitudes')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_solicitudes')->tabla('dt_afiliacion')->eliminar_fila($id[0]);
 	}
+
 	//-----------------------------------------------------------------------------------
-	//---- DT-AFILACION -----------------------------------------------------------------------
+	//---- Dr-RESERVA -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-	function cargar_dt_reserva($seleccion)
+	function cargar_dr_reserva($seleccion)
 	{
-		if(!$this->dep('dr_solicitudes')->tabla('dt_reserva')->esta_cargada())
+		if(!$this->dep('dr_reserva')->esta_cargada())
 		{				// verifica si esta cargada el datos relacion			
 			if(!isset($seleccion))
 			{
-				$this->dep('dr_solicitudes')->tabla('dt_reserva')->cargar();					// lee de la BD fisica y carga al datos relacion
+				$this->dep('dr_reserva')->cargar();					// lee de la BD fisica y carga al datos relacion
 			}else{
-				$this->dep('dr_solicitudes')->tabla('dt_reserva')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+				$this->dep('dr_reserva')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-RESERVA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_reserva($seleccion)
+	{
+		if(!$this->dep('dr_reserva')->tabla('dt_reserva')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_reserva')->tabla('dt_reserva')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_reserva')->tabla('dt_reserva')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
 			}
 		}
 	}
 	function set_cursor_dt_reserva($seleccion)
 	{
-		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set_cursor($id[0]);
+		$id = $this->dep('dr_reserva')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reserva')->tabla('dt_reserva')->set_cursor($id[0]);
 	}
 
 	function hay_cursor_dt_reserva()
 	{
-		return $this->dep('dr_solicitudes')->tabla('dt_reserva')->hay_cursor();
+		return $this->dep('dr_reserva')->tabla('dt_reserva')->hay_cursor();
 	}
 
 	function resetear_cursor_dt_reserva()
 	{
-		$this->dep('dr_solicitudes')->tabla('dt_reserva')->resetear_cursor();
+		$this->dep('dr_reserva')->tabla('dt_reserva')->resetear_cursor();
 	}
 
 	function get_dt_reserva()
 	{
-		return $this->dep('dr_solicitudes')->tabla('dt_reserva')->get();
+		return $this->dep('dr_reserva')->tabla('dt_reserva')->get();
 	}
 
 	function set_dt_reserva($datos)
 	{
-		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set($datos);
+		$this->dep('dr_reserva')->tabla('dt_reserva')->set($datos);
 	}
 
 	function agregar_dt_reserva($datos)
 	{
-		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->nueva_fila($datos);
-		$this->dep('dr_solicitudes')->tabla('dt_reserva')->set_cursor($id);
+		$id = $this->dep('dr_reserva')->tabla('dt_reserva')->nueva_fila($datos);
+		$this->dep('dr_reserva')->tabla('dt_reserva')->set_cursor($id);
 	}	
 
 	function eliminar_dt_reserva($seleccion)
 	{
-		$id = $this->dep('dr_solicitudes')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_solicitudes')->tabla('dt_reserva')->eliminar_fila($id[0]);
+		$id = $this->dep('dr_reserva')->tabla('dt_reserva')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reserva')->tabla('dt_reserva')->eliminar_fila($id[0]);
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE PAGO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function procesar_dt_detalle_pago($datos)
+	{
+		$this->dep('dr_reserva')->tabla('dt_detalle_pago')->procesar_filas($datos);
+	}
+
+	function get_dt_detalle_pago()
+	{
+		return $this->dep('dr_reserva')->tabla('dt_detalle_pago')->get_filas();
 	}
 }
 

@@ -519,5 +519,45 @@ class dao
      return consultar_fuente($sql);
   }
 
+  function get_listado_reserva($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql="SELECT  solicitud_reserva.idsolicitud_reserva, 
+                    persona.apellido ||', '|| persona.nombres as persona,
+                    fecha, 
+                    instalacion.nombre as instalacion, 
+                    estado.descripcion as estado, 
+                    motivo.descripcion as motivo, 
+                    nro_personas
+            FROM 
+                public.solicitud_reserva
+            inner join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join estado on estado.idestado = solicitud_reserva.idestado
+            inner join motivo using(idmotivo)
+            inner join instalacion using(idinstalacion)
+            where
+                $where";
+      return consultar_fuente($sql);
+
+  }
+
+  function get_listado_forma_pago($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql = "SELECT  idforma_pago, 
+                      descripcion
+              FROM 
+                  public.forma_pago 
+              where
+                $where";
+      return consultar_fuente($sql);
+  }
 }
 ?>

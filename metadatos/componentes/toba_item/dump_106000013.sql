@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000013]--  Consultar Reserva 
+--[106000013]--  Administrar Reserva 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Consultar Reserva', --nombre
+	'Administrar Reserva', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
@@ -52,3 +52,23 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	'0'  --retrasar_headers
 );
 --- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_item_objeto
+------------------------------------------------------------
+INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
+	NULL, --item_id
+	'mupum', --proyecto
+	'106000013', --item
+	'106000042', --objeto
+	'2', --orden
+	NULL  --inicializar
+);
+INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
+	NULL, --item_id
+	'mupum', --proyecto
+	'106000013', --item
+	'106000056', --objeto
+	'1', --orden
+	NULL  --inicializar
+);
