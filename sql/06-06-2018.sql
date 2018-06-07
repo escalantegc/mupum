@@ -20,7 +20,7 @@ ALTER TABLE public.solicitud_reserva ALTER COLUMN idafiliacion SET NOT NULL;
 
 CREATE TABLE public.forma_pago
 (
-  idforma_pago serial NOT NULL ),
+  idforma_pago serial NOT NULL ,
   descripcion character(50),
   CONSTRAINT forma_pago_pkey PRIMARY KEY (idforma_pago)
 )
@@ -46,7 +46,7 @@ CREATE UNIQUE INDEX idx_forma_pago
 
 CREATE TABLE public.detalle_pago
 (
-  iddetalle_pago serial NOT NULL ),
+  iddetalle_pago serial NOT NULL ,
   monto double precision,
   idsolicitud_reserva integer,
   idforma_pago integer NOT NULL,
