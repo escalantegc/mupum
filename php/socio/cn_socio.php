@@ -83,18 +83,21 @@ class cn_socio extends mupum_cn
 		//ei_arbol($datos);
 		$this->dep('dr_socio')->tabla('dt_familia')->procesar_filas($datos);
 
-		/*if (isset($datos['archivo'])){
-			if ($datos['archivo']['tmp_name']!='') 
+		foreach ($datos as $dato) 
+		{
+			if (isset($dato['archivo']))
 			{
-				//Se subio una imagen
-				$fp_archivo = fopen($datos['archivo']['tmp_name'], 'rb');
-				$this->dep('dr_mis_proyectos')->tabla('dt_requisitos_proyecto')->set_blob('archivo', $fp_archivo);
-			}  else {
-				$fp_archivo = null;
-				$this->dep('dr_mis_proyectos')->tabla('dt_requisitos_proyecto')->set_blob('archivo', $fp_archivo);
+				if ($dato['archivo']['tmp_name']!='') 
+				{
+					//Se subio una imagen
+					$fp_archivo = fopen($dato['archivo']['tmp_name'], 'rb');
+					$this->dep('dr_socio')->tabla('dt_familia')->set_blob('archivo', $fp_archivo,$dato['x_dbr_clave']);
+				}  else {
+					$fp_archivo = null;
+					$this->dep('dr_socio')->tabla('dt_familia')->set_blob('archivo', $fp_archivo,$dato['x_dbr_clave']);
+				}
 			}
-		}*/
-
+		}
 
 	}	
 
@@ -102,27 +105,34 @@ class cn_socio extends mupum_cn
 	function get_dt_familia()
 	{
 		//ei_arbol($this->dep('dr_socio')->tabla('dt_familia')->get_filas());
-		return $this->dep('dr_socio')->tabla('dt_familia')->get_filas();
+		$datos= $this->dep('dr_socio')->tabla('dt_familia')->get_filas();
 
-		/*$fp_archivo = $this->dep('dr_mis_proyectos')->tabla('dt_requisitos_proyecto')->get_blob('archivo');
+		
+		$familiares = array();
+		foreach ($datos as $dato) 
+		{
+			$fp_archivo = $this->dep('dr_socio')->tabla('dt_familia')->get_blob('archivo',$dato['x_dbr_clave']);
+		
 
 				
-		if (isset($fp_archivo)) 
-		{
-			$temp_nombre_doc =  trim($datos['nombre']).$datos['id_proy'].'.'.trim($datos['extension']);
-			$doc = toba::proyecto()->get_www_temp($temp_nombre_doc);
-			$temp_doc = fopen($doc['path'], 'w');
-			stream_copy_to_stream($fp_archivo, $temp_doc);
-			
-			fclose($temp_doc);
-			$datos['archivo'] = "<a href='{$doc['url']}' TARGET='_blank' >Descargar</a>";
-			//$datos['huella'] = 'Tama&ntilde;o: '.$tamano_huella.' kb';
-		} else {
-			$datos['archivo']   = null;
-			//Agrego esto para cuando no existe imagen pero si registro
-		}  
-		return $datos;
-*/
+			if (isset($fp_archivo)) 
+			{
+				$temp_nombre_doc = 'certificacion'.$dato['idpersona_familia'].'.pdf';
+				$doc = toba::proyecto()->get_www_temp($temp_nombre_doc);
+				$temp_doc = fopen($doc['path'], 'w');
+				stream_copy_to_stream($fp_archivo, $temp_doc);
+				
+				fclose($temp_doc);
+				$dato['archivo'] = "<a href='{$doc['url']}' TARGET='_blank' >Descargar</a>";
+				//$datos['huella'] = 'Tama&ntilde;o: '.$tamano_huella.' kb';
+			} else {
+				$dato['archivo']   = null;
+				//Agrego esto para cuando no existe imagen pero si registro
+			}  
+			$familiares[$dato['x_dbr_clave']] = $dato;
+		}
+		return $familiares;
+
 	}		
 
 	//-----------------------------------------------------------------------------------
