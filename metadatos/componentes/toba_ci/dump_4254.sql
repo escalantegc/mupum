@@ -220,25 +220,6 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	NULL, --subclase_archivo
 	NULL, --template
 	NULL, --template_impresion
-	NULL  --punto_montaje
-);
-INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, identificador, orden, etiqueta, descripcion, tip, imagen_recurso_origen, imagen, objetos, eventos, subclase, subclase_archivo, template, template_impresion, punto_montaje) VALUES (
-	'mupum', --objeto_ci_proyecto
-	'4254', --objeto_ci
-	'1889', --pantalla
-	'pant_familia', --identificador
-	'2', --orden
-	'Familia', --etiqueta
-	NULL, --descripcion
-	NULL, --tip
-	'apex', --imagen_recurso_origen
-	NULL, --imagen
-	NULL, --objetos
-	NULL, --eventos
-	NULL, --subclase
-	NULL, --subclase_archivo
-	NULL, --template
-	NULL, --template_impresion
 	'28'  --punto_montaje
 );
 INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, identificador, orden, etiqueta, descripcion, tip, imagen_recurso_origen, imagen, objetos, eventos, subclase, subclase_archivo, template, template_impresion, punto_montaje) VALUES (
@@ -246,7 +227,7 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	'4254', --objeto_ci
 	'1890', --pantalla
 	'pant_afiliacion', --identificador
-	'3', --orden
+	'2', --orden
 	'Afiliacion', --etiqueta
 	NULL, --descripcion
 	NULL, --tip
@@ -276,15 +257,15 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'mupum', --proyecto
 	'1888', --pantalla
 	'4254', --objeto_ci
-	'1', --orden
-	'106000008'  --dep_id
+	'2', --orden
+	'2900'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'mupum', --proyecto
-	'1889', --pantalla
+	'1888', --pantalla
 	'4254', --objeto_ci
-	'0', --orden
-	'2900'  --dep_id
+	'1', --orden
+	'106000008'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'mupum', --proyecto
@@ -305,18 +286,6 @@ INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VAL
 );
 INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
 	'1888', --pantalla
-	'4254', --objeto_ci
-	'106000002', --evento_id
-	'mupum'  --proyecto
-);
-INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
-	'1889', --pantalla
-	'4254', --objeto_ci
-	'106000001', --evento_id
-	'mupum'  --proyecto
-);
-INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
-	'1889', --pantalla
 	'4254', --objeto_ci
 	'106000002', --evento_id
 	'mupum'  --proyecto
