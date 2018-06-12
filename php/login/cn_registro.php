@@ -139,6 +139,59 @@ class cn_registro extends mupum_cn
 	{
 		$id = $this->dep('dr_registro')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_registro')->tabla('dt_afiliacion')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-AFILACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_telefonos($seleccion)
+	{
+		if(!$this->dep('dr_registro')->tabla('dt_telefonos')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_registro')->tabla('dt_telefonos')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_registro')->tabla('dt_telefonos')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_telefonos($seleccion)
+	{
+		$id = $this->dep('dr_registro')->tabla('dt_telefonos')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_registro')->tabla('dt_telefonos')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_telefonos()
+	{
+		return $this->dep('dr_registro')->tabla('dt_telefonos')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_telefonos()
+	{
+		$this->dep('dr_registro')->tabla('dt_telefonos')->resetear_cursor();
+	}
+
+	function get_dt_telefonos()
+	{
+		return $this->dep('dr_registro')->tabla('dt_telefonos')->get();
+	}
+
+	function set_dt_telefonos($datos)
+	{
+		$this->dep('dr_registro')->tabla('dt_telefonos')->set($datos);
+	}
+
+	function agregar_dt_telefonos($datos)
+	{
+		$id = $this->dep('dr_registro')->tabla('dt_telefonos')->nueva_fila($datos);
+		$this->dep('dr_registro')->tabla('dt_telefonos')->set_cursor($id);
+	}	
+
+	function eliminar_dt_telefonos($seleccion)
+	{
+		$id = $this->dep('dr_registro')->tabla('dt_telefonos')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_registro')->tabla('dt_telefonos')->eliminar_fila($id[0]);
 	}
 }
 

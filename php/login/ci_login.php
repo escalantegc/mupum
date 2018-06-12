@@ -474,6 +474,8 @@ class ci_login extends toba_ci
 		{
 			$this->cn()->set_cursor_dt_persona($persona);	
 		}
+		$datos['tipo_documento'] = dao::get_descripcion_tipo_documento($datos['idtipo_documento']);
+		
 		$this->s__persona = $datos;
 		if ($this->cn()->hay_cursor_dt_persona())
 		{
@@ -481,22 +483,63 @@ class ci_login extends toba_ci
 		} else {
 			$this->cn()->agregar_dt_persona($datos);
 		}
+		
+		$estado = dao::get_listado_estado_afiliacion('SOLICITADA');
+		if (isset($estado[0]['idestado']))
+		{
+			$afiliacion['idestado'] = $estado[0]['idestado'];
+			$afiliacion['activa'] = 1;
+			$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
+			$tipo_socio = dao::get_tipo_socio_titular();
+			$afiliacion['idtipo_socio'] =  $tipo_socio[0]['idtipo_socio'];      
+			$this->s__persona['fecha_solicitud'] =$afiliacion['fecha_solicitud'];
+			$this->cn()->agregar_dt_afiliacion($afiliacion);	
+		} else {
+			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
+
+		}
 	}
 
 
 	function enviar_correo($persona)
 	{
         //Armo el mail nuevo &oacute;
-        $asunto = "Solicitud de afiliacion";
+        $asunto = "Constancia de Solicitud de afiliacion";
         $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
-        				<p>Por medio del presente le informos que la Solicitud de Afiliacion ha sido enviada correctamente </p> <br /><br />
+        				<p>Por medio del presente le informos que la Solicitud de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
+        				<table>
+						<tbody>
+							<tr>
+								<td>Documento: ".trim($persona['tipo_documento'])." - ".trim($persona['nro_documento'])."</td>
+							</tr>
+							<tr>
+								<td>Legajo: ".trim($persona['legajo'])."</td>
+							</tr>
+							<tr>
+								<td>Apellido y Nombres: ".trim($persona['apellido']).", ".trim($persona['nombres'])."</td>
+							</tr>
+							<tr>
+								<td>Correo: ".trim($persona['correo'])."</td>
+							</tr>
+							<tr>
+								<td>Telefono: ".trim($persona['tipo_telefono'])." - ".trim($persona['nro_telefono'])."</td>
+							
+							</tr>
+							<tr>
+								<td> Fecha Solicitud: ".trim($persona['fecha_solicitud'])."</td>
+							</tr>
+						</tbody>
+					</table>
+        				<br />
            				Saludos ATTE .- </br >  MUPUM</br>".
           				"<p>No responda este correo, fue generado por sistema. </p>";
         try 
         {
                 $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
                 $mail->set_html(true);
-                //--$mail->set_cc();
+                $direcciones[]= 'administracion@mupum.unam.edu.ar';
+                $direcciones[]= 'comision@mupum.unam.edu.ar';
+                $mail->set_cc($direcciones);
                 $mail->enviar();
         } catch (toba_error $error) {
                 $chupo = $error->get_mensaje_log();
@@ -509,11 +552,61 @@ class ci_login extends toba_ci
 	//-----------------------------------------------------------------------------------
 	//---- datos ------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-
 	function evt__datos__soy_afiliado()
 	{
 		$this->set_pantalla('pant_usuario');
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_telefono -----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function evt__frm_telefono__modificacion($datos)
+	{
+		$this->s__persona['tipo_telefono'] = dao::get_descripcion_tipo_telefono($datos['idtipo_telefono']);
+		$this->s__persona['nro_telefono'] = $datos['nro_telefono'];
+		$this->cn()->agregar_dt_telefonos($datos);	
+	}
+
+	function vista_jasperreports(toba_vista_jasperreports $report)
+	{
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$persona = $this->cn()->get_dt_persona();
+		}
+		$idpersona = $persona['idpersona'];
+		$reporte ='constancia_solicitud_afiliacion.jasper';
+		$path = toba::proyecto()->get_path().'/exportaciones/'.$reporte;	
+
+		$path_logo = toba::proyecto()->get_path().'/www/logo/logo.gif';	
+
+		$report->set_path_reporte($path);
+		//Parametro para el titulo
+		$report->set_parametro('titulo','S','CONSTANCIA DE SOLICITUD DE AFILIACION ');
+		//Parametros para el encabezado del titulo
+		$report->set_parametro('logo','S',$path_logo);
+		//Paramentro del filtro
+	
+		$report->set_parametro('idpersona', 'E', $idpersona);
+		//Parametros para el usuario
+		//$report->set_parametro('usuario','S',toba::usuario()->get_id());
+		$report->set_nombre_archivo('constancia_solicitud_afiliacion'.$idpersona.'.pdf');   	
+		$db = toba::fuente('mupum')->get_db();
+		$report->set_conexion($db);	
+	}
+
+	/*function extender_objeto_js()
+    {
+  
+    	echo "
+        {$this->objeto_js}.evt__procesar = function(params) {
+            location.href = vinculador.get_url(null, null, 'vista_jasperreports', {'idpersona': params});
+   
+            return false;
+        }
+		";
+        
+    }*/
+
 
 }
 ?>

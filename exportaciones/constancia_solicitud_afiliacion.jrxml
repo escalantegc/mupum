@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="constancia_solicitud_afiliacion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04f58be6-3a1e-406c-85bf-856781b23da8">
+	<property name="ireport.zoom" value="1.7715610000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="292"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="idpersona" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT  afiliacion.idafiliacion,
+                    afiliacion.idpersona,
+                    tipo_socio.descripcion  as tipo,
+                    estado.descripcion as estado,
+                    fecha_solicitud,
+                    fecha_alta,
+                    fecha_baja,
+                    afiliacion.activa,
+                    persona.apellido ||', '||persona.nombres as persona,
+                    persona.legajo,
+                    persona.correo,
+                    tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
+                    tipo_telefono.descripcion ||': '|| telefono_por_persona.nro_telefono as telefono
+
+            FROM
+                public.afiliacion
+            inner join estado using (idestado)
+            inner join tipo_socio using (idtipo_socio)
+            inner join persona using(idpersona)
+            inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
+            inner join telefono_por_persona on telefono_por_persona.idpersona=persona.idpersona
+            inner join tipo_telefono on telefono_por_persona.idtipo_telefono=tipo_telefono.idtipo_telefono
+            where
+		afiliacion.activa = true and
+		persona.idpersona = $P{idpersona}]]>
+	</queryString>
+	<field name="idafiliacion" class="java.lang.Integer"/>
+	<field name="idpersona" class="java.lang.Integer"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="fecha_solicitud" class="java.sql.Date"/>
+	<field name="fecha_alta" class="java.sql.Date"/>
+	<field name="fecha_baja" class="java.sql.Date"/>
+	<field name="activa" class="java.lang.Boolean"/>
+	<field name="persona" class="java.lang.String"/>
+	<field name="legajo" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="100" height="79" uuid="65f34c41-c22d-4e79-bd30-5d0d6c77d9c8"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="102" y="0" width="453" height="79" uuid="016281f3-859a-4743-b64b-678741205688"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement key="line" stretchType="RelativeToBandHeight" x="1" y="78" width="555" height="1" uuid="eb0df50b-c8d5-4f25-8111-a06c94b27ed4"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="197" splitType="Stretch">
+			<textField>
+				<reportElement x="141" y="35" width="413" height="20" uuid="b77ff9f4-60d2-40cf-982d-1b8d9f9b2c47"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{persona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="35" width="139" height="20" uuid="97d8e2f2-ad9e-4ece-9793-838fa74bb679"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido y Nombres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="4" width="138" height="20" uuid="bb6b3cf6-4802-4bbc-a588-b6a19e94b8ca"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="4" width="113" height="20" uuid="4e59feca-7be2-4c3c-b58d-d661cefdfe7c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="66" width="139" height="20" uuid="798cf84d-6552-4514-8203-60ff216c8779"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Legajo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="66" width="71" height="20" uuid="bcfa056c-df69-451a-9f81-ac0279071980"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{legajo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="97" width="139" height="20" uuid="adca56f2-5bca-4a61-af7b-439a4a2a506d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Correo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="97" width="415" height="20" uuid="0f371db2-d1e1-47e2-9d0d-18c5f65373b8"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="127" width="139" height="20" uuid="f60720db-6410-486f-93df-ddd1eeed7e61"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="141" y="127" width="413" height="20" uuid="b807c7d8-dd79-40de-a756-27053548047c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="158" width="139" height="20" uuid="103a2098-1b5e-4065-8849-837c3df73a9f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Solicitud:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="141" y="158" width="128" height="20" uuid="71f89b74-c5cf-4c21-9138-0401b8e57e14"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_solicitud}]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement key="line" stretchType="RelativeToBandHeight" x="1" y="181" width="555" height="1" uuid="c50ffef5-d5cf-4fd8-ac6d-187c6a11a10c"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="518" y="5" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="d4de6933-6c1e-42a3-a76a-4592de375691"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Liberation Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="5" width="45" height="19" uuid="e96cc629-eb8c-4bf4-a1d4-0839283967ac"/>
+				<textElement>
+					<font fontName="Liberation Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha/Hora: ]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="46" y="5" width="93" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="c3f91227-0348-4915-801c-d3c213f7f6a0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Liberation Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="422" y="5" width="96" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="f7990ae0-48e7-4a15-9356-fa0f5d1e2061"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Liberation Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<line direction="BottomUp">
+				<reportElement key="line" stretchType="RelativeToBandHeight" x="0" y="4" width="555" height="1" uuid="ae2acad3-75e3-4479-8086-f18b31e04ef9"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

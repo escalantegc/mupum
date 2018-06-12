@@ -164,7 +164,7 @@ class dao
 	}
 
 	  
-  	function get_listado_pais($where = null)
+  function get_listado_pais($where = null)
 	{
 		if (!isset($where))
 		{
@@ -180,7 +180,7 @@ class dao
   		return consultar_fuente($sql);
   	}  
 
-  	function get_listado_provincia($where = null)
+  function get_listado_provincia($where = null)
 	{
 		if (!isset($where))
 		{
@@ -197,8 +197,9 @@ class dao
   				order by 
   					provincia.descripcion";
   		return consultar_fuente($sql);
-  	}  
-  	function get_listado_localidad($where = null)
+  	} 
+
+  function get_listado_localidad($where = null)
 	{
 		if (!isset($where))
 		{
@@ -220,7 +221,7 @@ class dao
   		return consultar_fuente($sql);
   	}
 
-  	function get_pais_localidad($idlocalidad)
+    function get_pais_localidad($idlocalidad)
   	{
   		$sql = "SELECT idpais
 				FROM 
@@ -230,7 +231,8 @@ class dao
 
 		return consultar_fuente($sql);
   	}
-  	function get_pais_provincia($idprovincia)
+  	
+    function get_pais_provincia($idprovincia)
   	{
   		$sql = "SELECT idpais
 				FROM 
@@ -241,19 +243,19 @@ class dao
   	}
 
 
-  	  function get_listado_provincia_cascada($idpais = null)
-	{
+    function get_listado_provincia_cascada($idpais = null)
+    {
 
-  		$sql = "SELECT 	idprovincia, 
-  						provincia.descripcion
-  				FROM 
-  					public.provincia
-   				WHERE
-  					provincia.idpais = $idpais 
-  				order by
-  					descripcion";
-  		return consultar_fuente($sql);
-  	}  
+    	$sql = "SELECT 	idprovincia, 
+    					provincia.descripcion
+    			FROM 
+    				public.provincia
+    				WHERE
+    				provincia.idpais = $idpais 
+    			order by
+    				descripcion";
+    	return consultar_fuente($sql);
+    }  
   
   	function get_nombre_localidad($idlocalidad = null)
   	{
@@ -276,7 +278,7 @@ class dao
 
   	
   	
-  	function get_descripcion_persona_popup($idpersona)
+	function get_descripcion_persona_popup($idpersona)
 	{
 		$sql = "SELECT  
 					nombres||', '|| apellido as persona
@@ -305,9 +307,9 @@ class dao
   				order by 
   					parentesco.descripcion";
   		return consultar_fuente($sql);
-  	}
+  }
 
-  	function get_listado_tipo_telefono($where = null)
+  function get_listado_tipo_telefono($where = null)
 	{
 		if (!isset($where))
 		{
@@ -322,37 +324,38 @@ class dao
   				order by 
   					tipo_telefono.descripcion";
   		return consultar_fuente($sql);
-  	}
+	}
 
-    function get_listado_estado($categoria_estado = null)
-    {
-      $categoria_estado = quote("%{$categoria_estado}%");
-      $sql = "SELECT  estado.idestado, 
-              estado.descripcion
+  function get_listado_estado($categoria_estado = null)
+  {
+    $categoria_estado = quote("%{$categoria_estado}%");
+    $sql = "SELECT  estado.idestado, 
+            estado.descripcion
 
-          FROM 
-            public.estado
-          inner join categoria_estado using (idcategoria_estado)
-          WHERE
-            categoria_estado.descripcion ilike $categoria_estado ";
-      return consultar_fuente($sql);
+        FROM 
+          public.estado
+        inner join categoria_estado using (idcategoria_estado)
+        WHERE
+          categoria_estado.descripcion ilike $categoria_estado ";
+    return consultar_fuente($sql);
 
-    }
-  	function get_listado_estado_afiliacion($estado = null)
-  	{
-  		$estado = quote("%{$estado}%");
-  		$sql = "SELECT 	estado.idestado, 
-  						estado.descripcion
+  }
+  
+	function get_listado_estado_afiliacion($estado = null)
+	{
+		$estado = quote("%{$estado}%");
+		$sql = "SELECT 	estado.idestado, 
+						estado.descripcion
 
-  				FROM 
-  					public.estado
-  				inner join categoria_estado using (idcategoria_estado)
-  				WHERE
-  					categoria_estado.descripcion ilike '%afiliacion%' and
-            estado.descripcion ilike $estado";
-  		return consultar_fuente($sql);
+				FROM 
+					public.estado
+				inner join categoria_estado using (idcategoria_estado)
+				WHERE
+					categoria_estado.descripcion ilike '%afiliacion%' and
+          estado.descripcion ilike $estado";
+		return consultar_fuente($sql);
 
-  	}
+	}
 
   function get_listado_afiliacion($where = null)
   {
@@ -361,21 +364,21 @@ class dao
       $where = '1 = 1';
     }
     $sql = "SELECT  afiliacion.idafiliacion, 
-          afiliacion.idpersona, 
-          tipo_socio.descripcion  as tipo, 
-          estado.descripcion as estado, 
-          fecha_solicitud, 
-          fecha_alta, 
-          fecha_baja, 
-          afiliacion.activa
-        FROM
-            public.afiliacion
-        inner join estado using (idestado)
-        inner join tipo_socio using (idtipo_socio)
-        WHERE
-          $where
-          order by 
-          afiliacion.fecha_alta";
+                    afiliacion.idpersona, 
+                    tipo_socio.descripcion  as tipo, 
+                    estado.descripcion as estado, 
+                    fecha_solicitud, 
+                    fecha_alta, 
+                    fecha_baja, 
+                    afiliacion.activa
+            FROM
+                public.afiliacion
+            inner join estado using (idestado)
+            inner join tipo_socio using (idtipo_socio)
+            WHERE
+              $where
+            order by 
+              afiliacion.fecha_alta";
     return consultar_fuente($sql);
   }  
 
@@ -402,7 +405,7 @@ class dao
       		  WHERE
       				$where
       			order by 
-      				afiliacion.fecha_alta";
+      				afiliacion.fecha_solicitud desc";
   	return consultar_fuente($sql);
   }
 
@@ -599,6 +602,36 @@ class dao
                 order by 
                   descripcion";
       return consultar_fuente($sql);
+  }
+
+  function get_descripcion_tipo_telefono($idtipo_telefono = null)
+  {
+    $sql = "SELECT  descripcion
+            FROM 
+              public.tipo_telefono
+            where 
+             idtipo_telefono=$idtipo_telefono";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['descripcion']))
+    {
+      return $res[0]['descripcion'] ;
+    }
+
+  }  
+
+  function get_descripcion_tipo_documento($idtipo_documento = null)
+  {
+    $sql = "SELECT  sigla
+            FROM 
+              public.tipo_documento
+            where 
+             idtipo_documento = $idtipo_documento";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['sigla']))
+    {
+      return $res[0]['sigla'] ;
+    }
+
   }
 }
 ?>

@@ -177,6 +177,54 @@ class ci_solicitud_afiliacion extends mupum_ci
         }
 	}
 
+	function vista_jasperreports(toba_vista_jasperreports $report)
+	{
+		//toma como id el indice de la consulta, va de 0 a n
+		$idafiliacion = toba::memoria()->get_parametro('idafiliacion');
+
+		//--leo los datos segun el filtro que tenga para que sepa los indice tal cuales esta en el cuadro
+		if(isset($this->s__datos_filtro))
+		{	
+			$datos = dao::get_listado_solicitud_afiliacion($this->s__where);
+		}else{
+			$datos = dao::get_listado_solicitud_afiliacion();
+		}
+
+		$reporte ='formulario_afiliacion.jasper';
+		$path = toba::proyecto()->get_path().'/exportaciones/'.$reporte;	
+
+		$path_logo = toba::proyecto()->get_path().'/www/logo/logo.gif';	
+
+		$report->set_path_reporte($path);
+		//Parametro para el titulo
+		$report->set_parametro('titulo','S','FORMULARIO DE AFILIACION ');
+		//Parametros para el encabezado del titulo
+		$report->set_parametro('logo','S',$path_logo);
+		//Paramentro del filtro
+	
+		//
+		$report->set_parametro('idafiliacion', 'E', $datos[$idafiliacion]['idafiliacion']);
+		
+		//Parametros para el usuario
+		//$report->set_parametro('usuario','S',toba::usuario()->get_id());
+		$report->set_nombre_archivo('formulario_afiliacion'.$idafiliacion.'.pdf');   	
+		$db = toba::fuente('mupum')->get_db();
+		$report->set_conexion($db);	
+	}
+
+	function extender_objeto_js()
+    {
+  
+    	echo "
+        {$this->dep('cuadro')->objeto_js}.evt__imprimir = function(params) {
+            location.href = vinculador.get_url(null, null, 'vista_jasperreports', {'idafiliacion': params});
+   
+            return false;
+        }
+		";
+        
+    }
+
 }
 
 ?>
