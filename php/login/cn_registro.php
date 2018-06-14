@@ -156,6 +156,17 @@ class cn_registro extends mupum_cn
 			}
 		}
 	}
+
+	function existe_dt_telefonos($condicion)
+	{
+		$id = $this->dep('dr_registro')->tabla('dt_telefonos')->existe_fila_condicion($condicion);
+		if ($id==1)
+		{
+			return 'existe';
+		} else {
+			return 'noexiste';
+		}
+	}
 	function set_cursor_dt_telefonos($seleccion)
 	{
 		$id = $this->dep('dr_registro')->tabla('dt_telefonos')->get_id_fila_condicion($seleccion);
@@ -172,9 +183,13 @@ class cn_registro extends mupum_cn
 		$this->dep('dr_registro')->tabla('dt_telefonos')->resetear_cursor();
 	}
 
-	function get_dt_telefonos()
+	function get_dt_telefono()
 	{
 		return $this->dep('dr_registro')->tabla('dt_telefonos')->get();
+	}
+	function get_dt_telefonos()
+	{
+		return $this->dep('dr_registro')->tabla('dt_telefonos')->get_filas();
 	}
 
 	function set_dt_telefonos($datos)

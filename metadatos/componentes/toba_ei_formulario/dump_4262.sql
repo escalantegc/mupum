@@ -1001,7 +1001,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'calle', --identificador
 	'ef_editable', --elemento_formulario
 	'calle', --columnas
-	'0', --obligatorio
+	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'13', --orden
 	'Calle', --etiqueta
@@ -1081,7 +1081,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'altura', --identificador
 	'ef_editable', --elemento_formulario
 	'altura', --columnas
-	'0', --obligatorio
+	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'14', --orden
 	'Altura', --etiqueta

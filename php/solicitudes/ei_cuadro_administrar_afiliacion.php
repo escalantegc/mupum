@@ -5,7 +5,7 @@ class ei_cuadro_administrar_afiliacion extends mupum_ei_cuadro
 
 	function conf_evt__imprimir($evento, $fila)
 	{
-		if (!strstr('SOLICITADA', $this->datos[$fila]['estado'])) 
+		if ($this->datos[$fila]['activa']=='SI') 
 		{
 			$evento->anular();    
 		}

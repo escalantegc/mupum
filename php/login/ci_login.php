@@ -376,6 +376,9 @@ class ci_login extends toba_ci
 		try{
 			$this->cn()->guardar_dr_registro();
 			$this->enviar_correo($this->s__persona);
+			$parametros = array('ts' => 'vista_jasperreports');
+			toba::vinculador()->navegar_a('mupum', '3945', $parametros);
+			
 			toba::notificacion()->agregar("La solicitud de afiliacion ha sido enviada correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -397,13 +400,26 @@ class ci_login extends toba_ci
 			{
 				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
 				
-			} 		
-
-			if(strstr($mensaje_log,'idx_afiliacion'))
+			} 	
+			if(strstr($mensaje_log,'telefono_por_persona_pkey'))
 			{
-				toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion.",'info');
+				toba::notificacion()->agregar("Ya registro ese numero de telefono",'info');
+				
+			} 	
+
+			if(strstr($mensaje_log,'idx_afiliado'))
+			{
+				toba::notificacion()->agregar("Usted ya se encuentra afiliado.",'info');
 				
 			} 
+			if(strstr($mensaje_log,'idx_afiliacion_solicitada'))
+			{
+				toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion o tiene una afiliacion activa.",'info');
+				
+			} 
+					
+
+			
 		
 			
 		}
@@ -443,7 +459,7 @@ class ci_login extends toba_ci
 		if (isset($estado[0]['idestado']))
 		{
 			$datos['idestado'] = $estado[0]['idestado'];
-			$datos['activa'] = 1;
+			$datos['solicitada'] = 1;
 			$this->cn()->agregar_dt_afiliacion($datos);	
 		} else {
 			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
@@ -488,7 +504,7 @@ class ci_login extends toba_ci
 		if (isset($estado[0]['idestado']))
 		{
 			$afiliacion['idestado'] = $estado[0]['idestado'];
-			$afiliacion['activa'] = 1;
+			$afiliacion['solicitada'] = 1;
 			$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
 			$tipo_socio = dao::get_tipo_socio_titular();
 			$afiliacion['idtipo_socio'] =  $tipo_socio[0]['idtipo_socio'];      
@@ -506,7 +522,7 @@ class ci_login extends toba_ci
         //Armo el mail nuevo &oacute;
         $asunto = "Constancia de Solicitud de afiliacion";
         $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
-        				<p>Por medio del presente le informos que la Solicitud de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
+        				<p>Por medio del presente le informamos que la Solicitud de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
         				<table>
 						<tbody>
 							<tr>
@@ -537,9 +553,9 @@ class ci_login extends toba_ci
         {
                 $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
                 $mail->set_html(true);
-                $direcciones[]= 'administracion@mupum.unam.edu.ar';
+                /*$direcciones[]= 'administracion@mupum.unam.edu.ar';
                 $direcciones[]= 'comision@mupum.unam.edu.ar';
-                $mail->set_cc($direcciones);
+                $mail->set_cc($direcciones);*/
                 $mail->enviar();
         } catch (toba_error $error) {
                 $chupo = $error->get_mensaje_log();
@@ -564,11 +580,29 @@ class ci_login extends toba_ci
 	{
 		$this->s__persona['tipo_telefono'] = dao::get_descripcion_tipo_telefono($datos['idtipo_telefono']);
 		$this->s__persona['nro_telefono'] = $datos['nro_telefono'];
-		$this->cn()->agregar_dt_telefonos($datos);	
+		$telefonos = $this->cn()->get_dt_telefonos();
+		$bandera = 'noexiste';
+		foreach ($telefonos as $telefono) 
+		{
+			if (($telefono['idtipo_telefono'] == $datos['idtipo_telefono'] ) and (trim($telefono['nro_telefono']) == trim($datos['nro_telefono'] )))
+			{
+					$bandera = 'existe';
+			}
+		}
+
+		if ($bandera == 'noexiste')
+		{
+			$this->cn()->agregar_dt_telefonos($datos);	
+		}
+			
 	}
 
 	function vista_jasperreports(toba_vista_jasperreports $report)
 	{
+		$persona['idtipo_documento'] = $this->s__persona['idtipo_documento'];
+		$persona['nro_documento'] = $this->s__persona['nro_documento'];
+		$this->cn()->cargar_dr_registro($persona);
+		$this->cn()->set_cursor_dt_persona($persona);
 		if ($this->cn()->hay_cursor_dt_persona())
 		{
 			$persona = $this->cn()->get_dt_persona();

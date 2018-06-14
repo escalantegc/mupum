@@ -396,12 +396,15 @@ class dao
             				fecha_alta, 
             				fecha_baja, 
             				afiliacion.activa,
-                    persona.apellido||', '|| persona.nombres as persona
+                    persona.apellido||', '|| persona.nombres as persona,
+                    tipo_documento.sigla ||'-'|| persona.nro_documento as documento
       		  FROM
-      		  		public.afiliacion
-      		  inner join estado using (idestado)
+      		  		public.persona
+      		 
+      		  inner join afiliacion using (idpersona)
+            inner join tipo_documento using(idtipo_documento)
+            inner join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
-      		  inner join persona using (idpersona)
       		  WHERE
       				$where
       			order by 
@@ -433,8 +436,11 @@ class dao
         $where = '1 = 1';
       }
         $sql = "SELECT  estado.idestado, 
-              estado.descripcion,
-              categoria_estado.descripcion as categoria
+                        estado.descripcion,
+                        estado.solicitada,
+                        estado.activa,
+                        estado.baja,
+                        categoria_estado.descripcion as categoria
             FROM 
               public.estado
           inner join categoria_estado using (idcategoria_estado)

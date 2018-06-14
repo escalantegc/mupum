@@ -214,15 +214,13 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function extender_objeto_js()
     {
-  
-    	echo "
+      	echo "
         {$this->dep('cuadro')->objeto_js}.evt__imprimir = function(params) {
             location.href = vinculador.get_url(null, null, 'vista_jasperreports', {'idafiliacion': params});
    
             return false;
         }
 		";
-        
     }
 
 }
