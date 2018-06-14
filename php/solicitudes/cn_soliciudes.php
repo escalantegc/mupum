@@ -113,6 +113,12 @@ class cn_soliciudes extends mupum_cn
 			}
 		}
 	}
+
+	function guardar_dt_afiliacion()
+	{
+		$this->dep('dr_solicitudes')->tabla('dt_afiliacion')->sincronizar();
+	}
+
 	function set_cursor_dt_afiliacion($seleccion)
 	{
 		$id = $this->dep('dr_solicitudes')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);

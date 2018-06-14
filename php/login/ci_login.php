@@ -503,8 +503,8 @@ class ci_login extends toba_ci
 		$estado = dao::get_listado_estado_afiliacion('SOLICITADA');
 		if (isset($estado[0]['idestado']))
 		{
-			$afiliacion['idestado'] = $estado[0]['idestado'];
-			$afiliacion['solicitada'] = 1;
+			//--$afiliacion['idestado'] = $estado[0]['idestado'];
+			//--$afiliacion['solicitada'] = 1;
 			$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
 			$tipo_socio = dao::get_tipo_socio_titular();
 			$afiliacion['idtipo_socio'] =  $tipo_socio[0]['idtipo_socio'];      

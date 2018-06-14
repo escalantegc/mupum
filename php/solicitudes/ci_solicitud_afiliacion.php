@@ -11,10 +11,10 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function evt__procesar()
 	{
-		
+		$this->cn()->guardar_dt_afiliacion();
 		try{
-			$this->cn()->guardar_dr_solicitudes();
-			$this->enviar_correo($this->s__persona[0]);
+			
+			
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 		} catch( toba_error_db $error){
@@ -78,11 +78,24 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->cn()->cargar_dr_solicitudes($seleccion);
+		$this->cn()->cargar_dt_afiliacion($seleccion);
 		$this->cn()->set_cursor_dt_afiliacion($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__cuadro__activar($seleccion)
+	{
+		$this->cn()->cargar_dt_afiliacion($seleccion);
+		$this->cn()->set_cursor_dt_afiliacion($seleccion);
+		$this->set_pantalla('pant_aceptar_afiliacion');
+	}
+
+	function evt__cuadro__baja($seleccion)
+	{
+		$this->cn()->cargar_dt_afiliacion($seleccion);
+		$this->cn()->set_cursor_dt_afiliacion($seleccion);
+		$this->set_pantalla('pant_cancelar_afiliacion');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -106,11 +119,16 @@ class ci_solicitud_afiliacion extends mupum_ci
 		unset($this->s__datos_filtro);
 	}
 
+	
+
+
+
+
 	//-----------------------------------------------------------------------------------
-	//---- frm --------------------------------------------------------------------------
+	//---- frm_edicion ------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm(mupum_ei_formulario $form)
+	function conf__frm_edicion(mupum_ei_formulario $form)
 	{
 		if ($this->cn()->hay_cursor_dt_afiliacion())
 		{
@@ -119,11 +137,10 @@ class ci_solicitud_afiliacion extends mupum_ci
 		}
 	}
 
-	function evt__frm__modificacion($datos)
+	function evt__frm_edicion__modificacion($datos)
 	{
-		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
+		if ($this->cn()->hay_cursor_dt_afiliacion())
 		{
-			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
 			$this->cn()->set_dt_afiliacion($datos);
 
 		} else {
@@ -131,39 +148,22 @@ class ci_solicitud_afiliacion extends mupum_ci
 		}
 	}
 
-	function get_estados_segun_categoria()
-	{
-		return dao::get_listado_estado('AFILIACION');
 
-	}
-	
-	function enviar_correo($persona)
+	function enviar_correo_cancelacion($persona)
 	{
 		//try{
 			$user = $persona['nro_documento']; 
 	        $nombre = trim($persona['persona']);
-	        $clave= toba_usuario::generar_clave_aleatoria(8);
 	        $atributos['email'] = $persona['correo'];
 
 	        //Armo el mail nuevo &oacute;
-	        $asunto = "Afiliacion Concretada";
-	        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br />
-	        				<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> 
-							<p>Los datos para poder ingresar al sistema son:</p>".
-							"Usuario:".$user. "<br>".
-							"Clave:".$clave.
-							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
-	           				"Saludos ATTE .- MUPUM<".
+	        $asunto = "Afiliacion Cancelada";
+	        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        				"<p>Por medio del presente le informamos que su Afiliacion a MUPUM ha sido dada de baja.</p>".
+	           				"<p>Saludos ATTE .- MUPUM</p>".
 	          				"<p>No responda este correo, fue generado por sistema. </p>";
-
-
-  
         
-	     	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-	        $perfil = 'afiliado';
-		    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
-      
-
+	     	toba::instancia()->bloquear_usuario($user);
 
         try 
         {
@@ -176,6 +176,61 @@ class ci_solicitud_afiliacion extends mupum_ci
                 toba::notificacion()->agregar($chupo, 'info');
         }
 	}
+
+	function enviar_correo_aceptacion($persona)
+	{
+		//try{
+			$user = $persona['nro_documento']; 
+	        $nombre = trim($persona['persona']);
+	        $clave= toba_usuario::generar_clave_aleatoria(8);
+	        $atributos['email'] = $persona['correo'];
+
+	       /* if (toba::instancia()->es_usuario_bloqueado($user))
+	        {
+
+	        }*/
+        
+	     	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
+	        $perfil = 'afiliado';
+		    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+
+
+	        //Armo el mail nuevo &oacute;
+	        $asunto = "Afiliacion Concretada";
+	        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        				"<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> ".
+							"<p>Los datos para poder ingresar al sistema son:</p>".
+							"Usuario:".$user. "<br>".
+							"Clave:".$clave. "<br>".
+							"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+	           				"<p>Saludos ATTE .- MUPUM</p>".
+	          				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                //--$mail->set_cc();
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+	
+
+	/*function extender_objeto_js()
+    {
+      	echo "
+        {$this->dep('cuadro')->objeto_js}.evt__imprimir = function(params) {
+            location.href = vinculador.get_url(null, null, 'vista_jasperreports', {'idafiliacion': params});
+   
+            return false;
+        }
+		";
+    }*/
 
 	function vista_jasperreports(toba_vista_jasperreports $report)
 	{
@@ -212,17 +267,61 @@ class ci_solicitud_afiliacion extends mupum_ci
 		$report->set_conexion($db);	
 	}
 
-	function extender_objeto_js()
-    {
-      	echo "
-        {$this->dep('cuadro')->objeto_js}.evt__imprimir = function(params) {
-            location.href = vinculador.get_url(null, null, 'vista_jasperreports', {'idafiliacion': params});
-   
-            return false;
-        }
-		";
-    }
+	//-----------------------------------------------------------------------------------
+	//---- frm_aceptar_afiliacion -------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_aceptar_afiliacion(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion())
+		{
+			$datos = $this->cn()->get_dt_afiliacion();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_aceptar_afiliacion__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
+		{
+			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
+			$this->enviar_correo_aceptacion($this->s__persona[0]);
+			$datos['activa'] = 't';
+			$datos['solicitada'] = 'f';
+			$this->cn()->set_dt_afiliacion($datos);
+
+		} else {
+			$this->cn()->agregar_dt_afiliacion($datos);
+		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_cancelar_afiliacion ------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_cancelar_afiliacion(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion())
+		{
+			$datos = $this->cn()->get_dt_afiliacion();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_cancelar_afiliacion__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
+		{
+			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
+			$this->enviar_correo_cancelacion($this->s__persona[0]);
+			$datos['activa'] = 'f';
+			$datos['solicitada'] = 'f';
+			$this->cn()->set_dt_afiliacion($datos);
+
+		} else {
+			$this->cn()->agregar_dt_afiliacion($datos);
+		}
+	}
 
 }
-
 ?>

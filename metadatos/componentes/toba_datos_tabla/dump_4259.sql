@@ -56,7 +56,7 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 	'afiliacion', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
-	'0', --modificar_claves
+	'1', --modificar_claves
 	'mupum', --fuente_datos_proyecto
 	'mupum', --fuente_datos
 	'1', --permite_actualizacion_automatica
@@ -121,7 +121,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
+	'0', --no_nulo_db
 	'0', --externa
 	'afiliacion'  --tabla
 );

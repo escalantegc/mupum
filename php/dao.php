@@ -370,7 +370,8 @@ class dao
                     fecha_solicitud, 
                     fecha_alta, 
                     fecha_baja, 
-                    afiliacion.activa
+                    afiliacion.activa,
+                    afiliacion.solicitada
             FROM
                 public.afiliacion
             inner join estado using (idestado)
@@ -397,13 +398,14 @@ class dao
             				fecha_baja, 
             				afiliacion.activa,
                     persona.apellido||', '|| persona.nombres as persona,
-                    tipo_documento.sigla ||'-'|| persona.nro_documento as documento
+                    tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
+                    afiliacion.solicitada
       		  FROM
       		  		public.persona
       		 
       		  inner join afiliacion using (idpersona)
             inner join tipo_documento using(idtipo_documento)
-            inner join estado using (idestado)
+            left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
       		  WHERE
       				$where
