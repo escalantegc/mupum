@@ -1,4 +1,5 @@
 <?php
+require_once('dao.php');
 class ci_login extends toba_ci
 {
 	protected $s__datos;
@@ -641,6 +642,148 @@ class ci_login extends toba_ci
         
     }*/
 
+
+	
+
+
+	function enviar_correo_usuario($persona)
+	{
+		//try{
+			$user = $persona['nro_documento']; 
+	        $nombre = trim($persona['persona']);
+	        $clave= toba_usuario::generar_clave_aleatoria(8);
+	        $atributos['email'] = $persona['correo_correcto'];
+
+	        $bloqueado = 'no';
+	        if (toba::instancia()->es_usuario_bloqueado($user))
+	        {
+	        	$bloqueado = 'si';
+	        } else {
+	        	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
+		        $perfil = 'afiliado';
+			    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+	        }
+
+	        //Armo el mail nuevo &oacute;
+	        $asunto = "Datos de Acceso";
+	        $cuerpo_mail='';
+	        if ($bloqueado=='si')
+	        {
+	        	$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        				"<p>Por medio del presente le informamos que los datos para poder ingresar al sistema son:</p> ".
+							"Usuario:".$user. "<br>".
+							"<p>Este usuario esta bloqueado, solicite al administrador del sistema que lo desbloquee. </p><br>".
+	           				"<p>Saludos ATTE .- MUPUM</p>".
+	          				"<p>No responda este correo, fue generado por sistema. </p>";
+  			}else{
+  				 $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        				"<p>Por medio del presente le informamos que los datos para poder ingresar al sistema son:</p> ".
+							"Usuario:".$user. "<br>".
+							"Clave:".$clave. "<br>".
+							"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+	           				"<p>Saludos ATTE .- MUPUM</p>".
+	          				"<p>No responda este correo, fue generado por sistema. </p>";
+  			}
+	       
+
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                //--$mail->set_cc();
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+
+//-----------------------------------------------------------------------------------
+	//---- frm_usuario ------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+
+	function evt__frm_usuario__alta($datos)
+	{
+		$indice['idtipo_documento'] = $datos['idtipo_documento']; 
+		$indice['nro_documento'] = $datos['nro_documento']; 
+		$this->cn()->cargar_dr_registro($indice);
+		$resultado = $this->cn()->existe_dt_persona($indice);
+		if ($resultado == 'existe')
+		{
+			$this->cn()->set_cursor_dt_persona($indice);
+			$persona = $this->cn()->get_dt_persona();	
+			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
+			$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
+			$this->enviar_correo_usuario($this->s__persona[0]);
+			if ($this->cn()->hay_cursor_dt_persona())
+			{
+				$this->cn()->set_dt_persona($datos);
+				toba::notificacion()->agregar("Los datos de acceso se guardaron correctamente.",'info');
+
+			} else {
+				$this->cn()->agregar_dt_persona($datos);
+			}
+		} else {
+			 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
+
+		}
+		
+		try{
+			$this->cn()->guardar_dr_registro();
+		
+			
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("La persona esta siendo referenciado, no puede eliminarlo",'error');
+				
+			} 
+
+			$mensaje_log= $error->get_mensaje_log();
+			if(strstr($mensaje_log,'idx_documento'))
+			{
+				toba::notificacion()->agregar("La persona ya esta registrada.",'info');
+				
+			} 		
+
+			if(strstr($mensaje_log,'idx_legajo'))
+			{
+				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
+				
+			} 	
+			if(strstr($mensaje_log,'telefono_por_persona_pkey'))
+			{
+				toba::notificacion()->agregar("Ya registro ese numero de telefono",'info');
+				
+			} 	
+
+			if(strstr($mensaje_log,'idx_afiliado'))
+			{
+				toba::notificacion()->agregar("Usted ya se encuentra afiliado.",'info');
+				
+			} 
+			if(strstr($mensaje_log,'idx_afiliacion_solicitada'))
+			{
+				toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion o tiene una afiliacion activa.",'info');
+				
+			} 
+					
+			
+		}
+			$this->cn()->resetear_dr_registro();
+			$this->set_pantalla('login');
+	}
+
+	function evt__frm_usuario__cancelar()
+	{
+		$this->cn()->resetear_dr_registro();
+			$this->set_pantalla('login');
+	}
 
 }
 ?>

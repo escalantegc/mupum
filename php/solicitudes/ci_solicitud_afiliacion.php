@@ -11,9 +11,9 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function evt__procesar()
 	{
-		$this->cn()->guardar_dt_afiliacion();
+		
 		try{
-			
+			$this->cn()->guardar_dt_afiliacion();
 			
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
@@ -185,19 +185,30 @@ class ci_solicitud_afiliacion extends mupum_ci
 	        $clave= toba_usuario::generar_clave_aleatoria(8);
 	        $atributos['email'] = $persona['correo'];
 
-	       /* if (toba::instancia()->es_usuario_bloqueado($user))
+	        $bloqueado = 'no';
+	        if (toba::instancia()->es_usuario_bloqueado($user))
 	        {
-
-	        }*/
-        
-	     	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-	        $perfil = 'afiliado';
-		    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
-
+	        	$bloqueado = 'si';
+	        } else {
+	        	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
+		        $perfil = 'afiliado';
+			    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+	        }
 
 	        //Armo el mail nuevo &oacute;
 	        $asunto = "Afiliacion Concretada";
-	        $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        $cuerpo_mail='';
+	        if ($bloqueado=='si')
+	        {
+	        	$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	        				"<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> ".
+							"<p>Los datos para poder ingresar al sistema son:</p>".
+							"Usuario:".$user. "<br>".
+							"<p>Este usuario esta bloqueado, solicite al administrador del sistema que lo desbloquee. </p><br>".
+	           				"<p>Saludos ATTE .- MUPUM</p>".
+	          				"<p>No responda este correo, fue generado por sistema. </p>";
+  			}else{
+  				 $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
 	        				"<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> ".
 							"<p>Los datos para poder ingresar al sistema son:</p>".
 							"Usuario:".$user. "<br>".
@@ -206,6 +217,8 @@ class ci_solicitud_afiliacion extends mupum_ci
 							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
 	           				"<p>Saludos ATTE .- MUPUM</p>".
 	          				"<p>No responda este correo, fue generado por sistema. </p>";
+  			}
+	       
 
         try 
         {
