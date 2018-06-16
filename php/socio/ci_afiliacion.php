@@ -14,6 +14,11 @@ class ci_afiliacion extends mupum_ci
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__volver()
+	{
+		$this->get_cn()->resetear_cursor_dt_afiliacion();
+		$this->set_pantalla('pant_inicial');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -38,30 +43,12 @@ class ci_afiliacion extends mupum_ci
 		
 	}
 
-	function evt__cuadro__seleccion($seleccion)
+
+	function evt__cuadro__cancelar($seleccion)
 	{
 		$this->get_cn()->set_cursor_dt_afiliacion($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
-
-	function evt__cuadro__borrar($seleccion)
-	{
-		
-		$this->get_cn()->eliminar_dt_afiliacion($seleccion);
-		try{
-			$this->get_cn()->cargar_dr_socio();
-				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("La afiliacion esta siendo referenciada, no puede eliminarla",'error');
-				
-			} 		
-		}
-		$this->set_pantalla('pant_inicial');
-	}
-
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -93,7 +80,9 @@ class ci_afiliacion extends mupum_ci
 	{
 		if ($this->get_cn()->hay_cursor_dt_afiliacion())
 		{
+
 			$datos = $this->get_cn()->get_dt_afiliacion();
+			$datos['fecha_solicitud_cancelacion'] =  date("Y-m-d"); 
 			$form->set_datos($datos);
 		}
 	}
@@ -102,7 +91,7 @@ class ci_afiliacion extends mupum_ci
 	{
 		if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
 		{
-			
+			$datos['solicita_cancelacion'] = 't';
 			$this->get_cn()->set_dt_afiliacion($datos);
 
 		} else {
@@ -116,11 +105,9 @@ class ci_afiliacion extends mupum_ci
 
 	}
 
-	function evt__volver()
-	{
-		$this->get_cn()->resetear_cursor_dt_afiliacion();
-		$this->set_pantalla('pant_inicial');
-	}
+	
+
+
 
 
 

@@ -30,7 +30,7 @@
             inner join telefono_por_persona on telefono_por_persona.idpersona=persona.idpersona
             inner join tipo_telefono on telefono_por_persona.idtipo_telefono=tipo_telefono.idtipo_telefono
             where
-		afiliacion.activa = true and
+
 		afiliacion.idafiliacion = $P{idafiliacion}]]>
 	</queryString>
 	<field name="idafiliacion" class="java.lang.Integer"/>

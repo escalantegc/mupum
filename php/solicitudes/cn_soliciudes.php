@@ -236,6 +236,81 @@ class cn_soliciudes extends mupum_cn
 	{
 		return $this->dep('dr_reserva')->tabla('dt_detalle_pago')->get_filas();
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-USUARIO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_usuario($seleccion)
+	{
+		if(!$this->dep('dr_usuario')->tabla('dt_usuario')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_usuario')->tabla('dt_usuario')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_usuario')->tabla('dt_usuario')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function guardar_dt_usuario()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario')->sincronizar();
+	}	
+
+	function resetear_dt_usuario()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario')->resetear();
+	}
+
+	function set_cursor_dt_usuario($seleccion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_usuario')->tabla('dt_usuario')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_usuario()
+	{
+		return $this->dep('dr_usuario')->tabla('dt_usuario')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_usuario()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario')->resetear_cursor();
+	}
+
+	function get_dt_usuario()
+	{
+		return $this->dep('dr_usuario')->tabla('dt_usuario')->get();
+	}
+
+	function set_dt_usuario($datos)
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario')->set($datos);
+	}
+
+	function agregar_dt_usuario($datos)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario')->nueva_fila($datos);
+		$this->dep('dr_usuario')->tabla('dt_usuario')->set_cursor($id);
+	}	
+
+	function eliminar_dt_usuario($seleccion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_usuario')->tabla('dt_usuario')->eliminar_fila($id[0]);
+	}
+
+	function existe_dt_usuario($condicion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario')->existe_fila_condicion($condicion);
+		if ($id==1)
+		{
+			return 'existe';
+		} else {
+			return 'noexiste';
+		}
+	}
 }
 
 ?>

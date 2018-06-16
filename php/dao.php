@@ -371,7 +371,9 @@ class dao
                     fecha_alta, 
                     fecha_baja, 
                     afiliacion.activa,
-                    afiliacion.solicitada
+                    afiliacion.solicitada,
+                    solicita_cancelacion,
+                    fecha_solicitud_cancelacion
             FROM
                 public.afiliacion
             inner join estado using (idestado)

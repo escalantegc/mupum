@@ -14,10 +14,9 @@ class ci_seleccionar_persona extends mupum_ci
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_persona($this->s__where);
-		}else{
-			$datos = dao::get_listado_persona();
+			$cuadro->set_datos($datos);
 		}
-		$cuadro->set_datos($datos);
+		
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -43,6 +42,69 @@ class ci_seleccionar_persona extends mupum_ci
 		unset($this->s__datos_filtro);
 	}
 
-}
+	//-----------------------------------------------------------------------------------
+	//---- Eventos ----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
+	function evt__procesar()
+	{
+		try{
+			$this->cn()->guardar_dr_socio();
+			
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			$mensaje_log= $error->get_mensaje_log();
+			if(strstr($mensaje_log,'idx_documento'))
+			{
+				toba::notificacion()->agregar("La afiliacion ya esta registrada.",'info');
+			} 		
+
+			if(strstr($mensaje_log,'idx_legajo'))
+			{
+				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
+			} 		
+		}
+
+		$this->cn()->resetear_dr_socio();
+		$this->set_pantalla('pant_inicial');
+	}
+
+	function evt__cancelar()
+	{
+		$this->cn()->resetear_dr_socio();
+		$this->set_pantalla('pant_inicial');
+	}
+
+	function evt__nuevo()
+	{
+		$this->set_pantalla('pant_edicion');
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm --------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$datos = $this->cn()->get_dt_persona();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$this->cn()->set_dt_persona($datos);
+		} else {
+			$this->cn()->agregar_dt_persona($datos);
+		}
+	}
+
+}
 ?>
