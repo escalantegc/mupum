@@ -25,7 +25,7 @@ ALTER TABLE public.solicitud_reserva
 
 CREATE TABLE public.motivo_tipo_socio
 (
-  idmotivo_tipo_socio integer NOT NULL DEFAULT nextval('motivo_tipo_socio_idmotivo_tipo_socio_seq'::regclass),
+  idmotivo_tipo_socio serial NOT NULL ,
   idtipo_socio integer NOT NULL,
   idmotivo integer NOT NULL,
   monto_reserva double precision NOT NULL,

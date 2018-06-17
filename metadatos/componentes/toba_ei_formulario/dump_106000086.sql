@@ -21,7 +21,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_solicitud_afiliacion - frm_edicion', --nombre
-	'Editar Afiliacion', --titulo
+	'Editar Solicitud Afiliacion', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'mupum', --fuente_datos_proyecto

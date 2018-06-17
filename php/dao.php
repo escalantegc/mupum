@@ -389,6 +389,38 @@ class dao
   {
     if (!isset($where))
     {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  afiliacion.idafiliacion, 
+                    afiliacion.idpersona, 
+                    tipo_socio.descripcion  as tipo, 
+                    estado.descripcion as estado, 
+                    fecha_solicitud, 
+                    fecha_alta, 
+                    fecha_baja, 
+                    afiliacion.activa,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
+                    afiliacion.solicitada
+            FROM
+                public.persona
+           
+            inner join afiliacion using (idpersona)
+            inner join tipo_documento using(idtipo_documento)
+            left outer join estado using (idestado)
+            inner join tipo_socio using (idtipo_socio)
+            WHERE
+              afiliacion.activa = false and
+              $where
+            order by 
+              afiliacion.fecha_solicitud desc";
+    return consultar_fuente($sql);
+  } 
+
+  function get_listado_cancelacion_afiliacion($where = null)
+  {
+    if (!isset($where))
+    {
     	$where = '1 = 1';
     }
   	$sql = "SELECT 	afiliacion.idafiliacion, 
@@ -401,7 +433,9 @@ class dao
             				afiliacion.activa,
                     persona.apellido||', '|| persona.nombres as persona,
                     tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
-                    afiliacion.solicitada
+                    afiliacion.solicitada,
+                    fecha_solicitud_cancelacion,
+                    solicita_cancelacion
       		  FROM
       		  		public.persona
       		 
@@ -410,7 +444,8 @@ class dao
             left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
       		  WHERE
-      				$where
+      				 solicita_cancelacion = true and
+               $where
       			order by 
       				afiliacion.fecha_solicitud desc";
   	return consultar_fuente($sql);
