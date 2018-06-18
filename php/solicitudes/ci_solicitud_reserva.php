@@ -45,15 +45,8 @@ class ci_solicitud_reserva extends mupum_ci
 		$this->s__dia['fecha'] = $dia['anio'].'-'.$dia['mes'].'-'.$dia['dia'];			
 		$this->s__fecha = $dia['dia'].'/'.$dia['mes'].'/'.$dia['anio'];
 		$this->s__mes = $dia['mes'];
-		$this->s__anio = $dia['anio'];	
-		
-		
-		
+		$this->s__anio = $dia['anio'];		
 	}
-
-	
-
-	
 
 	//-----------------------------------------------------------------------------------
 	//---- Configuraciones --------------------------------------------------------------

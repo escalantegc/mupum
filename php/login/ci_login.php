@@ -460,7 +460,7 @@ class ci_login extends toba_ci
 		if (isset($estado[0]['idestado']))
 		{
 			$datos['idestado'] = $estado[0]['idestado'];
-			$datos['solicitada'] = 1;
+			$datos['solicitada'] = 't';
 			$this->cn()->agregar_dt_afiliacion($datos);	
 		} else {
 			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
@@ -505,7 +505,7 @@ class ci_login extends toba_ci
 		if (isset($estado[0]['idestado']))
 		{
 			//--$afiliacion['idestado'] = $estado[0]['idestado'];
-			//--$afiliacion['solicitada'] = 1;
+			$afiliacion['solicitada'] = 't';
 			$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
 			$tipo_socio = dao::get_tipo_socio_titular();
 			$afiliacion['idtipo_socio'] =  $tipo_socio[0]['idtipo_socio'];      

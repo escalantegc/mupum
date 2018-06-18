@@ -23,14 +23,13 @@
 
             FROM
                 public.afiliacion
-            inner join estado using (idestado)
+            left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
             inner join persona using(idpersona)
             inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
             inner join telefono_por_persona on telefono_por_persona.idpersona=persona.idpersona
             inner join tipo_telefono on telefono_por_persona.idtipo_telefono=tipo_telefono.idtipo_telefono
             where
-		afiliacion.activa = true and
 		persona.idpersona = $P{idpersona}]]>
 	</queryString>
 	<field name="idafiliacion" class="java.lang.Integer"/>

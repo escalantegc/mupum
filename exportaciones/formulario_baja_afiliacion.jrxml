@@ -24,7 +24,7 @@
 
             FROM
                 public.afiliacion
-            inner join estado using (idestado)
+            left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
             inner join persona using(idpersona)
             inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento

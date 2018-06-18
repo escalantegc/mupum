@@ -51,7 +51,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'3499', --evento_id
 	'4266', --objeto
 	'cancelar', --identificador
-	'Cancelar Afiliacion', --etiqueta
+	'Solicitar Baja Afiliacion', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	NULL, --confirmacion
