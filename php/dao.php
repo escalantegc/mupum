@@ -507,15 +507,18 @@ class dao
     $sql = "SELECT  idsolicitud_reserva, 
                     idafiliacion, 
                     fecha, 
-                    idinstalacion, 
+                    instalacion.idinstalacion, 
+                    instalacion.nombre as instalacion, 
                     estado.idestado, 
                     idmotivo, 
                     nro_personas,
-                    'RESERVA '||estado.descripcion as contenido, 
+                    
+                    (select traer_instalaciones_ocupadas(fecha)) as contenido,
                     fecha as dia
             FROM 
               public.solicitud_reserva
-              inner join estado using (idestado)";
+              inner join estado using (idestado)
+              inner join instalacion using (idinstalacion)";
 
     $dias = consultar_fuente($sql);
     $datos = null;
@@ -551,7 +554,47 @@ class dao
                       cantidad_maxima_personas,
                       domicilio
               FROM 
-                public.instalacion;";
+                public.instalacion 
+              where 
+                $where";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_instalacion_disponible ($fecha = null)
+  {
+      $solicitudes = consultar_fuente("SELECT idinstalacion  FROM public.solicitud_reserva  where fecha = $fecha");
+      
+      $where = null;
+      foreach ($solicitudes as $solicitud) 
+      {
+        $where.= ' instalacion.idinstalacion != '.$solicitud['idinstalacion'] .' and';
+      }
+     
+      
+      $sql = '';
+      if (isset($where))
+      {
+       $where = substr($where, 0, strlen($where)-4);
+       $sql ="  SELECT  instalacion.idinstalacion, 
+                        instalacion.nombre, 
+                        instalacion.cantidad_maxima_personas,
+                        instalacion.domicilio
+              FROM 
+                public.instalacion 
+              where 
+                $where
+                ";
+
+      } else {
+         $sql ="SELECT   instalacion.idinstalacion, 
+                      instalacion.nombre, 
+                      instalacion.cantidad_maxima_personas,
+                      instalacion.domicilio
+              FROM 
+                public.instalacion";
+
+      }
+     
       return consultar_fuente($sql);
   }
 
@@ -564,7 +607,8 @@ class dao
                 public.motivo
             inner join categoria_motivo using(idcategoria_motivo)
             where 
-                categoria_motivo.descripcion ilike $categoria_motivo";
+                categoria_motivo.descripcion ilike $categoria_motivo
+                ";
      return consultar_fuente($sql);
   }  
 
@@ -624,7 +668,7 @@ class dao
                       descripcion
               FROM 
                   public.forma_pago 
-              cargar_calendario_reserva
+              
               where
                 $where
               order by
@@ -677,6 +721,27 @@ class dao
       return $res[0]['sigla'] ;
     }
 
+  }
+
+  function get_motivo_por_tipo_socio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idmotivo_tipo_socio, 
+                    tipo_socio.descripcion as tipo_socio, 
+                    motivo.descripcion as motivo,
+                    monto_reserva, 
+                    monto_limpieza_mantenimiento, 
+                    monto_garantia
+            FROM 
+            public.motivo_tipo_socio
+            inner join tipo_socio using(idtipo_socio)
+            inner join motivo using(idmotivo)
+            where
+              $where";
+    return consultar_fuente($sql);
   }
 }
 ?>

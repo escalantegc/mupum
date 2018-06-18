@@ -765,6 +765,59 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_motivo')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_motivo')->eliminar_fila($id[0]);
 	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-MOTIVO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_motivo_tipo_socio($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_motivo_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_motivo_tipo_socio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_motivo_tipo_socio()
+	{
+		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->resetear_cursor();
+	}
+
+	function get_dt_motivo_tipo_socio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->get();
+	}
+
+	function set_dt_motivo_tipo_socio($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->set($datos);
+	}
+
+	function agregar_dt_motivo_tipo_socio($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_motivo_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->eliminar_fila($id[0]);
+	}	
 	
 }
 

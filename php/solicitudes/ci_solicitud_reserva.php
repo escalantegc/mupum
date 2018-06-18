@@ -47,22 +47,11 @@ class ci_solicitud_reserva extends mupum_ci
 		$this->s__mes = $dia['mes'];
 		$this->s__anio = $dia['anio'];	
 		
-		$reserva['idsolicitud_reserva'] = $dia['idsolicitud_reserva'];
-		if (isset($reserva['idsolicitud_reserva']))
-		{
-			$this->cargar_dt_reserva($reserva);
-			$this->set_cursor_dt_reserva($reserva);
-		}
+		
 		
 	}
 
-	function evt__calendario__seleccionar_semana($semana)
-	{
-	}
-
-	function evt__calendario__cambiar_mes($mes)
-	{
-	}
+	
 
 	
 
@@ -94,6 +83,12 @@ class ci_solicitud_reserva extends mupum_ci
 	{
 		return quote($this->s__fecha);
 	}
+	function get_listado_instalacion_disponible()
+	{
+		$fecha = quote("%{$this->s__dia['fecha']}%");
+
+		return dao::get_listado_instalacion_disponible($fecha);
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- frm --------------------------------------------------------------------------
@@ -117,8 +112,9 @@ class ci_solicitud_reserva extends mupum_ci
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
+			$mensaje= $error->get_mensaje_motor();
 			
-			toba::notificacion()->agregar('Tira el error '.$sql_state,'error');
+			toba::notificacion()->agregar('Tira el error '.$mensaje,'error');
 			 		
 		}
 		$this->cn()->resetear_dr_reserva();
