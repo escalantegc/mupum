@@ -63,12 +63,12 @@ class ci_solicitud_reserva extends mupum_ci
 	function get_estados_segun_categoria()
 	{
 		return dao::get_listado_estado('RESERVA');
-
 	}	
 
-	function get_motivos_segun_categoria()
+	function get_motivos_segun_categoria($idafiliacion)
 	{
-		return dao::get_listado_motivos('RESERVA');
+		$where  = ' afiliacion.idafiliacion = '.$idafiliacion; 
+		return dao::get_motivo_por_tipo_socio($where);
 
 	}
 
@@ -98,7 +98,8 @@ class ci_solicitud_reserva extends mupum_ci
 
 	function evt__frm__procesar($datos)
 	{
-
+		$estado = dao::get_listado_estado_reserva('confirmada');
+		$datos['idestado'] = $estado[0]['idestado']; 
 		$this->cn()->agregar_dt_reserva($datos);
 		try{
 			$this->cn()->guardar_dr_reserva();

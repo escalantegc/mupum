@@ -341,7 +341,23 @@ class dao
 
   }
   
-	function get_listado_estado_afiliacion($estado = null)
+  function get_listado_estado_afiliacion($estado = null)
+  {
+    $estado = quote("%{$estado}%");
+    $sql = "SELECT  estado.idestado, 
+            estado.descripcion
+
+        FROM 
+          public.estado
+        inner join categoria_estado using (idcategoria_estado)
+        WHERE
+          categoria_estado.descripcion ilike '%afiliacion%' and
+          estado.descripcion ilike $estado";
+    return consultar_fuente($sql);
+
+  }	
+
+  function get_listado_estado_reserva($estado = null)
 	{
 		$estado = quote("%{$estado}%");
 		$sql = "SELECT 	estado.idestado, 
@@ -351,7 +367,7 @@ class dao
 					public.estado
 				inner join categoria_estado using (idcategoria_estado)
 				WHERE
-					categoria_estado.descripcion ilike '%afiliacion%' and
+					categoria_estado.descripcion ilike '%reserva%' and
           estado.descripcion ilike $estado";
 		return consultar_fuente($sql);
 
@@ -734,14 +750,36 @@ class dao
                     motivo.descripcion as motivo,
                     monto_reserva, 
                     monto_limpieza_mantenimiento, 
-                    monto_garantia
+                    monto_garantia,
+                    COALESCE(monto_reserva,0) + COALESCE(monto_limpieza_mantenimiento,0) + COALESCE(monto_garantia,0) as total
             FROM 
             public.motivo_tipo_socio
             inner join tipo_socio using(idtipo_socio)
             inner join motivo using(idmotivo)
+            inner join afiliacion using (idtipo_socio)
             where
+              afiliacion.activa =  true and
               $where";
     return consultar_fuente($sql);
+  } 
+
+  function get_monto_segun_motivo_por_tipo_socio($idmotivo_tipo_socio)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  
+                    COALESCE(monto_reserva,0) + COALESCE(monto_limpieza_mantenimiento,0) + COALESCE(monto_garantia,0) as total
+            FROM 
+              public.motivo_tipo_socio
+            where
+              idmotivo_tipo_socio =  $idmotivo_tipo_socio";
+    $motivo = consultar_fuente($sql);
+    if(isset($motivo[0]['total']))
+    {
+      return $motivo[0]['total']; 
+    }
   }
 }
 ?>
