@@ -21,7 +21,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'frm_aceptar_baja_afiliacionfrm_aceptar_afiliacionci_solicitud_afiliacion - frm_edicion', --nombre
-	'Aceptar Solicitud de Cancelacion de Afiliacion', --titulo
+	'Aceptar Solicitud de Baja de Afiliacion', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'mupum', --fuente_datos_proyecto
