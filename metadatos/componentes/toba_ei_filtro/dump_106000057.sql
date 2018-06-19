@@ -423,8 +423,8 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'106000057', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
 	'opciones', --tipo
-	'idmotivo', --nombre
-	'motivo.idmotivo', --expresion
+	'idmotivo_tipo_socio', --nombre
+	'motivo.idmotivo_tipo_socio', --expresion
 	'Motivo', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
@@ -433,16 +433,16 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	'ef_combo', --opciones_ef
-	'get_motivos_segun_categoria', --carga_metodo
+	'get_listado_motivo_por_tipo_socio', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
-	NULL, --carga_consulta_php
+	'106000001', --carga_consulta_php
 	NULL, --carga_sql
 	'mupum', --carga_fuente
 	NULL, --carga_lista
-	'idmotivo', --carga_col_clave
-	'descripcion', --carga_col_desc
+	'idmotivo_tipo_socio', --carga_col_clave
+	'motivo_tipo', --carga_col_desc
 	'1', --carga_permite_no_seteado
 	'--Seleccione--', --carga_no_seteado
 	'0', --carga_no_seteado_ocultar

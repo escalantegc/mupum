@@ -60,6 +60,45 @@ class ci_administrar_reserva extends mupum_ci
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__cuadro__cancelar($seleccion)
+	{
+		$this->cn()->cargar_dr_reserva($seleccion);
+		$this->cn()->set_cursor_dt_reserva($seleccion);
+		if ($this->cn()->hay_cursor_dt_reserva())
+		{
+			$estado =dao::get_listado_estado_cancelado_reserva();
+			$datos['idestado'] = $estado[0]['idestado'];
+			if (!isset($datos['idestado']))
+			{
+				toba::notificacion()->agregar("S debe tildar cancelada enun estado en la cetegoria reserva",'info');
+			}
+			$this->cn()->set_dt_reserva($datos);
+	
+		} 
+		try{
+			$this->cn()->guardar_dr_reserva();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("El estado civil esta siendo referenciado, no puede eliminarlo",'error');
+				
+			} 
+
+			$mensaje_log= $error->get_mensaje_log();
+			if(strstr($mensaje_log,'idx_reserva'))
+			{
+				toba::notificacion()->agregar("El estado civil ya esta registrado.",'info');
+				
+			} 
+			
+		}
+		$this->cn()->resetear_dr_reserva();
+
+	}
+
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -92,6 +131,7 @@ class ci_administrar_reserva extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_reserva())
 		{
 			$datos = $this->cn()->get_dt_reserva();
+			
 			$form->set_datos($datos);
 		}
 	}
@@ -128,11 +168,16 @@ class ci_administrar_reserva extends mupum_ci
 
 	}	
 
-	function get_motivos_segun_categoria()
+	
+	function get_motivos_segun_categoria($idafiliacion)
 	{
-		return dao::get_listado_motivos('RESERVA');
+		$where  = ' afiliacion.idafiliacion = '.$idafiliacion; 
+		return dao::get_motivo_por_tipo_socio($where);
 
 	}
+
+
+
 
 }
 ?>

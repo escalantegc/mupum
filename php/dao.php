@@ -349,17 +349,34 @@ class dao
   }	
 
   function get_listado_estado_reserva($estado = null)
+  {
+    $estado = quote("%{$estado}%");
+    $sql = "SELECT  estado.idestado, 
+            estado.descripcion
+
+
+        FROM 
+          public.estado
+        inner join categoria_estado using (idcategoria_estado)
+        WHERE
+          categoria_estado.descripcion ilike '%reserva%' and
+          estado.descripcion ilike $estado";
+    return consultar_fuente($sql);
+
+  }
+  function get_listado_estado_cancelado_reserva()
 	{
-		$estado = quote("%{$estado}%");
+
 		$sql = "SELECT 	estado.idestado, 
 						estado.descripcion
+
 
 				FROM 
 					public.estado
 				inner join categoria_estado using (idcategoria_estado)
 				WHERE
 					categoria_estado.descripcion ilike '%reserva%' and
-          estado.descripcion ilike $estado";
+          estado.cancelada = true";
 		return consultar_fuente($sql);
 
 	}
@@ -417,7 +434,7 @@ class dao
             left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
             WHERE
-              afiliacion.activa = false and
+             
               $where
             order by 
               afiliacion.fecha_solicitud desc";
@@ -524,7 +541,8 @@ class dao
             FROM 
               public.solicitud_reserva
               inner join estado using (idestado)
-              inner join instalacion using (idinstalacion)";
+              inner join instalacion using (idinstalacion)
+            where estado.cancelada = false";
 
     $dias = consultar_fuente($sql);
     $datos = null;
@@ -568,7 +586,7 @@ class dao
 
   function get_listado_instalacion_disponible ($fecha = null)
   {
-      $solicitudes = consultar_fuente("SELECT idinstalacion  FROM public.solicitud_reserva  where fecha = $fecha");
+      $solicitudes = consultar_fuente("SELECT idinstalacion  FROM public.solicitud_reserva  inner join estado on estado.idestado = solicitud_reserva.idestado where fecha = $fecha and estado.cancelada =false");
       
       $where = null;
       foreach ($solicitudes as $solicitud) 
@@ -649,13 +667,15 @@ class dao
                     instalacion.nombre as instalacion, 
                     estado.descripcion as estado, 
                     motivo.descripcion as motivo, 
-                    nro_personas
+                    nro_personas,
+                    monto
             FROM 
                 public.solicitud_reserva
             inner join afiliacion using(idafiliacion)
             inner join persona on persona.idpersona = afiliacion.idpersona
             inner join estado on estado.idestado = solicitud_reserva.idestado
-            inner join motivo using(idmotivo)
+            inner join motivo_tipo_socio using(idmotivo_tipo_socio)
+            inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
             inner join instalacion using(idinstalacion)
             where
                 $where
@@ -762,6 +782,7 @@ class dao
     $sql = "SELECT  idmotivo_tipo_socio, 
                     tipo_socio.descripcion as tipo_socio, 
                     motivo.descripcion as motivo,
+                    tipo_socio.descripcion||' - '||motivo.descripcion as motivo_tipo,
                     monto_reserva, 
                     monto_limpieza_mantenimiento, 
                     monto_garantia,

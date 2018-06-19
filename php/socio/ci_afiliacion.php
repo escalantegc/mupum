@@ -99,7 +99,7 @@ class ci_afiliacion extends mupum_ci
 		$configuracion = dao::get_configuracion();
 		$datetime1 = date_create($fecha_alta);
 		$datetime2 = date_create($fecha_hoy);
-		$interval = $datetime1->diff($datetime2);
+		$interval = $datetime2->diff($datetime1);
 		$meses = $interval->format('%m');
 		$dias = $interval->format('%d');
 		//ei_arbol('meses: '. $meses . ' dias: '.$dias);
@@ -108,13 +108,15 @@ class ci_afiliacion extends mupum_ci
 		{
 			if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
 			{
+				$this->s__persona = dao::get_listado_persona('persona.idpersona='.$afiliacion['idpersona']);
+				$this->enviar_correo($this->s__persona[0]);
 				$datos['solicita_cancelacion'] = 't';
 				$this->get_cn()->set_dt_afiliacion($datos);
 
 			} else {
 				$this->get_cn()->agregar_dt_afiliacion($datos);
 			}
-			
+
 		} else {
 
 			toba::notificacion()->agregar("El periodo minimo de afiliacion es de: ".$configuracion['minimo_meses_afiliacion']. " no puede solicitar la baja antes.",'info');
@@ -129,12 +131,12 @@ class ci_afiliacion extends mupum_ci
 
 	}
 
-function enviar_correo($persona)
+	function enviar_correo($persona)
 	{
         //Armo el mail nuevo &oacute;
-        $asunto = "Constancia de Solicitud de afiliacion";
+        $asunto = "Constancia de Solicitud de Baja de afiliacion";
         $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
-        				<p>Por medio del presente le informamos que la Solicitud de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
+        				<p>Por medio del presente le informamos que la Solicitud de Baja de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
         				<table>
 						<tbody>
 							<tr>
