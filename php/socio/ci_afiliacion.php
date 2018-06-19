@@ -1,4 +1,5 @@
 <?php
+require_once('dao.php');
 class ci_afiliacion extends mupum_ci
 {
 	function get_cn()
@@ -83,20 +84,42 @@ class ci_afiliacion extends mupum_ci
 
 			$datos = $this->get_cn()->get_dt_afiliacion();
 			$datos['fecha_solicitud_cancelacion'] =  date("Y-m-d"); 
+			
+			
 			$form->set_datos($datos);
 		}
 	}
 
 	function evt__frm__modificacion($datos)
 	{
-		if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
-		{
-			$datos['solicita_cancelacion'] = 't';
-			$this->get_cn()->set_dt_afiliacion($datos);
+		$afiliacion = $this->get_cn()->get_dt_afiliacion();
+		$fecha_alta = $afiliacion['fecha_alta'];
+		$fecha_hoy = date("Y-m-d"); 
 
+		$configuracion = dao::get_configuracion();
+		$datetime1 = date_create($fecha_alta);
+		$datetime2 = date_create($fecha_hoy);
+		$interval = $datetime1->diff($datetime2);
+		$meses = $interval->format('%m');
+		$dias = $interval->format('%d');
+		//ei_arbol('meses: '. $meses . ' dias: '.$dias);
+		
+		if ($meses == $configuracion['minimo_meses_afiliacion'])
+		{
+			if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
+			{
+				$datos['solicita_cancelacion'] = 't';
+				$this->get_cn()->set_dt_afiliacion($datos);
+
+			} else {
+				$this->get_cn()->agregar_dt_afiliacion($datos);
+			}
 		} else {
-			$this->get_cn()->agregar_dt_afiliacion($datos);
+
+			toba::notificacion()->agregar("El periodo minimo de afiliacion es de: ".$configuracion['minimo_meses_afiliacion']. " no puede solicitar la baja antes.",'info');
+
 		}
+		
 	}
 
 	function get_estados_segun_categoria()

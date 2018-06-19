@@ -267,16 +267,7 @@ class dao
   		return consultar_fuente($sql);
   	}
 
-  	function get_configuracion()
-  	{
-  		$sql ="	SELECT *
- 				 FROM 
- 				 	public.configuracion;";
- 		return consultar_fuente($sql);
-  	
-  	}
-
-  	
+   	
   	
 	function get_descripcion_persona_popup($idpersona)
 	{
@@ -801,6 +792,23 @@ class dao
     if(isset($motivo[0]['total']))
     {
       return $motivo[0]['total']; 
+    }
+  }
+
+  function get_configuracion()
+  {
+    $sql = "SELECT  edad_maxima_bolsita_escolar,  
+                    dias_confirmacion_reserva, 
+                    limite_dias_para_reserva, 
+                    porcentaje_confirmacion_reserva, 
+                    minimo_meses_afiliacion, 
+                    idconfiguracion
+            FROM 
+              public.configuracion;";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]))
+    {
+      return $res[0]; 
     }
   }
 }
