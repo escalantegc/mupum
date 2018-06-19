@@ -756,9 +756,7 @@ class dao
             public.motivo_tipo_socio
             inner join tipo_socio using(idtipo_socio)
             inner join motivo using(idmotivo)
-            inner join afiliacion using (idtipo_socio)
             where
-              afiliacion.activa =  true and
               $where";
     return consultar_fuente($sql);
   } 
