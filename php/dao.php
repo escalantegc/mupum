@@ -483,9 +483,8 @@ class dao
       }
         $sql = "SELECT  estado.idestado, 
                         estado.descripcion,
-                        estado.solicitada,
-                        estado.activa,
-                        estado.baja,
+                        estado.confirmada,
+                        estado.cancelada,
                         categoria_estado.descripcion as categoria
             FROM 
               public.estado
