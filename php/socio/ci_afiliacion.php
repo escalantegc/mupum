@@ -114,6 +114,7 @@ class ci_afiliacion extends mupum_ci
 			} else {
 				$this->get_cn()->agregar_dt_afiliacion($datos);
 			}
+			
 		} else {
 
 			toba::notificacion()->agregar("El periodo minimo de afiliacion es de: ".$configuracion['minimo_meses_afiliacion']. " no puede solicitar la baja antes.",'info');
@@ -128,11 +129,51 @@ class ci_afiliacion extends mupum_ci
 
 	}
 
-	
-
-
-
-
+function enviar_correo($persona)
+	{
+        //Armo el mail nuevo &oacute;
+        $asunto = "Constancia de Solicitud de afiliacion";
+        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
+        				<p>Por medio del presente le informamos que la Solicitud de Afiliacion ha sido enviada correctamente con los siguentes datos: </p> 
+        				<table>
+						<tbody>
+							<tr>
+								<td>Documento: ".trim($persona['tipo_documento'])." - ".trim($persona['nro_documento'])."</td>
+							</tr>
+							<tr>
+								<td>Legajo: ".trim($persona['legajo'])."</td>
+							</tr>
+							<tr>
+								<td>Apellido y Nombres: ".trim($persona['apellido']).", ".trim($persona['nombres'])."</td>
+							</tr>
+							<tr>
+								<td>Correo: ".trim($persona['correo'])."</td>
+							</tr>
+							<tr>
+								<td>Telefono: ".trim($persona['tipo_telefono'])." - ".trim($persona['nro_telefono'])."</td>
+							
+							</tr>
+							<tr>
+								<td> Fecha Solicitud: ".trim($persona['fecha_solicitud'])."</td>
+							</tr>
+						</tbody>
+					</table>
+        				<br />
+           				Saludos ATTE .- </br >  MUPUM</br>".
+          				"<p>No responda este correo, fue generado por sistema. </p>";
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                /*$direcciones[]= 'administracion@mupum.unam.edu.ar';
+                $direcciones[]= 'comision@mupum.unam.edu.ar';
+                $mail->set_cc($direcciones);*/
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 
 
 }

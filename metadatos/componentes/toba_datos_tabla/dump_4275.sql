@@ -117,8 +117,8 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'4275', --objeto
-	'106000039', --col_id
-	'activa', --columna
+	'106000078', --col_id
+	'confirmada', --columna
 	'L', --tipo
 	'0', --pk
 	'', --secuencia
@@ -131,22 +131,8 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'4275', --objeto
-	'106000040', --col_id
-	'solicitada', --columna
-	'L', --tipo
-	'0', --pk
-	'', --secuencia
-	NULL, --largo
-	NULL, --no_nulo
-	'0', --no_nulo_db
-	'0', --externa
-	'estado'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'4275', --objeto
-	'106000041', --col_id
-	'baja', --columna
+	'106000079', --col_id
+	'cancelada', --columna
 	'L', --tipo
 	'0', --pk
 	'', --secuencia
