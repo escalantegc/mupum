@@ -49,9 +49,9 @@ class ci_motivo_por_tipo_socio extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_motivo_por_tipo_socio($this->s__where);
+			$datos = dao::get_listado_motivo_por_tipo_socio($this->s__where);
 		}else{
-			$datos = dao::get_motivo_por_tipo_socio();
+			$datos = dao::get_listado_motivo_por_tipo_socio();
 		}
 		$cuadro->set_datos($datos);
 	}

@@ -756,8 +756,32 @@ class dao
             public.motivo_tipo_socio
             inner join tipo_socio using(idtipo_socio)
             inner join motivo using(idmotivo)
+            inner join afiliacion using (idtipo_socio)
             where
+              afiliacion.activa =  true and
               $where";
+    return consultar_fuente($sql);
+  }  
+
+  function get_listado_motivo_por_tipo_socio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idmotivo_tipo_socio, 
+                    tipo_socio.descripcion as tipo_socio, 
+                    motivo.descripcion as motivo,
+                    monto_reserva, 
+                    monto_limpieza_mantenimiento, 
+                    monto_garantia,
+                    COALESCE(monto_reserva,0) + COALESCE(monto_limpieza_mantenimiento,0) + COALESCE(monto_garantia,0) as total
+            FROM 
+            public.motivo_tipo_socio
+            inner join tipo_socio using(idtipo_socio)
+            inner join motivo using(idmotivo)
+            where
+             $where";
     return consultar_fuente($sql);
   } 
 
