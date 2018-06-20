@@ -70,7 +70,7 @@ class ci_administrar_reserva extends mupum_ci
 			$datos['idestado'] = $estado[0]['idestado'];
 			if (!isset($datos['idestado']))
 			{
-				toba::notificacion()->agregar("S debe tildar cancelada enun estado en la cetegoria reserva",'info');
+				toba::notificacion()->agregar("Se debe tildar cancelada enun estado en la cetegoria reserva",'info');
 			}
 			$this->cn()->set_dt_reserva($datos);
 	

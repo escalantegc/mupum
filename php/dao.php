@@ -20,7 +20,8 @@ class dao
    					calle, altura, 
    					piso, 
    					depto, 
-   					idestado_civil
+   					idestado_civil,
+            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo
   				FROM public.persona
   				inner join tipo_documento using(idtipo_documento)
   				where
@@ -425,7 +426,8 @@ class dao
                     afiliacion.activa,
                     persona.apellido||', '|| persona.nombres as persona,
                     tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
-                    afiliacion.solicitada
+                    afiliacion.solicitada,
+                    persona.legajo
             FROM
                 public.persona
            
@@ -459,7 +461,8 @@ class dao
                     tipo_documento.sigla ||'-'|| persona.nro_documento as documento,
                     afiliacion.solicitada,
                     fecha_solicitud_cancelacion,
-                    solicita_cancelacion
+                    solicita_cancelacion,
+                    persona.legajo
       		  FROM
       		  		public.persona
       		 

@@ -30,9 +30,10 @@ class ci_socios_pestanias extends mupum_ci
 	{
 		
 		try{
-			$this->get_cn()->guardar_dr_socio();
+				$this->get_cn()->guardar_dr_socio();
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-		} catch( toba_error_db $error){
+				
+			} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
 			if($sql_state=='db_23503')

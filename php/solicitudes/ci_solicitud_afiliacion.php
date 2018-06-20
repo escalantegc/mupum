@@ -253,7 +253,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 	/**
 	* Atrapa el evento seleccion del cuadro e invoca manualmente el serviccio vista_jasperreports pasandole el hash por parámetro
 	*/
-	function extender_objeto_js()
+	/*function extender_objeto_js()
 	{
 		echo "
 			{$this->dep('cuadro')->objeto_js}.evt__formulario = function(params) {
@@ -265,7 +265,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 				return false;
 			}
 		";
-	}	
+	}	*/
 
 	
 
@@ -649,6 +649,16 @@ class ci_solicitud_afiliacion extends mupum_ci
 	{
 		$this->cn()->resetear_dr_solicitudes();
 		$this->set_pantalla('pant_inicial');
+	}
+
+	function evt__cuadro__nuevo($datos)
+	{
+		$this->set_pantalla('pant_edicion');
+	}
+
+	function evt__cuadro_cancelacion__nuevo($datos)
+	{
+		$this->set_pantalla('pant_edicion_baja');
 	}
 
 }
