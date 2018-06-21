@@ -16,9 +16,7 @@ class ci_socios_pestanias extends mupum_ci
 			$datos = $this->get_cn()->get_dt_persona_sin_blob();
 			$titulo = $datos['apellido'].', ' .$datos['nombres'] ; 
 			$titulo = '&nbsp;<font color= #fffcfc ><strong>Afiliado: ' . $titulo.'</strong></font></br>' .
-			   		  '&nbsp;<font color= #fffcfc ><strong>  Legajo: ' . $datos['legajo'].'</strong></font></br>' ;
-              
-           
+			   		  '&nbsp;<font color= #fffcfc ><strong>  Legajo: ' . $datos['legajo'].'</strong></font></br>' ;         
             $this->set_titulo($titulo);
 		}
 	}

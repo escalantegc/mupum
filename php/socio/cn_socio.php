@@ -69,7 +69,7 @@ class cn_socio extends mupum_cn
 			stream_copy_to_stream($fp_logo1, $temp_archivo_logo);
 			fclose($temp_archivo_logo);
 		                                        
-			$datos['foto'] =  "<img src='{$archivologo['url']}' alt=\"Imagen\" WIDTH=180 HEIGHT=130 >";
+			$datos['foto'] =  "<img src='{$archivologo['url']}' alt=\"Foro de Perfil\" WIDTH=180 HEIGHT=130 >";
 			
 		}else {
 			$datos['foto']   = null;

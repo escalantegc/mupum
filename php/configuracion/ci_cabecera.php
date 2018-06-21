@@ -23,8 +23,9 @@ class ci_cabecera extends mupum_ci
 			toba::notificacion()->agregar($mensaje,'error');
 			
 		}
+		toba::vinculador()->navegar_a('mupum','100000003');
 	}
-
+ 
 	function evt__cancelar()
 	{
 		$this->cn()->resetear_dr_configuracion();
@@ -43,6 +44,8 @@ class ci_cabecera extends mupum_ci
 	function evt__frm__modificacion($datos)
 	{
 		$this->cn()->set_dt_cabecera($datos);
+		$this->set_pantalla('pant_inicial');
+
 	}
 
 }
