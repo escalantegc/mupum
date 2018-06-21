@@ -19,5 +19,7 @@ class ei_cuadro_afiliacion extends mupum_ei_cuadro
 
 	}
 
+	
+
 }
 ?>

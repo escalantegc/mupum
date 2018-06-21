@@ -398,7 +398,8 @@ class dao
                     afiliacion.activa,
                     afiliacion.solicitada,
                     solicita_cancelacion,
-                    fecha_solicitud_cancelacion
+                    fecha_solicitud_cancelacion,
+                    extract(MONTH FROM age(current_date::DATE ,fecha_alta::DATE)) as meses_afiliacion
             FROM
                 public.afiliacion
             inner join estado using (idestado)
@@ -833,6 +834,37 @@ class dao
     {
       return $res[0]; 
     }
+  }
+
+  function get_listado_claustro($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idclaustro, 
+                    descripcion
+            FROM 
+              public.claustro
+            where
+              $where";
+    return consultar_fuente($sql);
+  }
+
+  function get_listado_unidad_academica($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idunidad_academica, 
+                    sigla, 
+                    descripcion
+            FROM 
+            public.unidad_academica
+            where
+              $where";
+    return consultar_fuente($sql);
   }
 }
 ?>

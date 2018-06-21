@@ -818,6 +818,111 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_motivo_tipo_socio')->eliminar_fila($id[0]);
 	}	
+	//-----------------------------------------------------------------------------------
+	//---- DT-CLAUSTRO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_claustro($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_claustro')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_claustro')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_claustro')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_claustro($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_claustro')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_claustro')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_claustro()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_claustro')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_claustro()
+	{
+		$this->dep('dr_parametros')->tabla('dt_claustro')->resetear_cursor();
+	}
+
+	function get_dt_claustro()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_claustro')->get();
+	}
+
+	function set_dt_claustro($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_claustro')->set($datos);
+	}
+
+	function agregar_dt_claustro($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_claustro')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_claustro')->set_cursor($id);
+	}	
+
+	function eliminar_dt_claustro($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_claustro')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_claustro')->eliminar_fila($id[0]);
+	}		
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-UNIDAD ACADEMICA	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_unidad_academica($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_unidad_academica')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_unidad_academica')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_unidad_academica')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_unidad_academica($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_unidad_academica')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_unidad_academica()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_unidad_academica')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_unidad_academica()
+	{
+		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->resetear_cursor();
+	}
+
+	function get_dt_unidad_academica()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_unidad_academica')->get();
+	}
+
+	function set_dt_unidad_academica($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->set($datos);
+	}
+
+	function agregar_dt_unidad_academica($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_unidad_academica')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->set_cursor($id);
+	}	
+
+	function eliminar_dt_unidad_academica($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_unidad_academica')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->eliminar_fila($id[0]);
+	}	
 	
 }
 

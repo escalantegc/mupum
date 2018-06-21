@@ -56,18 +56,59 @@ class cn_socio extends mupum_cn
 
 	function get_dt_persona()
 	{
-		return $this->dep('dr_socio')->tabla('dt_persona')->get();
+		$datos = $this->dep('dr_socio')->tabla('dt_persona')->get();
+
+		$fp_imagen = $this->dep('dr_socio')->tabla('dt_persona')->get_blob('foto');
+			  
+		if (isset($fp_imagen)) 
+		{
+			$temp_nombre_foto = 'foto' . $datos['nro_documento'].'.jpg';
+			$foto = toba::proyecto()->get_www_temp($temp_nombre_foto);
+			$temp_imagen_foto = fopen($foto['path'], 'w');
+			stream_copy_to_stream($fp_imagen, $temp_imagen_foto);
+			fclose($temp_imagen_foto);
+
+			$datos['foto'] = "<img src='{$foto['url']}' alt=\"Foto de perfil\" WIDTH=180 HEIGHT=200 >";
+			//$datos['foto'] = 'Tama&ntilde;o: '.$tamano_foto.' kb';
+		}else {
+			$datos['foto']   = null;
+		}
+
+		return $datos;
 	}
 
 	function set_dt_persona($datos)
 	{
 		$this->dep('dr_socio')->tabla('dt_persona')->set($datos);
+
+		if ($datos['foto']['tmp_name']!='') 
+		{
+			//Se subio una imagen
+			$fp_foto = fopen($datos['foto']['tmp_name'], 'rb');
+			$this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fp_foto);
+		} else {
+			$fp_foto = null;
+			$this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fp_foto);
+		}
+		
 	}
 
 	function agregar_dt_persona($datos)
 	{
 		$id = $this->dep('dr_socio')->tabla('dt_persona')->nueva_fila($datos);
 		$this->dep('dr_socio')->tabla('dt_persona')->set_cursor($id);
+
+		// verifica si esta cargada el datos relacion
+		if ($datos['foto']['tmp_name']!='') {
+			  //Se subio una imagen
+			  $fp = fopen($datos['foto']['tmp_name'], 'rb');
+			  $this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fp);
+			 
+		 } else {
+				$fp =null;
+				$this->dep('dr_socio')->tabla('dt_persona')->set_blob( 'foto', $fp);
+				
+		}
 	}	
 
 	function eliminar_dt_persona($seleccion)
