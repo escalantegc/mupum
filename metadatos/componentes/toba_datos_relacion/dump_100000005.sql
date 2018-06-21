@@ -65,6 +65,18 @@ INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_mon
 --- INICIO Grupo de desarrollo 100
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
+	'100000006', --dep_id
+	'100000005', --objeto_consumidor
+	'100000010', --objeto_proveedor
+	'dt_cabecera', --identificador
+	'', --parametros_a
+	'1', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'1'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
 	'100000004', --dep_id
 	'100000005', --objeto_consumidor
 	'100000006', --objeto_proveedor
@@ -73,6 +85,6 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'1', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	'1'  --orden
+	'2'  --orden
 );
 --- FIN Grupo de desarrollo 100

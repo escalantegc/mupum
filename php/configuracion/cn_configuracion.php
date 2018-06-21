@@ -56,6 +56,53 @@ class cn_configuracion extends mupum_cn
 		$id = $this->dep('dr_configuracion')->tabla('dt_configuracion')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_configuracion')->tabla('dt_configuracion')->eliminar_fila($id[0]);
 	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-ENCABEZADO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_cabecera()
+	{
+		$this->dep('dr_configuracion')->tabla('dt_cabecera')->cargar();
+	}
+	function set_dt_cabecera($datos)
+	{
+
+		$this->dep('dr_configuracion')->tabla('dt_cabecera')->set($datos);
+
+		if ($datos['logo']['name']!='') {
+			  $fplogo1 = fopen($datos['logo']['tmp_name'], 'rb');
+
+			  $this->dep('dr_configuracion')->tabla('dt_cabecera')->set_blob('logo', $fplogo1);
+		 }		
+
+	}	
+
+	function get_dt_cabecera()
+	{
+	
+		$datos = $this->dep('dr_configuracion')->tabla('dt_cabecera')->get();
+		$id = $this->dep('dr_configuracion')->tabla('dt_cabecera')->get_cursor();
+		$fp_logo1 = $this->dep('dr_configuracion')->tabla('dt_cabecera')->get_blob('logo', $id[0]);
+
+ 		if (isset($fp_logo1)) {
+			$temp_nombre_archivo_logo = 'logo.jpg';
+			$archivologo = toba::proyecto()->get_www($temp_nombre_archivo_logo);
+			//ei_arbol($archivologo);
+			$temp_archivo_logo = fopen($archivologo['path'], 'w');
+			stream_copy_to_stream($fp_logo1, $temp_archivo_logo);
+			fclose($temp_archivo_logo);
+		                                        
+			$datos['logo'] =  "<img src='{$archivologo['url']}' alt=\"Logo\" WIDTH=180 HEIGHT=130 >";
+			
+		}else {
+			$datos['logo']   = null;
+			//Agrego esto para cuando no existe imagen pero si registro
+		}
+ 	
+		return $datos;
+				
+
+	}
 }
 
 ?>
