@@ -21,9 +21,9 @@ class ci_socios_principal extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_persona($this->s__where);
+			$datos = dao::get_listado_socios($this->s__where);
 		}else{
-			$datos = dao::get_listado_persona();
+			$datos = dao::get_listado_socios();
 		}
 		$cuadro->set_datos($datos);
 	}
