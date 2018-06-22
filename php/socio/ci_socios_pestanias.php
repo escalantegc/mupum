@@ -128,7 +128,20 @@ class ci_socios_pestanias extends mupum_ci
 		$this->get_cn()->procesar_dt_telefono_por_persona($datos);
 	}
 
+	//-----------------------------------------------------------------------------------
+	//---- cuadro -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
+	function conf__cuadro(mupum_ei_cuadro $cuadro)
+	{
+		$persona = $this->get_cn()->get_dt_persona();
+		$where = ' persona.idpersona ='.$persona['idpersona'];
+		$datos = dao::get_listado_reserva($where);
+		if (isset($datos))
+		{
+			$cuadro->set_datos($datos);
+		}
+	}
 
 }
 ?>

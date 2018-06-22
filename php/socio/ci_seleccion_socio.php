@@ -110,6 +110,9 @@ class ci_seleccion_socio extends mupum_ci
 		} else {
 			$this->cn()->agregar_dt_persona($datos);
 		}
+		$filtro_forzado['nro_documento']['condicion'] = 'es_igual_a';
+		$filtro_forzado['nro_documento']['valor'] = $datos['nro_documento'];
+		$this->evt__filtro__filtrar($filtro_forzado);
 	}
 
 	//-----------------------------------------------------------------------------------

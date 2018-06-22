@@ -493,6 +493,17 @@ class ci_solicitud_afiliacion extends mupum_ci
 			$datos = dao::get_listado_cancelacion_afiliacion();
 		}
 		$cuadro->set_datos($datos);
+		$servicio = toba::memoria()->get_servicio_solicitado();
+		
+		if(($servicio == 'vista_pdf') or ($servicio == 'vista_excel'))
+		{
+			$columnas[] = 'fecha_alta';
+			$columnas[] = 'fecha_baja';
+			$columnas[] = 'solicitada';
+			$columnas[] = 'activa';
+
+			$cuadro->eliminar_columnas($columnas);		
+		}
 	}
 
 	function evt__cuadro_cancelacion__activar($seleccion)

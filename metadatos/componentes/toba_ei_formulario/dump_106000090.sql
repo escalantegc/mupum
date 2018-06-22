@@ -536,7 +536,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000090', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'fecha_nacimiento', --identificador
-	'ef_editable', --elemento_formulario
+	'ef_editable_fecha', --elemento_formulario
 	'fecha_nacimiento', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio

@@ -102,7 +102,7 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	NULL, --clase
 	NULL, --auto_reset
 	'100%', --ancho
-	'150px', --ancho_etiqueta
+	'130px', --ancho_etiqueta
 	'0', --expandir_descripcion
 	NULL, --campo_bl
 	NULL, --scroll
@@ -123,19 +123,15 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	'0', --no_imprimir_efs_sin_estado
 	'0', --resaltar_efs_con_estado
 	'<p>[ef id=barra_datos_personales]</p>
-<table>
+<table height="144" width="403">
 	<tbody>
-		<tr>
-			<td>
-				&nbsp;</td>
-			<td>
-				[ef id=foto]</td>
-		</tr>
 		<tr>
 			<td>
 				[ef id=apellido]</td>
 			<td>
 				[ef id=nombres]</td>
+			<td rowspan="6">
+				[ef id=foto]</td>
 		</tr>
 		<tr>
 			<td>
@@ -169,7 +165,6 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 		</tr>
 	</tbody>
 </table>
-
 <p>[ef id=barra_cargo]</p>
 <table>
 	<tbody>
@@ -179,10 +174,8 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 			<td>
 				[ef id=idunidad_academica]</td>
 		</tr>
-		
 	</tbody>
 </table>
-
 <p>[ef id=barra_domicilio]</p>
 <table>
 	<tbody>

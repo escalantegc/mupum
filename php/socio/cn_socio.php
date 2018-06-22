@@ -58,18 +58,18 @@ class cn_socio extends mupum_cn
 	{
 		$datos = $this->dep('dr_socio')->tabla('dt_persona')->get();
 		$id = $this->dep('dr_socio')->tabla('dt_persona')->get_cursor();
-		$fp_logo1 = $this->dep('dr_socio')->tabla('dt_persona')->get_blob('foto');
+		$fp_logo1 = $this->dep('dr_socio')->tabla('dt_persona')->get_blob('foto',$id[0]);
 
- 		if (isset($fp_logo1)) {
- 			
-			$temp_nombre_archivo_logo = 'foto_'.$datos['nro_documento'].'.jpg';
+ 		if (isset($fp_logo1)) 
+ 		{
+ 			$temp_nombre_archivo_logo = 'foto_'.$datos['nro_documento'].'.jpg';
 			$archivologo = toba::proyecto()->get_www($temp_nombre_archivo_logo);
 			//ei_arbol($archivologo);
 			$temp_archivo_logo = fopen($archivologo['path'], 'w');
 			stream_copy_to_stream($fp_logo1, $temp_archivo_logo);
 			fclose($temp_archivo_logo);
 		                                        
-			$datos['foto'] =  "<img src='{$archivologo['url']}' alt=\"Foro de Perfil\" WIDTH=180 HEIGHT=130 >";
+			$datos['foto'] =  "<img src='{$archivologo['url']}' alt=\"Foto de Perfil\" WIDTH=180 HEIGHT=130 >";
 			
 		}else {
 			$datos['foto']   = null;
@@ -89,17 +89,18 @@ class cn_socio extends mupum_cn
 	{
 		$this->dep('dr_socio')->tabla('dt_persona')->set($datos);
 
-		
-		if ($datos['foto']['name']!='') {
+		if (isset($datos['foto']))
+		{
+			if ($datos['foto']['tmp_name']!='') {
 			
-			$fpfoto = fopen($datos['foto']['tmp_name'], 'rb');
-			$this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fpfoto);
-		 } else {
-			$fp =null;
-			$this->dep('dr_socio')->tabla('dt_persona')->set_blob( 'foto', $fp);
-				
+				$fpfoto = fopen($datos['foto']['tmp_name'], 'rb');
+				$this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fpfoto);
+		 	} else {
+				$fp = null;
+				$this->dep('dr_socio')->tabla('dt_persona')->set_blob( 'foto', $fp);
+					
+			}
 		}
-
 	}
 
 	function agregar_dt_persona($datos)
@@ -107,18 +108,19 @@ class cn_socio extends mupum_cn
 		$id = $this->dep('dr_socio')->tabla('dt_persona')->nueva_fila($datos);
 		$this->dep('dr_socio')->tabla('dt_persona')->set_cursor($id);
 
-		// verifica si esta cargada el datos relacion
-		if ($datos['foto']['name']!='') {
-			  //Se subio una imagen
-			  $fp = fopen($datos['foto']['tmp_name'], 'rb');
-			  $this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fp);
-			 
-		 } else {
-				$fp =null;
-				$this->dep('dr_socio')->tabla('dt_persona')->set_blob( 'foto', $fp);
-				
-		}
-	}	
+		if (isset($datos['foto']))
+		{
+			if ($datos['foto']['tmp_name']!='') {
+				  //Se subio una imagen
+				  $fp = fopen($datos['foto']['tmp_name'], 'rb');
+				  $this->dep('dr_socio')->tabla('dt_persona')->set_blob('foto', $fp);
+				 
+			 } else {
+					$fp =null;
+					$this->dep('dr_socio')->tabla('dt_persona')->set_blob( 'foto', $fp);	
+			}
+		}	
+	}
 
 	function eliminar_dt_persona($seleccion)
 	{
@@ -132,7 +134,7 @@ class cn_socio extends mupum_cn
 	{
 		//ei_arbol($datos);
 		$this->dep('dr_socio')->tabla('dt_familia')->procesar_filas($datos);
-
+	
 		foreach ($datos as $dato) 
 		{
 			if (isset($dato['archivo']))
@@ -147,6 +149,7 @@ class cn_socio extends mupum_cn
 					$this->dep('dr_socio')->tabla('dt_familia')->set_blob('archivo', $fp_archivo,$dato['x_dbr_clave']);
 				}
 			}
+			
 		}
 
 	}	
