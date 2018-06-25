@@ -173,7 +173,6 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		$where  = ' afiliacion.idafiliacion = '.$idafiliacion; 
 		return dao::get_motivo_por_tipo_socio($where);
-
 	}
 
 

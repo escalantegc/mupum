@@ -45,10 +45,10 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 -- apex_objeto_eventos
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 0
+--- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'3494', --evento_id
+	'106000194', --evento_id
 	'4263', --objeto
 	'modificacion', --identificador
 	'&Modificacion', --etiqueta
@@ -79,7 +79,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'0', --es_seleccion_multiple
 	'0'  --es_autovinculo
 );
---- FIN Grupo de desarrollo 0
+--- FIN Grupo de desarrollo 106
 
 ------------------------------------------------------------
 -- apex_objeto_ut_formulario
@@ -119,7 +119,7 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	'0', --filas_numerar
 	NULL, --ev_seleccion
 	NULL, --alto
-	'LINEA', --analisis_cambios
+	'NO', --analisis_cambios
 	NULL, --no_imprimir_efs_sin_estado
 	NULL, --resaltar_efs_con_estado
 	NULL, --template

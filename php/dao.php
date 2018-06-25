@@ -1,12 +1,30 @@
 <?php
 class dao 
 {
+
+  function get_sql_usuario()
+  {
+
+    $usuario = toba::usuario()->get_id();
+    $perfil = toba::usuario()->get_perfiles_funcionales();
+    $usuario = quote("%{$usuario}%");
+    $sql = '';
+    if ($perfil[0] == 'afiliado')
+    {
+      $sql = ' persona.nro_documento ilike '.trim($usuario);
+    } else {
+      $sql = ' 1 = 1 ';
+    }
+    return $sql;
+  }
+
 	function get_listado_persona($where = null)
   {
     if (!isset($where))
     {
       $where = '1 = 1';
     }
+
     $sql = "SELECT  idpersona, 
             (tipo_documento.sigla ||'-'||nro_documento) as documento, 
              nro_documento, 
@@ -37,9 +55,14 @@ class dao
 		{
 			$where = '1 = 1';
 		}
+  
+    $sql_usuario = self::get_sql_usuario();
 		$sql = "SELECT 	idpersona, 
             (tipo_documento.sigla ||'-'||nro_documento) as documento, 
-						 nro_documento, 
+						nro_documento, 
+            tipo_documento.sigla as tipo_documento,
+            apellido,
+            nombres,
 						cuil, 
 						legajo, 
 						(apellido||', '||nombres) as persona, 
@@ -57,10 +80,13 @@ class dao
           inner join afiliacion using (idpersona)
   				where
             afiliacion.activa = true and
+            $sql_usuario and
   					$where 
   				order by
   					descripcion";
-  		return consultar_fuente($sql);
+
+  		
+      return consultar_fuente($sql);
 	}
 
 
@@ -590,6 +616,7 @@ class dao
 
   function get_personas_afiliadas()
   {
+    $sql_usuario = self::get_sql_usuario();
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
                   persona.apellido||', '|| persona.nombres as persona
@@ -597,7 +624,8 @@ class dao
               public.afiliacion
             inner join persona using (idpersona)
             where 
-              activa = true";
+              activa = true and
+              $sql_usuario";
 
     return consultar_fuente($sql);
 
@@ -897,6 +925,52 @@ class dao
             where
               $where";
     return consultar_fuente($sql);
+  }
+
+  function get_encabezado()
+  {
+    $sql = "SELECT  idencabezado, 
+                    nombre_institucion, 
+                    direccion, 
+                    'Telefono: '||telefono as telefono, 
+                    logo
+            FROM 
+              public.encabezado;";
+    $res = consultar_fuente($sql);
+    if(isset($res[0]))
+    {
+      return $res[0];
+    }
+  }
+
+  function get_listado_novedades_familia($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  logs_familia.idpersona, 
+                    logs_familia.idpersona_familia, 
+                    logs_persona.apellido ||' - '||logs_persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    logs_parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    logs_familia.auditoria_usuario, 
+                    logs_familia.auditoria_fecha, 
+                    logs_familia.auditoria_operacion, 
+                    logs_familia.auditoria_id_solicitud
+            FROM 
+                    public_auditoria.logs_familia
+            inner join public_auditoria.logs_persona on logs_persona.idpersona=logs_familia.idpersona
+            inner join public_auditoria.logs_persona familiar on familiar.idpersona=logs_familia.idpersona_familia
+            inner join public_auditoria.logs_parentesco using(idparentesco)
+            where
+              $where
+            order by
+              logs_familia.auditoria_fecha
+              ";
   }
 }
 ?>
