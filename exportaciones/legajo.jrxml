@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="legajo" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04f58be6-3a1e-406c-85bf-856781b23da8">
 	<property name="ireport.zoom" value="1.1000000000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="99"/>
+	<property name="ireport.y" value="243"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="idpersona" class="java.lang.Integer"/>
@@ -347,14 +347,14 @@ where
 				<reportElement key="line" stretchType="RelativeToBandHeight" x="0" y="4" width="555" height="1" uuid="ae2acad3-75e3-4479-8086-f18b31e04ef9"/>
 			</line>
 			<textField>
-				<reportElement x="238" y="6" width="79" height="18" uuid="213a4f19-ab8d-4933-8121-10a1499489a0"/>
+				<reportElement x="278" y="6" width="79" height="18" uuid="213a4f19-ab8d-4933-8121-10a1499489a0"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="200" y="6" width="38" height="19" uuid="55d1d226-6e73-40be-acd1-8c9ed1dafd64"/>
+				<reportElement x="240" y="6" width="38" height="19" uuid="55d1d226-6e73-40be-acd1-8c9ed1dafd64"/>
 				<textElement>
 					<font fontName="Liberation Sans" size="8"/>
 				</textElement>

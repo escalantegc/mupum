@@ -959,18 +959,41 @@ class dao
                     fecha_carga,
                     logs_familia.auditoria_usuario, 
                     logs_familia.auditoria_fecha, 
-                    logs_familia.auditoria_operacion, 
-                    logs_familia.auditoria_id_solicitud
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    (CASE WHEN logs_familia.auditoria_operacion = 'I' then 'ALTA' else (CASE WHEN logs_familia.auditoria_operacion = 'D' then 'BAJA' else 'MODIFICACION' end) end) as tipo_movimiento, 
+                    logs_familia.auditoria_id_solicitud,
+                    logs_tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
             FROM 
                     public_auditoria.logs_familia
             inner join public_auditoria.logs_persona on logs_persona.idpersona=logs_familia.idpersona
             inner join public_auditoria.logs_persona familiar on familiar.idpersona=logs_familia.idpersona_familia
             inner join public_auditoria.logs_parentesco using(idparentesco)
+            inner join public_auditoria.logs_tipo_documento on familiar.idtipo_documento = logs_tipo_documento.idtipo_documento
+
             where
+              logs_familia.auditoria_operacion != 'U' and
               $where
             order by
-              logs_familia.auditoria_fecha
-              ";
+              logs_familia.auditoria_fecha desc";
+              
+   /* $sql2 = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga
+            FROM 
+                    public.familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)";*/
+      return toba::db('auditoria')->consultar($sql);  
+
+
   }
 }
 ?>
