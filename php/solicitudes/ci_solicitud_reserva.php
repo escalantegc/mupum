@@ -1,9 +1,17 @@
 <?php
+require_once(toba_dir() . '/php/3ros/activecalendar/activecalendar.php');
 require_once('dao.php');
 class ci_solicitud_reserva extends mupum_ci
 {
+
+	/*function ini()
+	{
+		$this->_calendario = new calendario2();
+	}*/
+
 	protected $s__dia;
 	protected $s__fecha;
+	protected $s__persona;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -100,10 +108,23 @@ class ci_solicitud_reserva extends mupum_ci
 	{
 		$estado = dao::get_listado_estado_reserva('confirmada');
 		$datos['idestado'] = $estado[0]['idestado']; 
+
+		$this->s__persona = dao::get_listado_socios('afiliacion.idafiliacion='.$datos['idafiliacion']);
+		$instalacion = dao::get_listado_instalacion('instalacion.idinstalacion='.$datos['idinstalacion']);
+
+		$motivo = dao::get_listado_motivo_por_tipo_socio('motivo_tipo_socio.idmotivo_tipo_socio='.$datos['idmotivo_tipo_socio']);
+
+		$this->s__persona[0]['fecha'] = date("d/m/Y", strtotime( $datos['fecha']));
+		$this->s__persona[0]['instalacion'] = $instalacion[0]['nombre']; 
+		$this->s__persona[0]['motivo'] = $motivo[0]['motivo']; 
 		$this->cn()->agregar_dt_reserva($datos);
+
 		try{
+
 			$this->cn()->guardar_dr_reserva();
-				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			$this->enviar_correo_reserva($this->s__persona[0]);
+			$this->enviar_correo_reserva_mutual($this->s__persona[0]);
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			$mensaje= $error->get_mensaje_motor();
@@ -125,5 +146,72 @@ class ci_solicitud_reserva extends mupum_ci
 		unset($this->s__dia);
 	}
 
+	function enviar_correo_reserva($persona)
+	{
+		
+		
+	    $atributos['email'] = $persona['correo'];
+	    $fecha = $persona['fecha'];
+	    $instalacion = $persona['instalacion'];
+	    $motivo = $persona['motivo'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Reserva Confirmada";
+	    
+		$cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['persona'])."<br>".
+				"<p>Por medio del presente le informamos que la reserva a sido confirmada.</p> ".
+				"<p>Los datos su reserva son:</p>".
+				"Instalacion : ".$instalacion. "<br>".
+				"Fecha: ".$fecha. "<br>".
+				"Motivo: ".$motivo. "<br>".
+				"Debe acercarse a la oficina de la mutual ubicada en Santa Catalina Nro 2379 para abonar su reserva.<br>".
+				"<p>Saludos ATTE .- MUPUM</p>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            //--$mail->set_cc();
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}	
+	function enviar_correo_reserva_mutual($persona)
+	{
+		
+		
+	    $atributos['email'] = $persona['correo'];
+	    $fecha = $persona['fecha'];
+	    $instalacion = $persona['instalacion'];
+	    $motivo = $persona['motivo'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Reserva Confirmada de ".trim($persona['persona']);
+		$cuerpo_mail = "<p>El afiliado : </p>".trim($persona['persona'])."<br>".
+				"<p>Tiene una reserva en: </p>".
+				"Instalacion : ".$instalacion. "<br>".
+				"Fecha: ".$fecha. "<br>".
+				"Motivo: ".$motivo. "<br>";
+
+        try 
+        {
+            $mail = new toba_mail('escalantegc@gmail.com ', $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            //--$mail->set_cc();
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}	
 }
+
+
+
+
+
+
 ?>

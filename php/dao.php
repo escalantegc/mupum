@@ -90,8 +90,6 @@ class dao
 	}
 
 
-
-
 	function get_listado_tipo_socio($where = null)
 	{
 		if (!isset($where))
@@ -150,8 +148,6 @@ class dao
 
 	function get_descripcion_localidad($idlocalidad = null)
 	{
-	
-
 		$sql = "SELECT 	localidad.idlocalidad, 
 						localidad.descripcion ||' - '||provincia.descripcion ||' - '|| pais.descripcion as localidad
 				  FROM 
