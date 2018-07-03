@@ -63,12 +63,16 @@ class ci_afiliacion extends mupum_ci
 		} else {
 
 			toba::notificacion()->agregar("No puede solicitar la baja con: ".$meses." meses de afiliacion. El periodo minimo de afiliacion es de: ".$configuracion['minimo_meses_afiliacion']. " meses.",'info');
-
 		}
-
-
 		
 	}
+
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->get_cn()->set_cursor_dt_afiliacion($seleccion);
+		$this->set_pantalla('pant_baja');
+	}
+
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -196,13 +200,13 @@ class ci_afiliacion extends mupum_ci
 	function evt__procesar()
 	{
 		try{
-				$this->get_cn()->guardar_dr_socio();
-				if(!toba::notificacion()->verificar_mensajes())
-				{
-					toba::notificacion()->agregar("La solicitud ha sido enviada correctamente",'info');	
-				}
-				
-				
+			$this->get_cn()->guardar_dr_socio();
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');	
+			}
+			
+			
 			} catch( toba_error_db $error){
 			
 			$mensaje_log= $error->get_mensaje_log();
@@ -222,6 +226,33 @@ class ci_afiliacion extends mupum_ci
 	{
 		$this->get_cn()->resetear_cursor_dt_afiliacion();
 		$this->set_pantalla('pant_inicial');
+	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_baja ---------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_baja(mupum_ei_formulario $form)
+	{
+		if ($this->get_cn()->hay_cursor_dt_afiliacion())
+		{
+			$datos = $this->get_cn()->get_dt_afiliacion();
+			$datos['fecha_baja'] =  date("Y-m-d"); 
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_baja__modificacion($datos)
+	{
+		if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
+		{
+			$datos['activa'] = 0;
+			$this->get_cn()->set_dt_afiliacion($datos);
+			
+		} else {
+			$this->get_cn()->agregar_dt_afiliacion($datos);
+		}
 	}
 
 }

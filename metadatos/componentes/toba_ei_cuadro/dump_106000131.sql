@@ -1,26 +1,26 @@
 ------------------------------------------------------------
---[4266]--  ci_socios_principal - ci_socios_pestanias - ci_afiliacion - cuadro 
+--[106000131]--  ci_administrar_usuarios - cuadro 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
 -- apex_objeto
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 0
+--- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'4266', --objeto
+	'106000131', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
 	'toba', --clase_proyecto
 	'toba_ei_cuadro', --clase
 	'28', --punto_montaje
-	'ei_cuadro_afiliacion', --subclase
-	'socio/ei_cuadro_afiliacion.php', --subclase_archivo
+	'ei_cuadro_usuario', --subclase
+	'usuario/ei_cuadro_usuario.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'ci_socios_principal - ci_socios_pestanias - ci_afiliacion - cuadro', --nombre
+	'ci_administrar_usuarios - cuadro', --nombre
 	NULL, --titulo
 	'0', --colapsable
 	NULL, --descripcion
@@ -36,30 +36,30 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-05-28 18:55:07', --creacion
+	'2018-07-03 09:01:02', --creacion
 	'abajo'  --posicion_botonera
 );
---- FIN Grupo de desarrollo 0
+--- FIN Grupo de desarrollo 106
 
 ------------------------------------------------------------
 -- apex_objeto_eventos
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 0
+--- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'3499', --evento_id
-	'4266', --objeto
-	'cancelar', --identificador
-	'Solicitar Baja Afiliacion', --etiqueta
+	'106000208', --evento_id
+	'106000131', --objeto
+	'seleccion', --identificador
+	'&Editar', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	NULL, --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'prohibido', --imagen
+	'editar', --imagen
 	'0', --en_botonera
-	'Haga clic aqui para editar el registro.', --ayuda
+	NULL, --ayuda
 	'1', --orden
 	NULL, --ci_predep
 	NULL, --implicito
@@ -71,7 +71,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	NULL, --accion_vinculo_carpeta
 	NULL, --accion_vinculo_item
 	NULL, --accion_vinculo_objeto
-	'0', --accion_vinculo_popup
+	NULL, --accion_vinculo_popup
 	NULL, --accion_vinculo_popup_param
 	NULL, --accion_vinculo_target
 	NULL, --accion_vinculo_celda
@@ -79,21 +79,18 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'0', --es_seleccion_multiple
 	'0'  --es_autovinculo
 );
---- FIN Grupo de desarrollo 0
-
---- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'106000203', --evento_id
-	'4266', --objeto
-	'borrar', --identificador
-	NULL, --etiqueta
+	'106000212', --evento_id
+	'106000131', --objeto
+	'bloquear', --identificador
+	'Bloquear', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
-	'Esta por dar de baja la afiliación de este socio. NO se controla el periodo mínimo de afiliación, ni el estado de situación.', --confirmacion
+	'¿Esta seguro de bloquear el usuario?', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'borrar', --imagen
+	'cerrar.png', --imagen
 	'0', --en_botonera
 	NULL, --ayuda
 	'2', --orden
@@ -115,6 +112,72 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'0', --es_seleccion_multiple
 	'0'  --es_autovinculo
 );
+INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
+	'mupum', --proyecto
+	'106000213', --evento_id
+	'106000131', --objeto
+	'desbloquear', --identificador
+	'Desbloquear', --etiqueta
+	'1', --maneja_datos
+	'1', --sobre_fila
+	'¿Esta seguro de desbloquear el usuario?', --confirmacion
+	NULL, --estilo
+	'apex', --imagen_recurso_origen
+	'desbloquear.png', --imagen
+	'0', --en_botonera
+	NULL, --ayuda
+	'3', --orden
+	NULL, --ci_predep
+	NULL, --implicito
+	NULL, --defecto
+	NULL, --display_datos_cargados
+	NULL, --grupo
+	NULL, --accion
+	NULL, --accion_imphtml_debug
+	NULL, --accion_vinculo_carpeta
+	NULL, --accion_vinculo_item
+	NULL, --accion_vinculo_objeto
+	'0', --accion_vinculo_popup
+	NULL, --accion_vinculo_popup_param
+	NULL, --accion_vinculo_target
+	NULL, --accion_vinculo_celda
+	NULL, --accion_vinculo_servicio
+	'0', --es_seleccion_multiple
+	'0'  --es_autovinculo
+);
+INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
+	'mupum', --proyecto
+	'106000214', --evento_id
+	'106000131', --objeto
+	'crear', --identificador
+	'&Crear Usuario', --etiqueta
+	'1', --maneja_datos
+	'1', --sobre_fila
+	NULL, --confirmacion
+	NULL, --estilo
+	'apex', --imagen_recurso_origen
+	'usuarios/permisos.gif', --imagen
+	'0', --en_botonera
+	NULL, --ayuda
+	'4', --orden
+	NULL, --ci_predep
+	NULL, --implicito
+	NULL, --defecto
+	NULL, --display_datos_cargados
+	NULL, --grupo
+	NULL, --accion
+	NULL, --accion_imphtml_debug
+	NULL, --accion_vinculo_carpeta
+	NULL, --accion_vinculo_item
+	NULL, --accion_vinculo_objeto
+	NULL, --accion_vinculo_popup
+	NULL, --accion_vinculo_popup_param
+	NULL, --accion_vinculo_target
+	NULL, --accion_vinculo_celda
+	NULL, --accion_vinculo_servicio
+	'0', --es_seleccion_multiple
+	'0'  --es_autovinculo
+);
 --- FIN Grupo de desarrollo 106
 
 ------------------------------------------------------------
@@ -122,26 +185,26 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 ------------------------------------------------------------
 INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, subtitulo, sql, columnas_clave, columna_descripcion, clave_dbr, archivos_callbacks, ancho, ordenar, paginar, tamano_pagina, tipo_paginado, mostrar_total_registros, eof_invisible, eof_customizado, siempre_con_titulo, exportar_paginado, exportar, exportar_rtf, pdf_propiedades, pdf_respetar_paginacion, asociacion_columnas, ev_seleccion, ev_eliminar, dao_nucleo_proyecto, dao_nucleo, dao_metodo, dao_parametros, desplegable, desplegable_activo, scroll, scroll_alto, cc_modo, cc_modo_anidado_colap, cc_modo_anidado_totcol, cc_modo_anidado_totcua) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
+	'106000131', --objeto_cuadro
 	NULL, --titulo
 	NULL, --subtitulo
 	NULL, --sql
-	'idafiliacion', --columnas_clave
+	'nro_documento', --columnas_clave
 	NULL, --columna_descripcion
 	'0', --clave_dbr
 	NULL, --archivos_callbacks
 	'100%', --ancho
-	'0', --ordenar
-	'0', --paginar
-	NULL, --tamano_pagina
+	'1', --ordenar
+	'1', --paginar
+	'20', --tamano_pagina
 	'P', --tipo_paginado
 	'0', --mostrar_total_registros
 	'0', --eof_invisible
 	NULL, --eof_customizado
 	'0', --siempre_con_titulo
 	'0', --exportar_paginado
-	'0', --exportar
-	'0', --exportar_rtf
+	'1', --exportar
+	'1', --exportar_rtf
 	NULL, --pdf_propiedades
 	NULL, --pdf_respetar_paginacion
 	NULL, --asociacion_columnas
@@ -165,16 +228,16 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 -- apex_objeto_ei_cuadro_columna
 ------------------------------------------------------------
 
---- INICIO Grupo de desarrollo 0
+--- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'2384', --objeto_cuadro_col
-	'tipo', --clave
-	'1', --orden
-	'Tipo', --titulo
+	'106000131', --objeto_cuadro
+	'106000096', --objeto_cuadro_col
+	'documento', --clave
+	'2', --orden
+	'Documento', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'0', --estilo
+	'4', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
@@ -199,24 +262,24 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 );
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'2386', --objeto_cuadro_col
-	'fecha_solicitud', --clave
-	'2', --orden
-	'Fecha solicitud', --titulo
+	'106000131', --objeto_cuadro
+	'106000097', --objeto_cuadro_col
+	'legajo', --clave
+	'1', --orden
+	'Legajo', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
 	NULL, --ancho
-	'8', --formateo
+	'1', --formateo
 	NULL, --vinculo_indice
-	'0', --no_ordenar
+	NULL, --no_ordenar
 	NULL, --mostrar_xls
 	NULL, --mostrar_pdf
 	NULL, --pdf_propiedades
 	NULL, --desabilitado
-	'0', --total
+	NULL, --total
 	NULL, --total_cc
-	'0', --usar_vinculo
+	NULL, --usar_vinculo
 	NULL, --vinculo_carpeta
 	NULL, --vinculo_item
 	NULL, --vinculo_popup
@@ -230,15 +293,15 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 );
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'2387', --objeto_cuadro_col
-	'fecha_alta', --clave
+	'106000131', --objeto_cuadro
+	'106000098', --objeto_cuadro_col
+	'persona', --clave
 	'3', --orden
-	'Fecha alta', --titulo
+	'Socio', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
 	NULL, --ancho
-	'8', --formateo
+	'1', --formateo
 	NULL, --vinculo_indice
 	NULL, --no_ordenar
 	NULL, --mostrar_xls
@@ -261,15 +324,15 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 );
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'2388', --objeto_cuadro_col
-	'fecha_baja', --clave
+	'106000131', --objeto_cuadro
+	'106000099', --objeto_cuadro_col
+	'correo', --clave
 	'4', --orden
-	'Fecha baja', --titulo
+	'Correo', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
 	NULL, --ancho
-	'8', --formateo
+	'1', --formateo
 	NULL, --vinculo_indice
 	NULL, --no_ordenar
 	NULL, --mostrar_xls
@@ -292,80 +355,46 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 );
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'2389', --objeto_cuadro_col
-	'activa', --clave
+	'106000131', --objeto_cuadro
+	'106000100', --objeto_cuadro_col
+	'existe', --clave
 	'5', --orden
-	'Activa', --titulo
-	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
-	NULL, --ancho
-	'13', --formateo
-	NULL, --vinculo_indice
-	'0', --no_ordenar
-	NULL, --mostrar_xls
-	NULL, --mostrar_pdf
-	NULL, --pdf_propiedades
-	NULL, --desabilitado
-	'0', --total
-	NULL, --total_cc
-	'0', --usar_vinculo
-	NULL, --vinculo_carpeta
-	NULL, --vinculo_item
-	NULL, --vinculo_popup
-	NULL, --vinculo_popup_param
-	NULL, --vinculo_target
-	NULL, --vinculo_celda
-	NULL, --vinculo_servicio
-	'0', --permitir_html
-	NULL, --grupo
-	NULL  --evento_asociado
-);
---- FIN Grupo de desarrollo 0
-
---- INICIO Grupo de desarrollo 106
-INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
-	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'106000046', --objeto_cuadro_col
-	'solicita_cancelacion', --clave
-	'6', --orden
-	'Solicita Cancelacion', --titulo
-	'ei-cuadro-col-tit', --estilo_titulo
-	'col-cen-s1', --estilo
-	NULL, --ancho
-	'13', --formateo
-	NULL, --vinculo_indice
-	'0', --no_ordenar
-	NULL, --mostrar_xls
-	NULL, --mostrar_pdf
-	NULL, --pdf_propiedades
-	NULL, --desabilitado
-	'0', --total
-	NULL, --total_cc
-	'0', --usar_vinculo
-	NULL, --vinculo_carpeta
-	NULL, --vinculo_item
-	NULL, --vinculo_popup
-	NULL, --vinculo_popup_param
-	NULL, --vinculo_target
-	NULL, --vinculo_celda
-	NULL, --vinculo_servicio
-	'0', --permitir_html
-	NULL, --grupo
-	NULL  --evento_asociado
-);
-INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
-	'mupum', --objeto_cuadro_proyecto
-	'4266', --objeto_cuadro
-	'106000047', --objeto_cuadro_col
-	'fecha_solicitud_cancelacion', --clave
-	'7', --orden
-	'Fecha Solicitud Cancelacion', --titulo
+	'Tiene usuario', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'7', --estilo
 	NULL, --ancho
-	'8', --formateo
+	'13', --formateo
+	NULL, --vinculo_indice
+	NULL, --no_ordenar
+	NULL, --mostrar_xls
+	NULL, --mostrar_pdf
+	NULL, --pdf_propiedades
+	NULL, --desabilitado
+	NULL, --total
+	NULL, --total_cc
+	NULL, --usar_vinculo
+	NULL, --vinculo_carpeta
+	NULL, --vinculo_item
+	NULL, --vinculo_popup
+	NULL, --vinculo_popup_param
+	NULL, --vinculo_target
+	NULL, --vinculo_celda
+	NULL, --vinculo_servicio
+	'0', --permitir_html
+	NULL, --grupo
+	NULL  --evento_asociado
+);
+INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
+	'mupum', --objeto_cuadro_proyecto
+	'106000131', --objeto_cuadro
+	'106000101', --objeto_cuadro_col
+	'bloqueado', --clave
+	'6', --orden
+	'Esta bloqueado', --titulo
+	'ei-cuadro-col-tit', --estilo_titulo
+	'7', --estilo
+	NULL, --ancho
+	'13', --formateo
 	NULL, --vinculo_indice
 	NULL, --no_ordenar
 	NULL, --mostrar_xls

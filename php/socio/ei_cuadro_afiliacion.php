@@ -20,6 +20,13 @@ class ei_cuadro_afiliacion extends mupum_ei_cuadro
 	}
 
 	
+	function conf_evt__borrar($evento, $fila)
+	{
+		if ($this->datos[$fila]['activa'] != 'SI') 
+		{
+			$evento->anular();    
+		}
+	}
 
 }
 ?>

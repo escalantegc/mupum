@@ -428,6 +428,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 				"Usuario: ".$user. "<br>".
 				"Clave: ".$clave. "<br>".
 				"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+				"<p>Se solicita por favor complete los datos personales.</p>".
 				"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
 				"<p>Saludos ATTE .- MUPUM</p>".
 				"<p>No responda este correo, fue generado por sistema. </p>";
