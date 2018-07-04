@@ -48,6 +48,7 @@ class ci_administrar_usuarios extends mupum_ci
 					$dato['bloqueado'] = 0;
 				}
 				$usuarios[] = $dato;
+				$this->cn()->resetear_dt_usuario();
 
 			}
 
@@ -92,7 +93,7 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function evt__filtro__filtrar($datos)
 	{
-		
+
 		$this->s__datos_filtro = $datos;
 	}
 
