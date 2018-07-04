@@ -456,7 +456,7 @@ class dao
                     extract(YEAR FROM age(current_date::DATE ,fecha_alta::DATE))*12 + extract(MONTH FROM age (current_date::DATE, fecha_alta::DATE))as meses_afiliacion
             FROM
                 public.afiliacion
-            inner join estado using (idestado)
+            left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
             WHERE
               $where

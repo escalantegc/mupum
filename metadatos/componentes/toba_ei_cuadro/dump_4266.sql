@@ -87,13 +87,13 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'106000203', --evento_id
 	'4266', --objeto
 	'borrar', --identificador
-	NULL, --etiqueta
+	'Dar de Baja Afiliacion', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	'Esta por dar de baja la afiliación de este socio. NO se controla el periodo mínimo de afiliación, ni el estado de situación.', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'borrar', --imagen
+	'error.png', --imagen
 	'0', --en_botonera
 	NULL, --ayuda
 	'2', --orden
