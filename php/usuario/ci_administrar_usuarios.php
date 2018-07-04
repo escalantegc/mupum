@@ -27,7 +27,7 @@ class ci_administrar_usuarios extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_socios($this->s__where);
+			$datos = dao::get_listado_socios_libre($this->s__where);
 			$usuarios = array();
 			foreach ($datos  as $dato) 
 			{
@@ -92,6 +92,7 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function evt__filtro__filtrar($datos)
 	{
+		
 		$this->s__datos_filtro = $datos;
 	}
 

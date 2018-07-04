@@ -49,6 +49,38 @@ class dao
       return consultar_fuente($sql);
   }
 
+  function get_listado_socios_libre($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+
+    $sql = "SELECT  idpersona, 
+            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
+             nro_documento, 
+            cuil, 
+            legajo, 
+            (apellido||', '||nombres) as persona, 
+            correo, 
+            cbu, 
+            fecha_nacimiento, 
+            idlocalidad, 
+            calle, altura, 
+            piso, 
+            depto, 
+            idestado_civil,
+            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo
+          FROM public.persona
+          inner join tipo_documento using(idtipo_documento)
+          where
+            legajo is not null and
+            $where 
+          order by
+            descripcion";
+      return consultar_fuente($sql);
+  }
+
   function get_listado_socios($where = null)
 	{
 		if (!isset($where))
