@@ -453,7 +453,7 @@ class dao
                     afiliacion.solicitada,
                     solicita_cancelacion,
                     fecha_solicitud_cancelacion,
-                    extract(MONTH FROM age(current_date::DATE ,fecha_alta::DATE)) as meses_afiliacion
+                    extract(YEAR FROM age(current_date::DATE ,fecha_alta::DATE))*12 + extract(MONTH FROM age (current_date::DATE, fecha_alta::DATE))as meses_afiliacion
             FROM
                 public.afiliacion
             inner join estado using (idestado)

@@ -17,7 +17,7 @@ class ci_cambiar_clave extends mupum_ci
 		 	toba::notificacion()->agregar("La clave actual ingresada no es la correcta.");
 			return;
 		}   
-		if ($datos['nueva_clave'] != $datos['repeticion_clave'])
+		if ($datos['nueva_clave'] != $datos['repeti_clave'])
 		{
 		 	$this->informar_msg("La contraseña nueva y la confirmacion deben ser iguales");
 		} else {           

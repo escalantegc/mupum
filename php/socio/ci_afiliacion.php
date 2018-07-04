@@ -2,6 +2,7 @@
 require_once('dao.php');
 class ci_afiliacion extends mupum_ci
 {
+	protected $s__user;
 	function get_cn()
 	{
 		return $this->controlador->cn();
@@ -26,8 +27,8 @@ class ci_afiliacion extends mupum_ci
 
 	function conf__cuadro(mupum_ei_cuadro $cuadro)
 	{
-		$persona = $this->get_cn()->get_dt_persona();
-		
+		$persona = $this->get_cn()->get_dt_persona_sin_blob();
+		$this->s__user = trim($persona['nro_documento']);
 		if(isset($this->s__datos_filtro))
 		{	
 			$where = $this->s__where.' and afiliacion.idpersona ='.$persona['idpersona'];
@@ -248,6 +249,7 @@ class ci_afiliacion extends mupum_ci
 		if ($this->get_cn()->hay_cursor_dt_afiliacion($datos))
 		{
 			$datos['activa'] = 0;
+			toba::instancia()->bloquear_usuario($this->s__user);
 			$this->get_cn()->set_dt_afiliacion($datos);
 			
 		} else {

@@ -30,7 +30,7 @@ class mupum_tp_logon extends toba_tp_logon
 	{
 		echo "</div>";		
 		echo "<div class='login-pie'>";
-		echo "<div font-size = 12>Si usted es una afiliado activo,</br> debe hacer clic en el el boton Soy Afiliado para crear usuario.</br> Una vez creado el usuario podra ingresar al sistema y </br>hacer uso de los beneficios.</a></strong></div>
+		echo "<div font-size = 12>Si usted es un afiliado activo, debe hacer clic en el el bot&oacuten Soy Afiliado </br>para crear su usuario. Una vez creado, los datos de acceso se enviar&aacuten al correo especificado </br>y con ellos podr&aacute ingresar al sistema</a></strong></div>
 			";
 		echo "</div>";
 	}
