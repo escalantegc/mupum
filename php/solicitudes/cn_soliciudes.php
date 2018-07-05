@@ -12,7 +12,21 @@ class cn_soliciudes extends mupum_cn
 				$this->dep('dr_solicitudes')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
 			}
 		}
+	}	
+
+	function cargar_dr_usuario()	
+	{
+		if(!$this->dep('dr_usuario')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_usuario')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_usuario')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
 	}
+	
 	function guardar_dr_solicitudes()
 	{
 		$this->dep('dr_solicitudes')->sincronizar();
@@ -31,6 +45,15 @@ class cn_soliciudes extends mupum_cn
 	function resetear_dr_reserva()
 	{
 		$this->dep('dr_reserva')->resetear();
+	}
+	function guardar_dr_usuario()
+	{
+		$this->dep('dr_usuario')->sincronizar();
+	}
+
+	function resetear_dr_usuario()
+	{
+		$this->dep('dr_usuario')->resetear();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -304,6 +327,86 @@ class cn_soliciudes extends mupum_cn
 	function existe_dt_usuario($condicion)
 	{
 		$id = $this->dep('dr_usuario')->tabla('dt_usuario')->existe_fila_condicion($condicion);
+		if ($id==1)
+		{
+			return 'existe';
+		} else {
+			return 'noexiste';
+		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-USUARIO-PROYECTO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_usuario_proyecto($seleccion)
+	{
+		if(!$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function guardar_dt_usuario_proyecto()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->sincronizar();
+	}	
+
+	function resetear_dt_usuario_proyecto()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->resetear();
+	}
+
+	function set_cursor_dt_usuario_proyecto($seleccion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_usuario_proyecto()
+	{
+		return $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_usuario_proyecto()
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->resetear_cursor();
+	}
+
+	function get_dt_usuario_proyecto()
+	{
+		return $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->get_filas();
+	}
+
+	function procesar_dt_usuario_proyecto($datos)
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->procesar_filas($datos);
+	}
+
+	function set_dt_usuario_proyecto($datos)
+	{
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->set($datos);
+	}
+
+	function agregar_dt_usuario_proyecto($datos)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->nueva_fila($datos);
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->set_cursor($id);
+	}	
+
+	function eliminar_dt_usuario_proyecto($seleccion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->eliminar_fila($id[0]);
+	}
+
+	function existe_dt_usuario_proyecto($condicion)
+	{
+		$id = $this->dep('dr_usuario')->tabla('dt_usuario_proyecto')->existe_fila_condicion($condicion);
 		if ($id==1)
 		{
 			return 'existe';

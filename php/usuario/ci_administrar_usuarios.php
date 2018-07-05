@@ -11,12 +11,28 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function evt__procesar()
 	{
+		try{
+			$this->cn()->guardar_dr_usuario();
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			
+
+			$mensaje_log= $error->get_mensaje_log();
+			
+			toba::notificacion()->agregar($mensaje_log,'info');
+			 
+			
+		}
+		$this->cn()->resetear_dr_usuario();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	function evt__cancelar()
 	{
+		$this->cn()->resetear_dr_usuario();
 		$this->set_pantalla('pant_inicial');
-		$this->cn()->resetear_dt_usuario();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -31,7 +47,7 @@ class ci_administrar_usuarios extends mupum_ci
 			$usuarios = array();
 			foreach ($datos  as $dato) 
 			{
-				$filtro['usuario'] = trim($dato['nro_documento']);
+				$filtro['usuario'] = trim($dato['usuario']);
 				$this->cn()->cargar_dt_usuario($filtro);
 				$resultado = $this->cn()->existe_dt_usuario($filtro);
 				$dato['existe'] = 0;
@@ -59,7 +75,9 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->s__user = $seleccion['nro_documento'];
+
+		$this->cn()->cargar_dr_usuario($seleccion);
+		$this->cn()->set_cursor_dt_usuario($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
@@ -75,8 +93,8 @@ class ci_administrar_usuarios extends mupum_ci
 	
 	function evt__cuadro__crear($seleccion)
 	{
-		$this->s__user = $seleccion['nro_documento'];
-		$this->set_pantalla('pant_nuevo');
+		$this->s__user = $seleccion['usuario'];
+		$this->set_pantalla('pant_edicion');
 	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
@@ -110,39 +128,99 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function conf__frm(mupum_ei_formulario $form)
 	{
-
-
-		$datos['usuario'] = $this->s__user;
-		$perfil = toba::instancia()->get_perfiles_funcionales($this->s__user,'mupum');
-		$datos['perfil'] = trim($perfil[0]);
-		$form->set_datos($datos);
+		if ($this->cn()->hay_cursor_dt_usuario())
+		{
+			$usuario = $this->cn()->get_dt_usuario();
+			$form->set_datos($usuario);
+		} else {
+			$usuario['usuario'] = $this->s__user;
+			$form->set_datos($usuario);
+		}
+	
 
 	}
 
 	function evt__frm__modificacion($datos)
 	{
+		$usuario = quote("{$datos['usuario']}");
+		if ($this->cn()->hay_cursor_dt_usuario())
+		{
+			if($datos['cambiar_clave']==1)
+			{
+				
+				$persona = dao::get_listado_persona('persona.nro_documento='.$usuario);
+				$this->enviar_correo_usuario($persona[0]);
+				
+			}
+		} else {
 
-		toba_usuario::set_clave_usuario($clave, $user);
-
-		toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-		toba::instancia()->get_perfiles_funcionales($usuario,'mupum');
-		$perfil = 'afiliado';
-		toba::instancia()->vincular_usuario('mupum',$user,$perfil);
-
+			$datos['clave'] = toba_usuario::generar_clave_aleatoria(8);
+			
+			if($datos['cambiar_clave']==1)
+			{
+				
+				
+				$persona = dao::get_listado_persona('persona.nro_documento='.$usuario);
+				$persona[0]['clave'] = $datos['clave'];
+				$datos['nombre'] = $persona[0]['persona'];
+				$datos['email'] = $persona[0]['correo'];
+				$this->enviar_correo_usuario($persona[0]);
+				
+			}
+			$this->cn()->agregar_dt_usuario($datos);
+			
+		}
 	}
 
-	
-
 	//-----------------------------------------------------------------------------------
-	//---- frm_nuevo --------------------------------------------------------------------
+	//---- frm_ml_perfiles --------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_nuevo(mupum_ei_formulario $form)
+	function conf__frm_ml_perfiles(mupum_ei_formulario_ml $form_ml)
 	{
+		if ($this->cn()->hay_cursor_dt_usuario())
+		{
+			$datos = $this->cn()->get_dt_usuario_proyecto();
+			$form_ml->set_datos($datos);
+		}
 	}
 
-	function evt__frm_nuevo__modificacion($datos)
+	function evt__frm_ml_perfiles__modificacion($datos)
 	{
+		$this->cn()->procesar_dt_usuario_proyecto($datos);
+	}
+
+	function enviar_correo_usuario($persona)
+	{
+		//try{
+			$user = $persona['nro_documento']; 
+	        $nombre = trim($persona['persona']);
+	        $atributos['email'] = $persona['correo'];
+	        $clave = $persona['clave'];
+	        
+
+	        //Armo el mail nuevo &oacute;
+	        $asunto = "Datos de Acceso";
+	        
+			$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+    				"<p>Por medio del presente le informamos que los datos para poder ingresar al sistema son:</p> ".
+					"Usuario: ".$user. "<br>".
+					"Clave: ".$clave. "<br>".
+					"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+					"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+       				"<p>Saludos ATTE .- MUPUM</p>".
+      				"<p>No responda este correo, fue generado por sistema. </p>";
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                toba::notificacion()->agregar("Los datos de acceso se han enviado correctamente",'info');
+                $mail->set_html(true);
+                //--$mail->set_cc();
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
 	}
 
 }

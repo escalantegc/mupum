@@ -671,15 +671,15 @@ class ci_login extends toba_ci
 	        {
 	        	$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
 	        				"<p>Por medio del presente le informamos que los datos para poder ingresar al sistema son:</p> ".
-							"Usuario:".$user. "<br>".
+							"Usuario: ".$user. "<br>".
 							"<p>Este usuario esta bloqueado, solicite al administrador del sistema que lo desbloquee. </p><br>".
 	           				"<p>Saludos ATTE .- MUPUM</p>".
 	          				"<p>No responda este correo, fue generado por sistema. </p>";
   			}else{
   				 $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
 	        				"<p>Por medio del presente le informamos que los datos para poder ingresar al sistema son:</p> ".
-							"Usuario:".$user. "<br>".
-							"Clave:".$clave. "<br>".
+							"Usuario: ".$user. "<br>".
+							"Clave: ".$clave. "<br>".
 							"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
 							"<p>Se solicita por favor complete los datos personales.</p>".
 							"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".

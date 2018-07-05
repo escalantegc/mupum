@@ -923,6 +923,60 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_unidad_academica')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_unidad_academica')->eliminar_fila($id[0]);
 	}	
+
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-UNIDAD ACADEMICA	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_forma_pago($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_forma_pago')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_forma_pago')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_forma_pago')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_forma_pago($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_forma_pago')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_forma_pago')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_forma_pago()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_forma_pago')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_forma_pago()
+	{
+		$this->dep('dr_parametros')->tabla('dt_forma_pago')->resetear_cursor();
+	}
+
+	function get_dt_forma_pago()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_forma_pago')->get();
+	}
+
+	function set_dt_forma_pago($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_forma_pago')->set($datos);
+	}
+
+	function agregar_dt_forma_pago($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_forma_pago')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_forma_pago')->set_cursor($id);
+	}	
+
+	function eliminar_dt_forma_pago($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_forma_pago')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_forma_pago')->eliminar_fila($id[0]);
+	}	
 	
 }
 

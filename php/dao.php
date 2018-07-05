@@ -46,6 +46,7 @@ class dao
             $where 
           order by
             descripcion";
+         
       return consultar_fuente($sql);
   }
 
@@ -58,7 +59,7 @@ class dao
 
     $sql = "SELECT  idpersona, 
             (tipo_documento.sigla ||'-'||nro_documento) as documento, 
-             nro_documento, 
+             nro_documento as usuario, 
             cuil, 
             legajo, 
             (apellido||', '||nombres) as persona, 
@@ -1022,6 +1023,16 @@ class dao
       return toba::db('auditoria')->consultar($sql);  
 
 
+  }
+  function get_perfiles_mupum()
+  {
+      $sql = "SELECT usuario_grupo_acc
+              FROM 
+                desarrollo.apex_usuario_grupo_acc
+              where 
+                proyecto = 'mupum' and
+                usuario_grupo_acc != 'admin'";
+      return toba::db('usuarios')->consultar($sql);  
   }
 }
 ?>
