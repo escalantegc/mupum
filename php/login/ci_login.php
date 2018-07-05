@@ -783,8 +783,103 @@ class ci_login extends toba_ci
 	function evt__frm_usuario__cancelar()
 	{
 		$this->cn()->resetear_dr_registro();
+		$this->set_pantalla('login');
+	}
+
+	function evt__datos__recuperar_clave()
+	{
+		$this->set_pantalla('pant_clave');
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_clave --------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_clave(mupum_ei_formulario $form)
+	{
+	}
+
+	function evt__frm_clave__alta($datos)
+	{
+		$indice['idtipo_documento'] = $datos['idtipo_documento']; 
+		$indice['nro_documento'] = $datos['nro_documento']; 
+		$this->cn()->cargar_dr_registro($indice);
+		$resultado = $this->cn()->existe_dt_persona($indice);
+		if ($resultado == 'existe')
+		{
+			$this->cn()->set_cursor_dt_persona($indice);
+			$persona = $this->cn()->get_dt_persona();	
+			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
+			$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
+			$clave = toba_usuario::generar_clave_aleatoria(8);
+			$this->s__persona[0]['clave'] = $clave;
+			$this->enviar_correo_clave_usuario($this->s__persona[0]);
+			
+
+		} else {
+			 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
+
+		}
+		
+		try{
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				toba::notificacion()->agregar('La clave de acceso ha sido reseteada y enviada su correo correctamente.', 'info');	
+			}
+
+			$this->cn()->guardar_dr_registro();
+
+			
+
+			
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			
+					
+			
+		}
+			$this->cn()->resetear_dr_registro();
 			$this->set_pantalla('login');
 	}
 
+	function evt__frm_clave__cancelar()
+	{
+		$this->cn()->resetear_dr_registro();
+		$this->set_pantalla('login');
+	}
+
+
+	function enviar_correo_clave_usuario($persona)
+	{
+		//try{
+			$user = $persona['nro_documento']; 
+	        $nombre = trim($persona['persona']);
+	        $clave = $persona['clave'];
+	        $atributos['email'] = $persona['correo_correcto'];
+
+	        //Armo el mail nuevo &oacute;
+	        $asunto = "Clave Recuperada";
+	        
+			 $cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+	    				"<p>Por medio del presente le informamos que su clave ha sido reseteada, los nuevos datos de acceso son:</p> ".
+						"Usuario: ".$user. "<br>".
+						"Clave: ".$clave. "<br>".
+						"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+						"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+	       				"<p>Saludos ATTE .- MUPUM</p>".
+	      				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                //--$mail->set_cc();
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 }
 ?>
