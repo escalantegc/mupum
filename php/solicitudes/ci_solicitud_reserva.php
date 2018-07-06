@@ -1,5 +1,4 @@
 <?php
-require_once(toba_dir() . '/php/3ros/activecalendar/activecalendar.php');
 require_once('dao.php');
 class ci_solicitud_reserva extends mupum_ci
 {
@@ -33,10 +32,8 @@ class ci_solicitud_reserva extends mupum_ci
 		$datos = dao::cargar_calendario_reserva();
 		$calendario->set_ver_contenidos(true);
 		
-		$fecha = date('Y-m-j');
-		$nuevafecha = strtotime ( '+60 day' , strtotime ( $fecha ) ) ;
-		$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
-		$hoy =  date("Y", strtotime($nuevafecha));  
+		$nuevafecha = date ( 'Y-m-j' );
+		$hoy =  date("Y", strtotime($nuevafecha));
 
 		$calendario->set_rango_anios(2016,$hoy);
 		$calendario->set_datos($datos);
@@ -50,10 +47,46 @@ class ci_solicitud_reserva extends mupum_ci
 	function evt__calendario__seleccionar_dia($dia)
 	{
 
-		$this->s__dia['fecha'] = $dia['anio'].'-'.$dia['mes'].'-'.$dia['dia'];			
-		$this->s__fecha = $dia['dia'].'/'.$dia['mes'].'/'.$dia['anio'];
+		$fecha_seleccionada = $dia['anio'].'-'.$dia['mes'].'-'.$dia['dia'];			
+					
+		$this->s__fecha  = $dia['dia'].'/'.$dia['mes'].'/'.$dia['anio'];
 		$this->s__mes = $dia['mes'];
-		$this->s__anio = $dia['anio'];		
+		$this->s__anio = $dia['anio'];	
+		
+		
+		$hoy = date('Y-m-j');
+		
+		$datetime1 = date_create($hoy);
+		$datetime2 = date_create($fecha_seleccionada);
+
+		$interval = date_diff($datetime1, $datetime2);
+		$dias = $interval->format('%R%a');
+		$configuracion = dao::get_configuracion();
+
+		$signo = substr($dias, 0, 1); 
+		$dias = substr($dias, 1); 
+			
+		
+		if ($signo == '+')
+		{
+			if ($dias <=  $configuracion['limite_dias_para_reserva'])
+			{
+				$this->s__dia['fecha'] = $fecha_seleccionada;
+			} else {
+				toba::notificacion()->agregar("No puede realizar una reserva con mas de: ".$configuracion['limite_dias_para_reserva']. " dias de anticipacion.",'info');
+				unset($this->s__dia);
+			}
+		} else {
+			toba::notificacion()->agregar("No puede realizar una reserva de una fecha anterior a la del dia de hoy.",'info');
+			unset($this->s__dia);
+		}
+
+
+		/*$fecha = date('Y-m-j');
+		$nuevafecha = strtotime ( '+60 day' , strtotime ( $fecha ) ) ;
+		$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+		$hoy =  date("Y", strtotime($nuevafecha));  */
+			
 	}
 
 	//-----------------------------------------------------------------------------------
