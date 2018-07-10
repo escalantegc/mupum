@@ -22,9 +22,11 @@ class ci_socios_principal extends mupum_ci
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_socios($this->s__where);
-			$cuadro->set_datos($datos);
+			
+		} else {
+			$datos = dao::get_listado_socios();
 		}
-		
+		$cuadro->set_datos($datos);
 	}
 
 	function evt__cuadro__seleccion($seleccion)
@@ -49,11 +51,11 @@ class ci_socios_principal extends mupum_ci
 			$filtro->set_datos($this->s__datos_filtro);
 			$this->s__where = $filtro->get_sql_where();
 		}
-		$tipo_socio =dao::get_tipo_socio_titular();
+		/*$tipo_socio =dao::get_tipo_socio_titular();
 		$datos['idtipo_socio'] = $tipo_socio[0]['idtipo_socio'];
 
 
-		$filtro->set_datos($datos);
+		$filtro->set_datos($datos);*/
 	}
 
 	function evt__filtro__filtrar($datos)

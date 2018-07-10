@@ -107,16 +107,18 @@ class dao
    					piso, 
    					depto, 
    					idestado_civil,
-            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo
+            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+            tipo_socio.descripcion as tipo
   				FROM public.persona
   				inner join tipo_documento using(idtipo_documento)
           inner join afiliacion using (idpersona)
+          inner join tipo_socio using(idtipo_socio)
   				where
             afiliacion.activa = true and
             $sql_usuario and
   					$where 
   				order by
-  					descripcion";
+  					apellido,nombres";
 
   		
       return consultar_fuente($sql);
