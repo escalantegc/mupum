@@ -30,12 +30,37 @@ class ei_frm_persona extends mupum_ei_formulario
 				}
 				ef.set_estado(cadena);
 			}			
-
+		
 		}
 		
+			
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__idtipo_socio__procesar = function(es_inicial)
+		{
+			valor = this.ef('idtipo_socio').get_estado();
+			if (valor!='nopar')
+			{	
+				this.controlador.ajax('get_tipo_socio', valor, this, this.ocultar_mostrar); 
+			}
 	
+
+		}
+
+		{$this->objeto_js}.ocultar_mostrar = function(datos)
+		{ 
+			alert(datos['tipo']);
+			if (datos['tipo']=='titular')
+			{
+				this.ef('idclaustro').mostrar();
+				this.ef('idunidad_academica').mostrar();
+			} else {
+				this.ef('idclaustro').ocultar();
+				this.ef('idunidad_academica').ocultar();
+			}                              
+		}
 		";
 	}
-}
 
+}
 ?>

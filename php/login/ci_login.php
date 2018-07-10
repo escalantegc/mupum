@@ -440,34 +440,7 @@ class ci_login extends toba_ci
 	}
 	
 
-	//-----------------------------------------------------------------------------------
-	//---- frm_afiliacion ---------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__frm_afiliacion(mupum_ei_formulario $form)
-	{
-		if ($this->cn()->hay_cursor_dt_afiliacion())
-		{
-			$datos = $this->cn()->get_dt_afiliacion();
-			$form->set_datos($datos);
-		}
-			
-	}
 	
-	function evt__frm_afiliacion__modificacion($datos)
-	{
-		$estado = dao::get_listado_estado_afiliacion('SOLICITADA');
-		if (isset($estado[0]['idestado']))
-		{
-			$datos['idestado'] = $estado[0]['idestado'];
-			$datos['solicitada'] = 't';
-			$this->cn()->agregar_dt_afiliacion($datos);	
-		} else {
-			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
-
-		}
-		
-	}
 	//-----------------------------------------------------------------------------------
 	//---- frm_persona ------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -500,21 +473,13 @@ class ci_login extends toba_ci
 		} else {
 			$this->cn()->agregar_dt_persona($datos);
 		}
-		
-		$estado = dao::get_listado_estado_afiliacion('SOLICITADA');
-		if (isset($estado[0]['idestado']))
-		{
-			//--$afiliacion['idestado'] = $estado[0]['idestado'];
-			$afiliacion['solicitada'] = 't';
-			$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
-			$tipo_socio = dao::get_tipo_socio_titular();
-			$afiliacion['idtipo_socio'] =  $tipo_socio[0]['idtipo_socio'];      
-			$this->s__persona['fecha_solicitud'] =$afiliacion['fecha_solicitud'];
-			$this->cn()->agregar_dt_afiliacion($afiliacion);	
-		} else {
-			toba::notificacion()->agregar("Debe cargar el estado SOLICITADA para afiliacion.",'info');
 
-		}
+		$afiliacion['idtipo_socio'] = $datos['idtipo_socio'];
+		$afiliacion['solicitada'] = 't';
+		$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
+		$this->s__persona['fecha_solicitud'] = $afiliacion['fecha_solicitud'];
+		$this->cn()->agregar_dt_afiliacion($afiliacion);	
+				
 	}
 
 
@@ -596,6 +561,25 @@ class ci_login extends toba_ci
 			$this->cn()->agregar_dt_telefonos($datos);	
 		}
 			
+	}
+	//-----------------------------------------------------------------------------------
+	//---- frm_afiliacion ---------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_afiliacion(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_afiliacion())
+		{
+			$datos = $this->cn()->get_dt_afiliacion();
+			$form->set_datos($datos);
+		}
+			
+	}
+	
+	function evt__frm_afiliacion__modificacion($datos)
+	{
+		
+		
 	}
 
 	function vista_jasperreports(toba_vista_jasperreports $report)
@@ -880,6 +864,12 @@ class ci_login extends toba_ci
                 $chupo = $error->get_mensaje_log();
                 toba::notificacion()->agregar($chupo, 'info');
         }
+	}
+
+	function ajax__get_tipo_socio($idtipo_socio, toba_ajax_respuesta $respuesta)
+	{
+		$tipo = dao::get_tipo_socio($idtipo_socio);
+		$respuesta->set($tipo);	
 	}
 }
 ?>

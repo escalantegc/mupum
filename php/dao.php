@@ -136,7 +136,7 @@ class dao
   				where
   					$where
   				order by
-  					descripcion";
+  					titular desc,descripcion";
   		return consultar_fuente($sql);
 	}
 
@@ -605,15 +605,34 @@ class dao
   }
   
   function get_tipo_socio_titular()
-	{
-    		$sql = "SELECT  idtipo_socio, 
+  {
+        $sql = "SELECT  idtipo_socio, 
                         descripcion, 
                         titular
                 FROM 
                   public.tipo_socio
                 where 
                   titular = true";
-  		return consultar_fuente($sql);
+      return consultar_fuente($sql);
+  }  
+
+  function get_tipo_socio($idtipo_socio = null)
+	{
+      $datos['tipo'] = 'notitular';
+    	$sql = "SELECT  idtipo_socio, 
+                        descripcion, 
+                        titular
+                FROM 
+                  public.tipo_socio
+                WHERE
+                  idtipo_socio = $idtipo_socio";
+      $res = consultar_fuente($sql);
+      if ($res[0]['titular'] == 1)
+      {
+        $datos['tipo'] = 'titular';
+      }
+      return $datos;
+  		
   }
 
   function cargar_calendario_reserva () {
