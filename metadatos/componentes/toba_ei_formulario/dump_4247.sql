@@ -57,7 +57,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	NULL, --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'mensaje.gif', --imagen
+	'objetos/firma.png', --imagen
 	'1', --en_botonera
 	'Haga clic aquí para recuperar la clave.', --ayuda
 	'1', --orden

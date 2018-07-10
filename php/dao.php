@@ -777,7 +777,7 @@ class dao
 
   }
 
-  function get_listado_forma_pag($where = null)
+  function get_listado_forma_pago($where = null)
   {
       if (!isset($where))
       {
