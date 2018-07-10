@@ -47,8 +47,13 @@ class ci_socios_principal extends mupum_ci
 		if(isset($this->s__datos_filtro))
 		{
 			$filtro->set_datos($this->s__datos_filtro);
-			$this->s__where=$filtro->get_sql_where();
+			$this->s__where = $filtro->get_sql_where();
 		}
+		$tipo_socio =dao::get_tipo_socio_titular();
+		$datos['idtipo_socio'] = $tipo_socio[0]['idtipo_socio'];
+
+
+		$filtro->set_datos($datos);
 	}
 
 	function evt__filtro__filtrar($datos)
