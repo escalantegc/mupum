@@ -265,7 +265,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000002', --popup_item
 	'mupum', --popup_proyecto
 	'0', --popup_editable
-	'width: 800,height: 600,scrollbars: yes', --popup_ventana
+	'width: 850,height: 600,scrollbars: yes', --popup_ventana
 	'get_descripcion_persona_popup', --popup_carga_desc_metodo
 	'dao', --popup_carga_desc_clase
 	'dao.php', --popup_carga_desc_include

@@ -977,6 +977,110 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_forma_pago')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_forma_pago')->eliminar_fila($id[0]);
 	}	
+	//-----------------------------------------------------------------------------------
+	//---- DT-CATEGORIA-COMERCIO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_categoria_comercio($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_categoria_comercio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_comercio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_categoria_comercio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_comercio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_categoria_comercio()
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->resetear_cursor();
+	}
+
+	function get_dt_categoria_comercio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_categoria_comercio')->get();
+	}
+
+	function set_dt_categoria_comercio($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->set($datos);
+	}
+
+	function agregar_dt_categoria_comercio($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_comercio')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_categoria_comercio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_categoria_comercio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_categoria_comercio')->eliminar_fila($id[0]);
+	}	
+	//-----------------------------------------------------------------------------------
+	//---- DT-COMERCIO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_comercio($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_comercio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_comercio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_comercio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_comercio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_comercio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_comercio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_comercio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_comercio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_comercio()
+	{
+		$this->dep('dr_parametros')->tabla('dt_comercio')->resetear_cursor();
+	}
+
+	function get_dt_comercio()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_comercio')->get();
+	}
+
+	function set_dt_comercio($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_comercio')->set($datos);
+	}
+
+	function agregar_dt_comercio($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_comercio')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_comercio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_comercio($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_comercio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_comercio')->eliminar_fila($id[0]);
+	}	
 	
 }
 

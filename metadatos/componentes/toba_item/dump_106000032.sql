@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000016]--  Categoria Motivo 
+--[106000032]--  Reservas 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -10,26 +10,26 @@
 INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre, carpeta, nivel_acceso, solicitud_tipo, pagina_tipo_proyecto, pagina_tipo, actividad_buffer_proyecto, actividad_buffer, actividad_patron_proyecto, actividad_patron, nombre, descripcion, punto_montaje, actividad_accion, menu, orden, solicitud_registrar, solicitud_obs_tipo_proyecto, solicitud_obs_tipo, solicitud_observacion, solicitud_registrar_cron, prueba_directorios, zona_proyecto, zona, zona_orden, zona_listar, imagen_recurso_origen, imagen, parametro_a, parametro_b, parametro_c, publico, redirecciona, usuario, exportable, creacion, retrasar_headers) VALUES (
 	NULL, --item_id
 	'mupum', --proyecto
-	'106000016', --item
+	'106000032', --item
 	NULL, --padre_id
 	'mupum', --padre_proyecto
-	'106000032', --padre
-	'0', --carpeta
+	'3948', --padre
+	'1', --carpeta
 	'0', --nivel_acceso
-	'web', --solicitud_tipo
-	'toba', --pagina_tipo_proyecto
-	'normal', --pagina_tipo
+	NULL, --solicitud_tipo
+	NULL, --pagina_tipo_proyecto
+	NULL, --pagina_tipo
 	NULL, --actividad_buffer_proyecto
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Categoria Motivo', --nombre
+	'Reservas', --nombre
 	NULL, --descripcion
-	'28', --punto_montaje
+	NULL, --punto_montaje
 	NULL, --actividad_accion
 	'1', --menu
 	NULL, --orden
-	'0', --solicitud_registrar
+	NULL, --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
 	NULL, --solicitud_obs_tipo
 	NULL, --solicitud_observacion
@@ -38,37 +38,17 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --zona_proyecto
 	NULL, --zona
 	NULL, --zona_orden
-	'0', --zona_listar
+	NULL, --zona_listar
 	'apex', --imagen_recurso_origen
 	NULL, --imagen
 	NULL, --parametro_a
 	NULL, --parametro_b
 	NULL, --parametro_c
-	'0', --publico
+	NULL, --publico
 	NULL, --redirecciona
 	NULL, --usuario
-	'0', --exportable
-	'2018-06-07 18:35:04', --creacion
+	NULL, --exportable
+	'2018-07-10 10:51:37', --creacion
 	'0'  --retrasar_headers
 );
 --- FIN Grupo de desarrollo 106
-
-------------------------------------------------------------
--- apex_item_objeto
-------------------------------------------------------------
-INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
-	NULL, --item_id
-	'mupum', --proyecto
-	'106000016', --item
-	'4269', --objeto
-	'2', --orden
-	NULL  --inicializar
-);
-INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
-	NULL, --item_id
-	'mupum', --proyecto
-	'106000016', --item
-	'106000070', --objeto
-	'1', --orden
-	NULL  --inicializar
-);

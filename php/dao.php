@@ -777,7 +777,7 @@ class dao
 
   }
 
-  function get_listado_forma_pago($where = null)
+  function get_listado_forma_pag($where = null)
   {
       if (!isset($where))
       {
@@ -1033,6 +1033,40 @@ class dao
                 proyecto = 'mupum' and
                 usuario_grupo_acc != 'admin'";
       return toba::db('usuarios')->consultar($sql);  
+  }
+
+  function get_listado_categoria_comercio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idcategoria_comercio, 
+                    descripcion
+            FROM 
+              public.categoria_comercio
+            where
+              $where";
+    return consultar_fuente($sql);
+  }
+
+  function get_listado_comercios($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql =" SELECT   idcomercio, 
+                    nombre, 
+                    direccion, 
+                    localidad.descripcion as localidad, 
+                    categoria_comercio.descripcion as categoria
+            FROM public.comercio
+            inner join localidad using(idlocalidad)
+            inner join categoria_comercio using(idcategoria_comercio)
+            where
+              $where";
+    return consultar_fuente($sql);
   }
 }
 ?>

@@ -62,6 +62,21 @@ INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_mon
 -- apex_objeto_dependencias
 ------------------------------------------------------------
 
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000126', --dep_id
+	'4270', --objeto_consumidor
+	'106000145', --objeto_proveedor
+	'dt_categoria_comercio', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+--- FIN Grupo de desarrollo 106
+
 --- INICIO Grupo de desarrollo 0
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -96,6 +111,18 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'4270', --objeto_consumidor
 	'106000109', --objeto_proveedor
 	'dt_claustro', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000127', --dep_id
+	'4270', --objeto_consumidor
+	'106000146', --objeto_proveedor
+	'dt_comercio', --identificador
 	'', --parametros_a
 	'', --parametros_b
 	NULL, --parametros_c
