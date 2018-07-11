@@ -934,6 +934,7 @@ class dao
                     monto_garantia,
                     instalacion.nombre as instalacion,
                     monto_persona_extra,
+                    porcentaje_senia,
                     COALESCE(monto_reserva,0) + COALESCE(monto_limpieza_mantenimiento,0) + COALESCE(monto_garantia,0) as total
             FROM 
             public.motivo_tipo_socio
@@ -1137,6 +1138,32 @@ class dao
             where
               $where";
     return consultar_fuente($sql);
+  }
+
+  function get_excedente_por_persona_reserva($idinstalacion = null, $idmotivo_tipo_socio = null)
+  {
+    $sql1 = " SELECT monto_persona_extra
+              FROM 
+                public.motivo_tipo_socio
+              where 
+              idmotivo_tipo_socio = $idmotivo_tipo_socio";
+    $montos = consultar_fuente($sql1);         
+
+    $sql2 = " SELECT  cantidad_maxima_personas,  
+                      cantidad_personas_reserva
+              FROM 
+                public.instalacion
+              where 
+                idinstalacion = $idinstalacion";
+    $cantidades = consultar_fuente($sql2);  
+
+    $monto_excedente = $montos[0]['monto_persona_extra'];
+    $capacidad_permitida =  $cantidades[0]['cantidad_personas_reserva'];
+    $capacidad_maxima =  $cantidades[0]['cantidad_maxima_personas'];
+
+    $mensaje =  'El monto de la reserva es hasta '. $capacidad_permitida.' personas. Por cada persona extra se cobrara: $'.$monto_excedente;
+   
+    return $mensaje;
   }
 }
 ?>

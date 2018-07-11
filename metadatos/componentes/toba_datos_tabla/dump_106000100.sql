@@ -181,4 +181,18 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'0', --externa
 	'motivo_tipo_socio'  --tabla
 );
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000100', --objeto
+	'106000120', --col_id
+	'porcentaje_senia', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'0', --externa
+	'motivo_tipo_socio'  --tabla
+);
 --- FIN Grupo de desarrollo 106
