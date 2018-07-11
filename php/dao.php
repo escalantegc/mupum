@@ -133,7 +133,8 @@ class dao
 		}
 		$sql = "SELECT 	idtipo_socio, 
 						        descripcion,
-                    titular
+                    titular,
+                    liquidacion
   				FROM public.tipo_socio
   				where
   					$where
