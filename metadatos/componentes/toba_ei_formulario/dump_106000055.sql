@@ -390,7 +390,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --carga_lista
 	'idinstalacion', --carga_col_clave
 	'nombre', --carga_col_desc
-	NULL, --carga_maestros
+	'idafiliacion', --carga_maestros
 	'0', --carga_cascada_relaj
 	'0', --cascada_mantiene_estado
 	'1', --carga_permite_no_seteado
@@ -470,7 +470,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --carga_lista
 	'idmotivo_tipo_socio', --carga_col_clave
 	'motivo', --carga_col_desc
-	'idafiliacion', --carga_maestros
+	'idinstalacion', --carga_maestros
 	'0', --carga_cascada_relaj
 	'0', --cascada_mantiene_estado
 	'1', --carga_permite_no_seteado

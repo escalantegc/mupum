@@ -16,13 +16,13 @@ class ci_motivo_por_tipo_socio extends mupum_ci
 			
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El motivo por socio esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("La configuracion estado esta siendo referenciada, no puede eliminarla",'error');
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_motivo_por_tipo_socio'))
 			{
-				toba::notificacion()->agregar("El motivo por socio ya se encuentra registrado.",'info');
+				toba::notificacion()->agregar("La configuracion de la reserva ya esa registrada. No puede tener mas de una configuracion de reserva con el mismo tipo de socio, motivo e instalacion..",'info');
 			} 
 			
 		}
@@ -74,7 +74,7 @@ class ci_motivo_por_tipo_socio extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("La categoria estado esta siendo referenciada, no puede eliminarla",'error');
+				toba::notificacion()->agregar("La configuracion estado esta siendo referenciada, no puede eliminarla",'error');
 				
 			} 		
 		}

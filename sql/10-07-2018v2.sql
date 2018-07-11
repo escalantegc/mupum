@@ -10,6 +10,8 @@ ALTER TABLE public.motivo_tipo_socio
 
 ALTER TABLE public.motivo_tipo_socio ADD COLUMN idinstalacion integer;
 
+ALTER TABLE public.tipo_socio ADD COLUMN liquidacion boolean;
+ALTER TABLE public.tipo_socio ALTER COLUMN liquidacion SET DEFAULT false;
 ALTER TABLE public.motivo_tipo_socio ADD COLUMN monto_persona_extra double precision;
 
 ALTER TABLE public.solicitud_reserva ADD COLUMN motivo_cancelacion text;
@@ -43,8 +45,6 @@ CREATE UNIQUE INDEX idx_concepto
 
 
 
-ALTER TABLE public.tipo_socio ADD COLUMN liquidacion boolean;
-ALTER TABLE public.tipo_socio ALTER COLUMN liquidacion SET DEFAULT false;
 
 ALTER TABLE public.instalacion ADD COLUMN cantidad_personas_reserva integer;
 

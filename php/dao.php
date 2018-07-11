@@ -716,9 +716,15 @@ class dao
       return consultar_fuente($sql);
   }  
 
-  function get_listado_instalacion_disponible ($fecha = null)
+  function get_listado_instalacion_disponible ($idafiliacion=null, $fecha = null)
   {
-      $solicitudes = consultar_fuente("SELECT idinstalacion  FROM public.solicitud_reserva  inner join estado on estado.idestado = solicitud_reserva.idestado where fecha = $fecha and estado.cancelada =false");
+      $sql = "SELECT idinstalacion  
+              FROM public.solicitud_reserva  
+              inner join estado on estado.idestado = solicitud_reserva.idestado 
+              where 
+                fecha = $fecha and 
+                estado.cancelada = false";
+      $solicitudes = consultar_fuente($sql);
       
       $where = null;
       foreach ($solicitudes as $solicitud) 
@@ -737,7 +743,10 @@ class dao
                         instalacion.domicilio
               FROM 
                 public.instalacion 
+                inner join motivo_tipo_socio on motivo_tipo_socio.idinstalacion = instalacion.idinstalacion
+                inner join afiliacion on motivo_tipo_socio.idtipo_socio = afiliacion.idtipo_socio
               where 
+                afiliacion.idafiliacion = $idafiliacion and
                 $where
                 ";
 
@@ -747,7 +756,11 @@ class dao
                       instalacion.cantidad_maxima_personas,
                       instalacion.domicilio
               FROM 
-                public.instalacion";
+                public.instalacion 
+              inner join motivo_tipo_socio on motivo_tipo_socio.idinstalacion = instalacion.idinstalacion
+              inner join afiliacion on motivo_tipo_socio.idtipo_socio = afiliacion.idtipo_socio
+              where 
+                afiliacion.idafiliacion = $idafiliacion";
 
       }
      
@@ -808,7 +821,7 @@ class dao
             inner join estado on estado.idestado = solicitud_reserva.idestado
             inner join motivo_tipo_socio using(idmotivo_tipo_socio)
             inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
-            
+            inner join instalacion on solicitud_reserva.idinstalacion = instalacion.idinstalacion
             where
                 $where
             order by fecha desc";
@@ -902,6 +915,7 @@ class dao
             where
               afiliacion.activa =  true and
               $where";
+             
     return consultar_fuente($sql);
   }  
 

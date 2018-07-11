@@ -106,9 +106,9 @@ class ci_solicitud_reserva extends mupum_ci
 		return dao::get_listado_estado('RESERVA');
 	}	
 
-	function get_motivos_segun_categoria($idafiliacion)
+	function get_motivos_segun_categoria( $idinstalacion)
 	{
-		$where  = ' afiliacion.idafiliacion = '.$idafiliacion; 
+		$where  =  'motivo_tipo_socio.idinstalacion='.$idinstalacion; 
 		return dao::get_motivo_por_tipo_socio($where);
 
 	}
@@ -117,11 +117,12 @@ class ci_solicitud_reserva extends mupum_ci
 	{
 		return quote($this->s__fecha);
 	}
-	function get_listado_instalacion_disponible()
+
+	function get_listado_instalacion_disponible($idafiliacion)
 	{
 		$fecha = quote("%{$this->s__dia['fecha']}%");
 
-		return dao::get_listado_instalacion_disponible($fecha);
+		return dao::get_listado_instalacion_disponible($idafiliacion, $fecha);
 	}
 
 	//-----------------------------------------------------------------------------------
