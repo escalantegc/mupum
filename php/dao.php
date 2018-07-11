@@ -915,7 +915,7 @@ class dao
             where
               afiliacion.activa =  true and
               $where";
-             
+
     return consultar_fuente($sql);
   }  
 
@@ -1120,6 +1120,20 @@ class dao
             FROM public.comercio
             inner join localidad using(idlocalidad)
             inner join categoria_comercio using(idcategoria_comercio)
+            where
+              $where";
+    return consultar_fuente($sql);
+  }  
+  function get_listado_concepto($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql =" SELECT idconcepto, 
+                  descripcion
+            FROM public.concepto
+
             where
               $where";
     return consultar_fuente($sql);

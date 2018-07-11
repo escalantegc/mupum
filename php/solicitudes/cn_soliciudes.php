@@ -261,6 +261,19 @@ class cn_soliciudes extends mupum_cn
 	}
 
 	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE MODIFICACION MONTO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function procesar_detalle_modificacion_monto($datos)
+	{
+		$this->dep('dr_reserva')->tabla('dt_detalle_modificacion_monto')->procesar_filas($datos);
+	}
+
+	function get_detalle_modificacion_monto()
+	{
+		return $this->dep('dr_reserva')->tabla('dt_detalle_modificacion_monto')->get_filas();
+	}
+
+	//-----------------------------------------------------------------------------------
 	//---- DT-USUARIO -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 	function cargar_dt_usuario($seleccion)

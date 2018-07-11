@@ -10,7 +10,11 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		try{
 			$this->cn()->guardar_dr_reserva();
+			if (!toba::notificacion()->verificar_mensajes())
+			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
+			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -110,6 +114,7 @@ class ci_administrar_reserva extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_reserva())
 		{
 			$this->cn()->set_dt_reserva($datos);
+
 		} else {
 			$this->cn()->agregar_dt_reserva($datos);
 		}
@@ -139,7 +144,7 @@ class ci_administrar_reserva extends mupum_ci
 
 	function get_estado_cancelada_segun_categoria()
 	{
-		return dao::get_listado_estado_cancelado('RESERVA');
+		return dao::get_listado_estado_cancelado_reserva('RESERVA');
 
 	}	
 
@@ -171,10 +176,29 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_reserva())
 		{
+			$datos['fecha_cancelacion'] =  date("d-m-Y"); 
+			toba::notificacion()->agregar("La reserva ha sido cancelada, la fecha queda liberada para futuras reservas.",'info');
+
 			$this->cn()->set_dt_reserva($datos);
 		} else {
 			$this->cn()->agregar_dt_reserva($datos);
 		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_modificacion_monto --------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_detalle_modificacion_monto(mupum_ei_formulario_ml $form_ml)
+	{
+		$datos = $this->cn()->get_detalle_modificacion_monto();
+		$form_ml->set_datos($datos);
+
+	}
+
+	function evt__frm_ml_detalle_modificacion_monto__modificacion($datos)
+	{
+		$this->cn()->procesar_detalle_modificacion_monto($datos);
 	}
 
 }

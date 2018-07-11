@@ -87,7 +87,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'&Cancelar Reserva', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
-	'¿Esta seguro de cancelar la reserva? Si acepta la fecha quedará liberada para futuras reservas.', --confirmacion
+	'¿Esta seguro de cancelar la reserva? Deberá informar el motivo.', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
 	'prohibido', --imagen

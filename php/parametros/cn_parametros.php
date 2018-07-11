@@ -1080,6 +1080,59 @@ class cn_parametros extends mupum_cn
 	{
 		$id = $this->dep('dr_parametros')->tabla('dt_comercio')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_comercio')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-COMERCIO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_concepto($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_concepto')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_concepto')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_concepto')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_concepto($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_concepto')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_concepto()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_concepto')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_concepto()
+	{
+		$this->dep('dr_parametros')->tabla('dt_concepto')->resetear_cursor();
+	}
+
+	function get_dt_concepto()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_concepto')->get();
+	}
+
+	function set_dt_concepto($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_concepto')->set($datos);
+	}
+
+	function agregar_dt_concepto($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_concepto')->set_cursor($id);
+	}	
+
+	function eliminar_dt_concepto($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_concepto')->eliminar_fila($id[0]);
 	}	
 	
 }
