@@ -64,38 +64,7 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		$this->cn()->cargar_dr_reserva($seleccion);
 		$this->cn()->set_cursor_dt_reserva($seleccion);
-		if ($this->cn()->hay_cursor_dt_reserva())
-		{
-			$estado =dao::get_listado_estado_cancelado_reserva();
-			$datos['idestado'] = $estado[0]['idestado'];
-			if (!isset($datos['idestado']))
-			{
-				toba::notificacion()->agregar("Se debe tildar cancelada enun estado en la cetegoria reserva",'info');
-			}
-			$this->cn()->set_dt_reserva($datos);
-	
-		} 
-		try{
-			$this->cn()->guardar_dr_reserva();
-				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("El estado civil esta siendo referenciado, no puede eliminarlo",'error');
-				
-			} 
-
-			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_reserva'))
-			{
-				toba::notificacion()->agregar("El estado civil ya esta registrado.",'info');
-				
-			} 
-			
-		}
-		$this->cn()->resetear_dr_reserva();
+		$this->set_pantalla('pant_cancelar');
 
 	}
 
@@ -166,6 +135,12 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		return dao::get_listado_estado('RESERVA');
 
+	}		
+
+	function get_estado_cancelada_segun_categoria()
+	{
+		return dao::get_listado_estado_cancelado('RESERVA');
+
 	}	
 
 	
@@ -177,6 +152,30 @@ class ci_administrar_reserva extends mupum_ci
 
 
 
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_cancelar -----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_cancelar(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_reserva())
+		{
+			$datos = $this->cn()->get_dt_reserva();
+			
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_cancelar__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_reserva())
+		{
+			$this->cn()->set_dt_reserva($datos);
+		} else {
+			$this->cn()->agregar_dt_reserva($datos);
+		}
+	}
 
 }
 ?>

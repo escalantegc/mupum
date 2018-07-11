@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000019]--  Motivo por Tipo de Socio 
+--[106000019]--  Configuracion Reserva 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Motivo por Tipo de Socio', --nombre
+	'Configuracion Reserva', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion

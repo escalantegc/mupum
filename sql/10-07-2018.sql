@@ -19,7 +19,7 @@ ALTER TABLE public.categoria_comercio
 
 -- DROP INDEX public.idx_categoria_comercion;
 
-CREATE UNIQUE INDEX idx_categoria_comercion
+CREATE UNIQUE INDEX idx_categoria_comercio
   ON public.categoria_comercio
   USING btree
   (descripcion COLLATE pg_catalog."default");

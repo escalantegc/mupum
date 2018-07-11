@@ -45,7 +45,7 @@ class dao
           where
             $where 
           order by
-            descripcion";
+            apellido,nombres";
          
       return consultar_fuente($sql);
   }
@@ -78,7 +78,7 @@ class dao
             legajo is not null and
             $where 
           order by
-            descripcion";
+            apellido,nombres";
       return consultar_fuente($sql);
   }
 
@@ -420,6 +420,22 @@ class dao
           categoria_estado.descripcion ilike $categoria_estado ";
     return consultar_fuente($sql);
 
+  }  
+
+  function get_estado_cancelada_segun_categoria($categoria_estado = null)
+  {
+    $categoria_estado = quote("%{$categoria_estado}%");
+    $sql = "SELECT  estado.idestado, 
+            estado.descripcion
+
+        FROM 
+          public.estado
+        inner join categoria_estado using (idcategoria_estado)
+        WHERE
+          categoria_estado.descripcion ilike $categoria_estado and
+          cancelada=true ";
+    return consultar_fuente($sql);
+
   }
   
   function get_listado_estado_afiliacion($estado = null)
@@ -689,6 +705,7 @@ class dao
       }
       $sql ="SELECT   idinstalacion, 
                       nombre, 
+                      cantidad_personas_reserva,
                       cantidad_maxima_personas,
                       domicilio
               FROM 
@@ -790,7 +807,7 @@ class dao
             inner join estado on estado.idestado = solicitud_reserva.idestado
             inner join motivo_tipo_socio using(idmotivo_tipo_socio)
             inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
-            inner join instalacion using(idinstalacion)
+            
             where
                 $where
             order by fecha desc";
@@ -900,11 +917,14 @@ class dao
                     monto_reserva, 
                     monto_limpieza_mantenimiento, 
                     monto_garantia,
+                    instalacion.nombre as instalacion,
+                    monto_persona_extra,
                     COALESCE(monto_reserva,0) + COALESCE(monto_limpieza_mantenimiento,0) + COALESCE(monto_garantia,0) as total
             FROM 
             public.motivo_tipo_socio
             inner join tipo_socio using(idtipo_socio)
             inner join motivo using(idmotivo)
+            left outer join instalacion using(idinstalacion)
             where
              $where";
     return consultar_fuente($sql);
