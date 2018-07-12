@@ -104,7 +104,7 @@ class ci_administrar_reserva extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_reserva())
 		{
 			$datos = $this->cn()->get_dt_reserva();
-			
+			$datos['monto_final'] = $datos['monto'];
 			$form->set_datos($datos);
 		}
 	}
