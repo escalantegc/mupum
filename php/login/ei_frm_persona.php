@@ -49,14 +49,16 @@ class ei_frm_persona extends mupum_ei_formulario
 
 		{$this->objeto_js}.ocultar_mostrar = function(datos)
 		{ 
-			alert(datos['tipo']);
+		
 			if (datos['tipo']=='titular')
 			{
 				this.ef('idclaustro').mostrar();
 				this.ef('idunidad_academica').mostrar();
+				this.ef('legajo').mostrar();
 			} else {
 				this.ef('idclaustro').ocultar();
 				this.ef('idunidad_academica').ocultar();
+				this.ef('legajo').ocultar();
 			}                              
 		}
 		";

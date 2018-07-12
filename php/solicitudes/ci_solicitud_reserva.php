@@ -11,6 +11,19 @@ class ci_solicitud_reserva extends mupum_ci
 	protected $s__dia;
 	protected $s__fecha;
 	protected $s__persona;
+
+	function conf()
+	{
+		if (isset($this->s__dia))
+		{
+			$this->evento('procesar')->mostrar();
+			$this->evento('cancelar')->mostrar();
+		} else {
+			$this->evento('procesar')->ocultar();
+			$this->evento('cancelar')->ocultar();
+		}
+		
+	}
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -89,6 +102,8 @@ class ci_solicitud_reserva extends mupum_ci
 			if ($dias <=  $configuracion['limite_dias_para_reserva'])
 			{
 				$this->s__dia['fecha'] = $fecha_seleccionada;
+
+
 			} else {
 				toba::notificacion()->agregar("No puede realizar una reserva con mas de: ".$configuracion['limite_dias_para_reserva']. " dias de anticipacion.",'info');
 				unset($this->s__dia);
@@ -103,6 +118,7 @@ class ci_solicitud_reserva extends mupum_ci
 		$nuevafecha = strtotime ( '+60 day' , strtotime ( $fecha ) ) ;
 		$nuevafecha = date ( 'Y-m-j' , $nuevafecha );
 		$hoy =  date("Y", strtotime($nuevafecha));  */
+
 			
 	}
 
@@ -260,6 +276,8 @@ class ci_solicitud_reserva extends mupum_ci
 		$respuesta->set($monto);	
 	}
 	
+
+
 
 }
 ?>
