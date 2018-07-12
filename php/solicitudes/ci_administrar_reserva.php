@@ -176,7 +176,6 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_reserva())
 		{
-			$datos['fecha_cancelacion'] =  date("d-m-Y"); 
 			toba::notificacion()->agregar("La reserva ha sido cancelada, la fecha queda liberada para futuras reservas.",'info');
 
 			$this->cn()->set_dt_reserva($datos);
