@@ -1140,7 +1140,7 @@ class dao
     return consultar_fuente($sql);
   }
 
-  function get_excedente_por_persona_reserva($idinstalacion = null, $idmotivo_tipo_socio = null)
+  function get_mensaje_excedente_por_persona_reserva($idinstalacion = null, $idmotivo_tipo_socio = null)
   {
     $sql1 = " SELECT monto_persona_extra
               FROM 
@@ -1164,6 +1164,56 @@ class dao
     $mensaje =  'El monto de la reserva es hasta '. $capacidad_permitida.' personas. Por cada persona extra se cobrara: $'.$monto_excedente;
    
     return $mensaje;
+  }
+  function get_monto_por_persona_excedente( $idmotivo_tipo_socio = null)
+  {
+    $sql1 = " SELECT monto_persona_extra
+              FROM 
+                public.motivo_tipo_socio
+              where 
+              idmotivo_tipo_socio = $idmotivo_tipo_socio";
+    $montos = consultar_fuente($sql1);         
+
+  
+
+   return $montos[0]['monto_persona_extra'];
+    
+  }
+
+  function get_capacidad_reserva_instalacion($idinstalacion = null)
+  {
+        
+
+    $sql2 = " SELECT  cantidad_maxima_personas,  
+                      cantidad_personas_reserva
+              FROM 
+                public.instalacion
+              where 
+                idinstalacion = $idinstalacion";
+    $cantidades = consultar_fuente($sql2);  
+
+    $capacidad_permitida =  $cantidades[0]['cantidad_personas_reserva'];
+    $capacidad_maxima =  $cantidades[0]['cantidad_maxima_personas'];
+
+    return $capacidad_permitida ;
+  }
+
+  function get_capacidad_maxima_instalacion($idinstalacion = null)
+  {
+        
+
+    $sql2 = " SELECT  cantidad_maxima_personas,  
+                      cantidad_personas_reserva
+              FROM 
+                public.instalacion
+              where 
+                idinstalacion = $idinstalacion";
+    $cantidades = consultar_fuente($sql2);  
+
+    $capacidad_permitida =  $cantidades[0]['cantidad_personas_reserva'];
+    $capacidad_maxima =  $cantidades[0]['cantidad_maxima_personas'];
+
+    return $capacidad_maxima ;
   }
 }
 ?>
