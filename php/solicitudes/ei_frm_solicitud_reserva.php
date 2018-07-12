@@ -43,7 +43,7 @@ class ei_frm_solicitud_reserva extends mupum_ei_formulario
 						
 						this.ef('monto_excedente').set_estado(monto_ex);
 						this.ef('excedente').set_estado(excedente);
-						
+
 						this.ef('monto').set_solo_lectura(true);
 						this.ef('monto_excedente').set_solo_lectura(true);
 						this.ef('monto_persona_extra').set_solo_lectura(true);
@@ -52,6 +52,8 @@ class ei_frm_solicitud_reserva extends mupum_ei_formulario
 						this.ef('monto').set_estado(total);
 					} else {
 						total =  parseInt(monto_reserva);
+						this.ef('monto_excedente').resetear_estado();
+						this.ef('excedente').resetear_estado();
 						this.ef('monto').set_estado(total);
 					}
 				} else {
