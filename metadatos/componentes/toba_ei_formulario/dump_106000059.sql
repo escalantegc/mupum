@@ -536,7 +536,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000059', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'monto', --identificador
-	'ef_editable_numero', --elemento_formulario
+	'ef_editable_moneda', --elemento_formulario
 	'monto', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio

@@ -836,12 +836,29 @@ class dao
         $where = '1 = 1';
       }
       $sql = "SELECT  idforma_pago, 
-                      descripcion
+                      descripcion,
+                      planilla
+
               FROM 
                   public.forma_pago 
               
               where
                 $where
+              order by
+                  descripcion";
+      return consultar_fuente($sql);
+  } 
+
+  function get_listado_forma_pago_planilla()
+  {
+    
+      $sql = "SELECT  idforma_pago, 
+                      descripcion
+              FROM 
+                  public.forma_pago 
+              
+              where
+                planilla = true 
               order by
                   descripcion";
       return consultar_fuente($sql);
@@ -962,6 +979,42 @@ class dao
     if(isset($motivo[0]['total']))
     {
       return $motivo[0]['total']; 
+    }
+  }
+  function get_monto_porcentaje($idmotivo_tipo_socio)
+  {
+   
+    $sql = "SELECT  
+                    monto_reserva,
+                    porcentaje_senia
+            FROM 
+              public.motivo_tipo_socio
+            where
+              idmotivo_tipo_socio =  $idmotivo_tipo_socio";
+    $motivo = consultar_fuente($sql);
+    if((isset($motivo[0]['monto_reserva'])) and (isset($motivo[0]['porcentaje_senia'])))
+    {
+        $datos['monto_porcentaje'] = $motivo[0]['monto_reserva'] *  ($motivo[0]['porcentaje_senia']/100);
+        return $datos;
+    }
+  }
+
+  function get_porcentaje_senia_reserva_segun_motivo_por_tipo_socio($idmotivo_tipo_socio)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  
+                    porcentaje_senia
+            FROM 
+              public.motivo_tipo_socio
+            where
+              idmotivo_tipo_socio =  $idmotivo_tipo_socio";
+    $motivo = consultar_fuente($sql);
+    if(isset($motivo[0]['porcentaje_senia']))
+    {
+      return $motivo[0]['porcentaje_senia']; 
     }
   }
 
@@ -1132,11 +1185,23 @@ class dao
       $where = '1 = 1';
     }
     $sql =" SELECT idconcepto, 
-                  descripcion
+                  descripcion,
+                  senia
             FROM public.concepto
 
             where
               $where";
+    return consultar_fuente($sql);
+  }
+
+  function get_listado_concepto_senia()
+  {
+    $sql =" SELECT idconcepto, 
+                  descripcion
+            FROM public.concepto
+
+            where
+              senia = true";
     return consultar_fuente($sql);
   }
 
@@ -1161,7 +1226,7 @@ class dao
     $capacidad_permitida =  $cantidades[0]['cantidad_personas_reserva'];
     $capacidad_maxima =  $cantidades[0]['cantidad_maxima_personas'];
 
-    $mensaje =  'El monto de la reserva es hasta '. $capacidad_permitida.' personas. Por cada persona extra se cobrara: $'.$monto_excedente;
+    $mensaje =  '<p>El monto de la reserva es hasta '. $capacidad_permitida.' personas.</br> Por cada persona extra se cobrara: $'.$monto_excedente.'</p>';
    
     return $mensaje;
   }

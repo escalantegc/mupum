@@ -17,10 +17,27 @@ class ci_solicitud_reserva extends mupum_ci
 
 	function evt__procesar()
 	{
+		try{
+
+			$this->cn()->guardar_dr_reserva();
+			$this->enviar_correo_reserva($this->s__persona[0]);
+			$this->enviar_correo_reserva_mutual($this->s__persona[0]);
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			$mensaje= $error->get_mensaje_motor();
+			
+			toba::notificacion()->agregar('Tira el error '.$mensaje,'error');
+			 		
+		}
+		$this->cn()->resetear_dr_reserva();
+		$this->set_pantalla('pant_inicial');
+		unset($this->s__dia);
 	}
 
 	function evt__cancelar()
 	{
+		unset($this->s__dia);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -98,6 +115,7 @@ class ci_solicitud_reserva extends mupum_ci
 		if (empty($this->s__dia)) 
 		{
 			$pantalla->eliminar_dep('frm');	
+			$pantalla->eliminar_dep('frm_detalle_pago');	
 		}
 	}
 
@@ -138,7 +156,7 @@ class ci_solicitud_reserva extends mupum_ci
 		}
 	}
 
-	function evt__frm__procesar($datos)
+	function evt__frm__modificacion($datos)
 	{
 		$estado = dao::get_listado_estado_reserva('confirmada');
 		$datos['idestado'] = $estado[0]['idestado']; 
@@ -153,37 +171,29 @@ class ci_solicitud_reserva extends mupum_ci
 		$this->s__persona[0]['motivo'] = $motivo[0]['motivo']; 
 		$this->cn()->agregar_dt_reserva($datos);
 
-		try{
-
-			$this->cn()->guardar_dr_reserva();
-			$this->enviar_correo_reserva($this->s__persona[0]);
-			$this->enviar_correo_reserva_mutual($this->s__persona[0]);
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			$mensaje= $error->get_mensaje_motor();
-			
-			toba::notificacion()->agregar('Tira el error '.$mensaje,'error');
-			 		
-		}
-		$this->cn()->resetear_dr_reserva();
-		$this->set_pantalla('pant_inicial');
-		unset($this->s__dia);
-	}
-
-	function evt__frm__baja()
-	{
 	}
 
 	function evt__frm__cancelar()
 	{
 		unset($this->s__dia);
 	}
+	//-----------------------------------------------------------------------------------
+	//---- frm_detalle_pago -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	/*function conf__frm_detalle_pago(mupum_ei_formulario_ml $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_pago();
+		$form_ml->set_datos($datos);
+	}*/
+
+	function evt__frm_detalle_pago__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_detalle_pago($datos);
+	}
 
 	function enviar_correo_reserva($persona)
 	{
-		
-		
 	    $atributos['email'] = $persona['correo'];
 	    $fecha = $persona['fecha'];
 	    $instalacion = $persona['instalacion'];
@@ -241,12 +251,15 @@ class ci_solicitud_reserva extends mupum_ci
             $chupo = $error->get_mensaje_log();
             toba::notificacion()->agregar($chupo, 'info');
         }
-	}	
+	}
+
+
+	function ajax__traer_monto_senia($idmotivo_tipo_socio, toba_ajax_respuesta $respuesta)
+	{
+		$monto = dao::get_monto_porcentaje($idmotivo_tipo_socio);
+		$respuesta->set($monto);	
+	}
+	
+
 }
-
-
-
-
-
-
 ?>
