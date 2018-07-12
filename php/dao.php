@@ -84,41 +84,73 @@ class dao
 
   function get_listado_socios($where = null)
 	{
-		if (!isset($where))
-		{
-			$where = '1 = 1';
-		}
-  
+    $sql = '';
     $sql_usuario = self::get_sql_usuario();
-		$sql = "SELECT 	idpersona, 
+		if (isset($where))
+		{
+			 $sql = "SELECT  idpersona, 
             (tipo_documento.sigla ||'-'||nro_documento) as documento, 
-						nro_documento, 
+            nro_documento, 
             tipo_documento.sigla as tipo_documento,
             apellido,
             nombres,
-						cuil, 
-						legajo, 
-						(apellido||', '||nombres) as persona, 
-   					correo, 
-   					cbu, 
-   					fecha_nacimiento, 
-   					idlocalidad, 
-   					calle, altura, 
-   					piso, 
-   					depto, 
-   					idestado_civil,
+            cuil, 
+            legajo, 
+            (apellido||', '||nombres) as persona, 
+            correo, 
+            cbu, 
+            fecha_nacimiento, 
+            idlocalidad, 
+            calle, altura, 
+            piso, 
+            depto, 
+            idestado_civil,
             (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
             tipo_socio.descripcion as tipo
-  				FROM public.persona
-  				inner join tipo_documento using(idtipo_documento)
+          FROM public.persona
+          inner join tipo_documento using(idtipo_documento)
           inner join afiliacion using (idpersona)
           inner join tipo_socio using(idtipo_socio)
-  				where
+          where
             afiliacion.activa = true and
             $sql_usuario and
-  					$where 
-  				order by
-  					apellido,nombres";
+            $where 
+          order by
+            apellido,nombres";
+		} else {
+      $sql = "SELECT  idpersona, 
+            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
+            nro_documento, 
+            tipo_documento.sigla as tipo_documento,
+            apellido,
+            nombres,
+            cuil, 
+            legajo, 
+            (apellido||', '||nombres) as persona, 
+            correo, 
+            cbu, 
+            fecha_nacimiento, 
+            idlocalidad, 
+            calle, altura, 
+            piso, 
+            depto, 
+            idestado_civil,
+            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+            tipo_socio.descripcion as tipo
+          FROM public.persona
+          inner join tipo_documento using(idtipo_documento)
+          inner join afiliacion using (idpersona)
+          inner join tipo_socio using(idtipo_socio)
+          where
+            afiliacion.activa = true and
+            tipo_socio.titular = true and
+            $sql_usuario 
+          order by
+            apellido,nombres";
+    }
+  
+   
+		
 
   		
       return consultar_fuente($sql);

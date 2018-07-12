@@ -163,14 +163,7 @@ class ci_solicitud_reserva extends mupum_ci
 	//---- frm --------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm(ei_frm_solicitud_reserva $form)
-	{
-		if ($this->cn()->hay_cursor_dt_reserva())
-		{
-			$datos = $this->cn()->get_dt_reserva();
-			$form->set_datos($datos);
-		}
-	}
+	
 
 	function evt__frm__modificacion($datos)
 	{

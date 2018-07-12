@@ -39,7 +39,7 @@ class ei_frm_solicitud_reserva extends mupum_ei_formulario
 					if (nro_personas > capacidad_permitida)
 					{
 						
-						excedente = nro_personas - capacidad_permitida;
+						excedente = parseInt(nro_personas) - parseInt(capacidad_permitida);
 						monto_ex = monto_persona_extra * excedente;
 						
 						this.ef('monto_excedente').set_estado(monto_ex);
