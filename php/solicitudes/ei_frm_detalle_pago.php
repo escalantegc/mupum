@@ -15,7 +15,7 @@ class ei_frm_detalle_pago extends mupum_ei_formulario_ml
 
 		{$this->objeto_js}.evt__monto__procesar = function(es_inicial, fila)
 		{
-			total = this.controlador.dep('frm').ef('monto').get_estado();
+			total = this.controlador.dep('frm').ef('monto_final').get_estado();
 
 			total_filas = this.total('monto');
 	
