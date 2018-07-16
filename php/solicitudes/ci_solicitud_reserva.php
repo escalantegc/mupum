@@ -178,6 +178,7 @@ class ci_solicitud_reserva extends mupum_ci
 		$this->s__persona[0]['fecha'] = date("d/m/Y", strtotime( $datos['fecha']));
 		$this->s__persona[0]['instalacion'] = $instalacion[0]['nombre']; 
 		$this->s__persona[0]['motivo'] = $motivo[0]['motivo']; 
+		$datos['monto_final'] = $datos['monto'];
 		$this->cn()->agregar_dt_reserva($datos);
 
 	}
