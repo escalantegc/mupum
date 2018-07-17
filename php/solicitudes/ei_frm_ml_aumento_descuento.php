@@ -6,6 +6,8 @@ class ei_frm_ml_aumento_descuento extends mupum_ei_formulario_ml
 		echo "
 			{$this->objeto_js}.ini = function () 
 			{
+				//--tomo el id del htmlbuttonelement y seteo la visibilidad oculta
+					document.getElementById(this.boton_deshacer().id).style.visibility = 'hidden';
 				var filas = this.filas()
 				for (id_fila in filas) 
 				{
@@ -16,8 +18,7 @@ class ei_frm_ml_aumento_descuento extends mupum_ei_formulario_ml
 					this.ef('idconcepto').ir_a_fila(filas[id_fila]).desactivar();
 					this.ef('tipo_movimiento').ir_a_fila(filas[id_fila]).desactivar();
 					this.ef('descripcion').ir_a_fila(filas[id_fila]).desactivar();
-					//--tomo el id del htmlbuttonelement y seteo la visibilidad oculta
-					document.getElementById(this.boton_deshacer().id).style.visibility = 'hidden';
+					
 				  }
 				}
 			}
