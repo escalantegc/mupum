@@ -142,20 +142,21 @@ class ci_administrar_usuarios extends mupum_ci
 
 	function evt__frm__modificacion($datos)
 	{
+		$datos['clave'] = toba_usuario::generar_clave_aleatoria(8);
 		$usuario = quote("{$datos['usuario']}");
 		if ($this->cn()->hay_cursor_dt_usuario())
 		{
 			if($datos['cambiar_clave']==1)
 			{
+				$this->cn()->set_dt_usuario($datos);
 				
 				$persona = dao::get_listado_persona('persona.nro_documento='.$usuario);
+				$persona[0]['clave'] = $datos['clave'];
 				$this->enviar_correo_usuario($persona[0]);
 				
 			}
 		} else {
 
-			$datos['clave'] = toba_usuario::generar_clave_aleatoria(8);
-			
 			if($datos['cambiar_clave']==1)
 			{
 				

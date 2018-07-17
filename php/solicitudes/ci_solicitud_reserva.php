@@ -218,8 +218,8 @@ class ci_solicitud_reserva extends mupum_ci
 				"Instalacion : ".$instalacion. "<br>".
 				"Fecha: ".$fecha. "<br>".
 				"Motivo: ".$motivo. "<br>".
-				"Debe acercarse a la oficina de la mutual ubicada en Santa Catalina Nro 2379 para abonar su reserva.<br>".
-				"Para cancelar la reserva debe comunicarse por telefono al numero: 376-4422787.<br>".
+				"Para la firma del contrato y abonar la seña y debe acercarse a la sede (ubicada en Santa Catalina Nro 2379), dentro de las 72 horas de generada la reserva.<br>".
+				"Para cancelar la reserva se deberá informar por nota firmada por el socio, con una semana de anticipación a la fecha reservada..<br>".
 				"<p>Saludos ATTE .- MUPUM</p>".
 				"<p>No responda este correo, fue generado por sistema. </p>";
 

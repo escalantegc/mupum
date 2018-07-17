@@ -886,6 +886,118 @@ class dao
       }
       return $resultado;
   }
+  function get_listado_reserva_mes_en_curso($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql="SELECT  solicitud_reserva.idsolicitud_reserva, 
+                    persona.apellido ||', '|| persona.nombres as persona,
+                    fecha, 
+                    instalacion.nombre as instalacion, 
+                    estado.descripcion as estado, 
+                    motivo.descripcion as motivo, 
+                    nro_personas,
+                    solicitud_reserva.monto,
+                    monto_final,
+                    sum (detalle_pago.monto) as pago_detalle
+            FROM 
+                public.solicitud_reserva
+            inner join afiliacion using(idafiliacion)
+            left outer join detalle_pago using(idsolicitud_reserva)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join estado on estado.idestado = solicitud_reserva.idestado
+            inner join motivo_tipo_socio using(idmotivo_tipo_socio)
+            inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
+            inner join instalacion on solicitud_reserva.idinstalacion = instalacion.idinstalacion
+            where
+              extract(MONTH FROM fecha) = extract(MONTH FROM current_date) and
+              $where
+            group by 
+              solicitud_reserva.idsolicitud_reserva,
+              persona.apellido ,
+              persona.nombres ,
+              fecha, 
+              instalacion.nombre , 
+              estado.descripcion , 
+              motivo.descripcion , 
+              nro_personas,
+              solicitud_reserva.monto,
+              monto_final,
+              estado.confirmada 
+            order by 
+              estado.confirmada desc,fecha desc";
+      $datos = consultar_fuente($sql);
+      $resultado = array();
+      foreach ($datos as $dato) 
+      {
+        if ($dato['monto_final']==$dato['pago_detalle'])
+        {
+          $dato['pago'] = 1;
+        } else{
+           $dato['pago'] = 0;
+        }
+        $resultado[] = $dato;
+      }
+      return $resultado;
+  }
+  
+  function get_listado_reserva_historial($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql="SELECT  solicitud_reserva.idsolicitud_reserva, 
+                    persona.apellido ||', '|| persona.nombres as persona,
+                    fecha, 
+                    instalacion.nombre as instalacion, 
+                    estado.descripcion as estado, 
+                    motivo.descripcion as motivo, 
+                    nro_personas,
+                    solicitud_reserva.monto,
+                    monto_final,
+                    sum (detalle_pago.monto) as pago_detalle
+            FROM 
+                public.solicitud_reserva
+            inner join afiliacion using(idafiliacion)
+            left outer join detalle_pago using(idsolicitud_reserva)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join estado on estado.idestado = solicitud_reserva.idestado
+            inner join motivo_tipo_socio using(idmotivo_tipo_socio)
+            inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
+            inner join instalacion on solicitud_reserva.idinstalacion = instalacion.idinstalacion
+            where
+              extract(MONTH FROM fecha) != extract(MONTH FROM current_date) and
+              $where
+            group by 
+              solicitud_reserva.idsolicitud_reserva,
+              persona.apellido ,
+              persona.nombres ,
+              fecha, 
+              instalacion.nombre , 
+              estado.descripcion , 
+              motivo.descripcion , 
+              nro_personas,
+              solicitud_reserva.monto,
+              monto_final
+            order by 
+              fecha desc";
+      $datos = consultar_fuente($sql);
+      $resultado = array();
+      foreach ($datos as $dato) 
+      {
+        if ($dato['monto_final']==$dato['pago_detalle'])
+        {
+          $dato['pago'] = 1;
+        } else{
+           $dato['pago'] = 0;
+        }
+        $resultado[] = $dato;
+      }
+      return $resultado;
+  }
 
   function get_listado_forma_pago($where = null)
   {

@@ -50,9 +50,9 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_reserva($this->s__where);
+			$datos = dao::get_listado_reserva_mes_en_curso($this->s__where);
 		}else{
-			$datos = dao::get_listado_reserva();
+			$datos = dao::get_listado_reserva_mes_en_curso();
 		}
 		$cuadro->set_datos($datos);
 	}
@@ -72,6 +72,27 @@ class ci_administrar_reserva extends mupum_ci
 
 	}
 
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_historial -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_historial(ei_cuadro_administrar_reserva $cuadro)
+	{
+		if(isset($this->s__datos_filtro))
+		{
+			$datos = dao::get_listado_reserva_historial($this->s__where);
+		}else{
+			$datos = dao::get_listado_reserva_historial();
+		}
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_historial__seleccion($seleccion)
+	{
+		$this->cn()->cargar_dr_reserva($seleccion);
+		$this->cn()->set_cursor_dt_reserva($seleccion);
+		$this->set_pantalla('pant_edicion');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -199,6 +220,8 @@ class ci_administrar_reserva extends mupum_ci
 	{
 		$this->cn()->procesar_detalle_modificacion_monto($datos);
 	}
+
+
 
 }
 ?>
