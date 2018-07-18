@@ -1507,5 +1507,62 @@ class dao
     }
 
   }
+
+  function get_listado_reempadronamiento ($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idreempadronamiento, 
+                    nombre, 
+                    anio, 
+                    activo
+            FROM 
+              public.reempadronamiento 
+            where 
+                $where";
+      return consultar_fuente($sql);
+
+  }  
+
+  function get_listado_solicitudes_reempadronamientos ()
+  {
+
+    $sql = "SELECT  idreempadronamiento,  
+                    idafiliacion, 
+                    notificaciones, 
+                    fecha_notificacion, 
+                    atendida,
+                    (apellido||', '|| nombres) as socio
+            FROM 
+              public.solicitud_reempadronamiento
+            inner join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            where 
+                  notificaciones = 0
+            limit 50";
+      return consultar_fuente($sql);
+
+  }  
+
+  function get_listado_solicitudes_reempadronamientos_enviadas ()
+  {
+
+    $sql = "SELECT  idreempadronamiento,  
+                    idafiliacion, 
+                    notificaciones, 
+                    fecha_notificacion, 
+                    atendida,
+                    (apellido||', '|| nombres) as socio
+            FROM 
+              public.solicitud_reempadronamiento
+            inner join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            where 
+                  notificaciones != 0";
+      return consultar_fuente($sql);
+
+  }
 }
 ?>

@@ -25,6 +25,19 @@ class cn_soliciudes extends mupum_cn
 				$this->dep('dr_usuario')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
 			}
 		}
+	}	
+
+	function cargar_dr_reempadronamiento ()	
+	{
+		if(!$this->dep('dr_reempadronamiento')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_reempadronamiento')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_reempadronamiento')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
 	}
 	
 	function guardar_dr_solicitudes()
@@ -54,6 +67,16 @@ class cn_soliciudes extends mupum_cn
 	function resetear_dr_usuario()
 	{
 		$this->dep('dr_usuario')->resetear();
+	}	
+
+	function guardar_dr_reempadronamiento()
+	{
+		$this->dep('dr_reempadronamiento')->sincronizar();
+	}
+
+	function resetear_dr_reempadronamiento()
+	{
+		$this->dep('dr_reempadronamiento')->resetear();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -426,6 +449,112 @@ class cn_soliciudes extends mupum_cn
 		} else {
 			return 'noexiste';
 		}
+	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-REEMPADRONAMIENTO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_reempadronamiento($seleccion)
+	{
+		if(!$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_reempadronamiento()
+	{
+		return $this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_reempadronamiento()
+	{
+		$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->resetear_cursor();
+	}
+
+	function get_dt_reempadronamiento()
+	{
+		return $this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->get();
+	}
+
+	function set_dt_reempadronamiento($datos)
+	{
+		$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->set($datos);
+	}
+
+	function agregar_dt_reempadronamiento($datos)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->nueva_fila($datos);
+		$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->set_cursor($id);
+	}	
+
+	function eliminar_dt_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reempadronamiento')->tabla('dt_reempadronamiento')->eliminar_fila($id[0]);
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-SOLICITUD-REEMPADRONAMIENTO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_solicitud_reempadronamiento($seleccion)
+	{
+		if(!$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_solicitud_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_solicitud_reempadronamiento()
+	{
+		return $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_solicitud_reempadronamiento()
+	{
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->resetear_cursor();
+	}
+
+	function get_dt_solicitud_reempadronamiento()
+	{
+		return $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->get();
+	}
+
+	function set_dt_solicitud_reempadronamiento($datos)
+	{
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->set($datos);
+	}
+
+	function agregar_dt_solicitud_reempadronamiento($datos)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->nueva_fila($datos);
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->set_cursor($id);
+	}	
+
+	function eliminar_dt_solicitud_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->eliminar_fila($id[0]);
 	}
 }
 

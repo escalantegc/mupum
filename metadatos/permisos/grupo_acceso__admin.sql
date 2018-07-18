@@ -310,4 +310,94 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	NULL, --item_id
 	'106000037'  --item
 );
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000038'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000039'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000040'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000041'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000042'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000043'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000044'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000045'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000046'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000047'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000048'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000049'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000050'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000051'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
+	'106000052'  --item
+);
 --- FIN Grupo de desarrollo 106
