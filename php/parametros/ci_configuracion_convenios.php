@@ -21,9 +21,9 @@ class ci_configuracion_convenios extends mupum_ci
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_motivo_por_tipo_socio'))
+			if(strstr($mensaje_log,'idx_convenio'))
 			{
-				toba::notificacion()->agregar("La configuracion del convenio ya esa registrada. No puede tener mas de una configuracion de reserva con el mismo tipo de socio, motivo e instalacion..",'info');
+				toba::notificacion()->agregar("La configuracion del convenio ya esa registrada. ",'info');
 			} 
 			
 		}
