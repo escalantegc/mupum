@@ -1450,5 +1450,62 @@ class dao
 
     return $capacidad_maxima ;
   }
+
+  function get_listado_convenios($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+      $sql = "SELECT  idconvenio, 
+                      categoria_comercio.descripcion as categoria, 
+                      titulo, 
+                      fecha_inicio, 
+                      fecha_fin, 
+                      maximo_cuotas, 
+                      monto_maximo_mensual, 
+                      permite_financiacion, 
+                      activo, 
+                      maneja_bono
+              FROM 
+                public.convenio
+              inner join categoria_comercio using (idcategoria_comercio)
+              where 
+                $where";
+      return consultar_fuente($sql);
+          
+  }
+
+  function get_comercios_combo_editable($filtro = null)
+  {
+    if (! isset($filtro) || trim($filtro)=='')
+    {
+      return array();
+    }
+    $filtro = quote("%{$filtro}%");
+
+    $sql = "  SELECT idcomercio, categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+              FROM public.comercio
+              inner join categoria_comercio using (idcategoria_comercio)
+              WHERE 
+                   categoria_comercio.descripcion ||'-'||nombre ilike $filtro limit 20 ";
+    return consultar_fuente($sql);
+
+  } 
+
+  function get_descripcion_comercio($idcomercio = null)
+  {
+    $sql = "SELECT idcomercio, categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+              FROM public.comercio
+            inner join categoria_comercio using (idcategoria_comercio)
+            WHERE 
+              comercio.idcomercio =  $idcomercio";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['nombre']))
+    {
+      return $res[0]['nombre'];
+    }
+
+  }
 }
 ?>

@@ -212,14 +212,15 @@ class ci_solicitud_reserva extends mupum_ci
 	    //Armo el mail nuevo &oacute;
 	    $asunto = "Reserva Confirmada";
 	    
-		$cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['persona'])."<br>".
-				"<p>Por medio del presente le informamos que la reserva a sido confirmada.</p> ".
-				"<p>Los datos su reserva son:</p>".
+		$cuerpo_mail = "Estimado/a: ".trim($persona['persona'])."<br>".
+				"Por medio del presente le informamos que la reserva a sido confirmada.<br><br> ".
+				"Los datos su reserva son:<br>".
 				"Instalacion : ".$instalacion. "<br>".
 				"Fecha: ".$fecha. "<br>".
-				"Motivo: ".$motivo. "<br>".
-				"Para la firma del contrato y abonar la seña y debe acercarse a la sede (ubicada en Santa Catalina Nro 2379), dentro de las 72 horas de generada la reserva.<br>".
-				"Para cancelar la reserva se deberá informar por nota firmada por el socio, con una semana de anticipación a la fecha reservada..<br>".
+				"Motivo: ".$motivo. "<br><br>".
+				"<b>IMPORTANTE:</b><br>".
+				"Para la firma del contrato y abonar la seña debe acercarse a la sede (ubicada en Santa Catalina Nro 2379), dentro de las 72 horas de generada la reserva.<br>".
+				"Para cancelar la reserva se deberá informar por nota firmada por el socio, con una semana de anticipación a la fecha reservada..<br><br>".
 				"<p>Saludos ATTE .- MUPUM</p>".
 				"<p>No responda este correo, fue generado por sistema. </p>";
 

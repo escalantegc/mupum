@@ -1135,6 +1135,96 @@ class cn_parametros extends mupum_cn
 		$this->dep('dr_parametros')->tabla('dt_concepto')->eliminar_fila($id[0]);
 	}	
 	
+	//-----------------------------------------------------------------------------------
+	//---- DR-CONVENIO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_convenio($seleccion)
+	{
+		if(!$this->dep('dr_convenio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_convenio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_convenio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function guardar_dr_convenio()
+	{
+		$this->dep('dr_convenio')->sincronizar();
+	}
+
+	function resetear_dr_convenio()
+	{
+		$this->dep('dr_convenio')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONVENIO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_convenio($seleccion)
+	{
+		if(!$this->dep('dr_convenio')->tabla('dt_convenio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_convenio')->tabla('dt_convenio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_convenio')->tabla('dt_convenio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_convenio($seleccion)
+	{
+		$id = $this->dep('dr_convenio')->tabla('dt_convenio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_convenio')->tabla('dt_convenio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_convenio()
+	{
+		return $this->dep('dr_convenio')->tabla('dt_convenio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_convenio()
+	{
+		$this->dep('dr_convenio')->tabla('dt_convenio')->resetear_cursor();
+	}
+
+	function get_dt_convenio()
+	{
+		return $this->dep('dr_convenio')->tabla('dt_convenio')->get();
+	}
+
+	function set_dt_convenio($datos)
+	{
+		$this->dep('dr_convenio')->tabla('dt_convenio')->set($datos);
+	}
+
+	function agregar_dt_convenio($datos)
+	{
+		$id = $this->dep('dr_convenio')->tabla('dt_convenio')->nueva_fila($datos);
+		$this->dep('dr_convenio')->tabla('dt_convenio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_convenio($seleccion)
+	{
+		$id = $this->dep('dr_convenio')->tabla('dt_convenio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_convenio')->tabla('dt_convenio')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-COMERCIO POR CONVENIO	 -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function get_dt_comercios_por_convenio()
+	{
+		return $this->dep('dr_convenio')->tabla('dt_comercios_por_convenio')->get_filas();
+	}
+
+	function procesar_dt_comercios_por_convenio($datos)
+	{
+		$this->dep('dr_convenio')->tabla('dt_comercios_por_convenio')->procesar_filas($datos);
+	}
 }
 
 ?>

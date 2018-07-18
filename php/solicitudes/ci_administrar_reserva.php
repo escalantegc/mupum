@@ -78,6 +78,7 @@ class ci_administrar_reserva extends mupum_ci
 
 	function conf__cuadro_historial(ei_cuadro_administrar_reserva $cuadro)
 	{
+		$cuadro->colapsar();
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_reserva_historial($this->s__where);
