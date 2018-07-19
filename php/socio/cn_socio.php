@@ -252,6 +252,59 @@ class cn_socio extends mupum_cn
 		$id = $this->dep('dr_socio')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_socio')->tabla('dt_afiliacion')->eliminar_fila($id[0]);
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-SOLICITUD-REEMPADRONAMIENTO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_solicitud_reempadronamiento($seleccion)
+	{
+		if(!$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_solicitud_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_solicitud_reempadronamiento()
+	{
+		return $this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_solicitud_reempadronamiento()
+	{
+		$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->resetear_cursor();
+	}
+
+	function get_dt_solicitud_reempadronamiento()
+	{
+		return $this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->get();
+	}
+
+	function set_dt_solicitud_reempadronamiento($datos)
+	{
+		$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->set($datos);
+	}
+
+	function agregar_dt_solicitud_reempadronamiento($datos)
+	{
+		$id = $this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->nueva_fila($datos);
+		$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->set_cursor($id);
+	}	
+
+	function eliminar_dt_solicitud_reempadronamiento($seleccion)
+	{
+		$id = $this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_socio')->tabla('dt_solicitud_reempadronamiento')->eliminar_fila($id[0]);
+	}
 }
 
 ?>

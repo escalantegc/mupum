@@ -204,7 +204,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
 		{
 			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
-			$this->s__persona[0]['tipo_socio'] = $datos['idtipo_socio'];
+			$this->s__persona[0]['idtipo_socio'] = $datos['idtipo_socio'];
 			$this->enviar_correo_aceptacion($this->s__persona[0]);
 			$datos['activa'] = 't';
 			$datos['solicitada'] = 'f';
@@ -414,7 +414,7 @@ class ci_solicitud_afiliacion extends mupum_ci
 				toba_usuario::set_clave_usuario($clave, $user);
 			} else {
 				toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-				$tipo_socio = get_listado_tipo_socio(' idtipo_socio ='.$persona['idtipo_socio']);
+				$tipo_socio = dao::get_listado_tipo_socio(' idtipo_socio ='.$persona['idtipo_socio']);
 
 		        $perfil = trim(strtolower($tipo_socio[0]['descripcion']));
 			    toba::instancia()->vincular_usuario('mupum',$user,$perfil);

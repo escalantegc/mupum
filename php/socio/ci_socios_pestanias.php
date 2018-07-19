@@ -1,6 +1,7 @@
 <?php
 class ci_socios_pestanias extends mupum_ci
 {
+
 	function get_cn()
 	{
 		return $this->controlador->cn();
@@ -19,6 +20,7 @@ class ci_socios_pestanias extends mupum_ci
 			   		  '&nbsp;<font color= #fffcfc ><strong>  Legajo: ' . $datos['legajo'].'</strong></font></br>' ;         
             $this->set_titulo($titulo);
 		}
+		$this->s__eliminar = 'no';
 	}
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
@@ -141,6 +143,55 @@ class ci_socios_pestanias extends mupum_ci
 		{
 			$cuadro->set_datos($datos);
 		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_solicitud_reempadronamiento ----------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_solicitud_reempadronamiento(mupum_ei_formulario $form)
+	{
+		if ($this->get_cn()->hay_cursor_dt_persona())
+		{
+			$datos = $this->get_cn()->get_dt_persona();
+			$dato = dao::get_solicitud_reempadronamiento_no_atenida($datos['idpersona']);
+			
+			if ($dato != null)
+			{
+				$solicitud['idreempadronamiento'] = $dato[0]['idreempadronamiento'];
+				$solicitud['idafiliacion'] = $dato[0]['idafiliacion'];
+				$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
+				$datos = $this->cn()->get_dt_solicitud_reempadronamiento();			
+				$form->set_datos($datos);
+			} else {
+				$this->s__eliminar = 'si';
+				ei_arbol('asasasassfdsggd');
+			}
+				
+			
+
+			
+		}
+	}
+
+	function evt__frm_solicitud_reempadronamiento__modificacion($datos)
+	{
+		$this->cn()->set_dt_solicitud_reempadronamiento($datos);
+	}
+
+	function conf__pant_datos_personales(toba_ei_pantalla $pantalla)
+	{
+		if ($this->get_cn()->hay_cursor_dt_persona())
+		{
+			$datos = $this->get_cn()->get_dt_persona();
+			$dato = dao::get_solicitud_reempadronamiento_no_atenida($datos['idpersona']);
+			if ($dato == null)
+			{
+				$pantalla->eliminar_dep('frm_solicitud_reempadronamiento');	
+			}
+		}	
+		
+		
 	}
 
 }

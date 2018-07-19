@@ -1534,7 +1534,9 @@ class dao
                     notificaciones, 
                     fecha_notificacion, 
                     atendida,
-                    (apellido||', '|| nombres) as socio
+                    (apellido||', '|| nombres) as socio,
+                    correo,
+                    persona.idpersona
             FROM 
               public.solicitud_reempadronamiento
             inner join afiliacion using(idafiliacion)
@@ -1554,7 +1556,10 @@ class dao
                     notificaciones, 
                     fecha_notificacion, 
                     atendida,
-                    (apellido||', '|| nombres) as socio
+                    (apellido||', '|| nombres) as socio,
+                    correo,
+                    persona.idpersona
+
             FROM 
               public.solicitud_reempadronamiento
             inner join afiliacion using(idafiliacion)
@@ -1563,6 +1568,56 @@ class dao
                   notificaciones != 0";
       return consultar_fuente($sql);
 
+  }
+
+   function get_solicitud_reempadronamiento_no_atenida ($idpersona = null)
+  {
+
+    $sql = "SELECT  idreempadronamiento,  
+                    idafiliacion, 
+                    notificaciones, 
+                    fecha_notificacion, 
+                    atendida,
+                    (apellido||', '|| nombres) as socio,
+                    correo,
+                    persona.idpersona
+
+            FROM 
+              public.solicitud_reempadronamiento
+            inner join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            where 
+                  atendida = false and
+                  persona.idpersona =$idpersona";
+      return consultar_fuente($sql);
+
+  }
+
+  function get_correo_persona($idpersona = null)
+  {
+    $sql = "SELECT  correo
+                  
+            FROM 
+              public.persona
+            where   
+              idpersona = $idpersona";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['correo']))
+    {
+      return $res[0]['correo'];
+    }
+  }
+
+  function get_cantidad_solicitudes_no_atendidas()
+  {
+    $sql = "SELECT count(*) as cantidad 
+            FROM public.solicitud_reempadronamiento
+            where atendida = false";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
   }
 }
 ?>

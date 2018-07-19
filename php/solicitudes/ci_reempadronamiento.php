@@ -28,11 +28,19 @@ class ci_reempadronamiento extends mupum_ci
 		}
 		$this->cn()->resetear_dr_reempadronamiento();
 		$this->set_pantalla('pant_inicial');
+		
 	}
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_edicion');
+		$cantidad = dao::get_cantidad_solicitudes_no_atendidas();
+		if ($cantidad >0)
+		{
+			toba::notificacion()->agregar("No puede crear otra solicitud de reempadronamiento, hay solicitudes pendientes de ser atendidas",'info');
+		} else {
+			$this->set_pantalla('pant_edicion');
+		}
+		
 	}
 
 	function evt__cancelar()
@@ -62,7 +70,10 @@ class ci_reempadronamiento extends mupum_ci
 		$this->cn()->set_cursor_dt_reempadronamiento($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
-
+	function evt__cuadro__notificar($seleccion)
+	{
+		$this->set_pantalla('pant_notificaciones');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_solicitudes -----------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -71,10 +82,45 @@ class ci_reempadronamiento extends mupum_ci
 	{
 		$datos = dao::get_listado_solicitudes_reempadronamientos();
 		$cuadro->set_datos($datos);
+		if ($datos ==null)
+		{
+			$this->evento('enviar')->ocultar();
+		}
 	}
 
-	function evt__cuadro_solicitudes__notificar($datos)
+	function evt__cuadro_solicitudes__seleccion($datos)
 	{
+		///escribir codigo para enviar mails y editar los registros colocando notificaciones en 1 y fecha de notificacion hoy
+		foreach ($datos as $dato) 
+		{
+			$correos[] = dao::get_correo_persona($dato['idpersona']);
+			$solicitud['idreempadronamiento'] = $dato['idreempadronamiento'];
+			$solicitud['idafiliacion'] = $dato['idafiliacion'];
+		
+			$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
+			$solicitud['notificaciones'] += 1;
+			$solicitud['fecha_notificacion'] = date('d-m-Y');
+			$this->cn()->set_dt_solicitud_reempadronamiento($solicitud);
+				
+			$this->cn()->resetear_cursor_dt_solicitud_reempadronamiento();
+			$solicitud = null;
+			
+		}
+
+		$reempadronamiento = $this->cn()->get_dt_reempadronamiento();
+		
+		$asunto = 'Solicitud Reempadronamiento - '.$reempadronamiento['anio'];
+		$this->enviar_correo_notificacion($correos,$asunto);
+		try{
+			$this->cn()->guardar_dr_reempadronamiento();
+			toba::notificacion()->agregar("Las solicitudes han sido enviadas correctamente",'info');
+		} catch( toba_error_db $error){
+	
+			$mensaje_log = $error->get_mensaje_log();
+			toba::notificacion()->agregar($mensaje_log,'info');
+			 
+			
+		}
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -87,17 +133,40 @@ class ci_reempadronamiento extends mupum_ci
 		$datos = dao::get_listado_solicitudes_reempadronamientos_enviadas();
 		$cuadro->set_datos($datos);
 	}
-
+	
 	function evt__cuadro_solicitudes_enviadas__notificar($seleccion)
 	{
-		ei_arbol($seleccion);
-	}
-	function evt__cuadro_solicitudes__enviar($datos)
-	{
-		ei_arbol($datos);
-	}
+		$correos[] = dao::get_correo_persona($seleccion['idpersona']);
+		$solicitud['idreempadronamiento'] = $seleccion['idreempadronamiento'];
+		$solicitud['idafiliacion'] = $seleccion['idafiliacion'];
 	
+		$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
+		
+		$enviada = $this->cn()->get_dt_solicitud_reempadronamiento();
+		$solicitud['notificaciones'] = $enviada['notificaciones']+1;
+		$solicitud['fecha_notificacion'] = date('d-m-Y');
+		$this->cn()->set_dt_solicitud_reempadronamiento($solicitud);
+		
 
+		$this->cn()->resetear_cursor_dt_solicitud_reempadronamiento();
+		$solicitud = null;
+
+		$reempadronamiento = $this->cn()->get_dt_reempadronamiento();
+		
+		$asunto = 'Solicitud Reempadronamiento - '.$reempadronamiento['anio'];
+		$this->enviar_correo_notificacion($correos,$asunto);
+		try{
+			$this->cn()->guardar_dr_reempadronamiento();
+			toba::notificacion()->agregar("La solicitud han sido enviadas correctamente",'info');
+		} catch( toba_error_db $error){
+	
+			$mensaje_log = $error->get_mensaje_log();
+			toba::notificacion()->agregar($mensaje_log,'info');
+			 
+			
+		}
+
+	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -144,32 +213,29 @@ class ci_reempadronamiento extends mupum_ci
 		}
 	}
 
-
-
-	//-----------------------------------------------------------------------------------
-	//---- frm_solicitudes --------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__frm_solicitudes(mupum_ei_formulario $form)
+	function enviar_correo_notificacion($correos,$asunto)
 	{
+        //Armo el mail nuevo &oacute;
+
+        $cuerpo_mail = "<p>Estimado afiliado: </p><br>".
+        				"Por medio del presente le solicitamos realice el reempadronamiento actualizando su información personal<br>".
+        				"(pestaña “Datos Personales” de su ficha) en el sistema. Una vez realizado lo solicitado confirmar la acción<br>".
+        				"chequeando el campo “Reempadronamiento realizado” al final del formulario y presionar el botón “Guardar”<br>".
+           				"<p>Saludos ATTE .- MUPUM</p>".
+          				"<p>No responda este correo, fue generado por sistema. </p>";
+        try 
+        {
+                $mail = new toba_mail($correos[0], $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                $mail->set_cc($correos);
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
 	}
 
-	function evt__frm_solicitudes__notificar($datos)
-	{
-		$idafiliaciones =  explode(",", $datos['idafiliacion']);
-		$reempadronamiento =  $this->cn()->get_dt_reempadronamiento();
-		foreach ($idafiliaciones as $idafiliacion) 
-		{
-			$condicion['idafiliacion'] = $idafiliacion['idafiliacion'] ;
-			$condicion['idreempadronamiento'] = $reempadronamiento['idreempadronamiento'] ;
-			$this->cn()->set_cursor_dt_solicitud_reempadronamiento($condicion);
-			$datos = $condicion;
-			$datos['notificaciones'] += 1;
-			$datos['fecha_notificacion'] = date('d-m-Y');
-			$this->cn()->set_dt_solicitud_reempadronamiento($datos);
-		}
-		
-	}
+
 
 
 
