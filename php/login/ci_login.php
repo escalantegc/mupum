@@ -785,46 +785,51 @@ class ci_login extends toba_ci
 
 	function evt__frm_clave__alta($datos)
 	{
-		$indice['idtipo_documento'] = $datos['idtipo_documento']; 
-		$indice['nro_documento'] = $datos['nro_documento']; 
-		$this->cn()->cargar_dr_registro($indice);
-		$resultado = $this->cn()->existe_dt_persona($indice);
-		if ($resultado == 'existe')
+		if ($datos['captcha'])
 		{
-			$this->cn()->set_cursor_dt_persona($indice);
-			$persona = $this->cn()->get_dt_persona();	
-			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
-			$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
-			$clave = toba_usuario::generar_clave_aleatoria(8);
-			$this->s__persona[0]['clave'] = $clave;
-			$this->enviar_correo_clave_usuario($this->s__persona[0]);
-			
-
-		} else {
-			 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
-
-		}
-		
-		try{
-			if(!toba::notificacion()->verificar_mensajes())
+			$indice['idtipo_documento'] = $datos['idtipo_documento']; 
+			$indice['nro_documento'] = $datos['nro_documento']; 
+			$this->cn()->cargar_dr_registro($indice);
+			$resultado = $this->cn()->existe_dt_persona($indice);
+			if ($resultado == 'existe')
 			{
-				toba::notificacion()->agregar('La clave de acceso ha sido reseteada y enviada su correo correctamente.', 'info');	
+				$this->cn()->set_cursor_dt_persona($indice);
+				$persona = $this->cn()->get_dt_persona();	
+				$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
+				$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
+				$clave = toba_usuario::generar_clave_aleatoria(8);
+				$this->s__persona[0]['clave'] = $clave;
+				$this->enviar_correo_clave_usuario($this->s__persona[0]);
+				
+
+			} else {
+				 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
+
 			}
+			
+			try{
+				if(!toba::notificacion()->verificar_mensajes())
+				{
+					toba::notificacion()->agregar('La clave de acceso ha sido reseteada y enviada su correo correctamente.', 'info');	
+				}
 
-			$this->cn()->guardar_dr_registro();
+				$this->cn()->guardar_dr_registro();
 
-			
+				
 
-			
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			
-			
-					
-			
+				
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
+				
+				
+						
+				
+			}
+				$this->cn()->resetear_dr_registro();
+				$this->set_pantalla('login');
+		}else {
+			toba::notificacion()->agregar('El codigo de seguridad es incorrecto', 'error');	
 		}
-			$this->cn()->resetear_dr_registro();
-			$this->set_pantalla('login');
 	}
 
 	function evt__frm_clave__cancelar()
