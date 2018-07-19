@@ -692,76 +692,84 @@ class ci_login extends toba_ci
 
 	function evt__frm_usuario__alta($datos)
 	{
-		$indice['idtipo_documento'] = $datos['idtipo_documento']; 
-		$indice['nro_documento'] = $datos['nro_documento']; 
-		$this->cn()->cargar_dr_registro($indice);
-		$resultado = $this->cn()->existe_dt_persona($indice);
-		if ($resultado == 'existe')
+
+		if ($datos['captcha'])
 		{
-			$this->cn()->set_cursor_dt_persona($indice);
-			$persona = $this->cn()->get_dt_persona();	
-			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
-			$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
-			$this->enviar_correo_usuario($this->s__persona[0]);
-			if ($this->cn()->hay_cursor_dt_persona())
+			$indice['idtipo_documento'] = $datos['idtipo_documento']; 
+			$indice['nro_documento'] = $datos['nro_documento']; 
+			$this->cn()->cargar_dr_registro($indice);
+			$resultado = $this->cn()->existe_dt_persona($indice);
+			if ($resultado == 'existe')
 			{
-				$this->cn()->set_dt_persona($datos);
-				toba::notificacion()->agregar("Los datos de acceso se guardaron correctamente.",'info');
+				$this->cn()->set_cursor_dt_persona($indice);
+				$persona = $this->cn()->get_dt_persona();	
+				$this->s__persona = dao::get_listado_persona('persona.idpersona='.$persona['idpersona']);
+				$this->s__persona[0]['correo_correcto'] = $datos['correo'] ;
+				$this->enviar_correo_usuario($this->s__persona[0]);
+				if ($this->cn()->hay_cursor_dt_persona())
+				{
+					$this->cn()->set_dt_persona($datos);
+					toba::notificacion()->agregar("Los datos de acceso se guardaron correctamente.",'info');
 
+				} else {
+					$this->cn()->agregar_dt_persona($datos);
+				}
 			} else {
-				$this->cn()->agregar_dt_persona($datos);
+				 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
+
 			}
-		} else {
-			 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
-
-		}
-		
-		try{
-			$this->cn()->guardar_dr_registro();
-		
 			
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
+			try{
+				$this->cn()->guardar_dr_registro();
 			
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("La persona esta siendo referenciado, no puede eliminarlo",'error');
 				
-			} 
-
-			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_documento'))
-			{
-				toba::notificacion()->agregar("La persona ya esta registrada.",'info');
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
 				
-			} 		
-
-			if(strstr($mensaje_log,'idx_legajo'))
-			{
-				toba::notificacion()->agregar("El socio ya esta registrado.",'info');
-				
-			} 	
-			if(strstr($mensaje_log,'telefono_por_persona_pkey'))
-			{
-				toba::notificacion()->agregar("Ya registro ese numero de telefono",'info');
-				
-			} 	
-
-			if(strstr($mensaje_log,'idx_afiliado'))
-			{
-				toba::notificacion()->agregar("Usted ya se encuentra afiliado.",'info');
-				
-			} 
-			if(strstr($mensaje_log,'idx_afiliacion_solicitada'))
-			{
-				toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion o tiene una afiliacion activa.",'info');
-				
-			} 
+				if($sql_state=='db_23503')
+				{
+					toba::notificacion()->agregar("La persona esta siendo referenciado, no puede eliminarlo",'error');
 					
-			
-		}
+				} 
+
+				$mensaje_log= $error->get_mensaje_log();
+				if(strstr($mensaje_log,'idx_documento'))
+				{
+					toba::notificacion()->agregar("La persona ya esta registrada.",'info');
+					
+				} 		
+
+				if(strstr($mensaje_log,'idx_legajo'))
+				{
+					toba::notificacion()->agregar("El socio ya esta registrado.",'info');
+					
+				} 	
+				if(strstr($mensaje_log,'telefono_por_persona_pkey'))
+				{
+					toba::notificacion()->agregar("Ya registro ese numero de telefono",'info');
+					
+				} 	
+
+				if(strstr($mensaje_log,'idx_afiliado'))
+				{
+					toba::notificacion()->agregar("Usted ya se encuentra afiliado.",'info');
+					
+				} 
+				if(strstr($mensaje_log,'idx_afiliacion_solicitada'))
+				{
+					toba::notificacion()->agregar("Usted ya realizo la solicitud de afiliacion o tiene una afiliacion activa.",'info');
+					
+				} 
+						
+				
+			}
 			$this->cn()->resetear_dr_registro();
 			$this->set_pantalla('login');
+			
+		}else {
+			toba::notificacion()->agregar('El codigo de seguridad es incorrecto', 'error');	
+		}
+		
 	}
 
 	function evt__frm_usuario__cancelar()
@@ -789,6 +797,7 @@ class ci_login extends toba_ci
 		{
 			$indice['idtipo_documento'] = $datos['idtipo_documento']; 
 			$indice['nro_documento'] = $datos['nro_documento']; 
+			$indice['correo'] = $datos['correo']; 
 			$this->cn()->cargar_dr_registro($indice);
 			$resultado = $this->cn()->existe_dt_persona($indice);
 			if ($resultado == 'existe')
