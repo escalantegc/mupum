@@ -1537,13 +1537,18 @@ class dao
                     atendida,
                     (apellido||', '|| nombres) as socio,
                     correo,
-                    persona.idpersona
+                    persona.idpersona,
+                    tipo_documento.sigla ||'-'|| persona.nro_documento  as documento
+
             FROM 
               public.solicitud_reempadronamiento
             inner join afiliacion using(idafiliacion)
             inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
             where 
                   notificaciones = 0
+            order by
+                  apellido, nombres
             limit 50";
       return consultar_fuente($sql);
 
@@ -1559,14 +1564,18 @@ class dao
                     atendida,
                     (apellido||', '|| nombres) as socio,
                     correo,
-                    persona.idpersona
+                    persona.idpersona,
+                    tipo_documento.sigla ||'-'|| persona.nro_documento  as documento
 
             FROM 
               public.solicitud_reempadronamiento
             inner join afiliacion using(idafiliacion)
             inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
             where 
-                  notificaciones != 0";
+                  notificaciones != 0
+            order by
+                  apellido, nombres";
       return consultar_fuente($sql);
 
   }

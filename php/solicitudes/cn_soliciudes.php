@@ -519,7 +519,7 @@ class cn_soliciudes extends mupum_cn
 			}
 		}
 	}	
-	function resetear_dt_solicitud_reempadronamiento($seleccion)
+	function resetear_dt_solicitud_reempadronamiento()
 	{
 		
 		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->resetear();					// lee de la BD fisica y carga al datos relacion

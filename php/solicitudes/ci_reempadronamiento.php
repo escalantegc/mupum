@@ -144,10 +144,11 @@ class ci_reempadronamiento extends mupum_ci
 	function evt__cuadro_solicitudes_enviadas__notificar($seleccion)
 	{
 		$correos[] = dao::get_correo_persona($seleccion['idpersona']);
-		$solicitud['idreempadronamiento'] = $seleccion['idreempadronamiento'];
-		$solicitud['idafiliacion'] = $seleccion['idafiliacion'];
-	
-		$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
+		$id['idreempadronamiento'] = $seleccion['idreempadronamiento'];
+		$id['idafiliacion'] = $seleccion['idafiliacion'];
+		
+		$this->cn()->cargar_dt_solicitud_reempadronamiento($id);
+		$this->cn()->set_cursor_dt_solicitud_reempadronamiento($id);			
 		
 		$enviada = $this->cn()->get_dt_solicitud_reempadronamiento();
 		$solicitud['notificaciones'] = $enviada['notificaciones']+1;
@@ -164,7 +165,7 @@ class ci_reempadronamiento extends mupum_ci
 		$this->enviar_correo_notificacion($correos,$asunto);
 		try{
 			$this->cn()->guardar_dr_reempadronamiento();
-			toba::notificacion()->agregar("La solicitud han sido enviadas correctamente",'info');
+			toba::notificacion()->agregar("La solicitud han sido reenviada correctamente",'info');
 		} catch( toba_error_db $error){
 	
 			$mensaje_log = $error->get_mensaje_log();
@@ -172,6 +173,8 @@ class ci_reempadronamiento extends mupum_ci
 			 
 			
 		}
+
+		$this->cn()->resetear_dt_solicitud_reempadronamiento();
 
 	}
 	//-----------------------------------------------------------------------------------
@@ -224,17 +227,17 @@ class ci_reempadronamiento extends mupum_ci
 	{
         //Armo el mail nuevo &oacute;
 
-        $cuerpo_mail = "<p>Estimado afiliado: </p><br>".
-        				"Por medio del presente le solicitamos realice el reempadronamiento actualizando su información personal<br>".
-        				"(pestaña “Datos Personales” de su ficha) en el sistema. Una vez realizado lo solicitado confirmar la acción<br>".
-        				"chequeando el campo “Reempadronamiento realizado” al final del formulario y presionar el botón “Guardar”<br>".
+        $cuerpo_mail = "<p>Estimado afiliado: <br>".
+        				"Por medio del presente le solicitamos realice el reempadronamiento actualizando su informaci&oacute;n personal<br>".
+        				"(pesta&ntilde;a Datos Personales de su ficha) en el sistema. Una vez realizado lo solicitado confirmar la acci&oacute;n<br>".
+        				"chequeando el campo Reempadronamiento realizado al final del formulario y presionar el bot&oacute;n Guardar</p><br>".
            				"<p>Saludos ATTE .- MUPUM</p>".
           				"<p>No responda este correo, fue generado por sistema. </p>";
         try 
         {
                 $mail = new toba_mail($correos[0], $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
                 $mail->set_html(true);
-                $mail->set_cc($correos);
+                $mail->set_bcc($correos);
                 $mail->enviar();
         } catch (toba_error $error) {
                 $chupo = $error->get_mensaje_log();
