@@ -1466,7 +1466,8 @@ class dao
                       monto_maximo_mensual, 
                       permite_financiacion, 
                       activo, 
-                      maneja_bono
+                      maneja_bono,
+                      consumo_ticket
               FROM 
                 public.convenio
               inner join categoria_comercio using (idcategoria_comercio)

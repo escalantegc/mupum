@@ -4,7 +4,7 @@
 
 CREATE TABLE public.reempadronamiento
 (
-  idreempadronamiento integer NOT NULL DEFAULT nextval('reempadronamiento_idreempadronamiento_seq'::regclass),
+  idreempadronamiento serial NOT NULL ,
   nombre character(50) NOT NULL,
   anio integer,
   activo boolean DEFAULT false,

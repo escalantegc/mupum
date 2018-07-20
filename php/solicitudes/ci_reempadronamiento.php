@@ -97,6 +97,7 @@ class ci_reempadronamiento extends mupum_ci
 			$solicitud['idreempadronamiento'] = $dato['idreempadronamiento'];
 			$solicitud['idafiliacion'] = $dato['idafiliacion'];
 		
+			$this->cn()->cargar_dt_solicitud_reempadronamiento($solicitud);			
 			$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
 			$solicitud['notificaciones'] += 1;
 			$solicitud['fecha_notificacion'] = date('d-m-Y');
