@@ -91,20 +91,34 @@ class ci_reempadronamiento extends mupum_ci
 	function evt__cuadro_solicitudes__seleccion($datos)
 	{
 		///escribir codigo para enviar mails y editar los registros colocando notificaciones en 1 y fecha de notificacion hoy
+			//$this->cn()->cargar_dt_solicitud_reempadronamiento();
 		foreach ($datos as $dato) 
 		{
 			$correos[] = dao::get_correo_persona($dato['idpersona']);
-			$solicitud['idreempadronamiento'] = $dato['idreempadronamiento'];
-			$solicitud['idafiliacion'] = $dato['idafiliacion'];
+			$id['idreempadronamiento'] = $dato['idreempadronamiento'];
+			$id['idafiliacion'] = $dato['idafiliacion'];
 		
-			$this->cn()->cargar_dt_solicitud_reempadronamiento($solicitud);			
-			$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
-			$solicitud['notificaciones'] += 1;
+			$this->cn()->cargar_dt_solicitud_reempadronamiento($id);
+			$this->cn()->set_cursor_dt_solicitud_reempadronamiento($id);			
+			$solicitud['notificaciones'] = 1;
 			$solicitud['fecha_notificacion'] = date('d-m-Y');
 			$this->cn()->set_dt_solicitud_reempadronamiento($solicitud);
-				
 			$this->cn()->resetear_cursor_dt_solicitud_reempadronamiento();
+
+			try{
+				$this->cn()->guardar_dr_reempadronamiento();
+				
+			} catch( toba_error_db $error){
+		
+				$mensaje_log = $error->get_mensaje_log();
+				toba::notificacion()->agregar($mensaje_log,'info');
+				 
+				
+			}
+
+			$this->cn()->resetear_dt_solicitud_reempadronamiento();
 			$solicitud = null;
+			$id = null;
 			
 		}
 
@@ -112,16 +126,8 @@ class ci_reempadronamiento extends mupum_ci
 		
 		$asunto = 'Solicitud Reempadronamiento - '.$reempadronamiento['anio'];
 		$this->enviar_correo_notificacion($correos,$asunto);
-		try{
-			$this->cn()->guardar_dr_reempadronamiento();
-			toba::notificacion()->agregar("Las solicitudes han sido enviadas correctamente",'info');
-		} catch( toba_error_db $error){
-	
-			$mensaje_log = $error->get_mensaje_log();
-			toba::notificacion()->agregar($mensaje_log,'info');
-			 
-			
-		}
+		toba::notificacion()->agregar("Las solicitudes han sido enviadas correctamente",'info');
+		
 	}
 
 	//-----------------------------------------------------------------------------------

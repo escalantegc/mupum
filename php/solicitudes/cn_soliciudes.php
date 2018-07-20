@@ -518,10 +518,17 @@ class cn_soliciudes extends mupum_cn
 				$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
 			}
 		}
+	}	
+	function resetear_dt_solicitud_reempadronamiento($seleccion)
+	{
+		
+		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->resetear();					// lee de la BD fisica y carga al datos relacion
+			
 	}
 	function set_cursor_dt_solicitud_reempadronamiento($seleccion)
 	{
 		$id = $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
+
 		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->set_cursor($id[0]);
 	}
 
