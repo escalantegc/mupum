@@ -688,7 +688,14 @@ class ci_login extends toba_ci
 //-----------------------------------------------------------------------------------
 	//---- frm_usuario ------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
+	function conf__frm_usuario(mupum_ei_formulario $form)
+	{
+		$parametros['draw_lines_over_text'] = false;
+	
+		//$parametros['draw_lines'] = false;
+		$form->ef('captcha')->set_parametros_captcha($parametros);
 
+	}
 
 	function evt__frm_usuario__alta($datos)
 	{
@@ -789,6 +796,11 @@ class ci_login extends toba_ci
 
 	function conf__frm_clave(mupum_ei_formulario $form)
 	{
+		$parametros['draw_lines_over_text'] = false;
+	
+		//$parametros['draw_lines'] = false;
+		$form->ef('captcha')->set_parametros_captcha($parametros);
+
 	}
 
 	function evt__frm_clave__alta($datos)

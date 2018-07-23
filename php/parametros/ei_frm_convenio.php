@@ -20,9 +20,11 @@ class ei_frm_convenio extends mupum_ei_formulario
 				this.ef('maximo_cuotas').ocultar();
 			}
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
 		";
 	}
 
-}
 
+}
 ?>

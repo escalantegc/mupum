@@ -1477,6 +1477,50 @@ class dao
           
   }
 
+  function get_listado_convenios_con_bono($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+      $sql = "SELECT  idconvenio, 
+                      categoria_comercio.descripcion as categoria, 
+                      titulo, 
+                      fecha_inicio, 
+                      fecha_fin, 
+                      maximo_cuotas, 
+                      monto_maximo_mensual, 
+                      permite_financiacion, 
+                      activo, 
+                      maneja_bono,
+                      consumo_ticket
+              FROM 
+                public.convenio
+              inner join categoria_comercio using (idcategoria_comercio)
+              where 
+                maneja_bono = true and
+                $where";
+      return consultar_fuente($sql);
+          
+  }
+
+  function get_listado_comercios_por_convenio($idconvenio = null)
+  {
+    
+    $sql =" SELECT   comercio.idcomercio, 
+                    comercio.nombre, 
+                    comercio.direccion, 
+                    localidad.descripcion as localidad, 
+                    categoria_comercio.descripcion as categoria
+            FROM public.comercio
+            inner join localidad using(idlocalidad)
+            inner join categoria_comercio using(idcategoria_comercio)
+            inner join comercios_por_convenio using (idcomercio)
+            where
+              comercios_por_convenio.idconvenio = $idconvenio ";
+    return consultar_fuente($sql);
+  }  
+
   function get_comercios_combo_editable($filtro = null)
   {
     if (! isset($filtro) || trim($filtro)=='')
@@ -1628,6 +1672,27 @@ class dao
     {
       return $res[0]['cantidad'];
     }
+  }
+
+  function get_listado_talonario_bono($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+
+    $sql = "SELECT  talonario_bono.idtalonario_bono, 
+                    convenio.titulo as convenio, 
+                    comercio.nombre as comercio, 
+                    nro_talonario, 
+                    nro_inicio, 
+                    nro_fin
+            FROM public.talonario_bono
+            inner join comercio using(idcomercio)
+            inner join convenio using(idconvenio)
+            where 
+                $where";
+      return consultar_fuente($sql);
   }
 }
 ?>
