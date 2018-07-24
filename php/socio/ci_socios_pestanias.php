@@ -20,7 +20,7 @@ class ci_socios_pestanias extends mupum_ci
 			   		  '&nbsp;<font color= #fffcfc ><strong>  Legajo: ' . $datos['legajo'].'</strong></font></br>' ;         
             $this->set_titulo($titulo);
 		}
-		$this->s__eliminar = 'no';
+	
 	}
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
@@ -163,13 +163,7 @@ class ci_socios_pestanias extends mupum_ci
 				$this->cn()->set_cursor_dt_solicitud_reempadronamiento($solicitud);			
 				$datos = $this->cn()->get_dt_solicitud_reempadronamiento();			
 				$form->set_datos($datos);
-			} else {
-				$this->s__eliminar = 'si';
-				ei_arbol('asasasassfdsggd');
-			}
-				
-			
-
+			} 
 			
 		}
 	}
@@ -185,14 +179,17 @@ class ci_socios_pestanias extends mupum_ci
 		{
 			$datos = $this->get_cn()->get_dt_persona();
 			$dato = dao::get_solicitud_reempadronamiento_no_atenida($datos['idpersona']);
-			if ($dato == null)
+			
+			if ($dato!=null)
 			{
+				if ($dato[0]['notificaciones']==0)
+				{
+					$pantalla->eliminar_dep('frm_solicitud_reempadronamiento');	
+				}
+			} else {
 				$pantalla->eliminar_dep('frm_solicitud_reempadronamiento');	
 			}
 		}	
-		
-		
 	}
-
 }
 ?>

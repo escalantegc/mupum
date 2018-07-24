@@ -22,7 +22,7 @@ class ci_talonario_bonos extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_talonario'))
 			{
-				toba::notificacion()->agregar("El talonario de bono ya esta registrado",'error');
+				toba::notificacion()->agregar("El numero de talonario de bono ya esta registrado",'error');
 			} 
 			
 		}

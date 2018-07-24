@@ -1686,12 +1686,82 @@ class dao
                     comercio.nombre as comercio, 
                     nro_talonario, 
                     nro_inicio, 
-                    nro_fin
+                    nro_fin,
+                    monto_bono
             FROM public.talonario_bono
             inner join comercio using(idcomercio)
             inner join convenio using(idconvenio)
             where 
                 $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_idconvenio_talonario_bono($idtalonario_bono = null)
+  {
+    $sql = "SELECT idconvenio
+            FROM 
+              public.comercios_por_convenio
+            inner join talonario_bono using(idconvenio)
+            where 
+              idtalonario_bono = $idtalonario_bono";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['idconvenio']))
+    {
+      return $res[0]; 
+    }
+  }  
+
+  function get_idcomercio_talonario_bono($idtalonario_bono = null)
+  {
+    $sql = "SELECT idcomercio
+            FROM 
+              public.comercios_por_convenio
+            inner join talonario_bono using(idcomercio)
+            where 
+              idtalonario_bono = $idtalonario_bono";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['idcomercio']))
+    {
+      return $res[0]['idcomercio']; 
+    }
+  }
+
+  function  get_talonarios($idconvenio = null)
+  {
+    $sql = "SELECT  idtalonario_bono, 
+                    comercio.nombre ||'- Talonario Nro: '|| nro_talonario as talonario
+            FROM 
+              public.talonario_bono
+          inner join comercios_por_convenio using(idcomercio,idconvenio)
+          inner join comercio on comercio.idcomercio = comercios_por_convenio.idcomercio
+          WHERE
+            comercios_por_convenio.idconvenio = $idconvenio ";
+    return consultar_fuente($sql);
+  }
+
+  function get_listado_consumos_bono($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconsumo_bono, 
+                    idtalonario_bono, 
+                    numero_bono, 
+                    (persona.apellido||', '|| persona.nombres) as socio,
+                    talonario_bono.monto_bono,
+                    comercio.nombre as comercio,
+                    convenio.titulo as convenio,
+                    numero_bono
+            FROM 
+                public.consumo_bonos
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner  join talonario_bono using(idtalonario_bono) 
+            inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
+            inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
+            WHERE
+              $where";
       return consultar_fuente($sql);
   }
 }
