@@ -51,7 +51,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'106000284', --evento_id
 	'106000180', --objeto
 	'seleccion', --identificador
-	NULL, --etiqueta
+	'<input type=''checkbox'' onclick=''seleccion_total("seleccion")'' />', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	NULL, --confirmacion
