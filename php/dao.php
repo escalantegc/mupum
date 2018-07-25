@@ -1781,7 +1781,8 @@ class dao
                     talonario_bono.monto_bono,
                     comercio.nombre as comercio,
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio,
-                    numero_bono
+                    numero_bono,
+                    fecha
             FROM 
                 public.consumo_bonos
             left outer  join afiliacion using(idafiliacion)
@@ -1805,7 +1806,8 @@ class dao
                     (persona.apellido||', '|| persona.nombres) as socio,
                     comercio.nombre as comercio,
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio,
-                    monto
+                    monto,
+                    fecha
             FROM 
                 public.consumo_ticket
             left outer  join afiliacion using(idafiliacion)
