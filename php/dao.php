@@ -718,7 +718,7 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
-                  persona.apellido||', '|| persona.nombres as persona
+                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
             FROM 
               public.afiliacion
             inner join persona using (idpersona)
@@ -1342,7 +1342,8 @@ class dao
                     nombre, 
                     direccion, 
                     localidad.descripcion as localidad, 
-                    categoria_comercio.descripcion as categoria
+                    categoria_comercio.descripcion as categoria,
+                    codigo
             FROM public.comercio
             inner join localidad using(idlocalidad)
             inner join categoria_comercio using(idcategoria_comercio)
@@ -1564,7 +1565,7 @@ class dao
   {
     
     $sql =" SELECT   comercio.idcomercio, 
-                    comercio.nombre, 
+                   comercio.codigo||' - '|| comercio.nombre as nombre, 
                     comercio.direccion, 
                     localidad.descripcion as localidad, 
                     categoria_comercio.descripcion as categoria
@@ -1585,18 +1586,18 @@ class dao
     }
     $filtro = quote("%{$filtro}%");
 
-    $sql = "  SELECT idcomercio, categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+    $sql = "  SELECT idcomercio, codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
               FROM public.comercio
               inner join categoria_comercio using (idcategoria_comercio)
               WHERE 
-                   categoria_comercio.descripcion ||'-'||nombre ilike $filtro limit 20 ";
+                   codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre ilike $filtro limit 20 ";
     return consultar_fuente($sql);
 
   } 
 
   function get_descripcion_comercio($idcomercio = null)
   {
-    $sql = "SELECT idcomercio, categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+    $sql = "SELECT idcomercio, codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
               FROM public.comercio
             inner join categoria_comercio using (idcategoria_comercio)
             WHERE 
@@ -1739,7 +1740,7 @@ class dao
 
     $sql = "SELECT  talonario_bono.idtalonario_bono, 
                     convenio.titulo as convenio, 
-                    comercio.nombre as comercio, 
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
                     nro_talonario, 
                     nro_inicio, 
                     nro_fin,
@@ -1785,7 +1786,7 @@ class dao
   function  get_talonarios($idconvenio = null)
   {
     $sql = "SELECT  idtalonario_bono, 
-                    comercio.nombre ||'- Talonario Nro: '|| nro_talonario as talonario
+                    comercio.codigo ||' - '||comercio.nombre ||'- Talonario Nro: '|| nro_talonario as talonario
             FROM 
               public.talonario_bono
           inner join comercios_por_convenio using(idcomercio,idconvenio)
@@ -1805,7 +1806,7 @@ class dao
                     idtalonario_bono, 
                     (persona.apellido||', '|| persona.nombres) as socio,
                     talonario_bono.monto_bono,
-                    comercio.nombre as comercio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio,
                     cantidad_bonos,
                     cantidad_bonos *   talonario_bono.monto_bono as total,
@@ -1831,7 +1832,7 @@ class dao
     $sql = "SELECT  idconsumo_ticket, 
                     
                     (persona.apellido||', '|| persona.nombres) as socio,
-                    comercio.nombre as comercio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio                   
             FROM 
                 public.consumo_ticket
