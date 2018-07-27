@@ -72,20 +72,6 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000184', --objeto
-	'106000160', --col_id
-	'idtalonario_bono', --columna
-	'E', --tipo
-	'1', --pk
-	'bono_convenio_idbono_convenio_seq', --secuencia
-	NULL, --largo
-	NULL, --no_nulo
-	'1', --no_nulo_db
-	'0', --externa
-	'talonario_bono'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'106000184', --objeto
 	'106000161', --col_id
 	'idconvenio', --columna
 	'E', --tipo
@@ -162,6 +148,20 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'0', --pk
 	'', --secuencia
 	'20', --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'talonario_bono'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000184', --objeto
+	'106000200', --col_id
+	'idtalonario_bono', --columna
+	'E', --tipo
+	'1', --pk
+	'talonario_bono_idtalonario_bono_seq', --secuencia
+	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
 	'0', --externa
