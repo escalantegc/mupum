@@ -730,6 +730,52 @@ class dao
 
     return consultar_fuente($sql);
 
+  }  
+
+  function get_personas_afiliadas_combo_editable($filtro = null)
+  {
+    if (! isset($filtro) || trim($filtro)=='')
+    {
+      return array();
+    }
+    $filtro = quote("%{$filtro}%");
+
+    $sql_usuario = self::get_sql_usuario();
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              titular = true and
+              $sql_usuario and
+              persona.legajo||' - '|| persona.apellido||', '|| persona.nombres ilike $filtro limit 10";
+
+    return consultar_fuente($sql);
+
+
+  }
+
+  function get_descripcion_persona($idafiliacion = null)
+  {
+    
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            where 
+              afiliacion.idafiliacion =  $idafiliacion";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['persona']))
+    {
+      return $res[0]['persona'];
+    }
+
   }
 
   function get_listado_instalacion ($where = null)
@@ -1565,7 +1611,7 @@ class dao
   {
     
     $sql =" SELECT   comercio.idcomercio, 
-                   comercio.codigo||' - '|| comercio.nombre as nombre, 
+                   comercio.codigo||' - '|| categoria_comercio.descripcion ||' - '||comercio.nombre as nombre, 
                     comercio.direccion, 
                     localidad.descripcion as localidad, 
                     categoria_comercio.descripcion as categoria
@@ -1586,18 +1632,18 @@ class dao
     }
     $filtro = quote("%{$filtro}%");
 
-    $sql = "  SELECT idcomercio, codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+    $sql = "  SELECT idcomercio, codigo ||' - '||categoria_comercio.descripcion ||' - '||nombre as nombre, direccion, idlocalidad
               FROM public.comercio
               inner join categoria_comercio using (idcategoria_comercio)
               WHERE 
-                   codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre ilike $filtro limit 20 ";
+                   codigo ||' - '||categoria_comercio.descripcion ||' - '||nombre ilike $filtro limit 20 ";
     return consultar_fuente($sql);
 
   } 
 
   function get_descripcion_comercio($idcomercio = null)
   {
-    $sql = "SELECT idcomercio, codigo ||'-'||categoria_comercio.descripcion ||'-'||nombre as nombre, direccion, idlocalidad
+    $sql = "SELECT idcomercio, codigo ||' - '||categoria_comercio.descripcion ||' - '||nombre as nombre, direccion, idlocalidad
               FROM public.comercio
             inner join categoria_comercio using (idcategoria_comercio)
             WHERE 
