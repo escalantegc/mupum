@@ -9,7 +9,7 @@ class ci_consumo_por_ticket extends mupum_ci
 	function evt__procesar()
 	{
 		try{
-			$this->cn()->guardar_dr_consumos();
+			$this->cn()->guardar_dr_consumo_ticket();
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
@@ -32,13 +32,13 @@ class ci_consumo_por_ticket extends mupum_ci
 			} 
 			
 		}
-		$this->cn()->resetear_dr_consumos();
+		$this->cn()->resetear_dr_consumo_ticket();
 		$this->set_pantalla('pant_inicial');
 	}
 
 	function evt__cancelar()
 	{
-		$this->cn()->resetear_dr_consumos();
+		$this->cn()->resetear_dr_consumo_ticket();
 		$this->set_pantalla('pant_inicial');
 	}
 
@@ -65,14 +65,14 @@ class ci_consumo_por_ticket extends mupum_ci
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->cn()->cargar_dt_consumo_ticket($seleccion);
+		$this->cn()->cargar_dr_consumo_ticket($seleccion);
 		$this->cn()->set_cursor_dt_consumo_ticket($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
 	function evt__cuadro__borrar($seleccion)
 	{
-		$this->cn()->cargar_dt_consumo_ticket($seleccion);
+		$this->cn()->cargar_dr_consumo_ticket($seleccion);
 		$this->cn()->eliminar_dt_consumo_ticket($seleccion);
 		try{
 			$this->cn()->guardar_dr_parametros();
@@ -135,6 +135,20 @@ class ci_consumo_por_ticket extends mupum_ci
 		}
 	}
 
-}
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_consumo_ticket ------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
+	function conf__frm_ml_detalle_consumo_ticket(mupum_ei_formulario_ml $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_consumo_ticket();
+		$form_ml->set_datos($datos);
+	}
+
+	function evt__frm_ml_detalle_consumo_ticket__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_detalle_consumo_ticket($datos);
+	}
+
+}
 ?>

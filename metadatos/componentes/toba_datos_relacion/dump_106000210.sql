@@ -75,4 +75,52 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	'1'  --orden
 );
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000191', --dep_id
+	'106000210', --objeto_consumidor
+	'106000214', --objeto_proveedor
+	'dt_detalle_consumo_ticket', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
 --- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_objeto_datos_rel_asoc
+------------------------------------------------------------
+
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador, padre_proyecto, padre_objeto, padre_id, padre_clave, hijo_proyecto, hijo_objeto, hijo_id, hijo_clave, cascada, orden) VALUES (
+	'mupum', --proyecto
+	'106000210', --objeto
+	'106000016', --asoc_id
+	NULL, --identificador
+	'mupum', --padre_proyecto
+	'106000197', --padre_objeto
+	'dt_consumo_ticket', --padre_id
+	NULL, --padre_clave
+	'mupum', --hijo_proyecto
+	'106000214', --hijo_objeto
+	'dt_detalle_consumo_ticket', --hijo_id
+	NULL, --hijo_clave
+	NULL, --cascada
+	'1'  --orden
+);
+--- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_objeto_rel_columnas_asoc
+------------------------------------------------------------
+INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
+	'mupum', --proyecto
+	'106000210', --objeto
+	'106000016', --asoc_id
+	'106000197', --padre_objeto
+	'106000174', --padre_clave
+	'106000214', --hijo_objeto
+	'106000202'  --hijo_clave
+);

@@ -346,6 +346,21 @@ class cn_consumos extends mupum_cn
 		$id = $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->eliminar_fila($id[0]);
 	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_detalle_consumo_ticket()
+	{
+		return $this->dep('dr_consumo_ticket')->tabla('dt_detalle_consumo_ticket')->get_filas();
+	}	
+
+	function procesar_dt_detalle_consumo_ticket($datos)
+	{
+		$this->dep('dr_consumo_ticket')->tabla('dt_detalle_consumo_ticket')->procesar_filas($datos);
+	}
 }
 
 ?>

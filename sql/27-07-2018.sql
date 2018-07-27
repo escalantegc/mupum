@@ -62,3 +62,6 @@ $BODY$
   COST 100;
 ALTER FUNCTION public.generar_numeros_talonario()
   OWNER TO postgres;
+
+
+DROP INDEX public.idx_consumo;
