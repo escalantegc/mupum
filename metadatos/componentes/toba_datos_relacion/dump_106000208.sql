@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000191]--  - dr_consumos 
+--[106000208]--  - dr_consumo_bono 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -9,7 +9,7 @@
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'106000191', --objeto
+	'106000208', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_consumos', --nombre
+	'- dr_consumo_bono', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -36,7 +36,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-07-23 20:00:27', --creacion
+	'2018-07-26 20:20:27', --creacion
 	NULL  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 106
@@ -46,7 +46,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 ------------------------------------------------------------
 INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_montaje, ap_clase, ap_archivo, sinc_susp_constraints, sinc_orden_automatico, sinc_lock_optimista) VALUES (
 	'mupum', --proyecto
-	'106000191', --objeto
+	'106000208', --objeto
 	'0', --debug
 	NULL, --clave
 	'2', --ap
@@ -65,22 +65,22 @@ INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_mon
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000167', --dep_id
-	'106000191', --objeto_consumidor
+	'106000182', --dep_id
+	'106000208', --objeto_consumidor
 	'106000192', --objeto_proveedor
 	'dt_consumo_bono', --identificador
-	'', --parametros_a
-	'', --parametros_b
+	NULL, --parametros_a
+	NULL, --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'1'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000171', --dep_id
-	'106000191', --objeto_consumidor
-	'106000197', --objeto_proveedor
-	'dt_consumo_ticket', --identificador
+	'106000183', --dep_id
+	'106000208', --objeto_consumidor
+	'106000209', --objeto_proveedor
+	'dt_talonario_nros_bono', --identificador
 	'', --parametros_a
 	'', --parametros_b
 	NULL, --parametros_c

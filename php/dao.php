@@ -1531,6 +1531,33 @@ class dao
                 $where";
       return consultar_fuente($sql);
           
+  } 
+
+  function get_listado_convenios_con_financiamiento($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+      $sql = "SELECT  idconvenio, 
+                      categoria_comercio.descripcion as categoria, 
+                      titulo, 
+                      fecha_inicio, 
+                      fecha_fin, 
+                      maximo_cuotas, 
+                      monto_maximo_mensual, 
+                      permite_financiacion, 
+                      activo, 
+                      maneja_bono,
+                      consumo_ticket
+              FROM 
+                public.convenio
+              inner join categoria_comercio using (idcategoria_comercio)
+              where 
+                permite_financiacion = true and
+                $where";
+      return consultar_fuente($sql);
+          
   }
 
   function get_listado_comercios_por_convenio($idconvenio = null)
@@ -1776,12 +1803,12 @@ class dao
     }
     $sql = "SELECT  idconsumo_bono, 
                     idtalonario_bono, 
-                    numero_bono, 
                     (persona.apellido||', '|| persona.nombres) as socio,
                     talonario_bono.monto_bono,
                     comercio.nombre as comercio,
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio,
-                    numero_bono,
+                    cantidad_bonos,
+                    cantidad_bonos *   talonario_bono.monto_bono as total,
                     fecha
             FROM 
                 public.consumo_bonos
@@ -1817,6 +1844,39 @@ class dao
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
             WHERE
               $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_nros_bonos_segun_talonario_cantidad($idtalonario_bono =null, $cantidad= null)
+  {
+    $sql = "SELECT  idtalonario_bono, 
+                    nro_bono, 
+                    disponible, 
+                    idafiliacion
+            FROM 
+            public.talonario_nros_bono
+            where 
+              disponible = true and
+              idtalonario_bono = $idtalonario_bono
+            order by 
+              nro_bono asc
+            limit 
+              $cantidad";
+      return consultar_fuente($sql);
+  } 
+  function get_nros_bonos_segun_talonario($idtalonario_bono =null)
+  {
+    $sql = "SELECT  idtalonario_bono, 
+                    nro_bono, 
+                    disponible, 
+                    idafiliacion
+            FROM 
+            public.talonario_nros_bono
+            where 
+              disponible = true and
+              idtalonario_bono = $idtalonario_bono
+            order by 
+              nro_bono asc";
       return consultar_fuente($sql);
   }
 }

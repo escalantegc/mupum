@@ -8,8 +8,9 @@ class ci_talonario_bonos extends mupum_ci
 
 	function evt__procesar()
 	{
+		$this->cn()->guardar_dr_convenio();
 		try{
-			$this->cn()->guardar_dr_convenio();
+			
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
