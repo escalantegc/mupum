@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000204]--  - dr_consumo_financiado - dt_cuotas_consumo_financiado 
+--[106000204]--  DT - detalle_consumo_financiado 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_consumo_financiado - dt_cuotas_consumo_financiado', --nombre
+	'DT - detalle_consumo_financiado', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -53,7 +53,7 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 	'1', --ap
 	NULL, --ap_clase
 	NULL, --ap_archivo
-	'cuotas_consumo_financiado', --tabla
+	'detalle_consumo_financiado', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
 	'0', --modificar_claves
@@ -72,21 +72,21 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000204', --objeto
-	'106000189', --col_id
-	'idcuota_consumo_financiado', --columna
+	'106000218', --col_id
+	'iddetalle_consumo_financiado', --columna
 	'E', --tipo
 	'1', --pk
-	'cuotas_consumo_financiado_idcuota_consumo_financiado_seq', --secuencia
+	'detalle_consumo_financiado_iddetalle_consumo_financiado_seq', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	NULL, --externa
-	'cuotas_consumo_financiado'  --tabla
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000204', --objeto
-	'106000190', --col_id
+	'106000219', --col_id
 	'idconsumo_financiado', --columna
 	'E', --tipo
 	'0', --pk
@@ -94,13 +94,13 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	NULL, --externa
-	'cuotas_consumo_financiado'  --tabla
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000204', --objeto
-	'106000191', --col_id
+	'106000220', --col_id
 	'nro_cuota', --columna
 	'E', --tipo
 	'0', --pk
@@ -108,35 +108,63 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	NULL, --externa
-	'cuotas_consumo_financiado'  --tabla
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000204', --objeto
-	'106000192', --col_id
-	'enviada_descuento', --columna
+	'106000221', --col_id
+	'mes', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000222', --col_id
+	'anio', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000223', --col_id
+	'monto', --columna
+	'N', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000224', --col_id
+	'envio_descuento', --columna
 	'L', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'0', --no_nulo_db
-	NULL, --externa
-	'cuotas_consumo_financiado'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'106000204', --objeto
-	'106000193', --col_id
-	'cancelada', --columna
-	'L', --tipo
-	'0', --pk
-	'', --secuencia
-	NULL, --largo
-	NULL, --no_nulo
-	'0', --no_nulo_db
-	NULL, --externa
-	'cuotas_consumo_financiado'  --tabla
+	'0', --externa
+	'detalle_consumo_financiado'  --tabla
 );
 --- FIN Grupo de desarrollo 106

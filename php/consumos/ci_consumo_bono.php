@@ -202,7 +202,10 @@ class ci_consumo_bono extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_consumo_bono_propio())
 		{
+
 			$datos = $this->cn()->get_dt_consumo_bono_propio();
+			$consumo = dao::get_listado_consumos_bono('consumo_bonos.idconsumo_bono ='.$datos['idconsumo_bono']);
+			$datos['total'] = $consumo[0]['total'];
 			$form->set_datos($datos);
 		}
 	}

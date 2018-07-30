@@ -317,19 +317,19 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	'ef_combo', --opciones_ef
-	NULL, --carga_metodo
+	'get_listado_convenios_con_financiamiento', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
-	NULL, --carga_consulta_php
+	'106000001', --carga_consulta_php
 	NULL, --carga_sql
-	NULL, --carga_fuente
+	'auditoria', --carga_fuente
 	NULL, --carga_lista
-	NULL, --carga_col_clave
-	NULL, --carga_col_desc
-	'0', --carga_permite_no_seteado
-	NULL, --carga_no_seteado
-	NULL, --carga_no_seteado_ocultar
+	'idconvenio', --carga_col_clave
+	'titulo', --carga_col_desc
+	'1', --carga_permite_no_seteado
+	'--Seleccione--', --carga_no_seteado
+	'0', --carga_no_seteado_ocultar
 	NULL, --carga_maestros
 	NULL, --edit_tamano
 	NULL, --edit_maximo
@@ -346,7 +346,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --popup_carga_desc_clase
 	NULL, --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
-	NULL, --punto_montaje
+	'28', --punto_montaje
 	NULL, --check_valor_si
 	NULL, --check_valor_no
 	NULL, --check_desc_si
@@ -375,20 +375,20 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
 	'ef_combo', --opciones_ef
-	NULL, --carga_metodo
+	'get_listado_comercios_por_convenio', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
-	NULL, --carga_consulta_php
+	'106000001', --carga_consulta_php
 	NULL, --carga_sql
-	NULL, --carga_fuente
+	'auditoria', --carga_fuente
 	NULL, --carga_lista
-	NULL, --carga_col_clave
-	NULL, --carga_col_desc
-	'0', --carga_permite_no_seteado
-	NULL, --carga_no_seteado
-	NULL, --carga_no_seteado_ocultar
-	NULL, --carga_maestros
+	'idcomercio', --carga_col_clave
+	'nombre', --carga_col_desc
+	'1', --carga_permite_no_seteado
+	'--Seleccione--', --carga_no_seteado
+	'0', --carga_no_seteado_ocultar
+	'idconvenio', --carga_maestros
 	NULL, --edit_tamano
 	NULL, --edit_maximo
 	NULL, --edit_mascara
@@ -404,7 +404,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --popup_carga_desc_clase
 	NULL, --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
-	NULL, --punto_montaje
+	'28', --punto_montaje
 	NULL, --check_valor_si
 	NULL, --check_valor_no
 	NULL, --check_desc_si
@@ -428,7 +428,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'Descripcion', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
-	'1', --inicial
+	'0', --inicial
 	'6', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
@@ -482,11 +482,11 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
 	'monto', --nombre
-	'consumo_financiado.monto', --expresion
-	'Monto', --etiqueta
+	'consumo_financiado.total', --expresion
+	'Totol', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
-	'1', --inicial
+	'0', --inicial
 	'7', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
@@ -540,11 +540,11 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
 	'cuotas', --nombre
-	'consumo_financiado.cuotas', --expresion
+	'consumo_financiado.cantidad_cuotas', --expresion
 	'Cuotas', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
-	'1', --inicial
+	'0', --inicial
 	'8', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
@@ -599,10 +599,10 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'fecha', --tipo
 	'fecha', --nombre
 	'consumo_financiado.fecha', --expresion
-	'Fech', --etiqueta
+	'Fecha', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
-	'1', --inicial
+	'0', --inicial
 	'9', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple

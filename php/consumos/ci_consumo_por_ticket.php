@@ -8,6 +8,7 @@ class ci_consumo_por_ticket extends mupum_ci
 
 	function evt__procesar()
 	{
+
 		try{
 			$this->cn()->guardar_dr_consumo_ticket();
 			if (!toba::notificacion()->verificar_mensajes())
@@ -29,7 +30,10 @@ class ci_consumo_por_ticket extends mupum_ci
 			{
 				toba::notificacion()->agregar("El consumo del ticket ya esta registrado.",'info');
 				
-			} 
+			}  else {
+
+				toba::notificacion()->agregar($mensaje_log,'error');
+			}
 			
 		}
 		$this->cn()->resetear_dr_consumo_ticket();
@@ -46,6 +50,12 @@ class ci_consumo_por_ticket extends mupum_ci
 	{
 		$this->set_pantalla('pant_edicion');
 	}
+
+	function evt__planilla()
+	{
+		$this->set_pantalla('pant_planilla');
+	}
+
 
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
@@ -149,6 +159,16 @@ class ci_consumo_por_ticket extends mupum_ci
 	{
 		$this->cn()->procesar_dt_detalle_consumo_ticket($datos);
 	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_cabecera --------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function evt__frm_ml_cabecera__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_consumo_ticket($datos);
+	}
+
 
 }
 ?>

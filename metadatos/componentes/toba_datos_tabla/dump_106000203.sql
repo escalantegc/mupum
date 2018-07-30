@@ -72,11 +72,11 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000182', --col_id
+	'106000210', --col_id
 	'idconsumo_financiado', --columna
 	'E', --tipo
 	'1', --pk
-	'consumo_financiado_consumo_financiado_seq', --secuencia
+	'consumo_financiado_idconsumo_financiado_seq', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
@@ -86,7 +86,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000183', --col_id
+	'106000211', --col_id
 	'idafiliacion', --columna
 	'E', --tipo
 	'0', --pk
@@ -100,7 +100,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000184', --col_id
+	'106000212', --col_id
 	'idconvenio', --columna
 	'E', --tipo
 	'0', --pk
@@ -114,7 +114,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000185', --col_id
+	'106000213', --col_id
 	'idcomercio', --columna
 	'E', --tipo
 	'0', --pk
@@ -128,22 +128,8 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000186', --col_id
-	'descripcion', --columna
-	'C', --tipo
-	'0', --pk
-	'', --secuencia
-	'100', --largo
-	NULL, --no_nulo
-	'1', --no_nulo_db
-	'0', --externa
-	'consumo_financiado'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'106000203', --objeto
-	'106000187', --col_id
-	'monto', --columna
+	'106000214', --col_id
+	'total', --columna
 	'N', --tipo
 	'0', --pk
 	'', --secuencia
@@ -156,9 +142,9 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000188', --col_id
-	'cuotas', --columna
-	'E', --tipo
+	'106000215', --col_id
+	'fecha', --columna
+	'F', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
@@ -170,9 +156,23 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000194', --col_id
-	'fecha', --columna
-	'F', --tipo
+	'106000216', --col_id
+	'monto_proforma', --columna
+	'N', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'consumo_financiado'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000217', --col_id
+	'cantidad_cuotas', --columna
+	'E', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo

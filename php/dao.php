@@ -1879,7 +1879,10 @@ class dao
                     
                     (persona.apellido||', '|| persona.nombres) as socio,
                     comercio.codigo ||'-'||comercio.nombre as comercio, 
-                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio                   
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    total,
+                    fecha,
+                    'Mes: '||extract(month from fecha ) ||' - '||extract(year from fecha )  as mes                
             FROM 
                 public.consumo_ticket
             left outer  join afiliacion using(idafiliacion)
@@ -1888,7 +1891,36 @@ class dao
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
             WHERE
-              $where";
+              $where
+            order by fecha desc";
+      return consultar_fuente($sql);
+  }
+  function get_listado_consumos_financiado($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconsumo_financiado, 
+                    
+                    (persona.apellido||', '|| persona.nombres) as socio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    total, 
+                    fecha, 
+                    monto_proforma, 
+                    cantidad_cuotas, 
+                    descripcion                
+            FROM 
+                public.consumo_financiado
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner join comercios_por_convenio using(idconvenio,idcomercio)
+            inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
+            inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
+            WHERE
+              $where
+            order by fecha desc";
       return consultar_fuente($sql);
   }
 
