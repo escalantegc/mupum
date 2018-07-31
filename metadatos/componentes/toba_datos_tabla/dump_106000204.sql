@@ -76,7 +76,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'iddetalle_consumo_financiado', --columna
 	'E', --tipo
 	'1', --pk
-	'detalle_consumo_financiado_iddetalle_consumo_financiado_seq', --secuencia
+	NULL, --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
@@ -89,7 +89,7 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'106000219', --col_id
 	'idconsumo_financiado', --columna
 	'E', --tipo
-	'0', --pk
+	'1', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
@@ -167,4 +167,60 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'0', --externa
 	'detalle_consumo_financiado'  --tabla
 );
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000226', --col_id
+	'mesanio', --columna
+	'C', --tipo
+	'0', --pk
+	NULL, --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'1', --externa
+	NULL  --tabla
+);
 --- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_objeto_db_registros_ext
+------------------------------------------------------------
+
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_db_registros_ext (objeto_proyecto, objeto, externa_id, tipo, sincro_continua, metodo, clase, include, punto_montaje, sql, dato_estricto, carga_dt, carga_consulta_php, permite_carga_masiva, metodo_masivo) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000004', --externa_id
+	'dao', --tipo
+	'1', --sincro_continua
+	'get_mes_anio_cuota', --metodo
+	NULL, --clase
+	NULL, --include
+	'28', --punto_montaje
+	NULL, --sql
+	'0', --dato_estricto
+	NULL, --carga_dt
+	'106000001', --carga_consulta_php
+	'0', --permite_carga_masiva
+	NULL  --metodo_masivo
+);
+--- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_objeto_db_registros_ext_col
+------------------------------------------------------------
+INSERT INTO apex_objeto_db_registros_ext_col (objeto_proyecto, objeto, externa_id, col_id, es_resultado) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000004', --externa_id
+	'106000218', --col_id
+	'0'  --es_resultado
+);
+INSERT INTO apex_objeto_db_registros_ext_col (objeto_proyecto, objeto, externa_id, col_id, es_resultado) VALUES (
+	'mupum', --objeto_proyecto
+	'106000204', --objeto
+	'106000004', --externa_id
+	'106000226', --col_id
+	'1'  --es_resultado
+);

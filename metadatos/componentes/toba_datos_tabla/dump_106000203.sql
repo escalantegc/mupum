@@ -181,4 +181,18 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	'0', --externa
 	'consumo_financiado'  --tabla
 );
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000225', --col_id
+	'descripcion', --columna
+	'C', --tipo
+	'0', --pk
+	'', --secuencia
+	'100', --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	'0', --externa
+	'consumo_financiado'  --tabla
+);
 --- FIN Grupo de desarrollo 106

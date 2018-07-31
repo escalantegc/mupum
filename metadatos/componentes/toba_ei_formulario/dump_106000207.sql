@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_frm_consumo_financiado', --subclase
+	'consumos/ei_frm_consumo_financiado.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_consumo_financiado - frm', --nombre
@@ -136,7 +136,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000207', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'idafiliacion', --identificador
-	'ef_combo', --elemento_formulario
+	'ef_combo_editable', --elemento_formulario
 	'idafiliacion', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
@@ -154,7 +154,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --estado_defecto
 	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
-	'get_personas_afiliadas', --carga_metodo
+	'get_personas_afiliadas_combo_editable', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
@@ -170,7 +170,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'1', --carga_permite_no_seteado
 	'--Seleccione--', --carga_no_seteado
 	'0', --carga_no_seteado_ocultar
-	NULL, --edit_tamano
+	'400', --edit_tamano
 	NULL, --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
@@ -186,9 +186,9 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --popup_proyecto
 	NULL, --popup_editable
 	NULL, --popup_ventana
-	NULL, --popup_carga_desc_metodo
-	NULL, --popup_carga_desc_clase
-	NULL, --popup_carga_desc_include
+	'get_descripcion_persona', --popup_carga_desc_metodo
+	'dao', --popup_carga_desc_clase
+	'dao.php', --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
 	NULL, --fieldset_fin
 	NULL, --check_valor_si
@@ -455,13 +455,13 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000322', --objeto_ei_formulario_fila
 	'106000207', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
-	'Total', --identificador
+	'total', --identificador
 	'ef_editable_moneda', --elemento_formulario
-	'Total', --columnas
+	'total', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'6', --orden
-	'Total', --etiqueta
+	'Monto Financiado', --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
 	NULL, --colapsado

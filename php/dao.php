@@ -1956,5 +1956,16 @@ class dao
               nro_bono asc";
       return consultar_fuente($sql);
   }
+
+  function get_mes_anio_cuota($iddetalle_consumo_financiado = null)
+  {
+    $sql = "SELECT 
+                mes||'/'||anio mesanio
+            FROM public.detalle_consumo_financiado
+            where 
+              iddetalle_consumo_financiado =$iddetalle_consumo_financiado";
+    return consultar_fuente($sql);
+
+  }
 }
 ?>

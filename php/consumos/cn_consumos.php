@@ -352,7 +352,6 @@ class cn_consumos extends mupum_cn
 	 	$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->procesar_filas($datos);	
 	}
 
-
 	//-----------------------------------------------------------------------------------
 	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -365,6 +364,111 @@ class cn_consumos extends mupum_cn
 	function procesar_dt_detalle_consumo_ticket($datos)
 	{
 		$this->dep('dr_consumo_ticket')->tabla('dt_detalle_consumo_ticket')->procesar_filas($datos);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-CONSUMO-FINANCIADO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_consumo_financiado()	
+	{
+		if(!$this->dep('dr_consumo_financiado')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_consumo_financiado')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_consumo_financiado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function guardar_dr_consumo_financiado()
+	{
+		$this->dep('dr_consumo_financiado')->sincronizar();
+	}
+
+	function resetear_dr_consumo_financiado()
+	{
+		$this->dep('dr_consumo_financiado')->resetear();
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONSUMO-TICKET -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_consumo_financiado($seleccion)
+	{
+		if(!$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_consumo_financiado($seleccion)
+	{
+		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_consumo_financiado()
+	{
+		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_consumo_financiado()
+	{
+		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->resetear_cursor();
+	}
+
+	function get_dt_consumo_financiado()
+	{
+		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get();
+		
+	}	
+
+	function get_dt_consumo_financiado_sin_blob()
+	{
+		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get();
+
+	}
+
+	function set_dt_consumo_financiado($datos)
+	{
+		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set($datos);
+
+	}
+
+	function agregar_dt_consumo_financiado($datos)
+	{
+		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->nueva_fila($datos);
+		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set_cursor($id);
+
+	}
+
+	function eliminar_dt_consumo_financiado($seleccion)
+	{
+		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->eliminar_fila($id[0]);
+	}	
+
+	function procesar_dt_consumo_financiado($datos)
+	{
+	 	$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->procesar_filas($datos);	
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_cuotas_consumo_financiado()
+	{
+		return $this->dep('dr_consumo_financiado')->tabla('dt_cuotas_consumo_financiado')->get_filas();
+	}	
+
+	function procesar_dt_cuotas_consumo_financiado($datos)
+	{
+		$this->dep('dr_consumo_financiado')->tabla('dt_cuotas_consumo_financiado')->procesar_filas($datos);
 	}
 }
 
