@@ -153,7 +153,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	'0', --scroll
 	NULL, --scroll_alto
 	't', --cc_modo
-	'0', --cc_modo_anidado_colap
+	'1', --cc_modo_anidado_colap
 	NULL, --cc_modo_anidado_totcol
 	NULL  --cc_modo_anidado_totcua
 );
@@ -206,7 +206,7 @@ INSERT INTO apex_objeto_cuadro_cc (objeto_cuadro_proyecto, objeto_cuadro, objeto
 	'0', --pie_mostrar_titular
 	'0', --pie_mostrar_titulos
 	NULL, --imp_paginar
-	'0'  --modo_inicio_colapsado
+	'1'  --modo_inicio_colapsado
 );
 --- FIN Grupo de desarrollo 106
 
@@ -313,13 +313,6 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 ------------------------------------------------------------
 -- apex_objeto_cuadro_col_cc
 ------------------------------------------------------------
-INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
-	'106000011', --objeto_cuadro_cc
-	'mupum', --objeto_cuadro_proyecto
-	'106000198', --objeto_cuadro
-	'106000176', --objeto_cuadro_col
-	'1'  --total
-);
 INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
 	'106000012', --objeto_cuadro_cc
 	'mupum', --objeto_cuadro_proyecto
