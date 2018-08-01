@@ -376,11 +376,21 @@ class ci_login extends toba_ci
 		
 		try{
 			$this->cn()->guardar_dr_registro();
-			$this->enviar_correo($this->s__persona);
-			$parametros = array('ts' => 'vista_jasperreports');
-			toba::vinculador()->navegar_a('mupum', '3945', $parametros);
+			if ($this->s__persona['externo'] == 'no')
+			{
+				$this->enviar_correo($this->s__persona);
+				$parametros = array('ts' => 'vista_jasperreports');
+				toba::vinculador()->navegar_a('mupum', '3945', $parametros);
+				toba::notificacion()->agregar("La solicitud de afiliacion ha sido enviada correctamente",'info');
+
+			} else {
+					$this->enviar_correo_externo($this->s__persona);
+					toba::notificacion()->agregar("La solicitud de alta de usuario externo ha sido enviada correctamente",'info');
+
+			}
+		
+		
 			
-			toba::notificacion()->agregar("La solicitud de afiliacion ha sido enviada correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -438,7 +448,11 @@ class ci_login extends toba_ci
 	{
 		$this->set_pantalla('pant_registro');
 	}
-	
+	function evt__datos__externo()
+	{
+		$this->set_pantalla('pant_usuario_externo');
+	}
+
 
 	
 	//-----------------------------------------------------------------------------------
@@ -467,6 +481,7 @@ class ci_login extends toba_ci
 		$datos['tipo_documento'] = dao::get_descripcion_tipo_documento($datos['idtipo_documento']);
 		
 		$this->s__persona = $datos;
+		$this->s__persona['externo'] = 'no';
 		if ($this->cn()->hay_cursor_dt_persona())
 		{
 			$this->cn()->set_dt_persona($datos);
@@ -497,6 +512,50 @@ class ci_login extends toba_ci
 							<tr>
 								<td>Legajo: ".trim($persona['legajo'])."</td>
 							</tr>
+							<tr>
+								<td>Apellido y Nombres: ".trim($persona['apellido']).", ".trim($persona['nombres'])."</td>
+							</tr>
+							<tr>
+								<td>Correo: ".trim($persona['correo'])."</td>
+							</tr>
+							<tr>
+								<td>Telefono: ".trim($persona['tipo_telefono'])." - ".trim($persona['nro_telefono'])."</td>
+							
+							</tr>
+							<tr>
+								<td> Fecha Solicitud: ".trim($persona['fecha_solicitud'])."</td>
+							</tr>
+						</tbody>
+					</table>
+        				<br />
+           				Saludos ATTE .- </br >  MUPUM</br>".
+          				"<p>No responda este correo, fue generado por sistema. </p>";
+        try 
+        {
+                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail->set_html(true);
+                /*$direcciones[]= 'administracion@mupum.unam.edu.ar';
+                $direcciones[]= 'comision@mupum.unam.edu.ar';
+                $mail->set_cc($direcciones);*/
+                $mail->enviar();
+        } catch (toba_error $error) {
+                $chupo = $error->get_mensaje_log();
+                toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+	function enviar_correo_externo($persona)
+	{
+        //Armo el mail nuevo &oacute;
+        $asunto = "Solicitud de alta como usuario externo";
+        $cuerpo_mail = "<p>Estimado/a: </p>".trim($persona['apellido']) .", " .trim($persona['nombres'])."<br />
+        				<p>Por medio del presente le informamos que la Solicitud de Alta como usuario externo ha sido enviada correctamente con los siguentes datos: </p> 
+        				<table>
+						<tbody>
+							<tr>
+								<td>Documento: ".trim($persona['tipo_documento'])." - ".trim($persona['nro_documento'])."</td>
+							</tr>
+							
 							<tr>
 								<td>Apellido y Nombres: ".trim($persona['apellido']).", ".trim($persona['nombres'])."</td>
 							</tr>
@@ -897,5 +956,67 @@ class ci_login extends toba_ci
 		$tipo = dao::get_tipo_socio($idtipo_socio);
 		$respuesta->set($tipo);	
 	}
+	//-----------------------------------------------------------------------------------
+	//---- frm_persona_externa ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function evt__frm_persona_externa__modificacion($datos)
+	{
+		
+		$persona['idtipo_documento'] = $datos['idtipo_documento']; 
+		$persona['nro_documento'] = $datos['nro_documento']; 
+		$this->cn()->cargar_dr_registro($persona);
+		$resultado = $this->cn()->existe_dt_persona($persona);
+		if ($resultado == 'existe')
+		{
+			$this->cn()->set_cursor_dt_persona($persona);	
+		}
+		$datos['tipo_documento'] = dao::get_descripcion_tipo_documento($datos['idtipo_documento']);
+		
+		
+		$this->s__persona = $datos;
+		$this->s__persona['externo'] = 'si';
+		if ($this->cn()->hay_cursor_dt_persona())
+		{
+			$this->cn()->set_dt_persona($datos);
+		} else {
+			$this->cn()->agregar_dt_persona($datos);
+		}
+
+		$afiliacion['idtipo_socio'] = $datos['idtipo_socio'];
+		$afiliacion['solicitada'] = 't';
+		$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
+		$afiliacion['fecha_alta'] =  $datos['fecha_alta'];    
+		$afiliacion['fecha_baja'] =  $datos['fecha_baja'];  
+		$this->s__persona['fecha_solicitud'] = $afiliacion['fecha_solicitud'];
+		$this->cn()->agregar_dt_afiliacion($afiliacion);	
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_telefono_externo ---------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function evt__frm_telefono_externo__modificacion($datos)
+	{
+		$this->s__persona['tipo_telefono'] = dao::get_descripcion_tipo_telefono($datos['idtipo_telefono']);
+		$this->s__persona['nro_telefono'] = $datos['nro_telefono'];
+		$telefonos = $this->cn()->get_dt_telefonos();
+		$bandera = 'noexiste';
+		foreach ($telefonos as $telefono) 
+		{
+			if (($telefono['idtipo_telefono'] == $datos['idtipo_telefono'] ) and (trim($telefono['nro_telefono']) == trim($datos['nro_telefono'] )))
+			{
+					$bandera = 'existe';
+			}
+		}
+
+		if ($bandera == 'noexiste')
+		{
+			$this->cn()->agregar_dt_telefonos($datos);	
+		}
+	}
+
+
+
 }
 ?>

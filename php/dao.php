@@ -75,8 +75,7 @@ class dao
           FROM public.persona
           inner join tipo_documento using(idtipo_documento)
           where
-            legajo is not null and
-            $where 
+             $where 
           order by
             apellido,nombres";
       return consultar_fuente($sql);
@@ -157,7 +156,46 @@ class dao
 	}
 
 
-	function get_listado_tipo_socio($where = null)
+  function get_listado_tipo_socio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtipo_socio, 
+                    descripcion,
+                    titular,
+                    liquidacion,
+                    externo
+          FROM public.tipo_socio
+          where
+            $where
+          order by
+            titular desc,descripcion";
+      return consultar_fuente($sql);
+  }	
+
+  function get_listado_tipo_socio_no_externo($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtipo_socio, 
+                    descripcion,
+                    titular,
+                    liquidacion,
+                    externo
+          FROM public.tipo_socio
+          where
+            externo = false and
+            $where
+          order by
+            titular desc,descripcion";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_tipo_socio_externo($where = null)
 	{
 		if (!isset($where))
 		{
@@ -166,9 +204,11 @@ class dao
 		$sql = "SELECT 	idtipo_socio, 
 						        descripcion,
                     titular,
-                    liquidacion
+                    liquidacion,
+                    externo
   				FROM public.tipo_socio
   				where
+            externo = true and
   					$where
   				order by
   					titular desc,descripcion";

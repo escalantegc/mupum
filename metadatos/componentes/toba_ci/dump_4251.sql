@@ -222,10 +222,34 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
+	'106000197', --dep_id
+	'4251', --objeto_consumidor
+	'106000220', --objeto_proveedor
+	'frm_persona_externa', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
 	'106000068', --dep_id
 	'4251', --objeto_consumidor
 	'106000080', --objeto_proveedor
 	'frm_telefono', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000198', --dep_id
+	'4251', --objeto_consumidor
+	'106000221', --objeto_proveedor
+	'frm_telefono_externo', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -376,6 +400,25 @@ INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, id
 	NULL, --template_impresion
 	'28'  --punto_montaje
 );
+INSERT INTO apex_objeto_ci_pantalla (objeto_ci_proyecto, objeto_ci, pantalla, identificador, orden, etiqueta, descripcion, tip, imagen_recurso_origen, imagen, objetos, eventos, subclase, subclase_archivo, template, template_impresion, punto_montaje) VALUES (
+	'mupum', --objeto_ci_proyecto
+	'4251', --objeto_ci
+	'106000081', --pantalla
+	'pant_usuario_externo', --identificador
+	'6', --orden
+	'Pantalla Usuario Externo', --etiqueta
+	NULL, --descripcion
+	NULL, --tip
+	'apex', --imagen_recurso_origen
+	NULL, --imagen
+	NULL, --objetos
+	NULL, --eventos
+	NULL, --subclase
+	NULL, --subclase_archivo
+	NULL, --template
+	NULL, --template_impresion
+	'28'  --punto_montaje
+);
 --- FIN Grupo de desarrollo 106
 
 ------------------------------------------------------------
@@ -444,6 +487,20 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'0', --orden
 	'106000125'  --dep_id
 );
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'mupum', --proyecto
+	'106000081', --pantalla
+	'4251', --objeto_ci
+	'0', --orden
+	'106000197'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'mupum', --proyecto
+	'106000081', --pantalla
+	'4251', --objeto_ci
+	'1', --orden
+	'106000198'  --dep_id
+);
 
 ------------------------------------------------------------
 -- apex_eventos_pantalla
@@ -456,6 +513,18 @@ INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VAL
 );
 INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
 	'106000014', --pantalla
+	'4251', --objeto_ci
+	'106000065', --evento_id
+	'mupum'  --proyecto
+);
+INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
+	'106000081', --pantalla
+	'4251', --objeto_ci
+	'106000064', --evento_id
+	'mupum'  --proyecto
+);
+INSERT INTO apex_eventos_pantalla (pantalla, objeto_ci, evento_id, proyecto) VALUES (
+	'106000081', --pantalla
 	'4251', --objeto_ci
 	'106000065', --evento_id
 	'mupum'  --proyecto
