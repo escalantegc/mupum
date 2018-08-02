@@ -470,6 +470,97 @@ class cn_consumos extends mupum_cn
 	{
 		$this->dep('dr_consumo_financiado')->tabla('dt_cuotas_consumo_financiado')->procesar_filas($datos);
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-AYUDA-ECONOMICA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_ayuda_economica($seleccion)
+	{
+		if(!$this->dep('dr_ayuda_economica')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_ayuda_economica')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_ayuda_economica')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function guardar_dr_ayuda_economica()
+	{
+		$this->dep('dr_ayuda_economica')->sincronizar();
+	}
+
+	function resetear_dr_ayuda_economica()
+	{
+		$this->dep('dr_ayuda_economica')->resetear();
+	}
+	function set_cursor_dt_ayuda_economica($seleccion)
+	{
+		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_ayuda_economica()
+	{
+		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_ayuda_economica()
+	{
+		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->resetear_cursor();
+	}
+
+	function get_dt_ayuda_economica()
+	{
+		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get();
+		
+	}	
+
+	function get_dt_ayuda_economica_sin_blob()
+	{
+		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get();
+
+	}
+
+	function set_dt_ayuda_economica($datos)
+	{
+		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set($datos);
+
+	}
+
+	function agregar_dt_ayuda_economica($datos)
+	{
+		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->nueva_fila($datos);
+		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set_cursor($id);
+
+	}
+
+	function eliminar_dt_ayuda_economica($seleccion)
+	{
+		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->eliminar_fila($id[0]);
+	}	
+
+	function procesar_dt_ayuda_economica($datos)
+	{
+	 	$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->procesar_filas($datos);	
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_detalle_ayuda_economica()
+	{
+		return $this->dep('dr_ayuda_economica')->tabla('dt_detalle_ayuda_economica')->get_filas();
+	}	
+
+	function procesar_dt_detalle_ayuda_economica($datos)
+	{
+		$this->dep('dr_ayuda_economica')->tabla('dt_detalle_ayuda_economica')->procesar_filas($datos);
+	}
 }
 
 ?>

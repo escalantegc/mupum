@@ -16,11 +16,15 @@ class ei_frm_convenio extends mupum_ei_formulario
 			{
 				this.ef('maximo_cuotas').mostrar();
 				this.ef('permite_renovacion').mostrar();
+				this.ef('ayuda_economica').mostrar();
+			
 			} else {
 				this.ef('maximo_cuotas').resetear_estado();
 				this.ef('permite_renovacion').resetear_estado();
 				this.ef('maximo_cuotas').ocultar();
 				this.ef('permite_renovacion').ocultar();
+				this.ef('ayuda_economica').ocultar();
+				this.ef('ayuda_economica').ocultar();
 			}
 		}
 		//---- Procesamiento de EFs --------------------------------

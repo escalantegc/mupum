@@ -1645,6 +1645,33 @@ class dao
                 $where";
       return consultar_fuente($sql);
           
+  }  
+
+  function get_listado_convenios_ayuda_economica($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+      $sql = "SELECT  idconvenio, 
+                      categoria_comercio.descripcion as categoria, 
+                      titulo, 
+                      fecha_inicio, 
+                      fecha_fin, 
+                      maximo_cuotas, 
+                      monto_maximo_mensual, 
+                      permite_financiacion, 
+                      activo, 
+                      maneja_bono,
+                      consumo_ticket
+              FROM 
+                public.convenio
+              inner join categoria_comercio using (idcategoria_comercio)
+              where 
+                ayuda_economica = true and
+                $where";
+      return consultar_fuente($sql);
+          
   }
 
   function get_listado_comercios_por_convenio($idconvenio = null)
@@ -1958,6 +1985,29 @@ class dao
             inner join comercios_por_convenio using(idconvenio,idcomercio)
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
+            WHERE
+              $where
+            order by fecha desc";
+      return consultar_fuente($sql);
+  }
+  
+  function get_listado_ayuda_economica($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idayuda_economica,               
+                    (persona.apellido||', '|| persona.nombres) as socio,                  
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    monto, 
+                    fecha, 
+                    cantidad_cuotas            
+            FROM 
+                public.ayuda_economica
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner join convenio using(idconvenio)
             WHERE
               $where
             order by fecha desc";
