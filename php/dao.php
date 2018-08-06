@@ -234,7 +234,7 @@ class dao
   		return consultar_fuente($sql);
 	}
 
-	function get_localidades_combo_editable($filtro = null)
+	function get_loclidades_combo_editable($filtro = null)
 	{
 		if (! isset($filtro) || trim($filtro)=='')
 		{
@@ -372,8 +372,9 @@ class dao
   						localidad.idlocalidad,
   						pais.descripcion as pais,
   						provincia.descripcion as provincia,
-  						localidad.descripcion 
-  				FROM 
+  						localidad.descripcion,
+              localidad.descripcion  ||' - '|| provincia.descripcion as localidad
+  				FROM  
   					public.localidad
   				inner join provincia using (idprovincia)
   				inner join pais using (idpais)
@@ -758,14 +759,13 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
-                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
             FROM 
               public.afiliacion
             inner join persona using (idpersona)
             inner join  tipo_socio using(idtipo_socio)
             where 
               activa = true and
-              titular = true and
               $sql_usuario";
 
     return consultar_fuente($sql);
@@ -783,14 +783,14 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
-                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
             FROM 
               public.afiliacion
             inner join persona using (idpersona)
             inner join  tipo_socio using(idtipo_socio)
             where 
               activa = true and
-              titular = true and
+              titular = true and 
               $sql_usuario and
               persona.legajo||' - '|| persona.apellido||', '|| persona.nombres ilike $filtro limit 10";
 
@@ -804,7 +804,7 @@ class dao
     
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
-                 persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as persona
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
             FROM 
               public.afiliacion
             inner join persona using (idpersona)

@@ -986,8 +986,6 @@ class ci_login extends toba_ci
 		$afiliacion['idtipo_socio'] = $datos['idtipo_socio'];
 		$afiliacion['solicitada'] = 't';
 		$afiliacion['fecha_solicitud'] =  date("d-m-Y");    
-		$afiliacion['fecha_alta'] =  $datos['fecha_alta'];    
-		$afiliacion['fecha_baja'] =  $datos['fecha_baja'];  
 		$this->s__persona['fecha_solicitud'] = $afiliacion['fecha_solicitud'];
 		$this->cn()->agregar_dt_afiliacion($afiliacion);	
 	}

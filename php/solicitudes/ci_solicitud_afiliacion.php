@@ -203,9 +203,16 @@ class ci_solicitud_afiliacion extends mupum_ci
 	{
 		if ($this->cn()->hay_cursor_dt_afiliacion($datos))
 		{
+			$tipo_socio = dao::get_listado_tipo_socio(' idtipo_socio ='.$datos['idtipo_socio']);
 			$this->s__persona = dao::get_listado_persona('persona.idpersona='.$datos['idpersona']);
 			$this->s__persona[0]['idtipo_socio'] = $datos['idtipo_socio'];
-			$this->enviar_correo_aceptacion($this->s__persona[0]);
+			
+			$perfil = trim(strtolower($tipo_socio[0]['descripcion']));
+			if ($perfil != 'externo')
+			{
+				$this->enviar_correo_aceptacion($this->s__persona[0]);	
+			}
+			
 			$datos['activa'] = 't';
 			$datos['solicitada'] = 'f';
 			$this->cn()->set_dt_afiliacion($datos);
@@ -393,49 +400,52 @@ class ci_solicitud_afiliacion extends mupum_ci
 
 	function enviar_correo_aceptacion($persona)
 	{
-		
-		$user = trim($persona['nro_documento']); 
-	    $nombre = trim($persona['persona']);
-	    $clave = toba_usuario::generar_clave_aleatoria(8);
-	    $atributos['email'] = $persona['correo'];
+		$nombre = trim($persona['persona']);
+		$tipo_socio = dao::get_listado_tipo_socio(' idtipo_socio ='.$persona['idtipo_socio']);
+	
+			$user = trim($persona['nro_documento']); 
+		    
+		    $clave = toba_usuario::generar_clave_aleatoria(8);
+		    $atributos['email'] = $persona['correo'];
 
-	    if (toba::instancia()->es_usuario_bloqueado($user))
-	    {
-	    	toba::instancia()->desbloquear_usuario($user);
-	    	toba_usuario::set_clave_usuario($clave, $user);
+		    if (toba::instancia()->es_usuario_bloqueado($user))
+		    {
+		    	toba::instancia()->desbloquear_usuario($user);
+		    	toba_usuario::set_clave_usuario($clave, $user);
 
-	    } else {
-			
-			$filtro['usuario'] = $user;
-	    	$this->cn()->cargar_dt_usuario($filtro);
-			$resultado = $this->cn()->existe_dt_usuario($filtro);
-			if ($resultado == 'existe')
-			{
-				toba_usuario::set_clave_usuario($clave, $user);
-			} else {
-				toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-				$tipo_socio = dao::get_listado_tipo_socio(' idtipo_socio ='.$persona['idtipo_socio']);
-
-		        $perfil = trim(strtolower($tipo_socio[0]['descripcion']));
-			    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
-			}
+		    } else {
+				
+				$filtro['usuario'] = $user;
+		    	$this->cn()->cargar_dt_usuario($filtro);
+				$resultado = $this->cn()->existe_dt_usuario($filtro);
+				if ($resultado == 'existe')
+				{
+					toba_usuario::set_clave_usuario($clave, $user);
+				} else {
+					
+						toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
+				        $perfil = trim(strtolower($tipo_socio[0]['descripcion']));
+					    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
+					
+				}
 	    	
-	    }
+	    	}
+	    	 //Armo el mail nuevo &oacute;
+		    $asunto = "Solicitud Afiliacion Aceptada";
+		    
+			$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
+					"<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> ".
+					"<p>Los datos para poder ingresar al sistema son:</p>".
+					"Usuario: ".$user. "<br>".
+					"Clave: ".$clave. "<br>".
+					"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
+					"<p>Se solicita por favor complete los datos personales.</p>".
+					"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
+					"<p>Saludos ATTE .- MUPUM</p>".
+					"<p>No responda este correo, fue generado por sistema. </p>";
 
-	    //Armo el mail nuevo &oacute;
-	    $asunto = "Solicitud Afiliacion Aceptada";
-	    
-		$cuerpo_mail = "<p>Estimado/a: </p>".trim($nombre)."<br>".
-				"<p>Por medio del presente le informamos que usted ha sido Afiliado correctamente.</p> ".
-				"<p>Los datos para poder ingresar al sistema son:</p>".
-				"Usuario: ".$user. "<br>".
-				"Clave: ".$clave. "<br>".
-				"<p>Debe respetar mayusculas y minisculas en la clave.</p>".
-				"<p>Se solicita por favor complete los datos personales.</p>".
-				"<p>Se recomienda que cambie la clave en cuanto pueda ingresar al sistema.</p>".
-				"<p>Saludos ATTE .- MUPUM</p>".
-				"<p>No responda este correo, fue generado por sistema. </p>";
-
+			
+	   
         try 
         {
             $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
