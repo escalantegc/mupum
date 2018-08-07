@@ -123,7 +123,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --titulo
 	NULL, --subtitulo
 	NULL, --sql
-	'idconsumo_ticket', --columnas_clave
+	'idconsumo_convenio', --columnas_clave
 	NULL, --columna_descripcion
 	'0', --clave_dbr
 	NULL, --archivos_callbacks
@@ -198,7 +198,7 @@ INSERT INTO apex_objeto_cuadro_cc (objeto_cuadro_proyecto, objeto_cuadro, objeto
 	'106000198', --objeto_cuadro
 	'106000012', --objeto_cuadro_cc
 	'mes', --identificador
-	NULL, --descripcion
+	'Periodo:', --descripcion
 	'3', --orden
 	'mes', --columnas_id
 	'mes', --columnas_descripcion
@@ -281,13 +281,13 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'mupum', --objeto_cuadro_proyecto
 	'106000198', --objeto_cuadro
 	'106000177', --objeto_cuadro_col
-	'fecha', --clave
+	'mes', --clave
 	'3', --orden
-	'Fecha', --titulo
+	'Periodo', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-cen-s1', --estilo
 	NULL, --ancho
-	'8', --formateo
+	'1', --formateo
 	NULL, --vinculo_indice
 	'0', --no_ordenar
 	NULL, --mostrar_xls

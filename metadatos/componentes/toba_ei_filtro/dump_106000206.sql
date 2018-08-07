@@ -482,7 +482,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
 	'monto', --nombre
-	'consumo_financiado.total', --expresion
+	'consumo_convenio.total', --expresion
 	'Totol', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
@@ -540,7 +540,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
 	'cuotas', --nombre
-	'consumo_financiado.cantidad_cuotas', --expresion
+	'consumo_convenio.cantidad_cuotas', --expresion
 	'Cuotas', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
@@ -598,7 +598,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'fecha', --tipo
 	'fecha', --nombre
-	'consumo_financiado.fecha', --expresion
+	'consumo_convenio.fecha', --expresion
 	'Fecha', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio

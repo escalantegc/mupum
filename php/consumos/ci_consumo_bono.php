@@ -12,7 +12,7 @@ class ci_consumo_bono extends mupum_ci
 	{
 		
 		try{
-			$this->cn()->guardar_dr_consumo_bono();
+			$this->cn()->guardar_dr_consumo_bono_propio();
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 		} catch( toba_error_db $error){
@@ -32,7 +32,7 @@ class ci_consumo_bono extends mupum_ci
 			} 
 			
 		}
-		$this->cn()->resetear_dr_consumo_bono();
+		$this->cn()->resetear_dr_consumo_bono_propio();
 		$this->set_pantalla('pant_inicial');
 	
 	}
@@ -40,9 +40,9 @@ class ci_consumo_bono extends mupum_ci
 	function evt__cancelar()
 	{
 		$this->cn()->resetear_dr_consumo_bono();
+		$this->cn()->resetear_dr_consumo_bono_propio();
 		$this->set_pantalla('pant_inicial');
-		unset($this->s__cantidad);
-		unset($this->s__idtalonario);
+
 	}
 
 	function evt__nuevo()
@@ -155,16 +155,16 @@ class ci_consumo_bono extends mupum_ci
 			$numero['disponible'] ='f';
 			$this->cn()->set_dt_talonario_nros_bono($numero);
 			$this->cn()->resetear_cursor_dt_talonario_nros_bono();
+		
 			try{
-				$this->cn()->guardar_dr_consumo_bono();
-			
+				
+			$this->cn()->guardar_dr_consumo_bono();
 			} catch( toba_error_db $error){
 			$mensaje_log= $error->get_mensaje_log();
-				if(strstr($mensaje_log,'idx_consumo'))
-				{
-					toba::notificacion()->agregar("El consumo del bono esta registrado.",'info');
+			
+					toba::notificacion()->agregar($mensaje_log,'info');
 					
-				} 
+				
 			
 			}
 			$this->cn()->resetear_dt_talonario_nros_bono();
@@ -204,8 +204,7 @@ class ci_consumo_bono extends mupum_ci
 		{
 
 			$datos = $this->cn()->get_dt_consumo_bono_propio();
-			$consumo = dao::get_listado_consumos_bono('consumo_bonos.idconsumo_bono ='.$datos['idconsumo_bono']);
-			$datos['total'] = $consumo[0]['total'];
+	
 			$form->set_datos($datos);
 		}
 	}
@@ -221,6 +220,21 @@ class ci_consumo_bono extends mupum_ci
 			//--$this->s__cantidad= $datos['cantidad_bonos'];
 			$this->cn()->agregar_dt_consumo_bono_propio($datos);
 		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_pago ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_detalle_pago(ei_frm_detalle_pago $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_pago_propio();
+		$form_ml->set_datos($datos);
+	}
+
+	function evt__frm_ml_detalle_pago__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_detalle_pago_bono_propio($datos);
 	}
 
 }

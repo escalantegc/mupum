@@ -258,6 +258,20 @@ class cn_consumos extends mupum_cn
 	{
 		$this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->procesar_filas($datos);
 	}
+	
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-PAGO-CONSUMO-BONO-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_detalle_pago_propio()
+	{
+		return $this->dep('dr_consumo_bono_propio')->tabla('dt_detalle_pago')->get_filas();
+	}	
+
+	function procesar_dt_detalle_pago_bono_propio($datos)
+	{
+		$this->dep('dr_consumo_bono_propio')->tabla('dt_detalle_pago')->procesar_filas($datos);
+	}
 
 
 
@@ -285,71 +299,110 @@ class cn_consumos extends mupum_cn
 	{
 		$this->dep('dr_consumo_ticket')->resetear();
 	}
+
 	//-----------------------------------------------------------------------------------
-	//---- DT-CONSUMO-TICKET -----------------------------------------------------------------------
+	//---- DR-CONSUMO-CONVENIO -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-	function cargar_dt_consumo_ticket($seleccion)
+	function cargar_dr_consumo_convenio()	
 	{
-		if(!$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->esta_cargada())
+		if(!$this->dep('dr_consumo_convenio')->esta_cargada())
 		{				// verifica si esta cargada el datos relacion			
 			if(!isset($seleccion))
 			{
-				$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->cargar();					// lee de la BD fisica y carga al datos relacion
+				$this->dep('dr_consumo_convenio')->cargar();					// lee de la BD fisica y carga al datos relacion
 			}else{
-				$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+				$this->dep('dr_consumo_convenio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
 			}
 		}
 	}
-	function set_cursor_dt_consumo_ticket($seleccion)
+	function guardar_dr_consumo_convenio()
 	{
-		$id = $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->set_cursor($id[0]);
+		$this->dep('dr_consumo_convenio')->sincronizar();
 	}
 
-	function hay_cursor_dt_consumo_ticket()
+	function resetear_dr_consumo_convenio()
 	{
-		return $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->hay_cursor();
+		$this->dep('dr_consumo_convenio')->resetear();
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONSUMO-CONVENIO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_consumo_convenio($seleccion)
+	{
+		if(!$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_consumo_convenio($seleccion)
+	{
+		$id = $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->set_cursor($id[0]);
 	}
 
-	function resetear_cursor_dt_consumo_ticket()
+	function hay_cursor_dt_consumo_convenio()
 	{
-		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->resetear_cursor();
+		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->hay_cursor();
 	}
 
-	function get_dt_consumo_ticket()
+	function resetear_cursor_dt_consumo_convenio()
 	{
-		return $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->get();
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->resetear_cursor();
+	}
+
+	function get_dt_consumo_convenio()
+	{
+		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->get();
 		
 	}	
 
-	function get_dt_consumo_ticket_sin_blob()
+	function get_dt_consumo_convenio_sin_blob()
 	{
-		return $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->get();
+		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->get();
 
 	}
 
-	function set_dt_consumo_ticket($datos)
+	function set_dt_consumo_convenio($datos)
 	{
-		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->set($datos);
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->set($datos);
 
 	}
 
-	function agregar_dt_consumo_ticket($datos)
+	function agregar_dt_consumo_convenio($datos)
 	{
-		$id = $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->nueva_fila($datos);
-		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->set_cursor($id);
+		$id = $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->nueva_fila($datos);
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->set_cursor($id);
 
 	}
 
-	function eliminar_dt_consumo_ticket($seleccion)
+	function eliminar_dt_consumo_convenio($seleccion)
 	{
-		$id = $this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->eliminar_fila($id[0]);
+		$id = $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->eliminar_fila($id[0]);
 	}	
 
-	function procesar_dt_consumo_ticket($datos)
+	function procesar_dt_consumo_convenio($datos)
 	{
-	 	$this->dep('dr_consumo_ticket')->tabla('dt_consumo_ticket')->procesar_filas($datos);	
+	 	$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio')->procesar_filas($datos);	
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONSUMO-CONVENIO-COUTAS-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_consumo_convenio_cuotas()
+	{
+		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio_cuotas')->get_filas();
+	}	
+
+	function procesar_dt_consumo_convenio_cuotas($datos)
+	{
+		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio_cuotas')->procesar_filas($datos);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -358,209 +411,14 @@ class cn_consumos extends mupum_cn
 	
 	function get_dt_detalle_consumo_ticket()
 	{
-		return $this->dep('dr_consumo_ticket')->tabla('dt_detalle_consumo_ticket')->get_filas();
+		return $this->dep('dr_consumo_convenio')->tabla('dt_detalle_consumo_ticket')->get_filas();
 	}	
 
 	function procesar_dt_detalle_consumo_ticket($datos)
 	{
-		$this->dep('dr_consumo_ticket')->tabla('dt_detalle_consumo_ticket')->procesar_filas($datos);
+		$this->dep('dr_consumo_convenio')->tabla('dt_detalle_consumo_ticket')->procesar_filas($datos);
 	}
 
-	//-----------------------------------------------------------------------------------
-	//---- DR-CONSUMO-FINANCIADO -----------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-	function cargar_dr_consumo_financiado()	
-	{
-		if(!$this->dep('dr_consumo_financiado')->esta_cargada())
-		{				// verifica si esta cargada el datos relacion			
-			if(!isset($seleccion))
-			{
-				$this->dep('dr_consumo_financiado')->cargar();					// lee de la BD fisica y carga al datos relacion
-			}else{
-				$this->dep('dr_consumo_financiado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
-			}
-		}
-	}
-	function guardar_dr_consumo_financiado()
-	{
-		$this->dep('dr_consumo_financiado')->sincronizar();
-	}
-
-	function resetear_dr_consumo_financiado()
-	{
-		$this->dep('dr_consumo_financiado')->resetear();
-	}
-	//-----------------------------------------------------------------------------------
-	//---- DT-CONSUMO-TICKET -----------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-	function cargar_dt_consumo_financiado($seleccion)
-	{
-		if(!$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->esta_cargada())
-		{				// verifica si esta cargada el datos relacion			
-			if(!isset($seleccion))
-			{
-				$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->cargar();					// lee de la BD fisica y carga al datos relacion
-			}else{
-				$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
-			}
-		}
-	}
-	function set_cursor_dt_consumo_financiado($seleccion)
-	{
-		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set_cursor($id[0]);
-	}
-
-	function hay_cursor_dt_consumo_financiado()
-	{
-		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->hay_cursor();
-	}
-
-	function resetear_cursor_dt_consumo_financiado()
-	{
-		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->resetear_cursor();
-	}
-
-	function get_dt_consumo_financiado()
-	{
-		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get();
-		
-	}	
-
-	function get_dt_consumo_financiado_sin_blob()
-	{
-		return $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get();
-
-	}
-
-	function set_dt_consumo_financiado($datos)
-	{
-		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set($datos);
-
-	}
-
-	function agregar_dt_consumo_financiado($datos)
-	{
-		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->nueva_fila($datos);
-		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->set_cursor($id);
-
-	}
-
-	function eliminar_dt_consumo_financiado($seleccion)
-	{
-		$id = $this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->eliminar_fila($id[0]);
-	}	
-
-	function procesar_dt_consumo_financiado($datos)
-	{
-	 	$this->dep('dr_consumo_financiado')->tabla('dt_consumo_financiado')->procesar_filas($datos);	
-	}
-
-	//-----------------------------------------------------------------------------------
-	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-	
-	function get_dt_cuotas_consumo_financiado()
-	{
-		return $this->dep('dr_consumo_financiado')->tabla('dt_cuotas_consumo_financiado')->get_filas();
-	}	
-
-	function procesar_dt_cuotas_consumo_financiado($datos)
-	{
-		$this->dep('dr_consumo_financiado')->tabla('dt_cuotas_consumo_financiado')->procesar_filas($datos);
-	}
-
-	//-----------------------------------------------------------------------------------
-	//---- DT-AYUDA-ECONOMICA -----------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-	function cargar_dr_ayuda_economica($seleccion)
-	{
-		if(!$this->dep('dr_ayuda_economica')->esta_cargada())
-		{				// verifica si esta cargada el datos relacion			
-			if(!isset($seleccion))
-			{
-				$this->dep('dr_ayuda_economica')->cargar();					// lee de la BD fisica y carga al datos relacion
-			}else{
-				$this->dep('dr_ayuda_economica')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
-			}
-		}
-	}
-
-	function guardar_dr_ayuda_economica()
-	{
-		$this->dep('dr_ayuda_economica')->sincronizar();
-	}
-
-	function resetear_dr_ayuda_economica()
-	{
-		$this->dep('dr_ayuda_economica')->resetear();
-	}
-	function set_cursor_dt_ayuda_economica($seleccion)
-	{
-		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set_cursor($id[0]);
-	}
-
-	function hay_cursor_dt_ayuda_economica()
-	{
-		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->hay_cursor();
-	}
-
-	function resetear_cursor_dt_ayuda_economica()
-	{
-		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->resetear_cursor();
-	}
-
-	function get_dt_ayuda_economica()
-	{
-		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get();
-		
-	}	
-
-	function get_dt_ayuda_economica_sin_blob()
-	{
-		return $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get();
-
-	}
-
-	function set_dt_ayuda_economica($datos)
-	{
-		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set($datos);
-
-	}
-
-	function agregar_dt_ayuda_economica($datos)
-	{
-		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->nueva_fila($datos);
-		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->set_cursor($id);
-
-	}
-
-	function eliminar_dt_ayuda_economica($seleccion)
-	{
-		$id = $this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->get_id_fila_condicion($seleccion);
-		$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->eliminar_fila($id[0]);
-	}	
-
-	function procesar_dt_ayuda_economica($datos)
-	{
-	 	$this->dep('dr_ayuda_economica')->tabla('dt_ayuda_economica')->procesar_filas($datos);	
-	}
-
-	//-----------------------------------------------------------------------------------
-	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------------------
-	
-	function get_dt_detalle_ayuda_economica()
-	{
-		return $this->dep('dr_ayuda_economica')->tabla('dt_detalle_ayuda_economica')->get_filas();
-	}	
-
-	function procesar_dt_detalle_ayuda_economica($datos)
-	{
-		$this->dep('dr_ayuda_economica')->tabla('dt_detalle_ayuda_economica')->procesar_filas($datos);
-	}
 }
 
 ?>

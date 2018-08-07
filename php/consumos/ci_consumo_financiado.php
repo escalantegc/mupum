@@ -7,7 +7,7 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__procesar()
 	{
-		$this->cn()->guardar_dr_consumo_financiado();
+		$this->cn()->guardar_dr_consumo_convenio();
 		try{
 			
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
@@ -29,13 +29,13 @@ class ci_consumo_financiado extends mupum_ci
 			} 
 			
 		}
-		$this->cn()->resetear_dr_consumo_financiado();
+		$this->cn()->resetear_dr_consumo_convenio();
 		$this->set_pantalla('pant_inicial');
 	}
 
 	function evt__cancelar()
 	{
-		$this->cn()->resetear_dr_consumo_financiado();
+		$this->cn()->resetear_dr_consumo_convenio();
 		$this->set_pantalla('pant_inicial');
 	}
 
@@ -62,8 +62,8 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->cn()->cargar_dr_consumo_financiado($seleccion);
-		$this->cn()->set_cursor_dt_consumo_financiado($seleccion);
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
@@ -96,20 +96,20 @@ class ci_consumo_financiado extends mupum_ci
 
 	function conf__frm(mupum_ei_formulario $form)
 	{
-		if ($this->cn()->hay_cursor_dt_consumo_financiado())
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
-			$datos = $this->cn()->get_dt_consumo_financiado();
+			$datos = $this->cn()->get_dt_consumo_convenio();
 			$form->set_datos($datos);
 		}
 	}
 
 	function evt__frm__modificacion($datos)
 	{
-		if ($this->cn()->hay_cursor_dt_consumo_financiado())
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
-			$this->cn()->set_dt_consumo_financiado($datos);
+			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
-			$this->cn()->agregar_dt_consumo_financiado($datos);
+			$this->cn()->agregar_dt_consumo_convenio($datos);
 		}
 	}
 
@@ -119,13 +119,13 @@ class ci_consumo_financiado extends mupum_ci
 
 	function conf__frm_ml_detalle_consumo(mupum_ei_formulario_ml $form_ml)
 	{
-		$datos = $this->cn()->get_dt_cuotas_consumo_financiado();
+		$datos = $this->cn()->get_dt_consumo_convenio_cuotas();
 		$form_ml->set_datos($datos);
 	}
 
 	function evt__frm_ml_detalle_consumo__modificacion($datos)
 	{
-		$this->cn()->procesar_dt_cuotas_consumo_financiado($datos);
+		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
 	}
 
 }

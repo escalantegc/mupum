@@ -455,13 +455,13 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000355', --objeto_ei_formulario_fila
 	'106000218', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
-	'fecha', --identificador
-	'ef_editable_fecha', --elemento_formulario
-	'fecha', --columnas
+	'periodo', --identificador
+	'ef_editable', --elemento_formulario
+	'periodo', --columnas
 	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'3', --orden
-	'Fecha', --etiqueta
+	'Periodo', --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
 	'0', --colapsado
@@ -490,9 +490,9 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
-	NULL, --edit_tamano
-	NULL, --edit_maximo
-	NULL, --edit_mascara
+	'7', --edit_tamano
+	'7', --edit_maximo
+	'##/####', --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango
 	NULL, --edit_filas

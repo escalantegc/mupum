@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000214]--  - dr_consumo_ticket - dt_detalle_consumo_ticket 
+--[106000233]--  - dr_consumo_convenio - dt_consumo_convenio_cuotas 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -9,7 +9,7 @@
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'106000214', --objeto
+	'106000233', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_consumo_ticket - dt_detalle_consumo_ticket', --nombre
+	'- dr_consumo_convenio - dt_consumo_convenio_cuotas', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -36,7 +36,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-07-27 10:26:55', --creacion
+	'2018-08-07 17:25:06', --creacion
 	NULL  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 106
@@ -46,14 +46,14 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 ------------------------------------------------------------
 INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, min_registros, punto_montaje, ap, ap_clase, ap_archivo, tabla, tabla_ext, alias, modificar_claves, fuente_datos_proyecto, fuente_datos, permite_actualizacion_automatica, esquema, esquema_ext) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
+	'106000233', --objeto
 	NULL, --max_registros
 	NULL, --min_registros
 	'28', --punto_montaje
 	'1', --ap
 	NULL, --ap_clase
 	NULL, --ap_archivo
-	'detalle_consumo_ticket', --tabla
+	'consumo_convenio_cuotas', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
 	'0', --modificar_claves
@@ -71,22 +71,22 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
-	'106000283', --col_id
-	'iddetalle_consumo_ticket', --columna
+	'106000233', --objeto
+	'106000257', --col_id
+	'idconsumo_convenio_cuotas', --columna
 	'E', --tipo
 	'1', --pk
-	'detalle_consumo_ticket_iddetalle_consumo_ticket_seq', --secuencia
+	'consumo_convenio_cuotas_idconsumo_convenio_cuotas_seq', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'detalle_consumo_ticket'  --tabla
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
-	'106000284', --col_id
+	'106000233', --objeto
+	'106000258', --col_id
 	'idconsumo_convenio', --columna
 	'E', --tipo
 	'0', --pk
@@ -94,49 +94,77 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'detalle_consumo_ticket'  --tabla
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
-	'106000285', --col_id
-	'nro_ticket', --columna
+	'106000233', --objeto
+	'106000259', --col_id
+	'nro_cuota', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'1', --no_nulo_db
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000233', --objeto
+	'106000260', --col_id
+	'periodo', --columna
 	'C', --tipo
 	'0', --pk
 	'', --secuencia
-	'20', --largo
+	'7', --largo
 	NULL, --no_nulo
-	'0', --no_nulo_db
-	'0', --externa
-	'detalle_consumo_ticket'  --tabla
+	'1', --no_nulo_db
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
-	'106000286', --col_id
+	'106000233', --objeto
+	'106000261', --col_id
+	'envio_descuento', --columna
+	'L', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000233', --objeto
+	'106000262', --col_id
 	'monto', --columna
 	'N', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
-	'0', --externa
-	'detalle_consumo_ticket'  --tabla
+	'0', --no_nulo_db
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000214', --objeto
-	'106000287', --col_id
-	'fecha', --columna
-	'F', --tipo
+	'106000233', --objeto
+	'106000263', --col_id
+	'idforma_pago', --columna
+	'E', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
-	'0', --externa
-	'detalle_consumo_ticket'  --tabla
+	'0', --no_nulo_db
+	NULL, --externa
+	'consumo_convenio_cuotas'  --tabla
 );
 --- FIN Grupo de desarrollo 106

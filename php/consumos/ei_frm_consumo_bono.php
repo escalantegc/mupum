@@ -14,7 +14,10 @@ class ei_frm_consumo_bono extends mupum_ei_formulario
 		{$this->objeto_js}.evt__nro_bono__procesar = function(es_inicial)
 		{
 			numeros = this.ef('nro_bono').get_estado();
-			this.ef('cantidad_bonos').set_estado(numeros.length); 
+			cantidad = numeros.length;
+			valor_bono = this.ef('monto_bono').get_estado();
+			this.ef('cantidad_bonos').set_estado(cantidad); 
+			this.ef('total').set_estado(cantidad * valor_bono); 
 		}
 
 		

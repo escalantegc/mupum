@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000202]--  - dr_consumo_financiado 
+--[106000232]--  - dr_consumo_convenio 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -9,7 +9,7 @@
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'106000202', --objeto
+	'106000232', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_consumo_financiado', --nombre
+	'- dr_consumo_convenio', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -36,7 +36,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-07-26 17:18:42', --creacion
+	'2018-08-07 17:24:50', --creacion
 	NULL  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 106
@@ -46,7 +46,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 ------------------------------------------------------------
 INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_montaje, ap_clase, ap_archivo, sinc_susp_constraints, sinc_orden_automatico, sinc_lock_optimista) VALUES (
 	'mupum', --proyecto
-	'106000202', --objeto
+	'106000232', --objeto
 	'0', --debug
 	NULL, --clave
 	'2', --ap
@@ -65,27 +65,51 @@ INSERT INTO apex_objeto_datos_rel (proyecto, objeto, debug, clave, ap, punto_mon
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000176', --dep_id
-	'106000202', --objeto_consumidor
+	'106000206', --dep_id
+	'106000232', --objeto_consumidor
 	'106000203', --objeto_proveedor
-	'dt_consumo_financiado', --identificador
-	'', --parametros_a
-	'', --parametros_b
+	'dt_consumo_convenio', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'1'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000177', --dep_id
-	'106000202', --objeto_consumidor
-	'106000204', --objeto_proveedor
-	'dt_cuotas_consumo_financiado', --identificador
+	'106000208', --dep_id
+	'106000232', --objeto_consumidor
+	'106000233', --objeto_proveedor
+	'dt_consumo_convenio_cuotas', --identificador
 	'', --parametros_a
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'2'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000213', --dep_id
+	'106000232', --objeto_consumidor
+	'106000214', --objeto_proveedor
+	'dt_detalle_consumo_ticket', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'4'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000209', --dep_id
+	'106000232', --objeto_consumidor
+	'106000234', --objeto_proveedor
+	'dt_detalle_pago_consumo_convenio', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'3'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -96,19 +120,51 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador, padre_proyecto, padre_objeto, padre_id, padre_clave, hijo_proyecto, hijo_objeto, hijo_id, hijo_clave, cascada, orden) VALUES (
 	'mupum', --proyecto
-	'106000202', --objeto
-	'106000013', --asoc_id
+	'106000232', --objeto
+	'106000018', --asoc_id
 	NULL, --identificador
 	'mupum', --padre_proyecto
 	'106000203', --padre_objeto
-	'dt_consumo_financiado', --padre_id
+	'dt_consumo_convenio', --padre_id
 	NULL, --padre_clave
 	'mupum', --hijo_proyecto
-	'106000204', --hijo_objeto
-	'dt_cuotas_consumo_financiado', --hijo_id
+	'106000233', --hijo_objeto
+	'dt_consumo_convenio_cuotas', --hijo_id
 	NULL, --hijo_clave
 	NULL, --cascada
 	'1'  --orden
+);
+INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador, padre_proyecto, padre_objeto, padre_id, padre_clave, hijo_proyecto, hijo_objeto, hijo_id, hijo_clave, cascada, orden) VALUES (
+	'mupum', --proyecto
+	'106000232', --objeto
+	'106000019', --asoc_id
+	NULL, --identificador
+	'mupum', --padre_proyecto
+	'106000203', --padre_objeto
+	'dt_consumo_convenio', --padre_id
+	NULL, --padre_clave
+	'mupum', --hijo_proyecto
+	'106000234', --hijo_objeto
+	'dt_detalle_pago_consumo_convenio', --hijo_id
+	NULL, --hijo_clave
+	NULL, --cascada
+	'2'  --orden
+);
+INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador, padre_proyecto, padre_objeto, padre_id, padre_clave, hijo_proyecto, hijo_objeto, hijo_id, hijo_clave, cascada, orden) VALUES (
+	'mupum', --proyecto
+	'106000232', --objeto
+	'106000022', --asoc_id
+	NULL, --identificador
+	'mupum', --padre_proyecto
+	'106000203', --padre_objeto
+	'dt_consumo_convenio', --padre_id
+	NULL, --padre_clave
+	'mupum', --hijo_proyecto
+	'106000214', --hijo_objeto
+	'dt_detalle_consumo_ticket', --hijo_id
+	NULL, --hijo_clave
+	NULL, --cascada
+	'3'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -117,10 +173,28 @@ INSERT INTO apex_objeto_datos_rel_asoc (proyecto, objeto, asoc_id, identificador
 ------------------------------------------------------------
 INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
 	'mupum', --proyecto
-	'106000202', --objeto
-	'106000013', --asoc_id
+	'106000232', --objeto
+	'106000018', --asoc_id
 	'106000203', --padre_objeto
-	'106000210', --padre_clave
-	'106000204', --hijo_objeto
-	'106000219'  --hijo_clave
+	'106000247', --padre_clave
+	'106000233', --hijo_objeto
+	'106000258'  --hijo_clave
+);
+INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
+	'mupum', --proyecto
+	'106000232', --objeto
+	'106000019', --asoc_id
+	'106000203', --padre_objeto
+	'106000247', --padre_clave
+	'106000234', --hijo_objeto
+	'106000266'  --hijo_clave
+);
+INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
+	'mupum', --proyecto
+	'106000232', --objeto
+	'106000022', --asoc_id
+	'106000203', --padre_objeto
+	'106000247', --padre_clave
+	'106000214', --hijo_objeto
+	'106000284'  --hijo_clave
 );

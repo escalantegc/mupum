@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000203]--  - dr_consumo_financiado - dt_consumo_financiado 
+--[106000203]--  DT - consumo_convenio 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_consumo_financiado - dt_consumo_financiado', --nombre
+	'DT - consumo_convenio', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -53,7 +53,7 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 	'1', --ap
 	NULL, --ap_clase
 	NULL, --ap_archivo
-	'consumo_financiado', --tabla
+	'consumo_convenio', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
 	'0', --modificar_claves
@@ -72,21 +72,21 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000210', --col_id
-	'idconsumo_financiado', --columna
+	'106000247', --col_id
+	'idconsumo_convenio', --columna
 	'E', --tipo
 	'1', --pk
-	'consumo_financiado_idconsumo_financiado_seq', --secuencia
+	'consumo_convenio_idconsumo_convenio_seq', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000211', --col_id
+	'106000248', --col_id
 	'idafiliacion', --columna
 	'E', --tipo
 	'0', --pk
@@ -95,40 +95,40 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --no_nulo
 	'1', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000212', --col_id
+	'106000249', --col_id
 	'idconvenio', --columna
 	'E', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
+	'0', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000213', --col_id
+	'106000250', --col_id
 	'idcomercio', --columna
 	'E', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
+	'0', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000214', --col_id
+	'106000251', --col_id
 	'total', --columna
 	'N', --tipo
 	'0', --pk
@@ -137,12 +137,12 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --no_nulo
 	'1', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000215', --col_id
+	'106000252', --col_id
 	'fecha', --columna
 	'F', --tipo
 	'0', --pk
@@ -151,26 +151,26 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --no_nulo
 	'1', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000216', --col_id
+	'106000253', --col_id
 	'monto_proforma', --columna
 	'N', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
+	'0', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000217', --col_id
+	'106000254', --col_id
 	'cantidad_cuotas', --columna
 	'E', --tipo
 	'0', --pk
@@ -179,20 +179,76 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --no_nulo
 	'0', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
 	'106000203', --objeto
-	'106000225', --col_id
+	'106000255', --col_id
 	'descripcion', --columna
 	'C', --tipo
 	'0', --pk
 	'', --secuencia
 	'100', --largo
 	NULL, --no_nulo
-	'1', --no_nulo_db
+	'0', --no_nulo_db
 	'0', --externa
-	'consumo_financiado'  --tabla
+	'consumo_convenio'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000256', --col_id
+	'idtalonario_bono', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'0', --externa
+	'consumo_convenio'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000280', --col_id
+	'cantidad_bonos', --columna
+	'E', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'0', --externa
+	'consumo_convenio'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000281', --col_id
+	'monto_bono', --columna
+	'N', --tipo
+	'0', --pk
+	'', --secuencia
+	NULL, --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'0', --externa
+	'consumo_convenio'  --tabla
+);
+INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
+	'mupum', --objeto_proyecto
+	'106000203', --objeto
+	'106000282', --col_id
+	'periodo', --columna
+	'C', --tipo
+	'0', --pk
+	'', --secuencia
+	'7', --largo
+	NULL, --no_nulo
+	'0', --no_nulo_db
+	'0', --externa
+	'consumo_convenio'  --tabla
 );
 --- FIN Grupo de desarrollo 106

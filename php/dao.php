@@ -1561,6 +1561,7 @@ class dao
                 public.convenio
               inner join categoria_comercio using (idcategoria_comercio)
               where 
+
                 $where";
       return consultar_fuente($sql);
           
@@ -1588,6 +1589,7 @@ class dao
               inner join categoria_comercio using (idcategoria_comercio)
               where 
                 maneja_bono = true and
+                convenio.activo = true and
                 $where";
       return consultar_fuente($sql);
           
@@ -1615,6 +1617,7 @@ class dao
               inner join categoria_comercio using (idcategoria_comercio)
               where 
                 consumo_ticket = true and
+                convenio.activo = true and
                 $where";
       return consultar_fuente($sql);
           
@@ -1642,6 +1645,8 @@ class dao
               inner join categoria_comercio using (idcategoria_comercio)
               where 
                 permite_financiacion = true and
+                convenio.activo = true and
+                (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
                 $where";
       return consultar_fuente($sql);
           
@@ -1669,6 +1674,7 @@ class dao
               inner join categoria_comercio using (idcategoria_comercio)
               where 
                 ayuda_economica = true and
+                convenio.activo = true and
                 $where";
       return consultar_fuente($sql);
           
@@ -1915,7 +1921,7 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql = "SELECT  idconsumo_bono, 
+    $sql = "SELECT  idconsumo_convenio, 
                     idtalonario_bono, 
                     (persona.apellido||', '|| persona.nombres) as socio,
                     talonario_bono.monto_bono,
@@ -1925,7 +1931,7 @@ class dao
                     cantidad_bonos *   talonario_bono.monto_bono as total,
                     fecha
             FROM 
-                public.consumo_bonos
+                public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner  join talonario_bono using(idtalonario_bono) 
@@ -1942,24 +1948,25 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql = "SELECT  idconsumo_ticket, 
+    $sql = "SELECT  idconsumo_convenio, 
                     
                     (persona.apellido||', '|| persona.nombres) as socio,
                     comercio.codigo ||'-'||comercio.nombre as comercio, 
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
                     total,
-                    fecha,
-                    'Mes: '||extract(month from fecha ) ||' - '||extract(year from fecha )  as mes                
+                    periodo,
+                    to_char(periodo::integer, '99/9999')   as mes                
             FROM 
-                public.consumo_ticket
+                public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join comercios_por_convenio using(idconvenio,idcomercio)
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
             WHERE
+              convenio.consumo_ticket = true and
               $where
-            order by fecha desc";
+            order by mes desc";
       return consultar_fuente($sql);
   }
   function get_listado_consumos_financiado($where = null)
@@ -1968,7 +1975,7 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql = "SELECT  idconsumo_financiado, 
+    $sql = "SELECT  idconsumo_convenio, 
                     
                     (persona.apellido||', '|| persona.nombres) as socio,
                     comercio.codigo ||'-'||comercio.nombre as comercio, 
@@ -1979,13 +1986,16 @@ class dao
                     cantidad_cuotas, 
                     descripcion                
             FROM 
-                public.consumo_financiado
+                public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join comercios_por_convenio using(idconvenio,idcomercio)
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
             WHERE
+              convenio.permite_financiacion = true and
+              (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
+
               $where
             order by fecha desc";
       return consultar_fuente($sql);
@@ -2047,15 +2057,17 @@ class dao
       return consultar_fuente($sql);
   }
 
-  function get_mes_anio_cuota($iddetalle_consumo_financiado = null)
+  function get_monto_bono($idtalonario_bono = null)
   {
-    $sql = "SELECT 
-                mes||'/'||anio mesanio
-            FROM public.detalle_consumo_financiado
-            where 
-              iddetalle_consumo_financiado =$iddetalle_consumo_financiado";
-    return consultar_fuente($sql);
-
+    $sql = "SELECT monto_bono
+            FROM public.talonario_bono
+            WHERE
+              idtalonario_bono = $idtalonario_bono";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['monto_bono']))
+    {
+      return $res[0]['monto_bono'];
+    }
   }
 }
 ?>

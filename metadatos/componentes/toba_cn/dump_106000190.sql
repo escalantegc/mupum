@@ -48,18 +48,6 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000199', --dep_id
-	'106000190', --objeto_consumidor
-	'106000223', --objeto_proveedor
-	'dr_ayuda_economica', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
-	NULL, --parametros_c
-	NULL, --inicializar
-	NULL  --orden
-);
-INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
-	'mupum', --proyecto
 	'106000181', --dep_id
 	'106000190', --objeto_consumidor
 	'106000208', --objeto_proveedor
@@ -84,22 +72,10 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000175', --dep_id
+	'106000207', --dep_id
 	'106000190', --objeto_consumidor
-	'106000202', --objeto_proveedor
-	'dr_consumo_financiado', --identificador
-	NULL, --parametros_a
-	NULL, --parametros_b
-	NULL, --parametros_c
-	NULL, --inicializar
-	NULL  --orden
-);
-INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
-	'mupum', --proyecto
-	'106000185', --dep_id
-	'106000190', --objeto_consumidor
-	'106000210', --objeto_proveedor
-	'dr_consumo_ticket', --identificador
+	'106000232', --objeto_proveedor
+	'dr_consumo_convenio', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c

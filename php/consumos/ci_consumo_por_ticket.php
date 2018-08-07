@@ -10,7 +10,7 @@ class ci_consumo_por_ticket extends mupum_ci
 	{
 
 		try{
-			$this->cn()->guardar_dr_consumo_ticket();
+			$this->cn()->guardar_dr_consumo_convenio();
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
@@ -26,7 +26,7 @@ class ci_consumo_por_ticket extends mupum_ci
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_consumo_ticket'))
+			if(strstr($mensaje_log,'idx_consumo_convenio'))
 			{
 				toba::notificacion()->agregar("El consumo del ticket ya esta registrado.",'info');
 				
@@ -36,13 +36,13 @@ class ci_consumo_por_ticket extends mupum_ci
 			}
 			
 		}
-		$this->cn()->resetear_dr_consumo_ticket();
+		$this->cn()->resetear_dr_consumo_convenio();
 		$this->set_pantalla('pant_inicial');
 	}
 
 	function evt__cancelar()
 	{
-		$this->cn()->resetear_dr_consumo_ticket();
+		$this->cn()->resetear_dr_consumo_convenio();
 		$this->set_pantalla('pant_inicial');
 	}
 
@@ -75,15 +75,15 @@ class ci_consumo_por_ticket extends mupum_ci
 
 	function evt__cuadro__seleccion($seleccion)
 	{
-		$this->cn()->cargar_dr_consumo_ticket($seleccion);
-		$this->cn()->set_cursor_dt_consumo_ticket($seleccion);
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
 
 	function evt__cuadro__borrar($seleccion)
 	{
-		$this->cn()->cargar_dr_consumo_ticket($seleccion);
-		$this->cn()->eliminar_dt_consumo_ticket($seleccion);
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->eliminar_dt_consumo_convenio($seleccion);
 		try{
 			$this->cn()->guardar_dr_parametros();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
@@ -128,34 +128,34 @@ class ci_consumo_por_ticket extends mupum_ci
 
 	function conf__frm(mupum_ei_formulario $form)
 	{
-		if ($this->cn()->hay_cursor_dt_consumo_ticket())
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
-			$datos = $this->cn()->get_dt_consumo_ticket();
+			$datos = $this->cn()->get_dt_consumo_convenio();
 			$form->set_datos($datos);
 		}
 	}
 
 	function evt__frm__modificacion($datos)
 	{
-		if ($this->cn()->hay_cursor_dt_consumo_ticket())
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
-			$this->cn()->set_dt_consumo_ticket($datos);
+			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
-			$this->cn()->agregar_dt_consumo_ticket($datos);
+			$this->cn()->agregar_dt_consumo_convenio($datos);
 		}
 	}
 
 	//-----------------------------------------------------------------------------------
-	//---- frm_ml_detalle_consumo_ticket ------------------------------------------------
+	//---- frm_ml_detalle_consumo_convenio ------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_ml_detalle_consumo_ticket(mupum_ei_formulario_ml $form_ml)
+	function conf__frm_ml_detalle_consumo_convenio(mupum_ei_formulario_ml $form_ml)
 	{
 		$datos = $this->cn()->get_dt_detalle_consumo_ticket();
 		$form_ml->set_datos($datos);
 	}
 
-	function evt__frm_ml_detalle_consumo_ticket__modificacion($datos)
+	function evt__frm_ml_detalle_consumo_convenio__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_detalle_consumo_ticket($datos);
 	}
@@ -166,7 +166,7 @@ class ci_consumo_por_ticket extends mupum_ci
 	//-----------------------------------------------------------------------------------
 	function evt__frm_ml_cabecera__modificacion($datos)
 	{
-		$this->cn()->procesar_dt_consumo_ticket($datos);
+		$this->cn()->procesar_dt_consumo_convenio($datos);
 	}
 
 
