@@ -145,22 +145,7 @@ class ci_consumo_por_ticket extends mupum_ci
 		}
 	}
 
-	//-----------------------------------------------------------------------------------
-	//---- frm_ml_detalle_consumo_convenio ------------------------------------------------
-	//-----------------------------------------------------------------------------------
-
-	function conf__frm_ml_detalle_consumo_convenio(mupum_ei_formulario_ml $form_ml)
-	{
-		$datos = $this->cn()->get_dt_detalle_consumo_ticket();
-		$form_ml->set_datos($datos);
-	}
-
-	function evt__frm_ml_detalle_consumo_convenio__modificacion($datos)
-	{
-		$this->cn()->procesar_dt_detalle_consumo_ticket($datos);
-	}
-
-
+	
 	//-----------------------------------------------------------------------------------
 	//---- frm_ml_cabecera --------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -169,6 +154,37 @@ class ci_consumo_por_ticket extends mupum_ci
 		$this->cn()->procesar_dt_consumo_convenio($datos);
 	}
 
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_consumo_ticket ------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_detalle_consumo_ticket(mupum_ei_formulario_ml $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_consumo_ticket();
+		$form_ml->set_datos($datos);
+	}
+
+	function evt__frm_ml_detalle_consumo_ticket__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_detalle_consumo_ticket($datos);
+
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_pago ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_detalle_pago(mupum_ei_formulario_ml $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_pago_consumo_convenio();
+		$form_ml->set_datos($datos);
+	}
+
+	function evt__frm_ml_detalle_pago__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_detalle_pago_consumo_convenio($datos);
+	}
 
 }
 ?>

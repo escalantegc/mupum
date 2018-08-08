@@ -404,6 +404,19 @@ class cn_consumos extends mupum_cn
 	{
 		$this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio_cuotas')->procesar_filas($datos);
 	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-PAGO-CONSUMO-CONVENIO-----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	
+	function get_dt_detalle_pago_consumo_convenio()
+	{
+		return $this->dep('dr_consumo_convenio')->tabla('dt_detalle_pago_consumo_convenio')->get_filas();
+	}	
+
+	function procesar_dt_detalle_pago_consumo_convenio($datos)
+	{
+		$this->dep('dr_consumo_convenio')->tabla('dt_detalle_pago_consumo_convenio')->procesar_filas($datos);
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- DT-DETALLE-CONSUMO-TICKET-----------------------------------------------------------------------

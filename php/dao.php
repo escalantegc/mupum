@@ -2007,18 +2007,20 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql = "SELECT  idayuda_economica,               
+    $sql = "SELECT  idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    monto, 
+                    total, 
                     fecha, 
-                    cantidad_cuotas            
+                    cantidad_cuotas,
+                    total / cantidad_cuotas  as valor_cuota          
             FROM 
-                public.ayuda_economica
+                public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join convenio using(idconvenio)
             WHERE
+              convenio.ayuda_economica = true and
               $where
             order by fecha desc";
       return consultar_fuente($sql);
