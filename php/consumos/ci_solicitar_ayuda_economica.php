@@ -46,7 +46,22 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_edicion');
+		$conf = dao::get_configuracion();
+	
+		$diahoy = date("d"); 
+
+		if ((int)$diahoy > (int) $conf['fecha_limite_pedido_convenio'])
+		{
+			toba::notificacion()->agregar("Puede solicitar ayuda economica solamente hasta el: ".$conf['fecha_limite_pedido_convenio']. " del mes." ,'info');
+		} else {
+			$this->set_pantalla('pant_edicion');	
+		}
+		
+	}	
+
+	function evt__nuevo_libre()
+	{
+		$this->set_pantalla('pant_edicion');	
 	}
 
 	//-----------------------------------------------------------------------------------

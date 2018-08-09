@@ -55,3 +55,12 @@ $BODY$
 
 ALTER TABLE public.consumo_convenio_cuotas ADD COLUMN interes double precision;
 ALTER TABLE public.consumo_convenio_cuotas ADD COLUMN monto_puro double precision;
+ALTER TABLE public.configuracion ADD COLUMN fecha_limite_pedido_convenio integer;
+
+
+
+CREATE TRIGGER generar_deuda_consumo_convenio_cuotas
+  AFTER INSERT OR UPDATE OR DELETE
+  ON public.consumo_convenio
+  FOR EACH ROW
+  EXECUTE PROCEDURE generar_deuda_consumo_convenio_cuotas();

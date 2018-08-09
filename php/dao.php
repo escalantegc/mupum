@@ -1283,7 +1283,9 @@ class dao
                     limite_dias_para_reserva, 
                     porcentaje_confirmacion_reserva, 
                     minimo_meses_afiliacion, 
-                    idconfiguracion
+                    idconfiguracion,
+                    limite_por_socio,
+                    fecha_limite_pedido_convenio
             FROM 
               public.configuracion;";
     $res = consultar_fuente($sql);
