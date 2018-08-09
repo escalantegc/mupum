@@ -1,8 +1,4 @@
-﻿
 
--- Function: public.generar_deuda_consumo_convenio_cuotas()
-
--- DROP FUNCTION public.generar_deuda_consumo_convenio_cuotas();
 
 CREATE OR REPLACE FUNCTION public.generar_deuda_consumo_convenio_cuotas()
   RETURNS trigger AS
@@ -14,10 +10,10 @@ DECLARE
     monto_final double precision ;
     fecha_cuota date:=New.fecha;
     idconv integer := New.idconvenio;
-    idcomer := New.idcomercio
+    idcomer integer := New.idcomercio;
     bono boolean;
     ticket boolean;
-    interes double precision;
+    inter double precision;
     ayuda boolean;
 BEGIN
     bono := (select maneja_bono from convenio where idconvenio = idconv);
@@ -27,7 +23,7 @@ BEGIN
     
    IF bono = false THEN
    IF ticket = false THEN
-	if ayuda = false
+	IF ayuda = false THEN
 	     LOOP
 	   
 	     EXIT WHEN inicio = fin ;
@@ -37,12 +33,12 @@ BEGIN
 	      
 	    END LOOP;
 	 ELSE
-	monto:=
+	monto_final:=monto * (inter/100 +1);
 	   LOOP
 	   
 	     EXIT WHEN inicio = fin ;
 	       INSERT INTO public.consumo_convenio_cuotas(idconsumo_convenio, nro_cuota, periodo,monto, interes, monto_puro)
-		VALUES (New.idconsumo_convenio, inicio+1, extract(month from (fecha_cuota + (inicio||' months')::interval)) ||'/'|| extract(YEAR from (fecha_cuota + (inicio||' months')::interval)), ,inter, monto);
+		VALUES (New.idconsumo_convenio, inicio+1, extract(month from (fecha_cuota + (inicio||' months')::interval)) ||'/'|| extract(YEAR from (fecha_cuota + (inicio||' months')::interval)), monto_final,inter, monto);
 	      inicio:=inicio+1;
 	      
 	    END LOOP;
@@ -55,3 +51,7 @@ END
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
+
+
+ALTER TABLE public.consumo_convenio_cuotas ADD COLUMN interes double precision;
+ALTER TABLE public.consumo_convenio_cuotas ADD COLUMN monto_puro double precision;

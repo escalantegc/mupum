@@ -1103,7 +1103,7 @@ class dao
               where
                 $where
               order by
-                  descripcion";
+                  planilla,descripcion";
       return consultar_fuente($sql);
   } 
 
