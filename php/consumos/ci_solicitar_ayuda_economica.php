@@ -9,10 +9,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 	{
 		try{
 			$this->cn()->guardar_dr_consumo_convenio();
-			if (!toba::notificacion()->verificar_mensajes())
-			{
-				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-			}
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();

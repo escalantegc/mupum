@@ -2009,6 +2009,7 @@ class dao
     {
       $where = '1 = 1';
     }
+     $sql_usuario = self::get_sql_usuario();
     $sql = "SELECT  idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
@@ -2022,7 +2023,8 @@ class dao
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join convenio using(idconvenio)
             WHERE
-              convenio.ayuda_economica = true and
+              convenio.ayuda_economica = true and 
+              $sql_usuario and
               $where
             order by fecha desc";
       return consultar_fuente($sql);
