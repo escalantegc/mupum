@@ -2075,5 +2075,54 @@ class dao
       return $res[0]['monto_bono'];
     }
   }
+
+  function get_monto_maximo_convenio($idconvenio = null)
+  {
+    $sql = "SELECT  maximo_cuotas, 
+                    monto_maximo_mensual
+            FROM 
+              public.convenio
+            where 
+              convenio.idconvenio = $idconvenio";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['monto_maximo_mensual']))
+    {
+      return $res[0]['monto_maximo_mensual'];
+    }
+  } 
+
+  function get_maximo_cuotas_convenio($idconvenio = null)
+  {
+    $sql = "SELECT  maximo_cuotas, 
+                    monto_maximo_mensual
+            FROM 
+              public.convenio
+            where 
+              convenio.idconvenio = $idconvenio";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['maximo_cuotas']))
+    {
+      return $res[0]['maximo_cuotas'];
+    }
+  }  
+
+  function get_minimo_coutas_para_pedir_otra_ayuda($idconvenio = null)
+  {
+    $sql = "SELECT  faltando_cuotas
+            FROM 
+              public.convenio
+            where 
+              convenio.idconvenio = $idconvenio";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['faltando_cuotas']))
+    {
+      return $res[0]['faltando_cuotas'];
+    }
+  }
+  
+
 }
 ?>

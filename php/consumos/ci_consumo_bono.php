@@ -190,10 +190,21 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__frm_ml_nros_bonos__modificacion($datos)
 	{
+		for ($i=0; $i < count($datos); $i++) 
+		{ 
+			if ($datos[$i]['apex_ei_analisis_fila']=='B')
+			{
+				$datos[$i]['idafiliacion'] = null;
+				$datos[$i]['apex_ei_analisis_fila'] = 'M';
+				$datos[$i]['x_dbr_clave'] = $i;
+				//$datos[$i]['nro_bono'] = $datos[$i]['nro_bono'];
+			}
+		}
+		ei_arbol($datos);
 		$this->cn()->procesar_dt_talonario_nros_bono_propio($datos);
 	}
 
-
+	
 	//-----------------------------------------------------------------------------------
 	//---- frm_edicion ------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -234,8 +245,21 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__frm_ml_detalle_pago__modificacion($datos)
 	{
+		
 		$this->cn()->procesar_dt_detalle_pago_bono_propio($datos);
 	}
+
+
+
+	function evt__frm_ml_nros_bonos__borrar($seleccion)
+	{
+		ei_arbol($seleccion);		
+		$this->cn()->set_cursor_dt_talonario_nros_bono_propio($seleccion);
+		$datos['idafiliacion'] = null;
+		$this->cn()->set_dt_talonario_nros_bono_propio($datos);
+	}
+
+
 
 }
 ?>

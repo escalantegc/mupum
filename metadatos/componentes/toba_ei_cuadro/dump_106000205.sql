@@ -283,10 +283,10 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000205', --objeto_cuadro
 	'106000171', --objeto_cuadro_col
 	'total', --clave
-	'4', --orden
+	'6', --orden
 	'Monto Financiado', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'col-num-p1', --estilo
+	'col-num-p2', --estilo
 	NULL, --ancho
 	'2', --formateo
 	NULL, --vinculo_indice
@@ -314,10 +314,10 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000205', --objeto_cuadro
 	'106000172', --objeto_cuadro_col
 	'cantidad_cuotas', --clave
-	'5', --orden
+	'7', --orden
 	'Cuotas', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'col-cen-s1', --estilo
+	'col-cen-s2', --estilo
 	NULL, --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
@@ -345,8 +345,8 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000205', --objeto_cuadro
 	'106000173', --objeto_cuadro_col
 	'fecha', --clave
-	'7', --orden
-	'Fecha', --titulo
+	'4', --orden
+	'Fecha del Pedido', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-cen-s1', --estilo
 	NULL, --ancho
@@ -376,10 +376,10 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000205', --objeto_cuadro
 	'106000178', --objeto_cuadro_col
 	'monto_proforma', --clave
-	'6', --orden
+	'5', --orden
 	'Monto  proforma', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'col-num-p1', --estilo
+	'col-num-p2', --estilo
 	NULL, --ancho
 	'2', --formateo
 	NULL, --vinculo_indice

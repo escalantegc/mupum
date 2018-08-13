@@ -258,6 +258,17 @@ class cn_consumos extends mupum_cn
 	{
 		$this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->procesar_filas($datos);
 	}
+
+	function set_dt_talonario_nros_bono_propio($datos)
+	{
+		$this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->set($datos);
+
+	}	
+	function set_cursor_dt_talonario_nros_bono_propio($seleccion)
+	{
+		$this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->set_cursor($seleccion);
+
+	}
 	
 	//-----------------------------------------------------------------------------------
 	//---- DT-DETALLE-PAGO-CONSUMO-BONO-----------------------------------------------------------------------
