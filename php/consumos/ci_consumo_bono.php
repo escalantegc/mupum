@@ -184,7 +184,8 @@ class ci_consumo_bono extends mupum_ci
 
 	function conf__frm_ml_nros_bonos(mupum_ei_formulario_ml $form_ml)
 	{
-		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio();
+		$filtro['disponible'] = false;
+		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio_filtrado($filtro);
 		$form_ml->set_datos($datos);
 	}
 
@@ -194,13 +195,13 @@ class ci_consumo_bono extends mupum_ci
 		{ 
 			if ($datos[$i]['apex_ei_analisis_fila']=='B')
 			{
-				$datos[$i]['idafiliacion'] = null;
 				$datos[$i]['apex_ei_analisis_fila'] = 'M';
+				$datos[$i]['disponible'] = 1;
 				$datos[$i]['x_dbr_clave'] = $i;
 				//$datos[$i]['nro_bono'] = $datos[$i]['nro_bono'];
 			}
 		}
-		ei_arbol($datos);
+		
 		$this->cn()->procesar_dt_talonario_nros_bono_propio($datos);
 	}
 

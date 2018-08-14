@@ -179,5 +179,28 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		}
 	}
 
+	//-----------------------------------------------------------------------------------
+	//---- frm_ayuda_mutual -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ayuda_mutual(ei_frm_ayuda_economica $form)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$datos = $this->cn()->get_dt_consumo_convenio();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_ayuda_mutual__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$this->cn()->set_dt_consumo_convenio($datos);
+		} else {
+			$this->cn()->agregar_dt_consumo_convenio($datos);
+		}
+	}
+
 }
 ?>

@@ -254,6 +254,11 @@ class cn_consumos extends mupum_cn
 		return $this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->get_filas();
 	}	
 
+	function get_dt_talonario_nros_bonos_propio_filtrado($filtro)
+	{
+		return $this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->get_filas($filtro);
+	}	
+
 	function procesar_dt_talonario_nros_bono_propio($datos)
 	{
 		$this->dep('dr_consumo_bono_propio')->tabla('dt_talonario_nros_bono')->procesar_filas($datos);
