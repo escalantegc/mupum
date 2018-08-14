@@ -210,7 +210,7 @@ class ci_consumo_bono extends mupum_ci
 	//---- frm_edicion ------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_edicion(ei_frm_consumo_bono $form)
+	function conf__frm_edicion(ei_frm_consumo_edicion $form)
 	{
 		if ($this->cn()->hay_cursor_dt_consumo_bono_propio())
 		{
@@ -238,7 +238,7 @@ class ci_consumo_bono extends mupum_ci
 	//---- frm_ml_detalle_pago ----------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_ml_detalle_pago(ei_frm_detalle_pago $form_ml)
+	function conf__frm_ml_detalle_pago(ei_frm_ml_detalle_pago_bono $form_ml)
 	{
 		$datos = $this->cn()->get_dt_detalle_pago_propio();
 		$form_ml->set_datos($datos);
@@ -254,7 +254,6 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__frm_ml_nros_bonos__borrar($seleccion)
 	{
-		ei_arbol($seleccion);		
 		$this->cn()->set_cursor_dt_talonario_nros_bono_propio($seleccion);
 		$datos['idafiliacion'] = null;
 		$this->cn()->set_dt_talonario_nros_bono_propio($datos);

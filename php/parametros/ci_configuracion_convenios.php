@@ -23,8 +23,16 @@ class ci_configuracion_convenios extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_convenio'))
 			{
-				toba::notificacion()->agregar("La configuracion del convenio ya esa registrada. ",'info');
-			} 
+
+				if(strstr($mensaje_log,'idx_convenio_ayuda_economica_activo'))
+				{
+					toba::notificacion()->agregar("Solo puede haber una ayuda economica activa configurada. ",'info');
+				} else {
+					toba::notificacion()->agregar("La configuracion del convenio ya esa registrada. ",'info');
+				}
+				
+			} 			
+
 			
 		}
 		$this->cn()->resetear_dr_convenio();

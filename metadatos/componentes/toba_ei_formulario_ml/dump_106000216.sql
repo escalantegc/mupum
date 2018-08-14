@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario_ml', --clase
 	'28', --punto_montaje
-	'ei_frm_detalle_pago', --subclase
-	'solicitudes/ei_frm_detalle_pago.php', --subclase_archivo
+	'ei_frm_ml_detalle_pago_bono', --subclase
+	'consumos/ei_frm_ml_detalle_pago_bono.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'frm_ml_detalle_pagoci_administrar_reserva - frm_detalle_pago', --nombre
@@ -394,7 +394,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --estado_defecto
 	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
-	'get_listado_forma_pago', --carga_metodo
+	'get_listado_forma_pago_menos_planilla', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt

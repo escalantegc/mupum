@@ -1105,6 +1105,27 @@ class dao
               order by
                   planilla,descripcion";
       return consultar_fuente($sql);
+  }   
+
+  function get_listado_forma_pago_menos_planilla($where = null)
+  {
+      if (!isset($where))
+      {
+        $where = '1 = 1';
+      }
+      $sql = "SELECT  idforma_pago, 
+                      descripcion,
+                      planilla
+
+              FROM 
+                  public.forma_pago 
+              
+              where
+                  planilla = false   and
+                  $where
+              order by
+                  planilla,descripcion";
+      return consultar_fuente($sql);
   } 
 
   function get_listado_forma_pago_planilla()
