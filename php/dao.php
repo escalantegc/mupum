@@ -1103,7 +1103,7 @@ class dao
               where
                 $where
               order by
-                  planilla,descripcion";
+                  planilla desc";
       return consultar_fuente($sql);
   }   
 
@@ -2129,13 +2129,14 @@ class dao
     }
   }  
 
-  function get_minimo_coutas_para_pedir_otra_ayuda($idconvenio = null)
+  function get_minimo_coutas_para_pedir_otra_ayuda()
   {
     $sql = "SELECT  faltando_cuotas
             FROM 
               public.convenio
             where 
-              convenio.idconvenio = $idconvenio";
+              ayuda_economica = true and
+              activo = true";
 
     $res = consultar_fuente($sql);
     if (isset($res[0]['faltando_cuotas']))

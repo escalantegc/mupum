@@ -458,7 +458,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'porcentaje_interes', --identificador
 	'ef_editable_numero', --elemento_formulario
 	'porcentaje_interes', --columnas
-	'0', --obligatorio
+	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'5', --orden
 	'Interes por cuota', --etiqueta
@@ -538,7 +538,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'porcentaje_descuento', --identificador
 	'ef_editable_numero', --elemento_formulario
 	'porcentaje_descuento', --columnas
-	'0', --obligatorio
+	'1', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'6', --orden
 	'Descuento obtenido', --etiqueta

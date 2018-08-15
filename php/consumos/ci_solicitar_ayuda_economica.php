@@ -44,6 +44,8 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 	function evt__nuevo()
 	{
 		$conf = dao::get_configuracion();
+		$minimo = dao::get_minimo_coutas_para_pedir_otra_ayuda();
+
 	
 		$diahoy = date("d"); 
 
@@ -53,6 +55,8 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		} else {
 			$this->set_pantalla('pant_edicion');	
 		}
+
+
 
 		
 	}	
@@ -122,11 +126,15 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 
 	function conf__frm(mupum_ei_formulario $form)
 	{
+
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
 			$datos = $this->cn()->get_dt_consumo_convenio();
+			$datos['fecha'] = date("d-m-Y");   
 			$form->set_datos($datos);
 		}
+		$datos['fecha'] = date("Y-m-d");   
+			$form->set_datos($datos);
 	}
 
 	function evt__frm__modificacion($datos)
