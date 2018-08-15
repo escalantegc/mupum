@@ -25,7 +25,13 @@ class ci_forma_pago extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_forma_pago'))
 			{
-				toba::notificacion()->agregar("La forma de pago ya esta registrada.",'info');
+				if(strstr($mensaje_log,'idx_forma_pago_planilla'))
+				{
+					toba::notificacion()->agregar("Solo puede tener una forma de pago del tipo planilla.",'info');
+				}  else {
+					toba::notificacion()->agregar("La forma de pago ya esta registrada.",'info');
+				}
+				
 				
 			} 
 			

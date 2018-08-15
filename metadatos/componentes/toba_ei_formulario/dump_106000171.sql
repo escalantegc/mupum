@@ -1098,8 +1098,8 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'faltando_cuotas', --identificador
 	'ef_editable_numero', --elemento_formulario
 	'faltando_cuotas', --columnas
-	'0', --obligatorio
-	'0', --oculto_relaja_obligatorio
+	'1', --obligatorio
+	'1', --oculto_relaja_obligatorio
 	'9', --orden
 	'Faltando', --etiqueta
 	NULL, --etiqueta_estilo
