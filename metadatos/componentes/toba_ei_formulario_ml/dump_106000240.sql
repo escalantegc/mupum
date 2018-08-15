@@ -113,9 +113,9 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	NULL, --filas_agregar_texto
 	'0', --filas_borrar_en_linea
 	NULL, --filas_undo
-	'0', --filas_ordenar
+	'1', --filas_ordenar
 	'0', --filas_ordenar_en_linea
-	'', --columna_orden
+	'nro_cuota', --columna_orden
 	'0', --filas_numerar
 	NULL, --ev_seleccion
 	NULL, --alto
@@ -615,9 +615,9 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000424', --objeto_ei_formulario_fila
 	'106000240', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
-	'envio_descueto', --identificador
+	'envio_descuento', --identificador
 	'ef_checkbox', --elemento_formulario
-	'envio_descueto', --columnas
+	'envio_descuento', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'6', --orden

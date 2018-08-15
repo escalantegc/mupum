@@ -45,28 +45,30 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 	{
 		$conf = dao::get_configuracion();
 		$minimo = dao::get_minimo_coutas_para_pedir_otra_ayuda();
-
-	
-		$diahoy = date("d"); 
-
-		if ((int)$diahoy > (int) $conf['fecha_limite_pedido_convenio'])
+		$cuotas_faltantes = dao::get_cuotas_faltantes_ayuda();
+		if ( $cuotas_faltantes <= $minimo)
 		{
-			toba::notificacion()->agregar("Puede solicitar ayuda economica solamente hasta el: ".$conf['fecha_limite_pedido_convenio']. " del mes." ,'info');
+			$diahoy = date("d"); 
+			if ((int)$diahoy > (int) $conf['fecha_limite_pedido_convenio'])
+			{
+				toba::notificacion()->agregar("Puede solicitar ayuda economica solamente hasta el: ".$conf['fecha_limite_pedido_convenio']. " del mes." ,'info');
+			} else {
+				$this->set_pantalla('pant_edicion');	
+			}
 		} else {
-			$this->set_pantalla('pant_edicion');	
+			toba::notificacion()->agregar("Usted tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+
 		}
-
-
-
+	
 		
+	
+
 	}	
 
 	function evt__nuevo_libre()
 	{
 		$this->set_pantalla('pant_edicion');	
 	}
-
-
 
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
@@ -126,7 +128,6 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 
 	function conf__frm(mupum_ei_formulario $form)
 	{
-
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
 			$datos = $this->cn()->get_dt_consumo_convenio();
@@ -134,7 +135,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 			$form->set_datos($datos);
 		}
 		$datos['fecha'] = date("Y-m-d");   
-			$form->set_datos($datos);
+		$form->set_datos($datos);
 	}
 
 	function evt__frm__modificacion($datos)

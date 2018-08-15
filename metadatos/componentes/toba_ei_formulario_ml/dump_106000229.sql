@@ -113,9 +113,9 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	NULL, --filas_agregar_texto
 	'0', --filas_borrar_en_linea
 	NULL, --filas_undo
-	'0', --filas_ordenar
+	'1', --filas_ordenar
 	'0', --filas_ordenar_en_linea
-	'', --columna_orden
+	'nro_cuota', --columna_orden
 	'0', --filas_numerar
 	NULL, --ev_seleccion
 	NULL, --alto
@@ -615,24 +615,24 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000410', --objeto_ei_formulario_fila
 	'106000229', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
-	'envio_descueto', --identificador
+	'envio_descuento', --identificador
 	'ef_checkbox', --elemento_formulario
-	'envio_descueto', --columnas
+	'envio_descuento', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
 	'6', --orden
 	'Envio descuento', --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
-	NULL, --colapsado
-	NULL, --desactivado
+	'0', --colapsado
+	'0', --desactivado
 	NULL, --estilo
-	NULL, --total
+	'0', --total
 	NULL, --inicializacion
-	NULL, --permitir_html
-	NULL, --deshabilitar_rest_func
+	'0', --permitir_html
+	'0', --deshabilitar_rest_func
 	NULL, --estado_defecto
-	NULL, --solo_lectura
+	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
 	NULL, --carga_metodo
 	NULL, --carga_clase
@@ -671,11 +671,11 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
 	NULL, --fieldset_fin
-	NULL, --check_valor_si
-	NULL, --check_valor_no
-	NULL, --check_desc_si
-	NULL, --check_desc_no
-	NULL, --check_ml_toggle
+	'1', --check_valor_si
+	'0', --check_valor_no
+	'Sí', --check_desc_si
+	'No', --check_desc_no
+	'0', --check_ml_toggle
 	NULL, --fijo_sin_estado
 	NULL, --editor_ancho
 	NULL, --editor_alto

@@ -1579,7 +1579,9 @@ class dao
                       permite_financiacion, 
                       activo, 
                       maneja_bono,
-                      consumo_ticket
+                      consumo_ticket,
+                      ayuda_economica,
+                      (case when activo = true then 'Activos' else 'Inactivos' end) as estado
               FROM 
                 public.convenio
               inner join categoria_comercio using (idcategoria_comercio)
@@ -2145,6 +2147,54 @@ class dao
     }
   }
   
+  function get_cuotas_faltantes_ayuda()
+  {
+    $sql_usuario = self::get_sql_usuario();
+    $sqlsinpagar = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
+       
+                      FROM 
+                          public.consumo_convenio
+                      inner  join afiliacion using(idafiliacion)
+                      inner join convenio  using(idconvenio)
+                      inner join consumo_convenio_cuotas using (idconsumo_convenio)
+                      inner join persona on persona.idpersona = afiliacion.idpersona
+                      WHERE
+                        convenio.ayuda_economica = true and
+                        consumo_convenio_cuotas.envio_descuento =  false and
+                        $sql_usuario";
+
+
+      $sqlsinplanilla = "SELECT  count(idconsumo_convenio_cuotas)  as cuotas_pagas_sin_planilla
+                          FROM 
+                              public.consumo_convenio
+                          inner  join afiliacion using(idafiliacion)
+                          inner join convenio  using(idconvenio)
+                          inner join consumo_convenio_cuotas using (idconsumo_convenio)
+                          inner join persona on persona.idpersona = afiliacion.idpersona
+                          WHERE
+                            convenio.ayuda_economica = true and
+                            consumo_convenio_cuotas.idforma_pago != (select idforma_pago from forma_pago where planilla=true) and
+                            $sql_usuario";
+
+      $sinpagarplanilla = consultar_fuente($sqlsinpagar);
+      $pagassinplanilla = consultar_fuente($sqlsinplanilla);
+      $cuotas_sin_pagar = null;
+      $cuotas_pagas_sin_planilla = null;
+      if (isset($sinpagarplanilla[0]['cuotas_sin_pagar']))
+      {
+         $cuotas_sin_pagar = $sinpagarplanilla[0]['cuotas_sin_pagar'];
+      }
+
+      if (isset($pagassinplanilla[0]['cuotas_pagas_sin_planilla']))
+      {
+         $cuotas_pagas_sin_planilla = $pagassinplanilla[0]['cuotas_pagas_sin_planilla'];
+      }
+
+      $cuotasfaltantes = $cuotas_sin_pagar - $cuotas_pagas_sin_planilla;
+  
+      return $cuotasfaltantes;
+
+  }
 
 }
 ?>
