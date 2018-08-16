@@ -2033,22 +2033,33 @@ class dao
       $where = '1 = 1';
     }
      $sql_usuario = self::get_sql_usuario();
-    $sql = "SELECT  idconsumo_convenio,               
+    $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    total, 
+                    cantidad_cuotas * consumo_convenio_cuotas.monto  total, 
                     fecha, 
                     cantidad_cuotas,
-                    total / cantidad_cuotas  as valor_cuota          
+                    consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join convenio using(idconvenio)
+            inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
               $sql_usuario and
               $where
+            group by 
+              consumo_convenio.idconsumo_convenio,
+              persona.apellido, 
+              persona.nombres, 
+              convenio.titulo,
+              convenio.monto_maximo_mensual,
+              total, 
+              fecha, 
+              cantidad_cuotas,
+              consumo_convenio_cuotas.monto 
             order by fecha desc";
       return consultar_fuente($sql);
   }

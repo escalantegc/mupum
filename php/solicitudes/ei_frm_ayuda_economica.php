@@ -53,9 +53,9 @@ class ei_frm_ayuda_economica extends mupum_ei_formulario
 		{
 			cuotas_max = this.ef('cantidad_cuotas_max').get_estado();
 			cuotas = this.ef('cantidad_cuotas').get_estado(); 
-			if (cuotas != null)
+			if (cuotas != null )
 			{
-				if (cuotas_max != null)
+				if (cuotas_max != null )
 				{
 					if (cuotas > cuotas_max)
 					{
