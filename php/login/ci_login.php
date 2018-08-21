@@ -856,7 +856,6 @@ class ci_login extends toba_ci
 	function conf__frm_clave(mupum_ei_formulario $form)
 	{
 		$parametros['draw_lines_over_text'] = false;
-	
 		//$parametros['draw_lines'] = false;
 		$form->ef('captcha')->set_parametros_captcha($parametros);
 
@@ -883,7 +882,6 @@ class ci_login extends toba_ci
 
 			} else {
 				 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
-
 			}
 			
 			try{
@@ -921,7 +919,7 @@ class ci_login extends toba_ci
 	function enviar_correo_clave_usuario($persona)
 	{
 		//try{
-			$user = $persona['nro_documento']; 
+			$user = trim($persona['nro_documento']); 
 	        $nombre = trim($persona['persona']);
 	        $clave = $persona['clave'];
 	        $atributos['email'] = $persona['correo_correcto'];
