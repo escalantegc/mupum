@@ -2036,7 +2036,7 @@ class dao
     $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    cantidad_cuotas * consumo_convenio_cuotas.monto  total, 
+                    cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
                     fecha, 
                     cantidad_cuotas,
                     consumo_convenio_cuotas.monto  as valor_cuota        

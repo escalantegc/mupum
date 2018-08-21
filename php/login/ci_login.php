@@ -880,7 +880,6 @@ class ci_login extends toba_ci
 				$clave = toba_usuario::generar_clave_aleatoria(8);
 				$this->s__persona[0]['clave'] = $clave;
 				$this->enviar_correo_clave_usuario($this->s__persona[0]);
-				
 
 			} else {
 				 toba::notificacion()->agregar('Los datos ingresados no se corresponden con una persona afiliada', 'info');
@@ -926,7 +925,7 @@ class ci_login extends toba_ci
 	        $nombre = trim($persona['persona']);
 	        $clave = $persona['clave'];
 	        $atributos['email'] = $persona['correo_correcto'];
-
+	        toba_usuario::set_clave_usuario($clave , $user);
 	        //Armo el mail nuevo &oacute;
 	        $asunto = "Clave Recuperada";
 	        
