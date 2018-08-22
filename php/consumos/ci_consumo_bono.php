@@ -33,6 +33,7 @@ class ci_consumo_bono extends mupum_ci
 			
 		}
 		$this->cn()->resetear_dr_consumo_bono_propio();
+		$this->cn()->resetear_dr_consumo_bono();
 		$this->set_pantalla('pant_inicial');
 	
 	}
@@ -58,9 +59,9 @@ class ci_consumo_bono extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_consumos_bono($this->s__where);
+			$datos = dao::get_listado_consumos_bono_ultimos_tres_meses($this->s__where);
 		}else{
-			$datos = dao::get_listado_consumos_bono();
+			$datos = dao::get_listado_consumos_bono_ultimos_tres_meses();
 		}
 		
 		$cuadro->set_datos($datos);
@@ -260,6 +261,28 @@ class ci_consumo_bono extends mupum_ci
 	}
 
 
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_historico -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_historico(mupum_ei_cuadro $cuadro)
+	{
+		$this->dep('cuadro_historico')->colapsar();
+
+		if(isset($this->s__datos_filtro))
+		{
+			$datos = dao::get_listado_consumos_bono_historico($this->s__where);
+		}else{
+			$datos = dao::get_listado_consumos_bono_historico();
+		}
+		
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_historico__seleccion($seleccion)
+	{
+	}
 
 }
 ?>

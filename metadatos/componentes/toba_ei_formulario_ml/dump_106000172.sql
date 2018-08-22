@@ -21,7 +21,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_configuracion_convenios - frm_ml_comercios_por_convenios', --nombre
-	'Comercions por convenio', --titulo
+	'Comercios por convenio', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'mupum', --fuente_datos_proyecto

@@ -1940,7 +1940,7 @@ class dao
     return consultar_fuente($sql);
   }
 
-  function get_listado_consumos_bono($where = null)
+  function get_listado_consumos_bono_historico($where = null)
   {
     if (!isset($where))
     {
@@ -1963,11 +1963,39 @@ class dao
             inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
             inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
             WHERE
+             extract(month from fecha ) < extract(month from (current_date - (2||' months')::interval)) and
               $where";
+      return consultar_fuente($sql);
+  }    
+
+  function get_listado_consumos_bono_ultimos_tres_meses($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconsumo_convenio, 
+                    idtalonario_bono, 
+                    (persona.apellido||', '|| persona.nombres) as socio,
+                    talonario_bono.monto_bono,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio,
+                    cantidad_bonos,
+                    cantidad_bonos *   talonario_bono.monto_bono as total,
+                    fecha
+              FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner  join talonario_bono using(idtalonario_bono) 
+            inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
+            inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
+            where extract(month from fecha ) between extract(month from (current_date - (2||' months')::interval)) and extract(month from current_date ) and
+                  $where";
       return consultar_fuente($sql);
   }  
 
-  function get_listado_consumos_ticket($where = null)
+  function get_listado_consumos_ticket_ultimos_tres_meses($where = null)
   {
     if (!isset($where))
     {
@@ -1989,6 +2017,35 @@ class dao
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
             WHERE
+              substring(periodo, 1,2)::integer between extract(month from (current_date - (2||' months')::interval)) and extract(month from current_date ) and
+              convenio.consumo_ticket = true and
+              $where
+            order by mes desc";
+      return consultar_fuente($sql);
+  }
+  function get_listado_consumos_ticket_historico($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconsumo_convenio, 
+                    
+                    (persona.apellido||', '|| persona.nombres) as socio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    total,
+                    periodo,
+                    to_char(periodo::integer, '99/9999')   as mes                
+            FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner join comercios_por_convenio using(idconvenio,idcomercio)
+            inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
+            inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
+            WHERE
+              substring(periodo, 1,2)::integer < extract(month from (current_date - (2||' months')::interval)) and
               convenio.consumo_ticket = true and
               $where
             order by mes desc";
@@ -2000,8 +2057,7 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql = "SELECT  idconsumo_convenio, 
-                    
+    $sql = "SELECT  consumo_convenio.idconsumo_convenio, 
                     (persona.apellido||', '|| persona.nombres) as socio,
                     comercio.codigo ||'-'||comercio.nombre as comercio, 
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
@@ -2009,19 +2065,81 @@ class dao
                     fecha, 
                     monto_proforma, 
                     cantidad_cuotas, 
-                    descripcion                
+                    descripcion,  
+   
+                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
             FROM 
                 public.consumo_convenio
-            left outer  join afiliacion using(idafiliacion)
-            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner  join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
             inner join comercios_por_convenio using(idconvenio,idcomercio)
             inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
             inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
+            inner join consumo_convenio_cuotas using (idconsumo_convenio)
             WHERE
               convenio.permite_financiacion = true and
+              consumo_convenio_cuotas.envio_descuento =  false and 
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
-
               $where
+          
+            group by 
+             consumo_convenio.idconsumo_convenio, 
+                   socio,
+                     comercio, 
+                    convenio ,
+                    total, 
+                    fecha, 
+                    monto_proforma, 
+                    cantidad_cuotas, 
+                    descripcion 
+            
+            order by fecha desc";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_consumos_financiado_historico($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  consumo_convenio.idconsumo_convenio, 
+                    (persona.apellido||', '|| persona.nombres) as socio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    total, 
+                    fecha, 
+                    monto_proforma, 
+                    cantidad_cuotas, 
+                    descripcion,  
+   
+                    count(consumo_convenio_cuotas.idconsumo_convenio_cuotas) as cantidad_pagas
+            FROM 
+                public.consumo_convenio
+            inner  join afiliacion using(idafiliacion)
+            inner join persona on persona.idpersona = afiliacion.idpersona
+            inner join comercios_por_convenio using(idconvenio,idcomercio)
+            inner join convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
+            inner join comercio on comercio.idcomercio= comercios_por_convenio.idcomercio
+            inner join consumo_convenio_cuotas using (idconsumo_convenio)
+            WHERE
+              convenio.permite_financiacion = true and
+              consumo_convenio_cuotas.envio_descuento =  true and 
+              (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
+              $where
+          
+            group by 
+             consumo_convenio.idconsumo_convenio, 
+                   socio,
+                     comercio, 
+                    convenio ,
+                    total, 
+                    fecha, 
+                    monto_proforma, 
+                    cantidad_cuotas, 
+                    descripcion 
+            having 
+              cantidad_cuotas = count(consumo_convenio_cuotas.idconsumo_convenio_cuotas)
             order by fecha desc";
       return consultar_fuente($sql);
   }
@@ -2039,6 +2157,7 @@ class dao
                     cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
                     fecha, 
                     cantidad_cuotas,
+                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                     consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
@@ -2060,6 +2179,86 @@ class dao
               fecha, 
               cantidad_cuotas,
               consumo_convenio_cuotas.monto 
+            order by fecha desc";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_ayuda_economica_mutual($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+ 
+    $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
+                    (persona.apellido||', '|| persona.nombres) as socio,                  
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
+                    fecha, 
+                    cantidad_cuotas,
+                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
+                    consumo_convenio_cuotas.monto  as valor_cuota        
+            FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner join convenio using(idconvenio)
+            inner join consumo_convenio_cuotas using(idconsumo_convenio)
+            WHERE
+              convenio.ayuda_economica = true and 
+              consumo_convenio_cuotas.envio_descuento =  false and 
+              $where
+            group by 
+              consumo_convenio.idconsumo_convenio,
+              persona.apellido, 
+              persona.nombres, 
+              convenio.titulo,
+              convenio.monto_maximo_mensual,
+              total, 
+              fecha, 
+              cantidad_cuotas,
+              consumo_convenio_cuotas.monto 
+            order by fecha desc";
+      return consultar_fuente($sql);
+  } 
+
+  function get_listado_ayuda_economica_mutual_historico($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+
+    $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
+                    (persona.apellido||', '|| persona.nombres) as socio,                  
+                    convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
+                    cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
+                    fecha, 
+                    cantidad_cuotas,
+                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
+                    consumo_convenio_cuotas.monto  as valor_cuota        
+            FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner join convenio using(idconvenio)
+            inner join consumo_convenio_cuotas using(idconsumo_convenio)
+            WHERE
+              convenio.ayuda_economica = true and 
+               consumo_convenio_cuotas.envio_descuento =  true and 
+              $where
+            group by 
+              consumo_convenio.idconsumo_convenio,
+              persona.apellido, 
+              persona.nombres, 
+              convenio.titulo,
+              convenio.monto_maximo_mensual,
+              total, 
+              fecha, 
+              cantidad_cuotas,
+              consumo_convenio_cuotas.monto 
+              having 
+              cantidad_cuotas = count(consumo_convenio_cuotas.idconsumo_convenio_cuotas)
             order by fecha desc";
       return consultar_fuente($sql);
   }

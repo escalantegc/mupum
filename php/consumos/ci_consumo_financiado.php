@@ -7,9 +7,9 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__procesar()
 	{
-		$this->cn()->guardar_dr_consumo_convenio();
+		
 		try{
-			
+			$this->cn()->guardar_dr_consumo_convenio();
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 		} catch( toba_error_db $error){
@@ -126,6 +126,27 @@ class ci_consumo_financiado extends mupum_ci
 	function evt__frm_ml_detalle_consumo__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_historico -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_historico(mupum_ei_cuadro $cuadro)
+	{
+		$this->dep('cuadro_historico')->colapsar();
+		if(isset($this->s__datos_filtro))
+		{
+			$datos = dao::get_listado_consumos_financiado_historico($this->s__where);
+		}else{
+			$datos = dao::get_listado_consumos_financiado_historico();
+		}
+		
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_historico__seleccion($seleccion)
+	{
 	}
 
 }

@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ci', --clase
 	'28', --punto_montaje
-	'ci_solicitar_ayuda_economica', --subclase
-	'consumos/ci_solicitar_ayuda_economica.php', --subclase_archivo
+	'ci_solicitar_ayuda_economica_mutual', --subclase
+	'consumos/ci_solicitar_ayuda_economica_mutual.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_solicitar_ayuda_economica_mutualci_solicitar_ayuda_economica', --nombre
@@ -213,10 +213,22 @@ INSERT INTO apex_objeto_mt_me (objeto_mt_me_proyecto, objeto_mt_me, ev_procesar_
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
-	'106000215', --dep_id
+	'106000225', --dep_id
 	'106000238', --objeto_consumidor
-	'106000226', --objeto_proveedor
+	'106000245', --objeto_proveedor
 	'cuadro', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000226', --dep_id
+	'106000238', --objeto_consumidor
+	'106000246', --objeto_proveedor
+	'cuadro_historico', --identificador
 	NULL, --parametros_a
 	NULL, --parametros_b
 	NULL, --parametros_c
@@ -327,15 +339,22 @@ INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id)
 	'mupum', --proyecto
 	'106000085', --pantalla
 	'106000238', --objeto_ci
-	'1', --orden
-	'106000215'  --dep_id
+	'0', --orden
+	'106000216'  --dep_id
 );
 INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
 	'mupum', --proyecto
 	'106000085', --pantalla
 	'106000238', --objeto_ci
-	'0', --orden
-	'106000216'  --dep_id
+	'1', --orden
+	'106000225'  --dep_id
+);
+INSERT INTO apex_objetos_pantalla (proyecto, pantalla, objeto_ci, orden, dep_id) VALUES (
+	'mupum', --proyecto
+	'106000085', --pantalla
+	'106000238', --objeto_ci
+	'2', --orden
+	'106000226'  --dep_id
 );
 
 ------------------------------------------------------------

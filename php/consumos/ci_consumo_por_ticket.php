@@ -7,10 +7,10 @@ class ci_consumo_por_ticket extends mupum_ci
 	//-----------------------------------------------------------------------------------
 
 	function evt__procesar()
-	{
+	{		$this->cn()->guardar_dr_consumo_convenio();
 
 		try{
-			$this->cn()->guardar_dr_consumo_convenio();
+	
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
@@ -65,9 +65,9 @@ class ci_consumo_por_ticket extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_consumos_ticket($this->s__where);
+			$datos = dao::get_listado_consumos_ticket_ultimos_tres_meses($this->s__where);
 		}else{
-			$datos = dao::get_listado_consumos_ticket();
+			$datos = dao::get_listado_consumos_ticket_ultimos_tres_meses();
 		}
 		
 		$cuadro->set_datos($datos);
@@ -184,6 +184,28 @@ class ci_consumo_por_ticket extends mupum_ci
 	function evt__frm_ml_detalle_pago__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_detalle_pago_consumo_convenio($datos);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_historico -------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_historico(mupum_ei_cuadro $cuadro)
+	{
+		$this->dep('cuadro_historico')->colapsar();
+
+		if(isset($this->s__datos_filtro))
+		{
+			$datos = dao::get_listado_consumos_ticket_historico($this->s__where);
+		}else{
+			$datos = dao::get_listado_consumos_ticket_historico();
+		}
+		
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_historico__seleccion($seleccion)
+	{
 	}
 
 }
