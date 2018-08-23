@@ -2266,6 +2266,28 @@ class dao
       return consultar_fuente($sql);
   }
 
+
+  function get_cuotas_pagas_consumo_convenio($idconsumo_convenio = null)
+  {
+    $sql = "SELECT idconsumo_convenio_cuotas, 
+                    idconsumo_convenio, 
+                    nro_cuota, 
+                    periodo, 
+                    envio_descuento, 
+                    monto, 
+                    forma_pago.descripcion as forma_pago, 
+                    interes, 
+                    monto_puro, 
+                    cuota_pagada, 
+                    fecha_pago
+            FROM public.consumo_convenio_cuotas
+          inner join forma_pago using(idforma_pago)
+          where 
+            cuota_pagada = true and
+            idconsumo_convenio = $idconsumo_convenio";
+     return consultar_fuente($sql); 
+  }
+
   function get_nros_bonos_segun_talonario_cantidad($idtalonario_bono =null, $cantidad= null)
   {
     $sql = "SELECT  idtalonario_bono, 

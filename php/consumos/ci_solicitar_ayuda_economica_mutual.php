@@ -140,7 +140,8 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function conf__frm_ml_detalle_ayuda(mupum_ei_formulario_ml $form_ml)
 	{
-		$datos = $this->cn()->get_dt_consumo_convenio_cuotas();
+		$filtro['cuota_pagada'] = 0;
+		$datos = $this->cn()->get_dt_consumo_convenio_cuotas_filtro($filtro);
 		$form_ml->set_datos($datos);
 	}
 
@@ -163,6 +164,20 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 	}
 
 	
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_cuotas_pagas ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_cuotas_pagas(mupum_ei_cuadro $cuadro)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$datos = $this->cn()->get_dt_consumo_convenio();
+			$cuotas = dao::get_cuotas_pagas_consumo_convenio($datos['idconsumo_convenio']);
+			$cuadro->set_datos($cuotas);
+		}
+	}
 
 }
 ?>

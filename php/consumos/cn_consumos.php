@@ -415,6 +415,10 @@ class cn_consumos extends mupum_cn
 	{
 		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio_cuotas')->get_filas();
 	}	
+	function get_dt_consumo_convenio_cuotas_filtro($filtro)
+	{
+		return $this->dep('dr_consumo_convenio')->tabla('dt_consumo_convenio_cuotas')->get_filas($filtro);
+	}	
 
 	function procesar_dt_consumo_convenio_cuotas($datos)
 	{
