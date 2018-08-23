@@ -74,6 +74,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function conf__cuadro_historico(mupum_ei_cuadro $cuadro)
 	{
+		$this->dep('cuadro_historico')->colapsar();
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_ayuda_economica_mutual_historico($this->s__where);
@@ -146,6 +147,19 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 	function evt__frm_ml_detalle_ayuda__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
+	}
+
+	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
+	{
+		$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp[1]);
+		
+		$forma_pago['planilla'] = 'no';
+		$forma_pago['fila'] = $idfp[2];
+		if ($fp[0]['planilla']==1)
+		{
+			$forma_pago['planilla'] = 'si';
+		}
+		$respuesta->set($forma_pago);	
 	}
 
 	

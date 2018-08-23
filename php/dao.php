@@ -2083,16 +2083,15 @@ class dao
               $where
           
             group by 
-             consumo_convenio.idconsumo_convenio, 
-                   socio,
-                     comercio, 
-                    convenio ,
-                    total, 
-                    fecha, 
-                    monto_proforma, 
-                    cantidad_cuotas, 
-                    descripcion 
-            
+              consumo_convenio.idconsumo_convenio, 
+              socio,
+              comercio, 
+              convenio ,
+              total, 
+              fecha, 
+              monto_proforma, 
+              cantidad_cuotas, 
+              descripcion
             order by fecha desc";
       return consultar_fuente($sql);
   }  
@@ -2197,6 +2196,7 @@ class dao
                     fecha, 
                     cantidad_cuotas,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
+                     (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                     consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
@@ -2206,7 +2206,9 @@ class dao
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
-              consumo_convenio_cuotas.envio_descuento =  false and 
+              (consumo_convenio_cuotas.cuota_pagada =  false or
+              ((substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 1,2)::integer < extract(month from (current_date - (2||' months')::interval)) ) and 
+              (substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 4,7)::integer = extract(year from (current_date - (2||' months')::interval)) )) ) and
               $where
             group by 
               consumo_convenio.idconsumo_convenio,
@@ -2245,7 +2247,7 @@ class dao
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
-               consumo_convenio_cuotas.envio_descuento =  true and 
+               consumo_convenio_cuotas.cuota_pagada =  true and 
               $where
             group by 
               consumo_convenio.idconsumo_convenio,
@@ -2360,7 +2362,7 @@ class dao
   function get_cuotas_faltantes_ayuda()
   {
     $sql_usuario = self::get_sql_usuario();
-    $sqlsinpagar = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
+    $sql = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
        
                       FROM 
                           public.consumo_convenio
@@ -2370,38 +2372,14 @@ class dao
                       inner join persona on persona.idpersona = afiliacion.idpersona
                       WHERE
                         convenio.ayuda_economica = true and
-                        consumo_convenio_cuotas.envio_descuento =  false and
+                        consumo_convenio_cuotas.cuota_pagada =  false and
                         $sql_usuario";
-
-
-      $sqlsinplanilla = "SELECT  count(idconsumo_convenio_cuotas)  as cuotas_pagas_sin_planilla
-                          FROM 
-                              public.consumo_convenio
-                          inner  join afiliacion using(idafiliacion)
-                          inner join convenio  using(idconvenio)
-                          inner join consumo_convenio_cuotas using (idconsumo_convenio)
-                          inner join persona on persona.idpersona = afiliacion.idpersona
-                          WHERE
-                            convenio.ayuda_economica = true and
-                            consumo_convenio_cuotas.idforma_pago != (select idforma_pago from forma_pago where planilla=true) and
-                            $sql_usuario";
-
-      $sinpagarplanilla = consultar_fuente($sqlsinpagar);
-      $pagassinplanilla = consultar_fuente($sqlsinplanilla);
-      $cuotas_sin_pagar = null;
-      $cuotas_pagas_sin_planilla = null;
-      if (isset($sinpagarplanilla[0]['cuotas_sin_pagar']))
+      $res = consultar_fuente($sql);
+      $cuotasfaltantes = 0;
+      if (isset($res[0]['cuotas_sin_pagar']))
       {
-         $cuotas_sin_pagar = $sinpagarplanilla[0]['cuotas_sin_pagar'];
+        $cuotasfaltantes = $res[0]['cuotas_sin_pagar'];
       }
-
-      if (isset($pagassinplanilla[0]['cuotas_pagas_sin_planilla']))
-      {
-         $cuotas_pagas_sin_planilla = $pagassinplanilla[0]['cuotas_pagas_sin_planilla'];
-      }
-
-      $cuotasfaltantes = $cuotas_sin_pagar - $cuotas_pagas_sin_planilla;
-  
       return $cuotasfaltantes;
 
   }

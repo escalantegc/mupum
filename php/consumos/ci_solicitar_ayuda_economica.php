@@ -46,6 +46,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		$conf = dao::get_configuracion();
 		$minimo = dao::get_minimo_coutas_para_pedir_otra_ayuda();
 		$cuotas_faltantes = dao::get_cuotas_faltantes_ayuda();
+		
 		if ( $cuotas_faltantes <= $minimo)
 		{
 			$diahoy = date("d"); 
@@ -210,8 +211,18 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 			$this->cn()->agregar_dt_consumo_convenio($datos);
 		}
 	}
-
-	
+	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
+	{
+		$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp[1]);
+		
+		$forma_pago['planilla'] = 'no';
+		$forma_pago['fila'] = $idfp[2];
+		if ($fp[0]['planilla']==1)
+		{
+			$forma_pago['planilla'] = 'si';
+		}
+		$respuesta->set($forma_pago);	
+	}
 
 }
 ?>
