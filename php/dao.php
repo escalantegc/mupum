@@ -2196,7 +2196,7 @@ class dao
                     fecha, 
                     cantidad_cuotas,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                     (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
+                     --(select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                     consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
