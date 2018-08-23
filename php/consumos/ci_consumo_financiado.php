@@ -125,6 +125,7 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__frm_ml_detalle_consumo__modificacion($datos)
 	{
+		ei_arbol($datos);
 		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
 	}
 

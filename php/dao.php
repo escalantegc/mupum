@@ -2080,6 +2080,8 @@ class dao
               convenio.permite_financiacion = true and
               consumo_convenio_cuotas.envio_descuento =  false and 
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
+                (consumo_convenio_cuotas.cuota_pagada =  false or
+               ((current_date - (2||' months')::interval)  <= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
               $where
           
             group by 
@@ -2125,6 +2127,8 @@ class dao
               convenio.permite_financiacion = true and
               consumo_convenio_cuotas.envio_descuento =  true and 
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
+                (consumo_convenio_cuotas.cuota_pagada =  false or
+               ((current_date - (3||' months')::interval)  >= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
               $where
           
             group by 
@@ -2197,6 +2201,7 @@ class dao
                     cantidad_cuotas,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                      (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
+                     (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as fecha_max_nro_cuota,
                     consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
@@ -2206,11 +2211,9 @@ class dao
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
-              consumo_convenio_cuotas.cuota_pagada =  false 
-              --  or
-              --((substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 1,2)::integer < extract(month from (current_date - (2||' months')::interval)) ) and 
-             -- (substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 4,7)::integer = extract(year from (current_date - (2||' months')::interval)) )) ) and
-             and  $where
+               (consumo_convenio_cuotas.cuota_pagada =  false or
+               ((current_date - (2||' months')::interval)  <= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
+              $where
             group by 
               consumo_convenio.idconsumo_convenio,
               persona.apellido, 
@@ -2248,7 +2251,9 @@ class dao
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
-               consumo_convenio_cuotas.cuota_pagada =  true and 
+              consumo_convenio_cuotas.cuota_pagada =  true and 
+              (consumo_convenio_cuotas.cuota_pagada =  false or
+               ((current_date - (3||' months')::interval)  >= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
               $where
             group by 
               consumo_convenio.idconsumo_convenio,

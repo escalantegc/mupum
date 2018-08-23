@@ -157,7 +157,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function evt__frm_ml_detalle_ayuda__modificacion($datos)
 	{
-		ei_arbol($datos);
+		//ei_arbol($datos);
 		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
 	}
 
