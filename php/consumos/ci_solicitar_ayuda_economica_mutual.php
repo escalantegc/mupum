@@ -85,6 +85,16 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 		$cuadro->set_datos($datos);
 	}
 
+	function evt__cuadro_historico__seleccion($seleccion)
+	{
+				$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$this->set_pantalla('pant_edicion');
+	}
+
+	function evt__cuadro_historico__ver($seleccion)
+	{
+	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -147,6 +157,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function evt__frm_ml_detalle_ayuda__modificacion($datos)
 	{
+		ei_arbol($datos);
 		$this->cn()->procesar_dt_consumo_convenio_cuotas($datos);
 	}
 
@@ -178,6 +189,8 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 			$cuadro->set_datos($cuotas);
 		}
 	}
+
+
 
 }
 ?>

@@ -2196,7 +2196,7 @@ class dao
                     fecha, 
                     cantidad_cuotas,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                     --(select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
+                     (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                     consumo_convenio_cuotas.monto  as valor_cuota        
             FROM 
                 public.consumo_convenio
@@ -2284,7 +2284,9 @@ class dao
           inner join forma_pago using(idforma_pago)
           where 
             cuota_pagada = true and
-            idconsumo_convenio = $idconsumo_convenio";
+            idconsumo_convenio = $idconsumo_convenio
+            order by 
+             nro_cuota asc ";
      return consultar_fuente($sql); 
   }
 
