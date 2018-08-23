@@ -2206,10 +2206,11 @@ class dao
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
             WHERE
               convenio.ayuda_economica = true and 
-              (consumo_convenio_cuotas.cuota_pagada =  false or
-              ((substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 1,2)::integer < extract(month from (current_date - (2||' months')::interval)) ) and 
-              (substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 4,7)::integer = extract(year from (current_date - (2||' months')::interval)) )) ) and
-              $where
+              consumo_convenio_cuotas.cuota_pagada =  false 
+              --  or
+              --((substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 1,2)::integer < extract(month from (current_date - (2||' months')::interval)) ) and 
+             -- (substring((select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)), 4,7)::integer = extract(year from (current_date - (2||' months')::interval)) )) ) and
+             and  $where
             group by 
               consumo_convenio.idconsumo_convenio,
               persona.apellido, 
