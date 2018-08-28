@@ -2610,7 +2610,7 @@ class dao
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
                     familiar.apellido ||' - '||familiar.nombres as familiar_titular,
-                    persona.apellido ||' - '||persona.nombres as titular,
+                    persona.legajo ||' - '||persona.apellido ||', '||persona.nombres as titular,
                     solicitud_bolsita.fecha_solicitud, 
                     nivel.descripcion as nivel, 
                     observacion, 
@@ -2639,7 +2639,7 @@ class dao
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
                     familiar.apellido ||' - '||familiar.nombres as familiar_titular,
-                    persona.apellido ||' - '||persona.nombres as titular,
+                    persona.legajo ||' - '||persona.apellido ||', '||persona.nombres as titular,
                     solicitud_bolsita.fecha_solicitud, 
                     nivel.descripcion as nivel, 
                     observacion, 
@@ -2671,6 +2671,97 @@ class dao
     {
       return $res[0]['cantidad'];
     }
+  }
+  function get_listado_tipo_subsidio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtipo_subsidio, 
+                    descripcion, 
+                    limite, 
+                    monto
+            FROM 
+              public.tipo_subsidio
+            where 
+              $where ";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_solicitud_subsidio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql= "SELECT solicitud_subsidio.idsolicitud_subsidio, 
+                  persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                  tipo_subsidio.descripcion as tipo_subsidio, 
+                  solicitud_subsidio.fecha_solicitud, 
+                  fecha_pago, 
+                  solicitud_subsidio.monto, 
+                  observacion, 
+                  (case when pagado is null then 'PENDIENTE' else (case when pagado = true then 'PAGADO' else 'RECHAZADO' end) end) as estado
+           FROM 
+              public.solicitud_subsidio
+            inner join  tipo_subsidio using(idtipo_subsidio)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+                $where 
+            order by
+              solicitud_subsidio.fecha_solicitud desc";
+      return consultar_fuente($sql);
+  }
+
+  function get_monto_tipo_subsidio($idtipo_subsidio)
+  {
+    $sql = "SELECT  idtipo_subsidio, 
+                    descripcion, 
+                    limite, 
+                    monto
+            FROM 
+              public.tipo_subsidio
+            where 
+              idtipo_subsidio = $idtipo_subsidio";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['monto']))
+    {
+      return $res[0]['monto'];   
+    } 
+  }  
+
+  function get_limite_tipo_subsidio($idtipo_subsidio)
+  {
+    $sql = "SELECT  idtipo_subsidio, 
+                    descripcion, 
+                    limite, 
+                    monto
+            FROM 
+              public.tipo_subsidio
+            where 
+              idtipo_subsidio = $idtipo_subsidio";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['limite']))
+    {
+      return $res[0]['limite'];   
+    } 
+  }
+
+  function get_cantidad_subsidio_por_persona_por_tipo($idafiliacion = null,$idtipo_subsidio = null )
+  {
+    $sql = "SELECT count(*) as cantidad
+            FROM 
+              public.solicitud_subsidio
+            inner join  tipo_subsidio using(idtipo_subsidio)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where 
+              afiliacion.idafiliacion = $idafiliacion and
+              tipo_subsidio.idtipo_subsidio= $idtipo_subsidio ";
+    $res = consultar_fuente($sql);
+    return $res[0]['cantidad'];
   }
 }
 ?>

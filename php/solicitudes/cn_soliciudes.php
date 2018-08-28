@@ -86,6 +86,16 @@ class cn_soliciudes extends mupum_cn
 	function resetear_dr_bolsita()
 	{
 		$this->dep('dr_bolsita')->resetear();
+	}	
+
+	function guardar_dr_subsidio()
+	{
+		$this->dep('dr_subsidio')->sincronizar();
+	}
+
+	function resetear_dr_subsidio()
+	{
+		$this->dep('dr_subsidio')->resetear();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -574,7 +584,7 @@ class cn_soliciudes extends mupum_cn
 	}	
 
 	//-----------------------------------------------------------------------------------
-	//---- DT-SOLICITUD-BOLSITA-ESCOLAR -----------------------------------------------------------------------
+	//---- DT-SOLICITUD-SUBSIDIO -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 	function cargar_dt_solicitud_bolsita($seleccion)
 	{
@@ -631,6 +641,66 @@ class cn_soliciudes extends mupum_cn
 	{
 		$id = $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-SOLICITUD-BOLSITA-ESCOLAR -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_solicitud_subsidio($seleccion)
+	{
+		if(!$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_solicitud_subsidio()
+	{
+		
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->resetear();					// lee de la BD fisica y carga al datos relacion
+			
+	}
+	function set_cursor_dt_solicitud_subsidio($seleccion)
+	{
+		$id = $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->get_id_fila_condicion($seleccion);
+
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_solicitud_subsidio()
+	{
+		return $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_solicitud_subsidio()
+	{
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->resetear_cursor();
+	}
+
+	function get_dt_solicitud_subsidio()
+	{
+		return $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->get();
+	}
+
+	function set_dt_solicitud_subsidio($datos)
+	{
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->set($datos);
+	}
+
+	function agregar_dt_solicitud_subsidio($datos)
+	{
+		$id = $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->nueva_fila($datos);
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_solicitud_subsidio($seleccion)
+	{
+		$id = $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->eliminar_fila($id[0]);
 	}
 }
 
