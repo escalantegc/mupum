@@ -295,7 +295,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000210', --objeto_cuadro_col
 	'fecha', --clave
 	'6', --orden
-	'Fecha', --titulo
+	'Fecha solicitud economica', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-cen-s1', --estilo
 	NULL, --ancho
