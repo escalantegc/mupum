@@ -1278,6 +1278,112 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_convenio')->tabla('dt_talonario_bono')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_convenio')->tabla('dt_talonario_bono')->eliminar_fila($id[0]);
 	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONFIGURACION-BOLSITA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_configuracion_bolsita($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_configuracion_bolsita($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_configuracion_bolsita()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_configuracion_bolsita()
+	{
+		$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->resetear_cursor();
+	}
+
+	function get_dt_configuracion_bolsita()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->get();
+	}
+
+	function set_dt_configuracion_bolsita($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->set($datos);
+	}
+
+	function agregar_dt_configuracion_bolsita($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->set_cursor($id);
+	}	
+
+	function eliminar_dt_configuracion_bolsita($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_configuracion_bolsita')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-NIVEL-BOLSITA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_nivel($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_nivel')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_nivel')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_nivel')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_nivel($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_nivel')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_nivel')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_nivel()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_nivel')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_nivel()
+	{
+		$this->dep('dr_parametros')->tabla('dt_nivel')->resetear_cursor();
+	}
+
+	function get_dt_nivel()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_nivel')->get();
+	}
+
+	function set_dt_nivel($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_nivel')->set($datos);
+	}
+
+	function agregar_dt_nivel($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_nivel')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_nivel')->set_cursor($id);
+	}	
+
+	function eliminar_dt_nivel($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_nivel')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_nivel')->eliminar_fila($id[0]);
+	}	
 }
 
 ?>

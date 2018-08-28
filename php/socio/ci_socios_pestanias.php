@@ -112,6 +112,7 @@ class ci_socios_pestanias extends mupum_ci
 
 	function evt__frm_ml_familia__modificacion($datos)
 	{
+		
 		$this->get_cn()->procesar_dt_familia($datos);
 	}	
 

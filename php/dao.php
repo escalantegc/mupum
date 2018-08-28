@@ -816,6 +816,25 @@ class dao
       return $res[0]['persona'];
     }
 
+  }  
+
+  function get_descripcion_persona_idpersona($idpersona = null)
+  {
+    
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            where 
+              afiliacion.idpersona =  $idpersona";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['persona']))
+    {
+      return $res[0]['persona'];
+    }
+
   }
 
   function get_listado_instalacion ($where = null)
@@ -2407,5 +2426,244 @@ class dao
 
   }
 
+  function get_listado_configuracion_bolsita($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconfiguracion_bolsita, 
+                    anio, 
+                    inicio, 
+                    fin
+            FROM 
+              public.configuracion_bolsita
+            WHERE
+              $where
+            order by
+              anio asc";
+      return consultar_fuente($sql);
+  }   
+
+  function get_listado_configuracion_bolsita_controlada($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconfiguracion_bolsita, 
+                    anio, 
+                    inicio, 
+                    fin
+            FROM 
+              public.configuracion_bolsita
+            WHERE
+              current_date between inicio and fin
+            order by
+              anio asc";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_nivel_bolsita($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idnivel, 
+                    descripcion, 
+                    edad_minima, 
+                    edad_maxima, 
+                    es_bolsita
+            FROM public.nivel
+            WHERE
+              $where
+            order by
+              descripcion";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_familia_menores_edad($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              $sql_usuario and
+              $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_edad_familiar($idpersona_familia)
+  {
+    $sql = "SELECT  
+                    extract(year from age( familiar.fecha_nacimiento)) as edad
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            
+            where 
+              idpersona_familia = $idpersona_familia";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['edad']))
+    {
+      return $res[0]['edad'];
+    }
+  }  
+
+  function get_edad_minima_nivel($idnivel)
+  {
+    $sql = "SELECT  
+                   edad_minima as minima
+
+            FROM 
+                    nivel
+            where 
+              idnivel = $idnivel";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['minima']))
+    {
+      return $res[0]['minima'];
+    }
+  }  
+
+  function get_edad_maxima_nivel($idnivel)
+  {
+       $sql = "SELECT  
+                   edad_maxima as maxima
+
+            FROM 
+                    nivel
+            where 
+              idnivel = $idnivel";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['maxima']))
+    {
+      return $res[0]['maxima'];
+    }
+  }
+  function get_listado_solicitudes_bolsita_escolar($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
+                    familia.idpersona_familia, 
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    solicitud_bolsita.fecha_solicitud, 
+                    nivel.descripcion as nivel, 
+                    observacion, 
+                    fecha_entrega,
+                    (case when entregado is null then 'PENDIENTE' else (case when entregado = true then 'ENTREGADO' else 'RECHAZADO' end) end) as estado,
+                    configuracion_bolsita.anio
+            FROM 
+              public.solicitud_bolsita
+              inner join nivel using(idnivel) 
+              inner join familia using(idpersona_familia)
+              inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+              inner join persona on familia.idpersona=persona.idpersona
+              inner join configuracion_bolsita using(idconfiguracion_bolsita)
+            where 
+              $where";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_solicitudes_bolsita_escolar_administrar($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
+                    familia.idpersona_familia, 
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    solicitud_bolsita.fecha_solicitud, 
+                    nivel.descripcion as nivel, 
+                    observacion, 
+                    fecha_entrega,
+                    (case when entregado is null then 'PENDIENTE' else (case when entregado = true then 'ENTREGADO' else 'RECHAZADO' end) end) as estado,
+                    configuracion_bolsita.anio
+            FROM 
+              public.solicitud_bolsita
+              inner join nivel using(idnivel) 
+              inner join familia using(idpersona_familia)
+              inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+              inner join persona on familia.idpersona=persona.idpersona
+              inner join configuracion_bolsita using(idconfiguracion_bolsita)
+            where 
+              entregado is null and
+              $where ";
+      return consultar_fuente($sql);
+  }  
+
+  function get_listado_solicitudes_bolsita_escolar_historial($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
+                    familia.idpersona_familia, 
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    solicitud_bolsita.fecha_solicitud, 
+                    nivel.descripcion as nivel, 
+                    observacion, 
+                    fecha_entrega,
+                    fecha_rechazo,
+                    (case when entregado is null then 'PENDIENTE' else (case when entregado = true then 'ENTREGADO' else 'RECHAZADO' end) end) as estado,
+                    configuracion_bolsita.anio
+            FROM 
+              public.solicitud_bolsita
+              inner join nivel using(idnivel) 
+              inner join familia using(idpersona_familia)
+              inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+              inner join persona on familia.idpersona=persona.idpersona
+              inner join configuracion_bolsita using(idconfiguracion_bolsita)
+            where 
+              entregado is not null and
+              $where ";
+      return consultar_fuente($sql);
+  }
+
+  function get_cantida_configuracion_bolsita_vigentes()
+  {
+    $sql = "SELECT  count(*)as cantidad
+            FROM 
+              public.configuracion_bolsita
+             where current_date between inicio and fin";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
+  }
 }
 ?>

@@ -78,6 +78,15 @@ class cn_soliciudes extends mupum_cn
 	{
 		$this->dep('dr_reempadronamiento')->resetear();
 	}
+	function guardar_dr_bolsita()
+	{
+		$this->dep('dr_bolsita')->sincronizar();
+	}
+
+	function resetear_dr_bolsita()
+	{
+		$this->dep('dr_bolsita')->resetear();
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- DT-PERSONA -----------------------------------------------------------------------
@@ -562,6 +571,66 @@ class cn_soliciudes extends mupum_cn
 	{
 		$id = $this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_reempadronamiento')->tabla('dt_solicitud_reempadronamiento')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-SOLICITUD-BOLSITA-ESCOLAR -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_solicitud_bolsita($seleccion)
+	{
+		if(!$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_solicitud_bolsita()
+	{
+		
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->resetear();					// lee de la BD fisica y carga al datos relacion
+			
+	}
+	function set_cursor_dt_solicitud_bolsita($seleccion)
+	{
+		$id = $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->get_id_fila_condicion($seleccion);
+
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_solicitud_bolsita()
+	{
+		return $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_solicitud_bolsita()
+	{
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->resetear_cursor();
+	}
+
+	function get_dt_solicitud_bolsita()
+	{
+		return $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->get();
+	}
+
+	function set_dt_solicitud_bolsita($datos)
+	{
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->set($datos);
+	}
+
+	function agregar_dt_solicitud_bolsita($datos)
+	{
+		$id = $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->nueva_fila($datos);
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->set_cursor($id);
+	}	
+
+	function eliminar_dt_solicitud_bolsita($seleccion)
+	{
+		$id = $this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_bolsita')->tabla('dt_solicitud_bolsita')->eliminar_fila($id[0]);
 	}
 }
 

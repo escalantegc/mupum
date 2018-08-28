@@ -141,6 +141,18 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	NULL, --inicializar
 	NULL  --orden
 );
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000228', --dep_id
+	'4270', --objeto_consumidor
+	'106000249', --objeto_proveedor
+	'dt_configuracion_bolsita', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
 --- FIN Grupo de desarrollo 106
 
 --- INICIO Grupo de desarrollo 0
@@ -225,6 +237,18 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'4270', --objeto_consumidor
 	'106000100', --objeto_proveedor
 	'dt_motivo_tipo_socio', --identificador
+	'', --parametros_a
+	'', --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	NULL  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000232', --dep_id
+	'4270', --objeto_consumidor
+	'106000254', --objeto_proveedor
+	'dt_nivel', --identificador
 	'', --parametros_a
 	'', --parametros_b
 	NULL, --parametros_c
