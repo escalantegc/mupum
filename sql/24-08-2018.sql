@@ -51,7 +51,7 @@ CREATE UNIQUE INDEX idx_nivel
 
 CREATE TABLE public.solicitud_bolsita
 (
-  idsolicitud_bolsita serial NOT NULL DEFAULT ,
+  idsolicitud_bolsita serial NOT NULL ,
   idpersona_familia integer NOT NULL,
   fecha_solicitud date NOT NULL,
   idnivel integer NOT NULL,
@@ -84,15 +84,6 @@ CREATE UNIQUE INDEX idx_solicitud_bolsita
 
 
 
--- Index: public.idx_solicitud_bolsita
-
--- DROP INDEX public.idx_solicitud_bolsita;
-
-CREATE UNIQUE INDEX idx_solicitud_bolsita
-  ON public.solicitud_bolsita
-  USING btree
-  (idconfiguracion_bolsita, idpersona_familia);
-
 
 
 
@@ -113,6 +104,17 @@ WITH (
 );
 ALTER TABLE public.tipo_subsidio
   OWNER TO postgres;
+
+-- Index: public.idx_descripcion
+
+-- DROP INDEX public.idx_descripcion;
+
+CREATE UNIQUE INDEX idx_descripcion
+  ON public.tipo_subsidio
+  USING btree
+  (descripcion COLLATE pg_catalog."default");
+
+
 
 -- Table: public.solicitud_subsidio
 

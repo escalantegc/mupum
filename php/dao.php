@@ -18,7 +18,7 @@ class dao
     return $sql;
   }
 
-	function get_listado_persona($where = null)
+  function get_listado_persona($where = null)
   {
     if (!isset($where))
     {
@@ -43,6 +43,39 @@ class dao
           FROM public.persona
           inner join tipo_documento using(idtipo_documento)
           where
+            $where 
+          order by
+            apellido,nombres";
+         
+      return consultar_fuente($sql);
+  }	
+
+  function get_listado_persona_externa($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+
+    $sql = "SELECT  idpersona, 
+            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
+             nro_documento, 
+            cuil, 
+            legajo, 
+            (apellido||', '||nombres) as persona, 
+            correo, 
+            cbu, 
+            fecha_nacimiento, 
+            idlocalidad, 
+            calle, altura, 
+            piso, 
+            depto, 
+            idestado_civil,
+            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo
+          FROM public.persona
+          inner join tipo_documento using(idtipo_documento)
+          where
+            legajo is null and
             $where 
           order by
             apellido,nombres";
@@ -2762,6 +2795,50 @@ class dao
               tipo_subsidio.idtipo_subsidio= $idtipo_subsidio ";
     $res = consultar_fuente($sql);
     return $res[0]['cantidad'];
+  }
+  function get_listado_talonario_bono_colaboracion($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtalonario_bono_colaboracion, 
+                    descripcion, 
+                    nro_talonario, 
+                    nro_inicio, 
+                    nro_fin, 
+                    fecha_sorteo, 
+                    monto,
+                    (cantidad_numeros_vendidos_talonario_bono_colaboracion(idtalonario_bono_colaboracion)) as vendidos
+            FROM 
+              public.talonario_bono_colaboracion
+            WHERE
+              $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_nros_vendidos($idtalonario_bono_colaboracion)
+  {
+    $sql = "SELECT  idtalonario_bono_colaboracion, 
+                    nro_bono, 
+                    disponible, 
+                    (case when idafiliacion is not null then persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  pex.apellido||', '|| pex.nombres  end) as comprador,
+                    persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                    idpersona_externa, 
+                    fecha_compra, 
+                    forma_pago.descripcion as forma_pago, 
+                    pagado, 
+                    persona_externa
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              left outer  join afiliacion using (idafiliacion)
+              left outer join persona using (idpersona)
+              left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
+            where 
+                pagado = true and
+                idtalonario_bono_colaboracion = $idtalonario_bono_colaboracion";
+    return consultar_fuente($sql);
   }
 }
 ?>

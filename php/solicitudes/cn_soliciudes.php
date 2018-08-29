@@ -702,6 +702,251 @@ class cn_soliciudes extends mupum_cn
 		$id = $this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_subsidio')->tabla('dt_solicitud_subsidio')->eliminar_fila($id[0]);
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-BONO COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_nros_bono_colaboracion ()	
+	{
+		if(!$this->dep('dr_bono_colaboracion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_bono_colaboracion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_bono_colaboracion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	
+	function guardar_dr_bono_colaboracion()
+	{
+		$this->dep('dr_bono_colaboracion')->sincronizar();
+	}
+
+	function resetear_dr_bono_colaboracion()
+	{
+		$this->dep('dr_bono_colaboracion')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-TALONARIO-BONO-COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_talonario_bono_colaboracion($seleccion)
+	{
+		if(!$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_talonario_bono_colaboracion()
+	{
+		
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->resetear();					// lee de la BD fisica y carga al datos relacion
+			
+	}
+	function set_cursor_dt_talonario_bono_colaboracion($seleccion)
+	{
+		$id = $this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get_id_fila_condicion($seleccion);
+
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_talonario_bono_colaboracion()
+	{
+		return $this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_talonario_bono_colaboracion()
+	{
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->resetear_cursor();
+	}
+
+	function get_dt_talonario_bono_colaboracion()
+	{
+		return $this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get();
+	}
+
+	function set_dt_talonario_bono_colaboracion($datos)
+	{
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set($datos);
+	}
+
+	function agregar_dt_talonario_bono_colaboracion($datos)
+	{
+		$id = $this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->nueva_fila($datos);
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set_cursor($id);
+	}	
+
+	function eliminar_dt_talonario_bono_colaboracion($seleccion)
+	{
+		$id = $this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-PREMIO-SORTEO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function get_dt_premio_sorteo()
+	{
+		return $this->dep('dr_bono_colaboracion')->tabla('dt_premio_sorteo')->get_filas();		
+	}
+	function procesar_dt_premio_sorteo($datos)
+	{
+		$this->dep('dr_bono_colaboracion')->tabla('dt_premio_sorteo')->procesar_filas($datos);
+	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-BONO COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_nros_bono_colaboracion_nros ()	
+	{
+		if(!$this->dep('dr_nros_bono_colaboracion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_nros_bono_colaboracion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_nros_bono_colaboracion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	
+	function guardar_dr_nros_bono_colaboracion_nros()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->sincronizar();
+	}
+
+	function resetear_dr_nros_bono_colaboracion_nros()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-TALONARIO-BONO-COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_talonario_bono_colaboracion_nros($seleccion)
+	{
+		if(!$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_talonario_bono_colaboracion_nros()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->resetear();					// lee de la BD fisica y carga al datos relacion	
+	}
+	function set_cursor_dt_talonario_bono_colaboracion_nros($seleccion)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get_id_fila_condicion($seleccion);
+
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_talonario_bono_colaboracion_nros()
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_talonario_bono_colaboracion_nros()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->resetear_cursor();
+	}
+
+	function get_dt_talonario_bono_colaboracion_nros()
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get();
+	}
+
+	function set_dt_talonario_bono_colaboracion_nros($datos)
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set($datos);
+	}
+
+	function agregar_dt_talonario_bono_colaboracion_nros($datos)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->nueva_fila($datos);
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->set_cursor($id);
+	}	
+
+	function eliminar_dt_talonario_bono_colaboracion_nros($seleccion)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_bono_colaboracion')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-NROS-TALONARIO-BONO-COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function get_dt_talonario_nros_bono_colaboracion_nros_filtro($filtro)
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->get_filas($filtro);		
+	}	
+
+	function get_dt_talonario_nros_bono_colaboracion_nros()
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->get_filas();		
+	}
+	function procesar_dt_talonario_nros_bono_colaboracion_nros($datos)
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->procesar_filas($datos);
+	}
+		
+	function resetear_dt_talonario_nros_bono_colaboracion()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->resetear();					
+	}
+
+	function set_cursor_dt_talonario_nros_bono_colaboracion($seleccion)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_talonario_nros_bono_colaboracion()
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_talonario_nros_bono_colaboracion()
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->resetear_cursor();
+	}
+
+	function get_dt_talonario_nros_bono_colaboracion()
+	{
+		return $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->get();
+	}
+
+	function set_dt_talonario_nros_bono_colaboracion($datos)
+	{
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->set($datos);
+	}
+
+	function agregar_dt_talonario_nros_bono_colaboracion($datos)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->nueva_fila($datos);
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->set_cursor($id);
+	}	
+
+	function eliminar_dt_talonario_nros_bono_colaboracion($seleccion)
+	{
+		$id = $this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_nros_bono_colaboracion')->tabla('dt_talonario_nros_bono_colaboracion')->eliminar_fila($id[0]);
+	}
+
 }
 
 ?>
