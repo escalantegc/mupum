@@ -267,7 +267,7 @@ class dao
   		return consultar_fuente($sql);
 	}
 
-	function get_loclidades_combo_editable($filtro = null)
+	function get_localidades_combo_editable($filtro = null)
 	{
 		if (! isset($filtro) || trim($filtro)=='')
 		{
