@@ -113,9 +113,9 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 	'Agregar', --filas_agregar_texto
 	'0', --filas_borrar_en_linea
 	NULL, --filas_undo
-	'0', --filas_ordenar
+	'1', --filas_ordenar
 	'0', --filas_ordenar_en_linea
-	'', --columna_orden
+	'nro_premio', --columna_orden
 	'0', --filas_numerar
 	NULL, --ev_seleccion
 	NULL, --alto
@@ -376,7 +376,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000296', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'nro_bono_ganador', --identificador
-	'ef_editable_numero', --elemento_formulario
+	'ef_combo_editable', --elemento_formulario
 	'nro_bono_ganador', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
@@ -384,33 +384,33 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'Nro bono ganador', --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
-	NULL, --colapsado
-	NULL, --desactivado
+	'0', --colapsado
+	'0', --desactivado
 	NULL, --estilo
-	NULL, --total
+	'0', --total
 	NULL, --inicializacion
-	NULL, --permitir_html
-	NULL, --deshabilitar_rest_func
+	'0', --permitir_html
+	'0', --deshabilitar_rest_func
 	NULL, --estado_defecto
-	NULL, --solo_lectura
+	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
-	NULL, --carga_metodo
+	'get_nros_vendidos_combo_editable', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
-	NULL, --carga_consulta_php
+	'106000001', --carga_consulta_php
 	NULL, --carga_sql
-	NULL, --carga_fuente
+	'auditoria', --carga_fuente
 	NULL, --carga_lista
-	NULL, --carga_col_clave
-	NULL, --carga_col_desc
+	'nro_bono', --carga_col_clave
+	'comprador', --carga_col_desc
 	NULL, --carga_maestros
-	NULL, --carga_cascada_relaj
+	'0', --carga_cascada_relaj
 	'0', --cascada_mantiene_estado
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
-	NULL, --carga_no_seteado_ocultar
-	NULL, --edit_tamano
+	'0', --carga_no_seteado_ocultar
+	'400', --edit_tamano
 	NULL, --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
@@ -426,9 +426,9 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --popup_proyecto
 	NULL, --popup_editable
 	NULL, --popup_ventana
-	NULL, --popup_carga_desc_metodo
-	NULL, --popup_carga_desc_clase
-	NULL, --popup_carga_desc_include
+	'get_descripcion_nro_vendido', --popup_carga_desc_metodo
+	'dao', --popup_carga_desc_clase
+	'dao.php', --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
 	NULL, --fieldset_fin
 	NULL, --check_valor_si
@@ -448,7 +448,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --selec_serializar
 	NULL, --selec_cant_columnas
 	NULL, --upload_extensiones
-	NULL, --punto_montaje
+	'28', --punto_montaje
 	NULL  --placeholder
 );
 --- FIN Grupo de desarrollo 106

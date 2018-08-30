@@ -2841,6 +2841,93 @@ class dao
             order by
               nro_bono asc";
     return consultar_fuente($sql);
+  }   
+
+  function get_nros_vendidos_combo_editable($filtro = null)
+  {
+    if (! isset($filtro) || trim($filtro)=='')
+    {
+      return array();
+    }
+    $filtro = quote("%{$filtro}%");
+    $sql = "SELECT  idtalonario_bono_colaboracion, 
+                    nro_bono, 
+                    disponible, 
+                    (case when idafiliacion is not null then 'Nro bono: '||nro_bono||' - Comprador: '||persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  'Nro bono: '||nro_bono||' - Comprador: '||pex.apellido||', '|| pex.nombres  end) as comprador,
+                    persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                    idpersona_externa, 
+                    fecha_compra, 
+                    forma_pago.descripcion as forma_pago, 
+                    pagado, 
+                    persona_externa
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              left outer  join afiliacion using (idafiliacion)
+              left outer join persona using (idpersona)
+              left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
+            where 
+                pagado = true and
+               (case when idafiliacion is not null then 'Nro bono: '||nro_bono||' - Comprador: '||persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  'Nro bono: '||nro_bono||' - Comprador: '||pex.apellido||', '|| pex.nombres  end) ilike $filtro limit 20
+
+            ";
+    return consultar_fuente($sql);
+  }  
+  function get_descripcion_nro_vendido($nro_bono = null)
+  {
+    $sql =  "SELECT  idtalonario_bono_colaboracion, 
+                    nro_bono, 
+                    disponible, 
+                    (case when idafiliacion is not null then 'Nro bono: '||nro_bono||' - Comprador: '||persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  'Nro bono: '||nro_bono||' - Comprador: '||pex.apellido||', '|| pex.nombres  end) as comprador,
+                    persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                    idpersona_externa, 
+                    fecha_compra, 
+                    forma_pago.descripcion as forma_pago, 
+                    pagado, 
+                    persona_externa
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              left outer  join afiliacion using (idafiliacion)
+              left outer join persona using (idpersona)
+              left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
+            where 
+                pagado = true and
+               nro_bono = $nro_bono
+            ";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['comprador']))
+    {
+      return $res[0]['comprador'];
+    }
+
+  }
+
+
+  function get_nros_disponibles($idtalonario_bono_colaboracion)
+  {
+    $sql = "SELECT  idtalonario_bono_colaboracion, 
+                    nro_bono, 
+                    disponible, 
+                    (case when idafiliacion is not null then persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  pex.apellido||', '|| pex.nombres  end) as comprador,
+                    persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                    idpersona_externa, 
+                    fecha_compra, 
+                    forma_pago.descripcion as forma_pago, 
+                    pagado, 
+                    persona_externa
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              left outer  join afiliacion using (idafiliacion)
+              left outer join persona using (idpersona)
+              left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
+            where 
+                pagado = false and
+                idtalonario_bono_colaboracion = $idtalonario_bono_colaboracion
+            order by
+              nro_bono asc";
+    return consultar_fuente($sql);
   }
 }
 ?>
