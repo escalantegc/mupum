@@ -2837,7 +2837,9 @@ class dao
               left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
             where 
                 pagado = true and
-                idtalonario_bono_colaboracion = $idtalonario_bono_colaboracion";
+                idtalonario_bono_colaboracion = $idtalonario_bono_colaboracion
+            order by
+              nro_bono asc";
     return consultar_fuente($sql);
   }
 }

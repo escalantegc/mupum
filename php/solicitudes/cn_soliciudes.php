@@ -706,7 +706,7 @@ class cn_soliciudes extends mupum_cn
 	//-----------------------------------------------------------------------------------
 	//---- DR-BONO COLABORACION -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-	function cargar_dr_nros_bono_colaboracion ()	
+	function cargar_dr_bono_colaboracion ()	
 	{
 		if(!$this->dep('dr_bono_colaboracion')->esta_cargada())
 		{				// verifica si esta cargada el datos relacion			
