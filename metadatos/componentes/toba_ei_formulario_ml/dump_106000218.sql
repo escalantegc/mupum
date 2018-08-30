@@ -463,7 +463,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'3', --orden
 	'Periodo', --etiqueta
 	NULL, --etiqueta_estilo
-	NULL, --descripcion
+	'El periodo debe tener formato MM/YYYY.', --descripcion
 	'0', --colapsado
 	'0', --desactivado
 	NULL, --estilo
@@ -492,7 +492,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --carga_no_seteado_ocultar
 	'7', --edit_tamano
 	'7', --edit_maximo
-	'##/####', --edit_mascara
+	NULL, --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango
 	NULL, --edit_filas
@@ -501,7 +501,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --edit_resaltar
 	NULL, --edit_ajustable
 	NULL, --edit_confirmar_clave
-	NULL, --edit_expreg
+	'/^(0[1-9]|1[0-2])\\/([0-9]{4})$/', --edit_expreg
 	NULL, --popup_item
 	NULL, --popup_proyecto
 	NULL, --popup_editable
@@ -529,6 +529,6 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --selec_cant_columnas
 	NULL, --upload_extensiones
 	NULL, --punto_montaje
-	NULL  --placeholder
+	'00/0000'  --placeholder
 );
 --- FIN Grupo de desarrollo 106

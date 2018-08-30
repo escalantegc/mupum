@@ -85,6 +85,7 @@ class ci_socios_pestanias extends mupum_ci
 		if ($this->get_cn()->hay_cursor_dt_persona())
 		{
 			$datos = $this->get_cn()->get_dt_persona();
+		
 			$form->set_datos($datos);
 		}
 	}

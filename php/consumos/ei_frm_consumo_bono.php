@@ -25,11 +25,15 @@ class ei_frm_consumo_bono extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__idtalonario_bono__procesar = function(es_inicial)
 		{
-		
-				this.ef('cantidad_bonos').resetear_estado(); 
-				this.ef('total').resetear_estado(); 
-		
+			this.ef('cantidad_bonos').resetear_estado(); 
+			this.ef('total').resetear_estado(); 
+			this.ef('monto_bono').desactivar();
+		}		
 
+		{$this->objeto_js}.evt__monto_bono__procesar = function(es_inicial)
+		{
+			
+			this.ef('monto_bono').desactivar();
 		}
 		";
 	}

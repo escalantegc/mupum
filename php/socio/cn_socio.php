@@ -57,8 +57,7 @@ class cn_socio extends mupum_cn
 	function get_dt_persona()
 	{
 		$datos = $this->dep('dr_socio')->tabla('dt_persona')->get();
-		$id = $this->dep('dr_socio')->tabla('dt_persona')->get_cursor();
-		$fp_logo1 = $this->dep('dr_socio')->tabla('dt_persona')->get_blob('foto',$id[0]);
+		$fp_logo1 = $this->dep('dr_socio')->tabla('dt_persona')->get_blob('foto');
 
  		if (isset($fp_logo1)) 
  		{

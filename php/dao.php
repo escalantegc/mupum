@@ -2060,7 +2060,7 @@ class dao
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
                     total,
                     periodo,
-                    to_char(periodo::integer, '99/9999')   as mes                
+                    periodo   as mes                
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -2088,7 +2088,7 @@ class dao
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
                     total,
                     periodo,
-                    to_char(periodo::integer, '99/9999')   as mes                
+                    periodo as mes                
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
