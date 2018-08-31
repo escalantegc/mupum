@@ -21,6 +21,13 @@ class ei_cuadro_administrar_solicitudes_subsidio extends mupum_ei_cuadro
 
 
 
-}
+	function conf_evt__revertir($evento, $fila)
+	{
+		if ( $this->datos[$fila]['estado']=='PENDIENTE') 
+		{
+			$evento->anular();    
+		}
+	}
 
+}
 ?>

@@ -649,7 +649,7 @@ class dao
             left outer join estado using (idestado)
             inner join tipo_socio using (idtipo_socio)
             WHERE
-             
+              afiliacion.solicitada = true and
               $where
             order by 
               afiliacion.fecha_solicitud desc";
@@ -799,6 +799,25 @@ class dao
             inner join  tipo_socio using(idtipo_socio)
             where 
               activa = true and
+              $sql_usuario";
+
+    return consultar_fuente($sql);
+
+  }   
+
+  function get_personas_afiliadas_titulares()
+  {
+    $sql_usuario = self::get_sql_usuario();
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              tipo_socio.titular = true and
               $sql_usuario";
 
     return consultar_fuente($sql);
