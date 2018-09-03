@@ -2573,6 +2573,74 @@ class dao
               $sql_usuario and
               $where";
       return consultar_fuente($sql);
+  }  
+
+  function get_listado_familia_menores_edad_que_usan_bolsita($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              $sql_usuario and
+              parentesco.bolsita_escolar = true and
+              $where";
+      return consultar_fuente($sql);
+  } 
+
+  function get_listado_familia_menores_edad_que_van_colonia($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              $sql_usuario and
+              parentesco.colonia = true and
+              $where";
+      return consultar_fuente($sql);
   }
 
   function get_edad_familiar($idpersona_familia)
@@ -2947,6 +3015,112 @@ class dao
             order by
               nro_bono asc";
     return consultar_fuente($sql);
+  }
+
+  function get_listado_configuracion_colonia($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql ="SELECT idconfiguracion_colonia, 
+                  anio, 
+                  inicio, 
+                  fin, 
+                  inicio_inscripcion, 
+                  fin_inscripcion
+          FROM 
+            public.configuracion_colonia
+          WHERE
+              $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_inscripcion_colono($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido ||', '|| colono.nombres as colono,
+                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular
+
+              FROM 
+              public.inscripcion_colono
+            inner join  familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+            WHERE
+              $sql_usuario and
+              $where";
+      return consultar_fuente($sql);
+  }
+
+  function get_monto_costo_colonia_tipo_socio($idafiliacion)
+  {
+    $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
+                    costo_colonia_tipo_socio.idconfiguracion_colonia, 
+                    monto, 
+                    porcentaje_inscripcion
+            FROM 
+              public.costo_colonia_tipo_socio
+            inner join afiliacion using(idtipo_socio)
+            where 
+              afiliacion.idafiliacion = $idafiliacion";  
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['monto']))
+    {
+      return $res[0]['monto'];
+    }
+  }  
+
+  function get_porcentaje_costo_colonia_tipo_socio($idafiliacion)
+  {
+    $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
+                    costo_colonia_tipo_socio.idconfiguracion_colonia, 
+                    monto, 
+                    porcentaje_inscripcion
+            FROM 
+              public.costo_colonia_tipo_socio
+            inner join afiliacion using(idtipo_socio)
+            where 
+              afiliacion.idafiliacion = $idafiliacion";  
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['porcentaje_inscripcion']))
+    {
+      return $res[0]['porcentaje_inscripcion'];
+    }
+  }  
+
+  function get_monto_porcentaje_costo_colonia_tipo_socio($idafiliacion)
+  {
+    $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
+                    costo_colonia_tipo_socio.idconfiguracion_colonia, 
+                    monto, 
+                    porcentaje_inscripcion,
+                    monto * porcentaje_inscripcion / 100 as inscripcion
+
+            FROM 
+              public.costo_colonia_tipo_socio
+            inner join afiliacion using(idtipo_socio)
+            where 
+              afiliacion.idafiliacion = $idafiliacion";  
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['inscripcion']))
+    {
+      return $res[0]['inscripcion'];
+    }
   }
 }
 ?>

@@ -15,6 +15,7 @@ CREATE TABLE public.configuracion_colonia
 WITH (
   OIDS=FALSE
 );
+
 -- Table: public.inscripcion_colono
 
 -- DROP TABLE public.inscripcion_colono;
@@ -28,6 +29,7 @@ CREATE TABLE public.inscripcion_colono
   alergias text,
   informacion_complementaria text,
   idafiliacion integer NOT NULL,
+  fecha date,
   CONSTRAINT inscripcion_colono_pkey PRIMARY KEY (idinscripcion_colono),
   CONSTRAINT inscripcion_colono_idconfiguracion_colonia_fkey FOREIGN KEY (idconfiguracion_colonia)
       REFERENCES public.configuracion_colonia (idconfiguracion_colonia) MATCH SIMPLE
@@ -63,7 +65,6 @@ WITH (
 
 
 -- Table: public.costo_colonia_tipo_socio
-
 -- DROP TABLE public.costo_colonia_tipo_socio;
 
 CREATE TABLE public.costo_colonia_tipo_socio
@@ -72,10 +73,9 @@ CREATE TABLE public.costo_colonia_tipo_socio
   idconfiguracion_colonia integer NOT NULL,
   idtipo_socio integer NOT NULL,
   monto double precision NOT NULL,
-  porcentaje_inscripcion double precision NOT NULL
+  porcentaje_inscripcion double precision NOT NULL,
+  CONSTRAINT costo_colonia_tipo_socio_pkey PRIMARY KEY (idcosto_colonia_tipo_socio)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public.costo_colonia_tipo_socio
-  OWNER TO postgres;

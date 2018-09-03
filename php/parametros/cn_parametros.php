@@ -1437,6 +1437,151 @@ class cn_parametros extends mupum_cn
 		$id = $this->dep('dr_parametros')->tabla('dt_tipo_subsidio')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_parametros')->tabla('dt_tipo_subsidio')->eliminar_fila($id[0]);
 	}	
+
+
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-COLONIA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_colonia($seleccion)
+	{
+		if(!$this->dep('dr_colonia')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_colonia')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_colonia')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function guardar_dr_colonia()
+	{
+		$this->dep('dr_colonia')->sincronizar();
+	}
+
+	function resetear_dr_colonia()
+	{
+		$this->dep('dr_colonia')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONFIGURACION-COLONIA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_configuracion_colonia($seleccion)
+	{
+		if(!$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_configuracion_colonia($seleccion)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_configuracion_colonia()
+	{
+		return $this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_configuracion_colonia()
+	{
+		$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->resetear_cursor();
+	}
+
+	function get_dt_configuracion_colonia()
+	{
+		return $this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->get();
+	}
+
+	function set_dt_configuracion_colonia($datos)
+	{
+		$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->set($datos);
+	}
+
+	function agregar_dt_configuracion_colonia($datos)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->nueva_fila($datos);
+		$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->set_cursor($id);
+	}	
+
+	function eliminar_dt_configuracion_colonia($seleccion)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_colonia')->tabla('dt_configuracion_colonia')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-COSTO-COLONIA-TIPO-SOCIO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_costo_colonia_tipo_socio($seleccion)
+	{
+		if(!$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function set_cursor_dt_costo_colonia_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_costo_colonia_tipo_socio()
+	{
+		return $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_costo_colonia_tipo_socio()
+	{
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->resetear_cursor();
+	}
+
+	function get_dt_costo_colonia_tipo_socio()
+	{
+		return $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->get();
+	}
+
+	function set_dt_costo_colonia_tipo_socio($datos)
+	{
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->set($datos);
+	}
+
+	function agregar_dt_costo_colonia_tipo_socio($datos)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->nueva_fila($datos);
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_costo_colonia_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->eliminar_fila($id[0]);
+	}
+
+	function get_dt_costo_colonia_tipo_socios()
+	{
+		return $this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->get_filas();
+	}
+
+	function procesar_dt_costo_colonia_tipo_socio($datos)
+	{
+		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->procesar_filas($datos);
+	}
+
 }
 
 ?>
