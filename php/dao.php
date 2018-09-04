@@ -2791,6 +2791,19 @@ class dao
     {
       return $res[0]['cantidad'];
     }
+  }  
+
+  function get_cantida_configuracion_colonia_vigentes()
+  {
+    $sql = "SELECT  count(*)as cantidad
+            FROM 
+              public.configuracion_colonia
+             where current_date between inicio_inscripcion and fin_inscripcion";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
   }
   function get_listado_tipo_subsidio($where = null)
   {

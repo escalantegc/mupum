@@ -34,7 +34,13 @@ class ci_inscripcion_colonos extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_edicion');
+		$cantidad = dao::get_cantida_configuracion_colonia_vigentes();
+		if ($cantidad>0)
+		{
+			$this->set_pantalla('pant_edicion');	
+		} else{
+			toba::notificacion()->agregar("Por el momento no se encuentran disponibles las inscripciones a colonia.",'info');
+		}
 	}
 
 	function evt__cancelar()

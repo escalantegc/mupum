@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_frm_configuracion_colonia', --subclase
+	'parametros/ei_frm_configuracion_colonia.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_configuracion_colonia - frm', --nombre
