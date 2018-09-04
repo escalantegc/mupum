@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="legajo" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04f58be6-3a1e-406c-85bf-856781b23da8">
-	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.zoom" value="2.357947691000003"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="243"/>
+	<property name="ireport.y" value="148"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="idpersona" class="java.lang.Integer"/>
@@ -67,29 +67,26 @@ where
 	<field name="claustro" class="java.lang.String"/>
 	<field name="unidad_academica" class="java.lang.String"/>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="82" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="100" height="79" uuid="65f34c41-c22d-4e79-bd30-5d0d6c77d9c8"/>
+				<reportElement x="0" y="0" width="101" height="79" uuid="65f34c41-c22d-4e79-bd30-5d0d6c77d9c8"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<line direction="BottomUp">
-				<reportElement key="line" stretchType="RelativeToBandHeight" x="1" y="78" width="555" height="1" uuid="eb0df50b-c8d5-4f25-8111-a06c94b27ed4"/>
-			</line>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="112" y="0" width="442" height="20" uuid="8035fee0-9272-40b1-b671-97c89e2c7013"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nombre_institucion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="112" y="32" width="442" height="20" uuid="3b83f6bd-68c9-4ce4-9a36-9fee0bb2eac0"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{direccion}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="112" y="59" width="442" height="20" uuid="c859fe8c-0d85-42db-8ab2-5f8e0386122a"/>
 				<textElement>
 					<font size="12" isBold="true"/>
@@ -107,6 +104,9 @@ where
 				</textElement>
 				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
+			<line direction="BottomUp">
+				<reportElement key="line" stretchType="RelativeToBandHeight" x="2" y="0" width="550" height="1" uuid="eb0df50b-c8d5-4f25-8111-a06c94b27ed4"/>
+			</line>
 		</band>
 	</pageHeader>
 	<detail>

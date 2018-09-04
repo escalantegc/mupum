@@ -139,7 +139,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'Comprador', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'0', --estilo
-	NULL, --ancho
+	'30%', --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
 	'0', --no_ordenar
@@ -198,7 +198,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000294', --objeto_cuadro_col
 	'pagado', --clave
 	'4', --orden
-	'pagado', --titulo
+	'PAGADO', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-cen-s1', --estilo
 	NULL, --ancho
@@ -263,7 +263,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'Nro bono', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-cen-s2', --estilo
-	NULL, --ancho
+	'10%', --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
 	'0', --no_ordenar

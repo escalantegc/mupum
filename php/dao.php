@@ -488,7 +488,8 @@ class dao
 		}
   		$sql = "SELECT 	idparentesco, 
   						descripcion, 
-  						bolsita_escolar
+  						bolsita_escolar,
+              colonia
   				FROM public.parentesco
    				WHERE
   					$where

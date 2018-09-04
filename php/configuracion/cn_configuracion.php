@@ -85,8 +85,8 @@ class cn_configuracion extends mupum_cn
 		$fp_logo1 = $this->dep('dr_configuracion')->tabla('dt_cabecera')->get_blob('logo', $id[0]);
 
  		if (isset($fp_logo1)) {
-			$temp_nombre_archivo_logo = 'logo.jpg';
-			$archivologo = toba::proyecto()->get_www($temp_nombre_archivo_logo);
+			$temp_nombre_archivo_logo = 'logo.gif';
+			$archivologo = toba::proyecto()->get_www('/logo/'.$temp_nombre_archivo_logo);
 			//ei_arbol($archivologo);
 			$temp_archivo_logo = fopen($archivologo['path'], 'w');
 			stream_copy_to_stream($fp_logo1, $temp_archivo_logo);
