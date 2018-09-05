@@ -120,8 +120,51 @@ class ci_solicitudes_bolsita extends mupum_ci
 			$datos['fecha_solicitud'] = date('Y-m-j');
 			$this->cn()->agregar_dt_solicitud_bolsita($datos);
 		}
+		$nivel = dao::get_listado_nivel_bolsita('nivel.idnivel ='.$datos['idnivel']);
+		$datos_correo['nivel'] = $nivel[0]['descripcion'];
+
+		$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
+
+		$datos_correo['estudiante'] = $familiar[0]['familiar_titular'];
+		$datos_correo['socio'] = $familiar[0]['titular'];
+		$datos_correo['documento'] = $familiar[0]['documento'];
+		$datos_correo['correo'] = $familiar[0]['correo'];
+		$this->enviar_correo_solicitud_bolsita($datos_correo);
+
 	}
 
+
+
+	function enviar_correo_solicitud_bolsita($datos)
+	{
+	    $dni = $datos['documento'];
+	    $estudiante = $datos['estudiante'];
+	    $nivel = $datos['nivel'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Constancia de Solicitud de Bolsita Escolar ";
+	    
+		$cuerpo_mail = "Por medio del presente se deja Constancia de la Solicitud de Bolsita Escolar.<br/> ".
+				"Los datos del estudiante son:<br/>".
+				"Documento: ".$dni. "<br/>".
+				"Estudiante: ".$estudiante. "<br/>".
+				"Nivel de Bolsita: ". $nivel. "<br/>".
+				"A cargo del Socio Titular: ".$socio. "<br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail('escalantegc@gmail.com', $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = trim($datos['correo']);
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 	
 
 }

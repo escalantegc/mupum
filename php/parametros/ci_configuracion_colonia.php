@@ -19,15 +19,13 @@ class ci_configuracion_colonia extends mupum_ci
 			
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El tipo de subsidio esta siendo referenciado, no puede eliminarlo",'error');
-				
+				toba::notificacion()->agregar("La colonia esta siendo referenciado, no puede eliminarla",'error');
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_descripcion'))
+			if(strstr($mensaje_log,'idx_anio_colonia'))
 			{
-				toba::notificacion()->agregar("El tipo de subsidio ya esta registrado.",'info');
-				
+				toba::notificacion()->agregar("Ya tiene una colonia configurada para este a&#241;o.",'info');
 			} 
 			
 		}

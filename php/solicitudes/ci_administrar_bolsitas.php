@@ -190,6 +190,17 @@ class ci_administrar_bolsitas extends mupum_ci
 			
 			$this->cn()->agregar_dt_solicitud_bolsita($datos);
 		}
+		$nivel = dao::get_listado_nivel_bolsita('nivel.idnivel ='.$datos['idnivel']);
+		$datos_correo['nivel'] = $nivel[0]['descripcion'];
+
+		$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
+
+		$datos_correo['estudiante'] = $familiar[0]['familiar_titular'];
+		$datos_correo['socio'] = $familiar[0]['titular'];
+		$datos_correo['documento'] = $familiar[0]['documento'];
+		$datos_correo['correo'] = $familiar[0]['correo'];
+		$this->enviar_correo_aceptar_solicitud_bolsita($datos_correo);
+		
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -215,6 +226,17 @@ class ci_administrar_bolsitas extends mupum_ci
 			
 			$this->cn()->agregar_dt_solicitud_bolsita($datos);
 		}
+
+		$nivel = dao::get_listado_nivel_bolsita('nivel.idnivel ='.$datos['idnivel']);
+		$datos_correo['nivel'] = $nivel[0]['descripcion'];
+
+		$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
+
+		$datos_correo['estudiante'] = $familiar[0]['familiar_titular'];
+		$datos_correo['socio'] = $familiar[0]['titular'];
+		$datos_correo['documento'] = $familiar[0]['documento'];
+		$datos_correo['correo'] = $familiar[0]['correo'];
+		$this->enviar_correo_rechazar_solicitud_bolsita($datos_correo);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -230,6 +252,66 @@ class ci_administrar_bolsitas extends mupum_ci
 		}
 	}
 
+
+	function enviar_correo_aceptar_solicitud_bolsita($datos)
+	{
+	    $dni = $datos['documento'];
+	    $estudiante = $datos['estudiante'];
+	    $nivel = $datos['nivel'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Solicitud de Bolsita Escolar Rechazada ";
+	    
+		$cuerpo_mail = "Estimado/a: ".$socio. "<br/>".
+
+				"Por medio del presente le informamos que la Solicitud de Bolsita Escolar referente al: .<br/> ".
+				"Estudiante: ".$estudiante. "<br/>".
+				"Documento: ".$dni. "<br/>".
+				"Nivel de Bolsita: ". $nivel. "<br/>".
+				"Ha sido rechazada, cualquier duda comuniquese con la Comision Directiva.<br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail(trim($datos['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = 'escalantegc@gmail.com';
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}	
+
+	function enviar_correo_rechazar_solicitud_bolsita($datos)
+	{
+	   
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Solicitud de Bolsita Escolar Aceptada ";
+	    
+		$cuerpo_mail = "Estimado/a: ".$socio. "<br/>".
+
+				"Por medio del presente le informamos que la Solicitud de Bolsita Escolar referente al: .<br/> ".
+				"Estudiante: ".$estudiante. "<br/>".
+				"Documento: ".$dni. "<br/>".
+				"Nivel de Bolsita: ". $nivel. "<br/>".
+				"Ha sido Aceptada, puede acercarse a las instalaciones de la mutual o llamar por telefono para coordinar el retiro de la misma.<br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail(trim($datos['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = 'escalantegc@gmail.com';
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 
 
 

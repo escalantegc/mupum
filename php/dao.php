@@ -2574,6 +2574,37 @@ class dao
               $sql_usuario and
               $where";
       return consultar_fuente($sql);
+  } 
+
+  function get_datos_familiar($idfamiliar = null)
+  {
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.correo,
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    tipo_documento.sigla||' - '||familiar.nro_documento as documento,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              $sql_usuario and
+              familia.idpersona_familia = $idfamiliar 
+              ";
+      return consultar_fuente($sql);
   }  
 
   function get_listado_familia_menores_edad_que_usan_bolsita($where = null)
@@ -2603,7 +2634,7 @@ class dao
             inner join parentesco using(idparentesco)
             inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
             where 
-              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              extract(year from age( familiar.fecha_nacimiento)) < 22 and
               $sql_usuario and
               parentesco.bolsita_escolar = true and
               $where";

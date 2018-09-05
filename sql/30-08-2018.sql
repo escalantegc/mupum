@@ -30,6 +30,7 @@ CREATE TABLE public.inscripcion_colono
   informacion_complementaria text,
   idafiliacion integer NOT NULL,
   fecha date,
+  medicamentos_toma text,
   CONSTRAINT inscripcion_colono_pkey PRIMARY KEY (idinscripcion_colono),
   CONSTRAINT inscripcion_colono_idconfiguracion_colonia_fkey FOREIGN KEY (idconfiguracion_colonia)
       REFERENCES public.configuracion_colonia (idconfiguracion_colonia) MATCH SIMPLE
@@ -52,6 +53,7 @@ CREATE TABLE public.telefono_inscripcion_colono
   idtipo_telefono integer NOT NULL,
   idinscripcion_colono integer NOT NULL,
   nro_telefono character(10) NOT NULL,
+  idparentesco integer,
   CONSTRAINT telefono_inscripcion_colono_idinscripcion_colono_fkey FOREIGN KEY (idinscripcion_colono)
       REFERENCES public.inscripcion_colono (idinscripcion_colono) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -62,6 +64,8 @@ CREATE TABLE public.telefono_inscripcion_colono
 WITH (
   OIDS=FALSE
 );
+
+
 
 
 -- Table: public.costo_colonia_tipo_socio
