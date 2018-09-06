@@ -314,7 +314,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --estado_defecto
 	'1', --solo_lectura
 	'0', --solo_lectura_modificacion
-	'get_listado_familia_menores_edad', --carga_metodo
+	'get_listado_familia_menores_edad_que_usan_bolsita', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt

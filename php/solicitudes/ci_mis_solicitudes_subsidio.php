@@ -130,8 +130,48 @@ class ci_mis_solicitudes_subsidio extends mupum_ci
 			$datos['fecha_solicitud'] = date('Y-m-j');
 			$this->cn()->agregar_dt_solicitud_subsidio($datos);
 		}
+
+		$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+		$tipo_subsidio = dao::get_listado_tipo_subsidio('idtipo_subsidio = '.$datos['idtipo_subsidio']);
+		$datos_correo['tipo_subsidio']= $tipo_subsidio[0]['descripcion'];
+	   	$datos_correo['monto'] = $datos['monto'];
+	    $datos_correo['socio'] = $socio[0]['persona'];
+	    $datos_correo['correo'] = $socio[0]['correo'];
+	    $this->enviar_correo_solicitud_subsidio($datos_correo);
 	}
 
+
+
+	function enviar_correo_solicitud_subsidio($datos)
+	{
+	    $tipo = $datos['tipo_subsidio'];
+	    $monto = $datos['monto'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Constancia de Solicitud de Subsidio ";
+	    
+		$cuerpo_mail = "Por medio del presente se deja Constancia de la Solicitud de Subsidio.<br/> ".
+				"Los datos de la solicitud son:<br/>".
+				"Socio Titular: ".$socio. "<br/>".
+				"Tipo Subsidio: ".$tipo. "<br/>".
+				"Monto: $". $monto. "<br/>".
+				"<b>IMPORTANTE : Para acceder al beneficio deberá presentar la siguiente documentación: <br/ >
+				Certificado de nacimiento vivo o de casamiento y nota de solicitud del subsidio para archivo.</b> <br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail('escalantegc@gmail.com', $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = trim($datos['correo']);
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 
 
 }

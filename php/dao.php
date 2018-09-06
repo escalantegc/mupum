@@ -804,7 +804,26 @@ class dao
 
     return consultar_fuente($sql);
 
-  }   
+  }  
+
+  function get_datos_persona_afiliada($idafiliacion = null)
+  {
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                 persona.correo,
+                 *
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              afiliacion.idafiliacion = $idafiliacion";
+
+    return consultar_fuente($sql);
+
+  }  
 
   function get_personas_afiliadas_titulares()
   {
@@ -2582,8 +2601,8 @@ class dao
     $sql = "SELECT  familia.idpersona, 
                     familia.idpersona_familia, 
                     persona.correo,
-                    persona.apellido ||' - '||persona.nombres as titular,
-                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    persona.apellido ||', '||persona.nombres as titular,
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
                     tipo_documento.sigla||' - '||familiar.nro_documento as documento,
                     parentesco.descripcion as parentesco, 
                     fecha_relacion, 

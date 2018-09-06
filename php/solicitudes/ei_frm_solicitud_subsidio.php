@@ -10,17 +10,7 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 		echo "
 		//---- Validacion de EFs -----------------------------------
 		
-		{$this->objeto_js}.evt__monto__validar = function()
-		{
-			monto = this.ef('monto').get_estado();
-			monto_permitido = this.ef('monto_permitido').get_estado();
-			if (monto > monto_permitido)
-			{
-				this.ef('monto').set_error('El monto a solicitar es mayor al permitido.');
-				return false;
-			}
-			return true;
-		}
+			
 		
 		{$this->objeto_js}.evt__cantidad__validar = function()
 		{
@@ -33,9 +23,15 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 			}
 			return true;
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__monto__procesar = function(es_inicial)
+		{
+			this.ef('monto').desactivar();
+		}
 		";
 	}
 
-}
 
+}
 ?>

@@ -253,7 +253,7 @@ class ci_administrar_bolsitas extends mupum_ci
 	}
 
 
-	function enviar_correo_aceptar_solicitud_bolsita($datos)
+	function enviar_correo_rechazar_solicitud_bolsita ($datos)
 	{
 	    $dni = $datos['documento'];
 	    $estudiante = $datos['estudiante'];
@@ -285,7 +285,7 @@ class ci_administrar_bolsitas extends mupum_ci
         }
 	}	
 
-	function enviar_correo_rechazar_solicitud_bolsita($datos)
+	function enviar_correo_aceptar_solicitud_bolsita($datos)
 	{
 	   
 	    //Armo el mail nuevo &oacute;

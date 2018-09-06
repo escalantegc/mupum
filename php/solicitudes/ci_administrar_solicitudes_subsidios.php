@@ -161,6 +161,14 @@ class ci_administrar_solicitudes_subsidios extends mupum_ci
 			
 			$this->cn()->agregar_dt_solicitud_subsidio($datos);
 		}
+
+		$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+		$tipo_subsidio = dao::get_listado_tipo_subsidio('idtipo_subsidio = '.$datos['idtipo_subsidio']);
+		$datos_correo['tipo_subsidio']= $tipo_subsidio[0]['descripcion'];
+	   	$datos_correo['monto'] = $datos['monto'];
+	    $datos_correo['socio'] = $socio[0]['persona'];
+	    $datos_correo['correo'] = $socio[0]['correo'];
+	    $this->enviar_correo_aceptar_solicitud_subsidio($datos_correo);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -186,6 +194,14 @@ class ci_administrar_solicitudes_subsidios extends mupum_ci
 			
 			$this->cn()->agregar_dt_solicitud_subsidio($datos);
 		}
+
+		$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+		$tipo_subsidio = dao::get_listado_tipo_subsidio('idtipo_subsidio = '.$datos['idtipo_subsidio']);
+		$datos_correo['tipo_subsidio']= $tipo_subsidio[0]['descripcion'];
+	   	$datos_correo['monto'] = $datos['monto'];
+	    $datos_correo['socio'] = $socio[0]['persona'];
+	    $datos_correo['correo'] = $socio[0]['correo'];
+	    $this->enviar_correo_rechazar_solicitud_subsidio($datos_correo);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -202,6 +218,67 @@ class ci_administrar_solicitudes_subsidios extends mupum_ci
 	}
 
 
+
+
+	function enviar_correo_aceptar_solicitud_subsidio($datos)
+	{
+	    $tipo = $datos['tipo_subsidio'];
+	    $monto = $datos['monto'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Solicitud de Subsidio Aceptada";
+	    
+		$cuerpo_mail = "Por medio del presente le informamos que la Solicitud de Subsidio con los datos.<br/> ".
+				"Socio Titular: ".$socio. "<br/>".
+				"Tipo Subsidio: ".$tipo. "<br/>".
+				"Monto: $". $monto. "<br/>".
+				 "Ha sido Aceptada, puede acercarse a las instalaciones de la mutual o llamar por telefono para coordinar el pago.<br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        
+        try 
+        {
+            $mail = new toba_mail(trim($datos['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = 'escalantegc@gmail.com';
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+	function enviar_correo_rechazar_solicitud_subsidio($datos)
+	{
+	    $tipo = $datos['tipo_subsidio'];
+	    $monto = $datos['monto'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Solicitud de Subsidio Rechazada";
+	    
+		$cuerpo_mail = "Por medio del presente le informamos que la Solicitud de Subsidio con los datos.<br/> ".
+				"Socio Titular: ".$socio. "<br/>".
+				"Tipo Subsidio: ".$tipo. "<br/>".
+				"Monto: $". $monto. "<br/>".
+				"Ha sido rechazada, cualquier duda comuniquese con la Comision Directiva.<br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        
+        try 
+        {
+            $mail = new toba_mail(trim($datos['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = 'escalantegc@gmail.com';
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
 
 }
 ?>
