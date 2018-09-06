@@ -1044,7 +1044,102 @@ class cn_soliciudes extends mupum_cn
 		$this->dep('dr_colonia')->tabla('dt_telefono_inscripcion_colono')->procesar_filas($datos);
 	}	
 
+	//-----------------------------------------------------------------------------------
+	//---- DR-ADMINISTRACIN-COLONIA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_administrar_colonia ()	
+	{
+		if(!$this->dep('dr_administrar_colonia')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_administrar_colonia')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_administrar_colonia')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	
+	function guardar_dr_administrar_colonia()
+	{
+		$this->dep('dr_administrar_colonia')->sincronizar();
+	}
 
+	function resetear_dr_administrar_colonia()
+	{
+		$this->dep('dr_administrar_colonia')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-TALONARIO-BONO-COLABORACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_afiliacion_colonia($seleccion)
+	{
+		if(!$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_afiliacion_colonia()
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->resetear();					// lee de la BD fisica y carga al datos relacion	
+	}
+	function set_cursor_dt_afiliacion_colonia($seleccion)
+	{
+		$id = $this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
+
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_afiliacion_colonia()
+	{
+		return $this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_afiliacion_colonia()
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->resetear_cursor();
+	}
+
+	function get_dt_afiliacion_colonia()
+	{
+		return $this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->get();
+	}
+
+	function set_dt_afiliacion_colonia($datos)
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->set($datos);
+	}
+
+	function agregar_dt_afiliacion_colonia($datos)
+	{
+		$id = $this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->nueva_fila($datos);
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->set_cursor($id);
+	}	
+
+	function eliminar_dt_afiliacion_colonia($seleccion)
+	{
+		$id = $this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_administrar_colonia')->tabla('dt_afiliacion')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-INSCRIPCION-COLONO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function get_dt_inscripcion_colonos()
+	{
+		return $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->get_filas();
+	}	
+	function procesar_dt_inscripcion_colonos($datos)
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->procesar_filas($datos);
+	}	
 
 }
 

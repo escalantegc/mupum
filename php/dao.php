@@ -2692,6 +2692,39 @@ class dao
               parentesco.colonia = true and
               $where";
       return consultar_fuente($sql);
+  }  
+
+  function get_listado_familia_menores_edad_que_van_colonia_segun_titular($idafiliacion = null)
+  {
+
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join afiliacion on afiliacion.idpersona = persona.idpersona 
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              $sql_usuario and
+              parentesco.colonia = true and
+              afiliacion.activa =true and
+              afiliacion.idafiliacion = $idafiliacion ";
+      return consultar_fuente($sql);
   }
 
   function get_edad_familiar($idpersona_familia)
@@ -2844,7 +2877,7 @@ class dao
     }
   }  
 
-  function get_cantida_configuracion_colonia_vigentes()
+  function get_cantidad_configuracion_colonia_vigentes()
   {
     $sql = "SELECT  count(*)as cantidad
             FROM 
@@ -2855,7 +2888,37 @@ class dao
     {
       return $res[0]['cantidad'];
     }
+  } 
+
+  function get_cupo_configuracion_colonia()
+  {
+    $sql = "SELECT  cupo
+            FROM 
+              public.configuracion_colonia
+             where 
+               extract(year from current_date) = extract(year from inicio_inscripcion)";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cupo']))
+    {
+      return $res[0]['cupo'];
+    }
   }
+
+  function get_cantidad_colonos_inscriptos()
+  {
+    $sql = "SELECT count(*) as cantidad
+            FROM 
+              public.inscripcion_colono
+            inner join configuracion_colonia using (idconfiguracion_colonia)
+            where 
+              extract(year from current_date) = extract(year from inicio_inscripcion)";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
+  }
+
   function get_listado_tipo_subsidio($where = null)
   {
     if (!isset($where))
@@ -3092,7 +3155,8 @@ class dao
                   inicio, 
                   fin, 
                   inicio_inscripcion, 
-                  fin_inscripcion
+                  fin_inscripcion,
+                  cupo
           FROM 
             public.configuracion_colonia
           WHERE
@@ -3185,6 +3249,31 @@ class dao
     {
       return $res[0]['inscripcion'];
     }
+  }
+
+  function get_colonos_del_afiliado()
+  {
+    $sql = "SELECT  
+                    afiliacion.idafiliacion,
+                    persona.apellido ||', '|| persona.nombres as titular,
+                    configuracion_colonia.anio,
+                    colonos_de_un_titular( afiliacion.idafiliacion) as colonos
+
+              FROM 
+              public.inscripcion_colono
+              inner join configuracion_colonia using (idconfiguracion_colonia)
+            inner join  familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+           group by
+                  afiliacion.idafiliacion,
+                  persona.apellido,
+                  persona.nombres,
+                  configuracion_colonia.anio";
+    return consultar_fuente($sql);
+
   }
 }
 ?>

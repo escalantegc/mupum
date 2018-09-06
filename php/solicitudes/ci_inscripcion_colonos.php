@@ -34,10 +34,20 @@ class ci_inscripcion_colonos extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$cantidad = dao::get_cantida_configuracion_colonia_vigentes();
+		$cantidad = dao::get_cantidad_configuracion_colonia_vigentes();
 		if ($cantidad>0)
 		{
-			$this->set_pantalla('pant_edicion');	
+			$cupo = dao::get_cupo_configuracion_colonia();
+			$cantidad_inscriptos = dao::get_cantidad_colonos_inscriptos();
+			$disponible =$cupo - $cantidad_inscriptos; 
+			if ($cantidad_inscriptos < $cupo)
+			{
+				$this->set_pantalla('pant_edicion');	
+				toba::notificacion()->agregar("Se encuentran disponibles " .$disponible. " vacantes para inscripcion de colonos.",'info');
+			} else {
+				toba::notificacion()->agregar("La vacantes de inscripcion ha llegado al cupo maximo de :".$cupo. ". No se aceptan mas inscriptos",'info');
+			}
+				
 		} else{
 			toba::notificacion()->agregar("Por el momento no se encuentran disponibles las inscripciones a colonia.",'info');
 		}
