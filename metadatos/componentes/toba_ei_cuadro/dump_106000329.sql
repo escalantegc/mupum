@@ -50,14 +50,14 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'mupum', --proyecto
 	'106000484', --evento_id
 	'106000329', --objeto
-	'seleccion', --identificador
-	'', --etiqueta
+	'generar_plan', --identificador
+	'Plan de pago', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	NULL, --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'editar', --imagen
+	'generar', --imagen
 	'0', --en_botonera
 	NULL, --ayuda
 	'1', --orden
@@ -81,16 +81,16 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 );
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'106000483', --evento_id
+	'106000490', --evento_id
 	'106000329', --objeto
-	'borrar', --identificador
-	NULL, --etiqueta
+	'administrar_plan', --identificador
+	'Administrar Plan', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
 	NULL, --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'borrar', --imagen
+	'plan.gif', --imagen
 	'0', --en_botonera
 	NULL, --ayuda
 	'2', --orden

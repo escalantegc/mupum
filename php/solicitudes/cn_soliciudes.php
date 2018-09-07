@@ -1131,7 +1131,18 @@ class cn_soliciudes extends mupum_cn
 	//-----------------------------------------------------------------------------------
 	//---- DT-INSCRIPCION-COLONO -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-
+	function cargar_dt_inscripcion_colono1($seleccion)
+	{
+		if(!$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
 	function get_dt_inscripcion_colonos()
 	{
 		return $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->get_filas();
@@ -1139,6 +1150,29 @@ class cn_soliciudes extends mupum_cn
 	function procesar_dt_inscripcion_colonos($datos)
 	{
 		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->procesar_filas($datos);
+	}	
+	//-----------------------------------------------------------------------------------
+	//---- DT-INSCRIPCION-COLONO-PLAN-PAGO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_inscripcion_colono_plan_pago($seleccion)
+	{
+		if(!$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function get_dt_inscripcion_colono_plan_pago()
+	{
+		return $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->get_filas();
+	}	
+	function procesar_dt_inscripcion_colono_plan_pago($datos)
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->procesar_filas($datos);
 	}	
 
 }

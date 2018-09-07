@@ -1186,7 +1186,8 @@ class dao
       }
       $sql = "SELECT  idforma_pago, 
                       descripcion,
-                      planilla
+                      planilla,
+                      efectivo
 
               FROM 
                   public.forma_pago 
@@ -3180,7 +3181,11 @@ class dao
                     idafiliacion, 
                     fecha,
                     colono.apellido ||', '|| colono.nombres as colono,
-                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular
+                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular,
+                    cantidad_cuotas,
+                    monto,
+                    porcentaje_inscripcion,
+                    monto_inscripcion 
 
               FROM 
               public.inscripcion_colono
