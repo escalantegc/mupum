@@ -3191,7 +3191,21 @@ class dao
             inner join persona on afiliacion.idpersona=persona.idpersona
             WHERE
               $sql_usuario and
-              $where";
+              $where
+             group by 
+                    idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido,
+                    colono.nombres ,
+                    tipo_socio.descripcion,
+                    persona.apellido ,
+                    persona.nombres ";
       return consultar_fuente($sql);
   }
 
