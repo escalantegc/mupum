@@ -3274,7 +3274,7 @@ class dao
   {
     $sql = "SELECT  
                     afiliacion.idafiliacion,
-                    persona.apellido ||', '|| persona.nombres as titular,
+                     tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
                     colonos_de_un_titular( afiliacion.idafiliacion) as colonos
 
@@ -3286,11 +3286,42 @@ class dao
             inner join afiliacion using(idafiliacion)
             inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
             inner join persona on afiliacion.idpersona=persona.idpersona
+            left outer join  inscripcion_colono_plan_pago using(idinscripcion_colono)
+            WHERE
+              inscripcion_colono_plan_pago.idinscripcion_colono is null
+            group by
+                  afiliacion.idafiliacion,
+                  persona.apellido,
+                  persona.nombres,
+                  configuracion_colonia.anio,
+                  tipo_socio.descripcion";
+    return consultar_fuente($sql);
+
+  } 
+
+  function get_colonos_del_afiliado_con_plan()
+  {
+    $sql = "SELECT  
+                    afiliacion.idafiliacion,
+                     tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
+                    configuracion_colonia.anio,
+                    colonos_de_un_titular( afiliacion.idafiliacion) as colonos
+
+              FROM 
+              public.inscripcion_colono
+              inner join configuracion_colonia using (idconfiguracion_colonia)
+            inner join  familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+            inner join inscripcion_colono_plan_pago using(idinscripcion_colono)
            group by
                   afiliacion.idafiliacion,
                   persona.apellido,
                   persona.nombres,
-                  configuracion_colonia.anio";
+                  configuracion_colonia.anio,
+                  tipo_socio.descripcion";
     return consultar_fuente($sql);
 
   }

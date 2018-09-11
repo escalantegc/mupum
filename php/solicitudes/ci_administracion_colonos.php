@@ -66,11 +66,27 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->set_pantalla('pant_edicion');
 	}
 
-	function evt__cuadro__administrar_plan($seleccion)
+	//----------------------------------------------------------------------------------
+	//---- cuadro_colono_plan -----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_colono_plan(mupum_ei_cuadro $cuadro)
 	{
-		$this->s__seleccion_adm_plan = $seleccion;
+		if(isset($this->s__datos_filtro))
+		{
+			$datos = dao::get_colonos_del_afiliado_con_plan($this->s__where);
+		}else{
+			$datos = dao::get_colonos_del_afiliado_con_plan();
+		}
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_colono_plan__administrar_plan($seleccion)
+	{
+			$this->s__seleccion_adm_plan = $seleccion;
 		$this->set_pantalla('pant_plan_colono');
 	}
+	
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -144,6 +160,10 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
 
 	}
+
+
+
+
 
 
 

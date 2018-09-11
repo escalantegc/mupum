@@ -231,7 +231,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000315', --objeto_cuadro_col
 	'titular', --clave
 	'1', --orden
-	'Titular', --titulo
+	'Tutor', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'0', --estilo
 	NULL, --ancho
