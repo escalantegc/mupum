@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario_ml', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_form_ml_plan_pago_inscripcion_colono', --subclase
+	'solicitudes/ei_form_ml_plan_pago_inscripcion_colono.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_administracion_colonos - frm_ml_plan', --nombre

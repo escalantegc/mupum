@@ -38,12 +38,17 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->cn()->resetear_dr_administrar_colonia();
 		$this->set_pantalla('pant_inicial');
 	}
-
 	function evt__volver()
 	{
-		$this->set_pantalla('pant_plan_colono');
+		$this->cn()->resetear_dr_administrar_colonia();
+		$this->set_pantalla('pant_inicial');	
 	}
 
+	function evt__volver_inscripciones()
+	{
+		$this->cn()->resetear_cursor_dt_inscripcion_colono1();
+		$this->set_pantalla('pant_plan_colono');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -221,11 +226,24 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
 
 	}
+	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
+	{
+		$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp[1]);
+		
+		$forma_pago['planilla'] = 'no';
+		$forma_pago['fila'] = $idfp[2];
+		if ($fp[0]['planilla']==1)
+		{
+			$forma_pago['planilla'] = 'si';
+		}
+		$respuesta->set($forma_pago);	
+	}
 
 
 
 
 
+	
 
 }
 ?>

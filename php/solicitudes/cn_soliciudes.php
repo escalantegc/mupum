@@ -1162,6 +1162,10 @@ class cn_soliciudes extends mupum_cn
 		$id = $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->get_id_fila_condicion($seleccion);
 		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->set_cursor($id[0]);
 	}	
+	function resetear_cursor_dt_inscripcion_colono1()
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->resetear_cursor();
+	}	
 
 	function set_dt_inscripcion_colono1($datos)
 	{

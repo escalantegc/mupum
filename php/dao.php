@@ -3187,7 +3187,8 @@ class dao
                     monto,
                     porcentaje_inscripcion,
                     monto_inscripcion,
-                    inscripcion_colono.baja 
+                    inscripcion_colono.baja ,
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan
 
               FROM 
               public.inscripcion_colono
@@ -3237,7 +3238,8 @@ class dao
                     monto,
                     porcentaje_inscripcion,
                     monto_inscripcion,
-                    inscripcion_colono.baja 
+                    inscripcion_colono.baja,
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan
 
               FROM 
               public.inscripcion_colono
