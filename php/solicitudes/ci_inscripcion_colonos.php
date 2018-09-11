@@ -14,16 +14,10 @@ class ci_inscripcion_colonos extends mupum_ci
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("La solicitud de subsidio esta siendo referenciado, no puede eliminarlo",'error');
-				
-			} 
-
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_descripcion'))
+			if(strstr($mensaje_log,'idx_inscripcion_colono'))
 			{
-				toba::notificacion()->agregar("La solicitud de subsidio ya esta registrado.",'info');
+				toba::notificacion()->agregar("Este colono ya se encuentra inscripto.",'info');
 				
 			} 
 			
@@ -92,7 +86,7 @@ class ci_inscripcion_colonos extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("La solicitud de subsidio esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
 				
 			} 		
 		}

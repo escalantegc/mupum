@@ -1151,6 +1151,22 @@ class cn_soliciudes extends mupum_cn
 	{
 		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->procesar_filas($datos);
 	}	
+	function eliminar_dt_inscripcion_colono1($seleccion)
+	{
+		$id = $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->eliminar_fila($id[0]);
+	}	
+
+	function set_cursor_dt_inscripcion_colono1($seleccion)
+	{
+		$id = $this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->set_cursor($id[0]);
+	}	
+
+	function set_dt_inscripcion_colono1($datos)
+	{
+		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono')->set($datos);
+	}
 	//-----------------------------------------------------------------------------------
 	//---- DT-INSCRIPCION-COLONO-PLAN-PAGO -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------

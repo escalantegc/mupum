@@ -59,7 +59,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'apex', --imagen_recurso_origen
 	'generar', --imagen
 	'0', --en_botonera
-	NULL, --ayuda
+	'Haga clic aquí para generar el plan de pago de la inscripción.', --ayuda
 	'1', --orden
 	NULL, --ci_predep
 	NULL, --implicito
@@ -71,7 +71,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	NULL, --accion_vinculo_carpeta
 	NULL, --accion_vinculo_item
 	NULL, --accion_vinculo_objeto
-	NULL, --accion_vinculo_popup
+	'0', --accion_vinculo_popup
 	NULL, --accion_vinculo_popup_param
 	NULL, --accion_vinculo_target
 	NULL, --accion_vinculo_celda
@@ -83,16 +83,16 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'mupum', --proyecto
 	'106000490', --evento_id
 	'106000329', --objeto
-	'administrar_plan', --identificador
-	'Administrar Plan', --etiqueta
+	'borrar', --identificador
+	'Dar de Baja', --etiqueta
 	'1', --maneja_datos
-	'0', --sobre_fila
-	NULL, --confirmacion
+	'1', --sobre_fila
+	'¿Esta seguro de dar de baja la inscripción?', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
-	'plan.gif', --imagen
+	'borrar', --imagen
 	'0', --en_botonera
-	NULL, --ayuda
+	'Haga clic aquí para dar de baja la inscripción.', --ayuda
 	'2', --orden
 	NULL, --ci_predep
 	NULL, --implicito
@@ -104,7 +104,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	NULL, --accion_vinculo_carpeta
 	NULL, --accion_vinculo_item
 	NULL, --accion_vinculo_objeto
-	NULL, --accion_vinculo_popup
+	'0', --accion_vinculo_popup
 	NULL, --accion_vinculo_popup_param
 	NULL, --accion_vinculo_target
 	NULL, --accion_vinculo_celda

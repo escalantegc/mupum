@@ -2912,6 +2912,7 @@ class dao
               public.inscripcion_colono
             inner join configuracion_colonia using (idconfiguracion_colonia)
             where 
+              baja = false and
               extract(year from current_date) = extract(year from inicio_inscripcion)";
     $res = consultar_fuente($sql);
     if (isset($res[0]['cantidad']))
@@ -3185,7 +3186,58 @@ class dao
                     cantidad_cuotas,
                     monto,
                     porcentaje_inscripcion,
-                    monto_inscripcion 
+                    monto_inscripcion,
+                    inscripcion_colono.baja 
+
+              FROM 
+              public.inscripcion_colono
+            inner join  familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+            WHERE
+              inscripcion_colono.baja = false and
+              $sql_usuario and
+              $where
+             group by 
+                    idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido,
+                    colono.nombres ,
+                    tipo_socio.descripcion,
+                    persona.apellido ,
+                    persona.nombres ";
+      return consultar_fuente($sql);
+  }
+  function get_listado_inscripcion_colono_sin_baja($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido ||', '|| colono.nombres as colono,
+                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular,
+                    cantidad_cuotas,
+                    monto,
+                    porcentaje_inscripcion,
+                    monto_inscripcion,
+                    inscripcion_colono.baja 
 
               FROM 
               public.inscripcion_colono
@@ -3288,7 +3340,8 @@ class dao
             inner join persona on afiliacion.idpersona=persona.idpersona
             left outer join  inscripcion_colono_plan_pago using(idinscripcion_colono)
             WHERE
-              inscripcion_colono_plan_pago.idinscripcion_colono is null
+              inscripcion_colono_plan_pago.idinscripcion_colono is null and
+              inscripcion_colono.baja = false
             group by
                   afiliacion.idafiliacion,
                   persona.apellido,
@@ -3316,6 +3369,7 @@ class dao
             inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
             inner join persona on afiliacion.idpersona=persona.idpersona
             inner join inscripcion_colono_plan_pago using(idinscripcion_colono)
+          
            group by
                   afiliacion.idafiliacion,
                   persona.apellido,

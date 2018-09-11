@@ -66,6 +66,24 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->cn()->cargar_dt_inscripcion_colono1($seleccion);
+		$this->cn()->eliminar_dt_inscripcion_colono1($seleccion);
+		try{
+			$this->cn()->guardar_dr_administrar_colonia();
+				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
+				
+			} 		
+		}
+		$this->cn()->resetear_dr_colonia();
+		$this->set_pantalla('pant_inicial');
+	}
 	//----------------------------------------------------------------------------------
 	//---- cuadro_colono_plan -----------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -135,7 +153,7 @@ $this->cn()->guardar_dr_administrar_colonia();
 	{
 
 		$where = 'afiliacion.idafiliacion =' .$this->s__seleccion_adm_plan['idafiliacion'];
-		$datos = dao::get_listado_inscripcion_colono($where);
+		$datos = dao::get_listado_inscripcion_colono_sin_baja($where);
 		$cuadro->set_datos($datos);
 	}
 
@@ -144,6 +162,49 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->cn()->cargar_dt_inscripcion_colono_plan_pago($seleccion);
 		//$this->cn()->set_cursor_dt_afiliacion_colonia($seleccion);
 		$this->set_pantalla('pant_edicion_plan_colono');
+	}
+
+
+	function evt__cuadro_plan__borrar($seleccion)
+	{
+		$this->cn()->cargar_dt_inscripcion_colono1($seleccion);
+		$this->cn()->set_cursor_dt_inscripcion_colono1($seleccion);
+		$datos['baja'] = 1;
+		$this->cn()->set_dt_inscripcion_colono1($datos);
+		try{
+			$this->cn()->guardar_dr_administrar_colonia();
+				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
+				
+			} 		
+		}
+		$this->cn()->resetear_dr_colonia();
+		$this->set_pantalla('pant_inicial');
+
+	}
+	function evt__cuadro_plan__alta($seleccion)
+	{
+		$this->cn()->cargar_dt_inscripcion_colono1($seleccion);
+		$this->cn()->set_cursor_dt_inscripcion_colono1($seleccion);
+		$datos['baja'] = 0;
+		$this->cn()->set_dt_inscripcion_colono1($datos);
+		try{
+			$this->cn()->guardar_dr_administrar_colonia();
+				toba::notificacion()->agregar("Los datos se han recuperado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
+				
+			} 		
+		}
+		$this->cn()->resetear_dr_colonia();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -160,7 +221,6 @@ $this->cn()->guardar_dr_administrar_colonia();
 		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
 
 	}
-
 
 
 
