@@ -17,8 +17,7 @@ class ci_inscripcion_colonos extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_inscripcion_colono'))
 			{
-				toba::notificacion()->agregar("Este colono ya se encuentra inscripto.",'info');
-				
+				toba::notificacion()->agregar("Este colono ya se encuentra inscripto.",'info');	
 			} 
 			
 		}
