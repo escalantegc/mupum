@@ -8,9 +8,9 @@ class ci_administracion_colonos extends mupum_ci
 
 	function evt__procesar()
 	{
-$this->cn()->guardar_dr_administrar_colonia();
 		try{
-			
+				$this->cn()->guardar_dr_administrar_colonia();
+
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -139,7 +139,8 @@ $this->cn()->guardar_dr_administrar_colonia();
 
 	function conf__frm_ml_colonos(mupum_ei_formulario_ml $form_ml)
 	{
-		return $this->cn()->get_dt_inscripcion_colonos();
+		$filtro['cantidad_cuotas'] = 0;
+		return $this->cn()->get_dt_inscripcion_colonos_filtro($filtro);
 	}
 
 	function evt__frm_ml_colonos__modificacion($datos)

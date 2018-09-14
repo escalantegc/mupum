@@ -17,7 +17,8 @@ class ci_inscripcion_colonos extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_inscripcion_colono'))
 			{
-				toba::notificacion()->agregar("Este colono ya se encuentra inscripto.",'info');	
+				toba::notificacion()->agregar("Este colono ya se encuentra inscripto.",'info');
+	
 			} 
 			
 		}
@@ -77,8 +78,17 @@ class ci_inscripcion_colonos extends mupum_ci
 	function evt__cuadro__borrar($seleccion)
 	{
 		$this->cn()->cargar_dr_colonia($seleccion);
+		$this->cn()->set_cursor_dt_inscripcion_colono($seleccion);
+		$datos = $this->cn()->get_dt_inscripcion_colono();
 		$this->cn()->eliminar_dt_inscripcion_colono($seleccion);
 		try{
+			$colonia = dao::get_datos_configuracion_colonia($datos['idconfiguracion_colonia']);
+			$inscripcion = dao::get_listado_inscripcion_colono('inscripcion_colono.idafiliacion = '.$datos['idafiliacion'] .' and inscripcion_colono.idpersona_familia= '.$datos['idpersona_familia']);
+
+		    $datos_correo = array_merge((array)$colonia[0], (array)$inscripcion[0]); 
+		  	$datos_correo['fecha_baja'] = date('d/m/Y');
+		  	$this->enviar_correo_baja_inscripcion($datos_correo);
+
 			$this->cn()->guardar_dr_colonia();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
@@ -137,9 +147,35 @@ class ci_inscripcion_colonos extends mupum_ci
 		} else {
 			$datos['fecha'] = date('Y-m-j');
 			$this->cn()->agregar_dt_inscripcion_colono($datos);
+
+		
+			$colonia = dao::get_datos_configuracion_colonia($datos['idconfiguracion_colonia']);
+			//$inscripcion = dao::get_listado_inscripcion_colono('inscripcion_colono.idafiliacion = '.$datos['idafiliacion'] .' and inscripcion_colono.idpersona_familia= '.$datos['idpersona_familia']);
+
+			$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+			$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
+			$inscripcion['titular'] = $socio[0]['persona'];
+			$inscripcion['correo'] = $socio[0]['correo'];
+		    $inscripcion['colono'] = $familiar[0]['familiar_titular'];
+
+		    $inscripcion['monto'] = $datos['monto'];
+		    $inscripcion['monto_inscripcion'] = $datos['monto_inscripcion'];
+		    $inscripcion['porcentaje_inscripcion'] = $datos['porcentaje_inscripcion'];
+/*
+		    $fecha_inicio = $colonia[0]['fecha_inicio'];
+		    $fecha_fin = $colonia[0]['fecha_fin'];
+		    $domicilio = $colonia[0]['domicilio'];
+		    $concentracion = $colonia[0]['concentracion'];
+		    $salida = $colonia[0]['salida'];
+		    $llegada = $colonia[0]['llegada'];
+		    $finalizacion = $colonia[0]['finalizacion'];*/
+		    $datos_correo = array_merge((array)$colonia[0], (array)$inscripcion); 
+		  
+		  	$this->enviar_correo_constancia_inscripcion($datos_correo);
 		}
 	}
 
+	
 	//-----------------------------------------------------------------------------------
 	//---- frm_telefonos_contacto -------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -152,6 +188,104 @@ class ci_inscripcion_colonos extends mupum_ci
 	function evt__frm_telefonos_contacto__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_telefono_inscripcion_colono($datos);
+	}
+
+	function enviar_correo_constancia_inscripcion($datos)
+	{
+		$socio = $datos['titular'];
+	    $colono = $datos['colono'];
+	    $monto = $datos['monto'];
+	    $monto_inscripcion = $datos['monto_inscripcion'];
+	    $porcentaje = $datos['porcentaje_inscripcion'];
+	    $fecha_inicio = $datos['fecha_inicio'];
+	    $fecha_fin = $datos['fecha_fin'];
+	    $domicilio = $datos['domicilio'];
+	    $concentracion = $datos['concentracion'];
+	    $salida = $datos['salida'];
+	    $llegada = $datos['llegada'];
+	    $finalizacion = $datos['finalizacion'];
+	    $colonia = $datos['anio'];
+	    
+	    	    //Armo el mail nuevo &oacute;
+	    $asunto = "Constancia de Inscripcion a Colonia ";
+	    
+		$cuerpo_mail = "Por medio del presente se deja Constancia de la Inscripcion a Colonia.<br/> ".
+				"Los datos de la inscripcion son:<br/>".
+				"Titular: ".$socio. "<br/>".
+				"Colono: ".$colono. "<br/>".
+				"Colonia: ". $colonia. "<br/>".
+				"Monto Colonia: $". $monto. "<br/>".
+				"Monto inscripcion: $". $monto_inscripcion. " es el : ". $porcentaje."% del monto de colonia.<br/>".
+				"<b>IMPORTANTE : Esta inscripcion se hara efectiva cuando se concrete el pago. Al momento de concretar la inscripcion, </br>
+				se requerirá de manera obligatoria el certificado medico de cada niño. </br>
+				Para abonar la inscripcion debera acercarse a las instalaciones de la mutual ubicada en: <br/ >
+				Santa Catalina 2378 -  Posadas - Misiones</b> <br/>".
+				"La colonia da inicio el día:  ".$fecha_inicio." y finaliza el día ".$fecha_fin.".<br/>
+				Horarios programados de salida y llegada <br/>
+				Concentración: en ". $domicilio." a partir de las " .$concentracion." hs <br/>
+				Salida: en ". $domicilio." a partir de las ".$salida." hs <br/>
+				Llegada: en ". $domicilio." a partir de las ".$llegada." hs <br/>
+				Finalización de la colonia/regreso: en ". $domicilio." a las ".$finalizacion." hs del dia ".$fecha_fin."<br/>".
+				
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail($datos['correo'], $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = trim('escalantegc@gmail.com');
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}
+
+	function enviar_correo_baja_inscripcion($datos)
+	{
+		$socio = $datos['titular'];
+	    $colono = $datos['colono'];
+	    $monto = $datos['monto'];
+	    $monto_inscripcion = $datos['monto_inscripcion'];
+	    $porcentaje = $datos['porcentaje_inscripcion'];
+	    $fecha_inicio = $datos['fecha_inicio'];
+	    $fecha_fin = $datos['fecha_fin'];
+	    $domicilio = $datos['domicilio'];
+	    $concentracion = $datos['concentracion'];
+	    $salida = $datos['salida'];
+	    $llegada = $datos['llegada'];
+	    $finalizacion = $datos['finalizacion'];
+	    $colonia = $datos['anio'];
+	    $fecha_baja = $datos['fecha_baja'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Constancia de Baja Inscripcion a Colonia ";
+	    
+		$cuerpo_mail = "Por medio del presente se deja Constancia de la Baja de Inscripcion a Colonia.<br/> ".
+				"Los datos de la baja de inscripcion son:<br/>".
+				"Socio Titular: ".$socio. "<br/>".
+				"Colono: ".$colono. "<br/>".
+				"Colonia: ". $colonia. "<br/>".
+				"Monto Colonia: $". $monto. "<br/>".
+				"Monto inscripcion: $". $monto_inscripcion. " es el : ". $porcentaje."% del monto de colonia.<br/>".
+				"Fecha Baja: ". $fecha_baja. ".<br/>".
+				"<b>IMPORTANTE : Esta inscripcion fue dada de baja del sistema, en el caso de que se quiera inscribir nuevamente al mismo colono, debe realizar el proceso de nuevo. </b> <br/>".
+				
+				
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail($datos['correo'] , $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = trim('escalantegc@gmail.com');
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
 	}
 
 }

@@ -17,7 +17,7 @@ class ei_form_ml_plan_pago_inscripcion_colono extends mupum_ei_formulario_ml
 			idfp[2] = fila;
 			this.controlador.ajax('es_planilla', idfp, this, this.mostrar_campos); 	
 		}
-
+		
 		{$this->objeto_js}.mostrar_campos = function(datos)
 		{    
 			var planilla = (datos['planilla']);
@@ -28,7 +28,7 @@ class ei_form_ml_plan_pago_inscripcion_colono extends mupum_ei_formulario_ml
 				this.ef('fecha_pago').ir_a_fila(fila).mostrar();
 				this.ef('cuota_pagada').ir_a_fila(fila).chequear();
 				///--this.ef('cuota_pagada').ir_a_fila(fila).set_solo_lectura(true);
-
+		
 				var hoy = new Date();
 				var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
 				
@@ -41,8 +41,22 @@ class ei_form_ml_plan_pago_inscripcion_colono extends mupum_ei_formulario_ml
 				this.ef('fecha_pago').ir_a_fila(fila).resetear_estado();
 			}            
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__inscripcion__procesar = function(es_inicial, fila)
+		{
+			if ( this.ef('nro_cuota').ir_a_fila(fila).get_estado()==1)
+			{
+				this.ef('inscripcion').ir_a_fila(fila).set_solo_lectura(true);
+				this.ef('inscripcion').ir_a_fila(fila).mostrar();
+			} else {
+				this.ef('inscripcion').ir_a_fila(fila).ocultar();	
+			}
+			 
+		}
 		";
 	}
+
 
 }
 ?>

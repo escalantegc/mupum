@@ -3164,6 +3164,28 @@ class dao
           WHERE
               $where";
       return consultar_fuente($sql);
+  }  
+
+  function get_datos_configuracion_colonia($idconfiguracion_colonia = null)
+  {
+
+    $sql ="SELECT idconfiguracion_colonia, 
+                  anio, 
+                  to_char(inicio, 'DD/MM/YYYY') as fecha_inicio,
+                  to_char(fin, 'DD/MM/YYYY') as fecha_fin,
+                  inicio_inscripcion, 
+                  fin_inscripcion,
+                  cupo,
+                  to_char(hora_concentracion, 'HH:MM') as concentracion ,
+                  to_char(hora_salida, 'HH:MM') as salida ,
+                  to_char(hora_llegada, 'HH:MM') as llegada ,
+                  to_char(hora_finalizacion, 'HH:MM') as finalizacion ,
+                  direccion  as domicilio
+          FROM 
+            public.configuracion_colonia
+          WHERE
+              idconfiguracion_colonia = $idconfiguracion_colonia";
+      return consultar_fuente($sql);
   }
 
   function get_listado_inscripcion_colono($where = null)
@@ -3187,6 +3209,7 @@ class dao
                     monto,
                     porcentaje_inscripcion,
                     monto_inscripcion,
+                    persona.correo,
                     inscripcion_colono.baja ,
                     (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan
 
@@ -3214,7 +3237,8 @@ class dao
                     colono.nombres ,
                     tipo_socio.descripcion,
                     persona.apellido ,
-                    persona.nombres ";
+                    persona.nombres,
+                    persona.correo ";
       return consultar_fuente($sql);
   }
   function get_listado_inscripcion_colono_sin_baja($where = null)

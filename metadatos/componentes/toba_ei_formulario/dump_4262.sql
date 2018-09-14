@@ -459,7 +459,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'ef_editable', --elemento_formulario
 	'legajo', --columnas
 	'1', --obligatorio
-	'0', --oculto_relaja_obligatorio
+	'1', --oculto_relaja_obligatorio
 	'3', --orden
 	'Legajo', --etiqueta
 	NULL, --etiqueta_estilo
@@ -1822,7 +1822,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'ef_combo', --elemento_formulario
 	'idclaustro', --columnas
 	'1', --obligatorio
-	'0', --oculto_relaja_obligatorio
+	'1', --oculto_relaja_obligatorio
 	'21', --orden
 	'Claustro', --etiqueta
 	NULL, --etiqueta_estilo
@@ -1902,7 +1902,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'ef_combo', --elemento_formulario
 	'idunidad_academica', --columnas
 	'1', --obligatorio
-	'0', --oculto_relaja_obligatorio
+	'1', --oculto_relaja_obligatorio
 	'22', --orden
 	'Unidad Academica', --etiqueta
 	NULL, --etiqueta_estilo
