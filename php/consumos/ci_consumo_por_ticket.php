@@ -7,10 +7,10 @@ class ci_consumo_por_ticket extends mupum_ci
 	//-----------------------------------------------------------------------------------
 
 	function evt__procesar()
-	{		$this->cn()->guardar_dr_consumo_convenio();
+	{		
 
 		try{
-	
+			$this->cn()->guardar_dr_consumo_convenio();
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');

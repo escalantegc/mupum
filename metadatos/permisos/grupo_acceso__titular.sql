@@ -61,4 +61,64 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	NULL, --item_id
 	'106000012'  --item
 );
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000028'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000029'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000058'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000059'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000062'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000063'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000068'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000069'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000078'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'titular', --usuario_grupo_acc
+	NULL, --item_id
+	'106000079'  --item
+);
 --- FIN Grupo de desarrollo 106

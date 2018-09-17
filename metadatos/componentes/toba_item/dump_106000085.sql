@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000035]--  Comercio / Proveedor 
+--[106000085]--  Seleccion de Proveedor 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -10,24 +10,24 @@
 INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre, carpeta, nivel_acceso, solicitud_tipo, pagina_tipo_proyecto, pagina_tipo, actividad_buffer_proyecto, actividad_buffer, actividad_patron_proyecto, actividad_patron, nombre, descripcion, punto_montaje, actividad_accion, menu, orden, solicitud_registrar, solicitud_obs_tipo_proyecto, solicitud_obs_tipo, solicitud_observacion, solicitud_registrar_cron, prueba_directorios, zona_proyecto, zona, zona_orden, zona_listar, imagen_recurso_origen, imagen, parametro_a, parametro_b, parametro_c, publico, redirecciona, usuario, exportable, creacion, retrasar_headers) VALUES (
 	NULL, --item_id
 	'mupum', --proyecto
-	'106000035', --item
+	'106000085', --item
 	NULL, --padre_id
 	'mupum', --padre_proyecto
-	'106000033', --padre
+	'106000083', --padre
 	'0', --carpeta
 	'0', --nivel_acceso
 	'web', --solicitud_tipo
 	'toba', --pagina_tipo_proyecto
-	'normal', --pagina_tipo
+	'popup_ef', --pagina_tipo
 	NULL, --actividad_buffer_proyecto
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Comercio / Proveedor', --nombre
+	'Seleccion de Proveedor', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
-	'1', --menu
+	'0', --menu
 	NULL, --orden
 	'0', --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
@@ -48,7 +48,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --redirecciona
 	NULL, --usuario
 	'0', --exportable
-	'2018-07-10 11:22:23', --creacion
+	'2018-09-17 18:09:32', --creacion
 	'0'  --retrasar_headers
 );
 --- FIN Grupo de desarrollo 106
@@ -59,7 +59,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
 	NULL, --item_id
 	'mupum', --proyecto
-	'106000035', --item
+	'106000085', --item
 	'4269', --objeto
 	'2', --orden
 	NULL  --inicializar
@@ -67,8 +67,8 @@ INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializa
 INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
 	NULL, --item_id
 	'mupum', --proyecto
-	'106000035', --item
-	'106000150', --objeto
+	'106000085', --item
+	'106000349', --objeto
 	'1', --orden
 	NULL  --inicializar
 );

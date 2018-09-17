@@ -1,6 +1,6 @@
 <?php
 require_once('dao.php');
-class ci_comercio extends mupum_ci
+class ci_seleccion_proveedor extends mupum_ci
 {
 	protected $s__where;
 	protected $s__datos_filtro;
@@ -51,6 +51,7 @@ class ci_comercio extends mupum_ci
 
 	function conf__cuadro(mupum_ei_cuadro $cuadro)
 	{
+		$cuadro->desactivar_modo_clave_segura();
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_comercios($this->s__where);
@@ -113,7 +114,7 @@ class ci_comercio extends mupum_ci
 	//---- frm --------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm(mupum_ei_formulario $form)
+	function conf__frm(ei_frm_comercio $form)
 	{
 		if ($this->cn()->hay_cursor_dt_comercio())
 		{
@@ -130,9 +131,11 @@ class ci_comercio extends mupum_ci
 		} else {
 			$this->cn()->agregar_dt_comercio($datos);
 		}
-
-
+				$filtro_forzado['nombre']['condicion'] = 'es_igual_a';
+		$filtro_forzado['nombre']['valor'] = $datos['nombre'];
+		$this->evt__filtro__filtrar($filtro_forzado);
 	}
 
 }
+
 ?>

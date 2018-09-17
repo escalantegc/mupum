@@ -1187,7 +1187,8 @@ class dao
       $sql = "SELECT  idforma_pago, 
                       descripcion,
                       planilla,
-                      efectivo
+                      efectivo,
+                      requiere_nro_comprobante 
 
               FROM 
                   public.forma_pago 
@@ -1539,12 +1540,14 @@ class dao
     {
       $where = '1 = 1';
     }
-    $sql =" SELECT   idcomercio, 
-                    nombre, 
+    $sql =" SELECT  idcomercio, 
+                    codigo ||' - '||categoria_comercio.descripcion ||' - '||nombre as nombre, 
                     direccion, 
+                    nombre as comercio,
                     localidad.descripcion as localidad, 
                     categoria_comercio.descripcion as categoria,
-                    codigo
+                    codigo,
+                    (case when tipo ='co' then 'Comercio' else (case when tipo ='pr' then 'Proveedor' else 'Comercio/Proveedor' end ) end ) as tipo
             FROM public.comercio
             inner join localidad using(idlocalidad)
             inner join categoria_comercio using(idcategoria_comercio)
@@ -1560,10 +1563,31 @@ class dao
     }
     $sql =" SELECT idconcepto, 
                   descripcion,
-                  senia
+                  senia,
+                  pago_infraestructura,
+                  proveedor
             FROM public.concepto
 
             where
+              $where";
+    return consultar_fuente($sql);
+  }  
+
+  function get_listado_concepto_infraestructura($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql =" SELECT idconcepto, 
+                  descripcion,
+                  senia,
+                  pago_infraestructura,
+                  proveedor
+            FROM public.concepto
+
+            where
+              pago_infraestructura = true and
               $where";
     return consultar_fuente($sql);
   }
@@ -3224,6 +3248,7 @@ class dao
               inscripcion_colono.baja = false and
               $sql_usuario and
               $where
+
              group by 
                     idinscripcion_colono, 
                     idconfiguracion_colonia, 
@@ -3238,7 +3263,10 @@ class dao
                     tipo_socio.descripcion,
                     persona.apellido ,
                     persona.nombres,
-                    persona.correo ";
+                    persona.correo 
+             order by
+              fecha,
+              colono";
       return consultar_fuente($sql);
   }
   function get_listado_inscripcion_colono_sin_baja($where = null)
@@ -3354,7 +3382,7 @@ class dao
                     afiliacion.idafiliacion,
                      tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular( afiliacion.idafiliacion) as colonos
+                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos
 
               FROM 
               public.inscripcion_colono
@@ -3384,7 +3412,7 @@ class dao
                     afiliacion.idafiliacion,
                      tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular( afiliacion.idafiliacion) as colonos
+                    colonos_de_un_titular_con_plan( afiliacion.idafiliacion) as colonos
 
               FROM 
               public.inscripcion_colono
@@ -3402,6 +3430,28 @@ class dao
                   persona.nombres,
                   configuracion_colonia.anio,
                   tipo_socio.descripcion";
+    return consultar_fuente($sql);
+
+  }
+
+  function get_listado_gasto_infraestructura($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idgasto_infraestructura, 
+                    concepto.descripcion as concepto, 
+                    comercio.nombre as proveedor, 
+                    fecha_pago, 
+                    monto,
+                    periodo
+            FROM 
+              public.gasto_infraestructura
+            inner join concepto using(idconcepto)
+            left outer join comercio  using(idcomercio)
+            WHERE
+              $where";
     return consultar_fuente($sql);
 
   }
