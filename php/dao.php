@@ -2387,6 +2387,39 @@ class dao
       return consultar_fuente($sql);
   }
 
+  function get_listado_mis_consumos($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
+                    convenio.titulo as convenio,
+                    idconsumo_convenio, 
+                    idafiliacion, 
+                    consumo_convenio.idconvenio, 
+                    idcomercio, total, 
+                    fecha, 
+                    monto_proforma, 
+                    cantidad_cuotas, 
+                    descripcion, 
+                    idtalonario_bono, 
+                    cantidad_bonos, 
+                    monto_bono, 
+                    periodo,
+                    (case when fecha is null then periodo else to_char(fecha, 'DD/MM/YYYY') end) as fecha,
+                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
+          FROM 
+            public.consumo_convenio
+         inner join afiliacion using(idafiliacion)
+         inner join persona on persona.idpersona = afiliacion.idpersona
+         inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+         WHERE
+          $sql_usuario and
+          $where";
+        return consultar_fuente($sql);
+  }
 
   function get_cuotas_pagas_consumo_convenio($idconsumo_convenio = null)
   {

@@ -133,7 +133,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function conf__filtro(mupum_ei_filtro $filtro)
 	{
-				if(isset($this->s__datos_filtro))
+		if(isset($this->s__datos_filtro))
 		{
 			$filtro->set_datos($this->s__datos_filtro);
 			$this->s__where = $filtro->get_sql_where();
