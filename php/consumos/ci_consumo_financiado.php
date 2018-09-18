@@ -66,7 +66,39 @@ class ci_consumo_financiado extends mupum_ci
 		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$datos = $this->cn()->get_dt_consumo_convenio_cuotas();
+		$borrar = 'si';
+		foreach ($datos as $dato) 
+		{
+			if($dato['cuota_pagada'] == 1)
+			{
+				$borrar = 'no';
+				break;
+			}
+		}
 
+		if ($borrar =='si')
+		{	
+			$this->cn()->eliminar_dt_consumo_convenio($seleccion);
+			try{
+				$this->cn()->guardar_dr_consumo_convenio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+				
+				} catch( toba_error_db $error){
+					$sql_state= $error->get_sqlstate();
+					
+					toba::notificacion()->agregar($mensaje_log,'error');
+			}
+			
+		} else {
+			toba::notificacion()->agregar("No puede borrar el consumo financiado, el mismo tiene cuotas sin saldar",'info');
+		}
+		$this->cn()->resetear_dr_consumo_convenio();
+	}
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -119,7 +151,8 @@ class ci_consumo_financiado extends mupum_ci
 
 	function conf__frm_ml_detalle_consumo(mupum_ei_formulario_ml $form_ml)
 	{
-		$datos = $this->cn()->get_dt_consumo_convenio_cuotas();
+				$filtro['cuota_pagada'] = 0;
+		$datos = $this->cn()->get_dt_consumo_convenio_cuotas_filtro($filtro);
 		$form_ml->set_datos($datos);
 	}
 
@@ -162,6 +195,22 @@ class ci_consumo_financiado extends mupum_ci
 		}
 		$respuesta->set($forma_pago);	
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_cuotas_pagas ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_cuotas_pagas(mupum_ei_cuadro $cuadro)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$datos = $this->cn()->get_dt_consumo_convenio();
+			$cuotas = dao::get_cuotas_pagas_consumo_convenio($datos['idconsumo_convenio']);
+			$cuadro->set_datos($cuotas);
+		}
+	}
+
+
 
 }
 ?>

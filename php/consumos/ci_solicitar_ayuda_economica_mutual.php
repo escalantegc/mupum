@@ -68,6 +68,38 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$datos = $this->cn()->get_dt_consumo_convenio_cuotas();
+		$borrar = 'si';
+		foreach ($datos as $dato) 
+		{
+			if($dato['cuota_pagada'] == 1)
+			{
+				$borrar = 'no';
+				break;
+			}
+		}
+
+		if ($borrar =='si')
+		{	
+			$this->cn()->eliminar_dt_consumo_convenio($seleccion);
+			try{
+				$this->cn()->guardar_dr_consumo_convenio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+				
+				} catch( toba_error_db $error){
+					$sql_state= $error->get_sqlstate();
+					
+					toba::notificacion()->agregar($mensaje_log,'error');
+			}
+		} else {
+			toba::notificacion()->agregar("No puede borrar la ayuda economica, la misma tiene cuotas sin saldar",'info');
+		}
+		$this->cn()->resetear_dr_consumo_convenio();
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_historico -------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -189,6 +221,8 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 			$cuadro->set_datos($cuotas);
 		}
 	}
+
+
 
 
 

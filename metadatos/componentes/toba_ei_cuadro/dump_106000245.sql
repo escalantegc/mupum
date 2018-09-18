@@ -86,7 +86,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'borrar', --identificador
 	NULL, --etiqueta
 	'1', --maneja_datos
-	'0', --sobre_fila
+	'1', --sobre_fila
 	'¿Esta seguro de borrar el registro?', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
@@ -119,7 +119,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'ver', --identificador
 	NULL, --etiqueta
 	'1', --maneja_datos
-	'1', --sobre_fila
+	'0', --sobre_fila
 	NULL, --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen
@@ -163,7 +163,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	'100%', --ancho
 	'1', --ordenar
 	'1', --paginar
-	'10', --tamano_pagina
+	'50', --tamano_pagina
 	'P', --tipo_paginado
 	'0', --mostrar_total_registros
 	'0', --eof_invisible

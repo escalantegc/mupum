@@ -3291,7 +3291,8 @@ class dao
                     porcentaje_inscripcion,
                     monto_inscripcion,
                     inscripcion_colono.baja,
-                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan,
+                    tipo_socio.titular
 
               FROM 
               public.inscripcion_colono
@@ -3302,6 +3303,7 @@ class dao
             inner join persona on afiliacion.idpersona=persona.idpersona
             WHERE
               $sql_usuario and
+              cantidad_cuotas > 0 and
               $where
              group by 
                     idinscripcion_colono, 
@@ -3316,7 +3318,8 @@ class dao
                     colono.nombres ,
                     tipo_socio.descripcion,
                     persona.apellido ,
-                    persona.nombres ";
+                    persona.nombres,
+                    tipo_socio.titular ";
       return consultar_fuente($sql);
   }
 

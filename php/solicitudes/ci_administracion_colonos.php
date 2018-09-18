@@ -167,7 +167,15 @@ class ci_administracion_colonos extends mupum_ci
 	{
 		$this->cn()->cargar_dt_inscripcion_colono_plan_pago($seleccion);
 		//$this->cn()->set_cursor_dt_afiliacion_colonia($seleccion);
-		$this->set_pantalla('pant_edicion_plan_colono');
+
+		$tipo_socio = dao::get_listado_inscripcion_colono_sin_baja('inscripcion_colono.idinscripcion_colono =' .$seleccion['idinscripcion_colono']);
+		if ($tipo_socio[0]['titular']==1)
+		{
+			$this->set_pantalla('pant_edicion_plan_colono_titular');
+		} else {
+			$this->set_pantalla('pant_edicion_plan_colono');
+		}
+		
 	}
 
 
@@ -245,6 +253,20 @@ class ci_administracion_colonos extends mupum_ci
 
 
 	
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_plan_externo ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_plan_externo(ei_frm_ml_plan_externo $form_ml)
+	{
+		return $this->cn()->get_dt_inscripcion_colono_plan_pago();
+	}
+
+	function evt__frm_ml_plan_externo__modificacion($datos)
+	{
+		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
+	}
 
 }
 ?>

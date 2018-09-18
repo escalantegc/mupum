@@ -5,7 +5,7 @@
 
 CREATE TABLE public.concepto_liquidacion
 (
-  idconcepto_liquidacion integer NOT NULL DEFAULT nextval('concepto_liquidacion_idconceptop_liquidacion_seq'::regclass),
+  idconcepto_liquidacion serial NOT NULL ,
   descripcion character(100) NOT NULL,
   codigo character(4),
   CONSTRAINT concepto_liquidacion_pkey PRIMARY KEY (idconcepto_liquidacion)
@@ -32,17 +32,14 @@ CREATE UNIQUE INDEX idx_codigo_concepto
 
 CREATE TABLE public.cuota_societaria
 (
-  idcuota_societaria integer NOT NULL DEFAULT nextval('cuota_societaria_idcuota_societaria_seq'::regclass),
+  idcuota_societaria serial NOT NULL ,
   idpersona integer NOT NULL,
   idafiliacion integer NOT NULL,
   cargo character(6) NOT NULL,
   idconcepto_liquidacion integer NOT NULL,
   monto double precision NOT NULL,
   CONSTRAINT cuota_societaria_pkey PRIMARY KEY (idcuota_societaria),
-  CONSTRAINT cuota_societaria_idafiliacion_fkey FOREIGN KEY (idafiliacion, idpersona)
-      REFERENCES public.afiliacion (idafiliacion, idpersona) MATCH SIMPLE
-      ON UPDATE CASCADE ON DELETE RESTRICT,
-  CONSTRAINT cuota_societaria_idconcepto_liquidacion_fkey FOREIGN KEY (idconcepto_liquidacion)
+    CONSTRAINT cuota_societaria_idconcepto_liquidacion_fkey FOREIGN KEY (idconcepto_liquidacion)
       REFERENCES public.concepto_liquidacion (idconcepto_liquidacion) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE RESTRICT
 )
@@ -64,7 +61,7 @@ ALTER TABLE public.cuota_societaria
 
 CREATE TABLE public.gasto_infraestructura
 (
-  idgasto_infraestructura integer NOT NULL DEFAULT nextval('gasto_infraestructura_idgasto_infraestructura_seq'::regclass),
+  idgasto_infraestructura serial NOT NULL,
   idconcepto integer NOT NULL,
   idcomercio integer,
   fecha_pago date,
@@ -90,7 +87,7 @@ ALTER TABLE public.gasto_infraestructura
 
 CREATE TABLE public.detalle_pago_gasto_infraestructura
 (
-  iddetalle_pago_gasto_infraestructura integer NOT NULL DEFAULT nextval('detalle_pago_gasto_infraestru_iddetalle_pago_gasto_infraest_seq'::regclass),
+  iddetalle_pago_gasto_infraestructura serial NOT NULL,
   idgasto_infraestructura integer,
   idforma_pago integer NOT NULL,
   monto double precision NOT NULL,

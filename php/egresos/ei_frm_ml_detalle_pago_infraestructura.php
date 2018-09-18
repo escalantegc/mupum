@@ -44,7 +44,7 @@ class ei_frm_ml_detalle_pago_infraestructura extends mupum_ei_formulario_ml
 	
 			if (total_filas > total)
 			{
-				alert('El total del detalle ppago supera a monto del gasto, por favor controle los valores de los detalles de pago.');
+				alert('El total del detalle del pago supera a monto del gasto, por favor controle los valores de los detalles del pago.');
 				this.ef('monto').ir_a_fila(fila).resetear_estado();
 			}
 		}
