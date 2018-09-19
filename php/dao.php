@@ -9,7 +9,7 @@ class dao
     $perfil = toba::usuario()->get_perfiles_funcionales();
     $usuario = quote("%{$usuario}%");
     $sql = '';
-    if ($perfil[0] == 'afiliado')
+    if ( !strstr($perfil[0], 'admin') 
     {
       $sql = ' persona.nro_documento ilike '.trim($usuario);
     } else {
@@ -118,73 +118,40 @@ class dao
 	{
     $sql = '';
     $sql_usuario = self::get_sql_usuario();
-		if (isset($where))
-		{
-			 $sql = "SELECT  idpersona, 
-            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
-            nro_documento, 
-            tipo_documento.sigla as tipo_documento,
-            apellido,
-            nombres,
-            cuil, 
-            legajo, 
-            (apellido||', '||nombres) as persona, 
-            correo, 
-            cbu, 
-            fecha_nacimiento, 
-            idlocalidad, 
-            calle, altura, 
-            piso, 
-            depto, 
-            idestado_civil,
-            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
-            tipo_socio.descripcion as tipo
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+   $sql = "SELECT  idpersona, 
+                  (tipo_documento.sigla ||'-'||nro_documento) as documento, 
+                  nro_documento, 
+                  tipo_documento.sigla as tipo_documento,
+                  apellido,
+                  nombres,
+                  cuil, 
+                  legajo, 
+                  (apellido||', '||nombres) as persona, 
+                  correo, 
+                  cbu, 
+                  fecha_nacimiento, 
+                  idlocalidad, 
+                  calle, altura, 
+                  piso, 
+                  depto, 
+                  idestado_civil,
+                  (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                  tipo_socio.descripcion as tipo
           FROM public.persona
-          inner join tipo_documento using(idtipo_documento)
-          inner join afiliacion using (idpersona)
-          inner join tipo_socio using(idtipo_socio)
+            inner join tipo_documento using(idtipo_documento)
+            inner join afiliacion using (idpersona)
+            inner join tipo_socio using(idtipo_socio)
           where
             afiliacion.activa = true and
             $sql_usuario and
             $where 
           order by
-            apellido,nombres";
-		} else {
-      $sql = "SELECT  idpersona, 
-            (tipo_documento.sigla ||'-'||nro_documento) as documento, 
-            nro_documento, 
-            tipo_documento.sigla as tipo_documento,
-            apellido,
-            nombres,
-            cuil, 
-            legajo, 
-            (apellido||', '||nombres) as persona, 
-            correo, 
-            cbu, 
-            fecha_nacimiento, 
-            idlocalidad, 
-            calle, altura, 
-            piso, 
-            depto, 
-            idestado_civil,
-            (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
-            tipo_socio.descripcion as tipo
-          FROM public.persona
-          inner join tipo_documento using(idtipo_documento)
-          inner join afiliacion using (idpersona)
-          inner join tipo_socio using(idtipo_socio)
-          where
-            afiliacion.activa = true and
-            tipo_socio.titular = true and
-            $sql_usuario 
-          order by
-            apellido,nombres";
-    }
-  
-   
-		
+            apellido,nombres";  		
 
-  		
       return consultar_fuente($sql);
 	}
 
