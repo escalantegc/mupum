@@ -2408,7 +2408,7 @@ class dao
                     cantidad_bonos, 
                     monto_bono, 
                     periodo,
-                    (case when fecha is null then periodo else to_char(fecha, 'DD/MM/YYYY') end) as fecha,
+                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as fecha,
                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
           FROM 
             public.consumo_convenio
@@ -3489,6 +3489,89 @@ class dao
             WHERE
               $where";
     return consultar_fuente($sql);
+
+  }
+
+  function get_listado_pagos($where = null)
+  {
+    if (!isset($where))
+    {
+      $valor_where = '%%';
+      $valor_where =  quote("%{$valor_where}%");
+
+    } else {
+        $valor_where = quote("%{$where['periodo']['valor']}%");
+    }
+    
+    $sql = "  SELECT  'SUBSIDIO' as concepto,
+                       sum (monto) as monto,
+                       to_char(fecha_pago,'MM/YYYY') as periodo
+              FROM 
+                        public.solicitud_subsidio
+              WHERE
+                  pagado = true and
+                  to_char(fecha_pago,'MM/YYYY') ilike $valor_where
+              group by
+                  monto,
+                  periodo
+              UNION 
+         
+              SELECT   concepto.descripcion as concepto, 
+                       sum(monto) as monto,
+                       periodo
+              FROM 
+                      public.gasto_infraestructura
+              inner join concepto using(idconcepto)
+              WHERE
+               periodo ilike $valor_where
+              group by
+                concepto,
+                monto,
+                periodo
+              order by 
+                periodo desc, concepto asc ";
+
+  return consultar_fuente($sql);
+
+
+    
+
+  }
+
+
+  function get_listado_egresos($where = null)
+  {
+    if (!isset($where))
+    {
+      $valor_where = '%%';
+      $valor_where =  quote("%{$valor_where}%");
+
+    } else {
+        $valor_where = quote("%{$where['periodo']['valor']}%");
+    }
+    
+    $sql = "  SELECT  categoria_comercio.descripcion as concepto,
+                      sum (total) as monto, 
+                      (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo
+              FROM 
+                      public.consumo_convenio
+                inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+                inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
+              WHERE
+                   (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) ilike $valor_where
+              group by
+                  categoria_comercio.descripcion,
+                  fecha,
+                  total,
+                  periodo
+             
+              order by 
+                periodo desc, concepto asc ";
+
+  return consultar_fuente($sql);
+
+
+    
 
   }
 }
