@@ -9,7 +9,7 @@ class dao
     $perfil = toba::usuario()->get_perfiles_funcionales();
     $usuario = quote("%{$usuario}%");
     $sql = '';
-    if ( !strstr($perfil[0], 'admin') 
+    if ( !strstr($perfil[0], 'admin') )
     {
       $sql = ' persona.nro_documento ilike '.trim($usuario);
     } else {
