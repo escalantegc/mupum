@@ -224,15 +224,15 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'Monto', --etiqueta
 	NULL, --etiqueta_estilo
 	NULL, --descripcion
-	NULL, --colapsado
-	NULL, --desactivado
+	'0', --colapsado
+	'0', --desactivado
 	NULL, --estilo
 	NULL, --total
 	NULL, --inicializacion
-	NULL, --permitir_html
-	NULL, --deshabilitar_rest_func
+	'0', --permitir_html
+	'0', --deshabilitar_rest_func
 	NULL, --estado_defecto
-	NULL, --solo_lectura
+	'0', --solo_lectura
 	'0', --solo_lectura_modificacion
 	NULL, --carga_metodo
 	NULL, --carga_clase
@@ -250,8 +250,8 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
-	NULL, --edit_tamano
-	NULL, --edit_maximo
+	'10', --edit_tamano
+	'10', --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango
@@ -330,7 +330,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
-	NULL, --edit_tamano
+	'50', --edit_tamano
 	NULL, --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
@@ -345,7 +345,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000085', --popup_item
 	'mupum', --popup_proyecto
 	'0', --popup_editable
-	'width: 850,height: 600,scrollbars: yes', --popup_ventana
+	'width: 850,height: 650,scrollbars: yes', --popup_ventana
 	'get_descripcion_comercio', --popup_carga_desc_metodo
 	'dao', --popup_carga_desc_clase
 	'dao.php', --popup_carga_desc_include

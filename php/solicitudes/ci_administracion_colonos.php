@@ -46,7 +46,7 @@ class ci_administracion_colonos extends mupum_ci
 
 	function evt__volver_inscripciones()
 	{
-		$this->cn()->resetear_cursor_dt_inscripcion_colono1();
+		$this->cn()->resetear_dt_inscripcion_colono_plan_pago();
 		$this->set_pantalla('pant_plan_colono');
 	}
 	//-----------------------------------------------------------------------------------
