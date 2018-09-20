@@ -1580,6 +1580,70 @@ class cn_parametros extends mupum_cn
 	function procesar_dt_costo_colonia_tipo_socio($datos)
 	{
 		$this->dep('dr_colonia')->tabla('dt_costo_colonia_tipo_socio')->procesar_filas($datos);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-CONCEPTO-LIQUIDACION -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_concepto_liquidacion($seleccion)
+	{
+		if(!$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function set_cursor_dt_concepto_liquidacion($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_concepto_liquidacion()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_concepto_liquidacion()
+	{
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->resetear_cursor();
+	}
+
+	function get_dt_concepto_liquidacion()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->get();
+	}
+
+	function set_dt_concepto_liquidacion($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->set($datos);
+	}
+
+	function agregar_dt_concepto_liquidacion($datos)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->nueva_fila($datos);
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->set_cursor($id);
+	}	
+
+	function eliminar_dt_concepto_liquidacion($seleccion)
+	{
+		$id = $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->eliminar_fila($id[0]);
+	}
+
+	function get_dt_concepto_liquidacions()
+	{
+		return $this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->get_filas();
+	}
+
+	function procesar_dt_concepto_liquidacion($datos)
+	{
+		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->procesar_filas($datos);
 	}
 
 }

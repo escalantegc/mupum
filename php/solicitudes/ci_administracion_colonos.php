@@ -106,7 +106,7 @@ class ci_administracion_colonos extends mupum_ci
 
 	function evt__cuadro_colono_plan__administrar_plan($seleccion)
 	{
-			$this->s__seleccion_adm_plan = $seleccion;
+		$this->s__seleccion_adm_plan = $seleccion;
 		$this->set_pantalla('pant_plan_colono');
 	}
 	
@@ -166,6 +166,7 @@ class ci_administracion_colonos extends mupum_ci
 	function evt__cuadro_plan__seleccion($seleccion)
 	{
 		$this->cn()->cargar_dt_inscripcion_colono_plan_pago($seleccion);
+		//$this->cn()->set_cursor_dt_inscripcion_colono_plan_pago($seleccion);
 		//$this->cn()->set_cursor_dt_afiliacion_colonia($seleccion);
 
 		$tipo_socio = dao::get_listado_inscripcion_colono_sin_baja('inscripcion_colono.idinscripcion_colono =' .$seleccion['idinscripcion_colono']);

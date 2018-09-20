@@ -790,6 +790,25 @@ class dao
 
     return consultar_fuente($sql);
 
+  } 
+
+  function get_datos_persona_afiliada_legajo($legajo = null)
+  {
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                 persona.correo,
+                 *
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              persona.legajo ilike $legajo";
+
+    return consultar_fuente($sql);
+
   }  
 
   function get_personas_afiliadas_titulares()
@@ -2968,6 +2987,7 @@ class dao
     {
       $where = '1 = 1';
     }
+    $sql_usuario = self::get_sql_usuario();
     $sql= "SELECT solicitud_subsidio.idsolicitud_subsidio, 
                   persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
                   tipo_subsidio.descripcion as tipo_subsidio, 
@@ -2982,6 +3002,7 @@ class dao
             inner join afiliacion using(idafiliacion)
             inner join persona using(idpersona)
             where
+                $sql_usuario and
                 $where 
             order by
               solicitud_subsidio.fecha_solicitud desc";
@@ -3540,6 +3561,41 @@ class dao
 
     
 
+  }
+
+  function get_listado_concepto_liquidacion($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconcepto_liquidacion, 
+                    descripcion, 
+                    codigo
+            FROM 
+              public.concepto_liquidacion
+            where
+              $where";
+    return consultar_fuente($sql);
+  }
+
+  function get_listado_cabecera_cuota_societaria($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idcabecera_cuota_societaria, 
+                    archivo, 
+                    periodo, 
+                    fecha_importacion, 
+                    concepto_liquidacion.descripcion as concepto
+            FROM 
+              public.cabecera_cuota_societaria
+            inner join concepto_liquidacion using(idconcepto_liquidacion)
+            WHERE
+              $where";
+     return consultar_fuente($sql);
   }
 }
 ?>

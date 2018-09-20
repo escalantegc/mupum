@@ -73,7 +73,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'1'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -88,7 +88,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'2'  --orden
 );
 --- FIN Grupo de desarrollo 0
 
@@ -103,7 +103,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'3'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -115,7 +115,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'4'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -127,7 +127,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'5'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -139,7 +139,19 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'6'  --orden
+);
+INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
+	'mupum', --proyecto
+	'106000343', --dep_id
+	'4270', --objeto_consumidor
+	'106000376', --objeto_proveedor
+	'dt_concepto_liquidacion', --identificador
+	NULL, --parametros_a
+	NULL, --parametros_b
+	NULL, --parametros_c
+	NULL, --inicializar
+	'24'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -151,7 +163,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'7'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -166,7 +178,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'8'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -178,7 +190,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'9'  --orden
 );
 --- FIN Grupo de desarrollo 0
 
@@ -193,7 +205,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'10'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -205,7 +217,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'11'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -217,7 +229,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'12'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -229,7 +241,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'13'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -241,7 +253,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'14'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -253,7 +265,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'15'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -265,7 +277,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'16'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -280,7 +292,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'17'  --orden
 );
 --- FIN Grupo de desarrollo 0
 
@@ -295,7 +307,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'18'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -310,7 +322,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'19'  --orden
 );
 INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objeto_proveedor, identificador, parametros_a, parametros_b, parametros_c, inicializar, orden) VALUES (
 	'mupum', --proyecto
@@ -322,7 +334,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'20'  --orden
 );
 --- FIN Grupo de desarrollo 0
 
@@ -337,7 +349,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'21'  --orden
 );
 --- FIN Grupo de desarrollo 106
 
@@ -352,7 +364,7 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'22'  --orden
 );
 --- FIN Grupo de desarrollo 0
 
@@ -367,6 +379,6 @@ INSERT INTO apex_objeto_dependencias (proyecto, dep_id, objeto_consumidor, objet
 	'', --parametros_b
 	NULL, --parametros_c
 	NULL, --inicializar
-	NULL  --orden
+	'23'  --orden
 );
 --- FIN Grupo de desarrollo 106
