@@ -790,6 +790,25 @@ class dao
 
     return consultar_fuente($sql);
 
+  }   
+
+  function get_descripcion_persona_afiliada($idafiliacion = null)
+  {
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                 persona.correo,
+                 *
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              afiliacion.idafiliacion = $idafiliacion";
+
+    return consultar_fuente($sql);
+    
   } 
 
   function get_datos_persona_afiliada_legajo($legajo = null)
@@ -3595,7 +3614,35 @@ class dao
             inner join concepto_liquidacion using(idconcepto_liquidacion)
             WHERE
               $where";
-     return consultar_fuente($sql);
+
+      $cabeceras = consultar_fuente($sql);
+      $datos=array();
+      foreach($cabeceras as $cabecera)
+      {
+        if(isset($cabecera['archivo']) and !empty($cabecera['archivo']))
+        {
+          $fp_imagen = $cabecera['archivo'];
+          //-- Se necesita el path fisico y la url de una archivo temporal que va a contener la imagen
+          
+          $periodo = str_replace("/", "-", $cabecera['periodo']);
+          $temp_nombre = $periodo.'_0547.txt';
+          $temp_archivo = toba::proyecto()->get_www_temp($temp_nombre);
+     
+          //-- Se pasa el contenido al archivo temporal
+          $temp_fp = fopen($temp_archivo['path'], 'w');
+          stream_copy_to_stream($fp_imagen, $temp_fp);
+          fclose($temp_fp);
+          $tamaño = round(filesize($temp_archivo['path']) / 1024);
+          
+          //-- Se muestra la imagen temporal
+          //$datos['imagen_vista_previa'] = "";
+          $enlace="<a href='{$temp_archivo['url']}' target='_blank'>Descargar</a>";
+          $cabecera['archivo'] =$enlace;
+        }
+        $datos[] = $cabecera;
+      }
+      return $datos;
+     
   }
 }
 ?>

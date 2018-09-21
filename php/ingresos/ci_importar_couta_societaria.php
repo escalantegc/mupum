@@ -12,7 +12,7 @@ class ci_importar_couta_societaria extends mupum_ci
 	function evt__procesar()
 	{
 		try{
-			//$this->cn()->guardar_dr_importacion();
+			$this->cn()->guardar_dr_importacion();
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 			
@@ -20,24 +20,17 @@ class ci_importar_couta_societaria extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			
 			$mensaje_log= $error->get_mensaje_log();
-			/*if(strstr($mensaje_log,'idx_consumo_convenio'))
-			{
-				toba::notificacion()->agregar("El consumo del ticket ya esta registrado.",'info');
-				
-			}  */
-			
 			toba::notificacion()->agregar($mensaje_log,'error');
-			
-			
 		}
-		//$this->cn()->resetear_dr_importacion();
-		//$this->set_pantalla('pant_inicial');
+		/*$this->cn()->resetear_dr_importacion();
+		$this->set_pantalla('pant_inicial');*/
 	}
 
 	function evt__cancelar()
 	{
 		$this->cn()->resetear_dr_importacion();
 		$this->set_pantalla('pant_inicial');
+		unset($this->s__cuotas);
 	}
 
 	function evt__nuevo()
@@ -54,7 +47,6 @@ class ci_importar_couta_societaria extends mupum_ci
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_cabecera_cuota_societaria($this->s__where);
-			
 		} else {
 			$datos = dao::get_listado_cabecera_cuota_societaria();
 		}
@@ -68,21 +60,36 @@ class ci_importar_couta_societaria extends mupum_ci
 		$this->set_pantalla('pant_edicion');
 	}
 
+	function evt__cuadro__borrar($seleccion)
+	{
+		$this->cn()->cargar_dr_importacion($seleccion);
+		$this->cn()->eliminar_dt_cabecera_cuota_societaria($seleccion);
+			try{
+			$this->cn()->guardar_dr_importacion();
+			toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+			
+			
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+			$mensaje_log= $error->get_mensaje_log();
+			toba::notificacion()->agregar($mensaje_log,'error');
+		}
+		$this->cn()->resetear_dr_importacion();
+		
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_cuotas ----------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
 	function conf__cuadro_cuotas(mupum_ei_cuadro $cuadro)
 	{
-		$cuadro->set_datos($this->s__cuotas);	
+		return $this->cn()->get_dt_cuota_societaria();
 	}
-
-	
 
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
-
 	function conf__filtro(mupum_ei_filtro $filtro)
 	{
 		if(isset($this->s__datos_filtro))
@@ -123,11 +130,21 @@ class ci_importar_couta_societaria extends mupum_ci
 		} else {
 			$this->cn()->agregar_dt_cabecera_cuota_societaria($datos);
 		}
-		$this->s__cuotas = $this->manipular_archivo($datos['archivo']['tmp_name']);
+		$this->s__cuotas = $this->manipular_archivo($datos);
+
+		foreach ($this->s__cuotas as $cuota) 
+		{
+			if (isset($cuota['idafiliacion']) and isset($cuota['idpersona']))
+			{
+				$this->cn()->agregar_dt_cuota_societaria($cuota);			
+			}
+			
+		}
 	}
 
-	function manipular_archivo($path)
+	function manipular_archivo($cabecera)
 	{
+		$path = $cabecera['archivo']['tmp_name'];
 		if (($mapuche = fopen($path , "r")) !== FALSE) 
 		{
 			$cuotas = array();
@@ -152,8 +169,7 @@ class ci_importar_couta_societaria extends mupum_ci
 				$datos['tipo_documento'] =  substr($linea, 52, 4);
 				$datos['nro_documento'] =  substr($linea, 56, 9);
 				$datos['monto'] =  substr($linea, 65, 10);
-				$datos['concepto'] =  substr($linea, 75, 4);
-				//003271012807AMABLE MARIA INES DNI 0107105740001079.840547 
+				$datos['idconcepto_liquidacion'] =  $cabecera['idconcepto_liquidacion'];
 				$cuotas[] = $datos;
 			}
 			
@@ -161,7 +177,39 @@ class ci_importar_couta_societaria extends mupum_ci
 			fclose($mapuche);
 		}
 	}
+	function evt__validar()
+	{
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- JAVASCRIPT -------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	/*function extender_objeto_js()
+	{
+		$tiene_cuotas = 'no';
+		if (isset($this->s__cuotas))
+		{
+			$tiene_cuotas = 'si';
+		}
+		echo "
+		var tiene = $tiene_cuotas;
+		{$this->objeto_js}.ini = function () 
+		{
+			if (tiene == 'si')
+			{
+				this.ocultar_boton('validar');
+				this.mostrar_boton('procesar');
+			} else {
+				this.ocultar_boton('procesar');
+				this.mostrar_boton('validar');
+			}
+								
+		}
+		";
+	}*/
+
+
 
 }
-
 ?>
