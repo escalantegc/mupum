@@ -21,7 +21,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_mis_consumos - cuadro', --nombre
-	NULL, --titulo
+	'Mis Consumos', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	NULL, --fuente_datos_proyecto
@@ -187,7 +187,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'mupum', --objeto_cuadro_proyecto
 	'106000356', --objeto_cuadro
 	'106000361', --objeto_cuadro_col
-	'fecha', --clave
+	'periodo', --clave
 	'4', --orden
 	'Periodo', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo

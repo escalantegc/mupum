@@ -125,6 +125,7 @@ class dao
    $sql = "SELECT  idpersona, 
                   (tipo_documento.sigla ||'-'||nro_documento) as documento, 
                   nro_documento, 
+                  nro_documento as usuario, 
                   tipo_documento.sigla as tipo_documento,
                   apellido,
                   nombres,
@@ -2402,27 +2403,30 @@ class dao
     $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
                     convenio.titulo as convenio,
                     idconsumo_convenio, 
+                    categoria_comercio.descripcion as concepto,
                     idafiliacion, 
                     consumo_convenio.idconvenio, 
                     idcomercio, total, 
                     fecha, 
                     monto_proforma, 
-                    cantidad_cuotas, 
-                    descripcion, 
+                    (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas, 
+                    consumo_convenio.descripcion, 
                     idtalonario_bono, 
                     cantidad_bonos, 
                     monto_bono, 
-                    periodo,
-                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as fecha,
-                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
+                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
+                    (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas
           FROM 
             public.consumo_convenio
          inner join afiliacion using(idafiliacion)
          inner join persona on persona.idpersona = afiliacion.idpersona
          inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+         inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
          WHERE
           $sql_usuario and
-          $where";
+          $where
+         order by 
+                periodo desc, concepto asc  ";
         return consultar_fuente($sql);
   }
 

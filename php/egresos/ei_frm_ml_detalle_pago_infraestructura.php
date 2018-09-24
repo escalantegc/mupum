@@ -15,7 +15,9 @@ class ei_frm_ml_detalle_pago_infraestructura extends mupum_ei_formulario_ml
 		{$this->objeto_js}.evt__idforma_pago__procesar = function(es_inicial, fila)
 		{
 			var idfp = new Array();
+
 			idfp[1] = this.ef('idforma_pago').ir_a_fila(fila).get_estado();
+			alert(idfp[1]);
 			idfp[2] = fila;
 		
 			this.controlador.ajax('requiere_nro_comprobante', idfp, this, this.mostrar_campos); 	

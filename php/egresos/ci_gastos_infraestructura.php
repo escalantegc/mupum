@@ -153,7 +153,13 @@ class ci_gastos_infraestructura extends mupum_ci
 
 	function ajax__requiere_nro_comprobante($idfp, toba_ajax_respuesta $respuesta)
 	{
-		$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp[1]);
+		if ($idfp[1]!='nopar')
+		{
+			$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp[1]);	
+		} else {
+			$fp[0]['requiere_nro_comprobante']= 0;
+		}
+		
 		
 		$forma_pago['requiere'] = 'no';
 		$forma_pago['fila'] = $idfp[2];
@@ -161,6 +167,7 @@ class ci_gastos_infraestructura extends mupum_ci
 		{
 			$forma_pago['requiere'] = 'si';
 		}
+		
 		$respuesta->set($forma_pago);	
 	}	
 
