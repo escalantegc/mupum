@@ -3648,5 +3648,78 @@ class dao
       return $datos;
      
   }
+
+  function get_listado_ingresos()
+  {
+    $sql = "SELECT  
+                    'CUOTA SOCIETARIA' as concepto,
+                    cabecera_cuota_societaria.periodo, 
+                    sum(cuota_societaria.monto) as total
+            FROM 
+              public.cabecera_cuota_societaria
+              inner join cuota_societaria using(idcabecera_cuota_societaria)
+            group by 
+                cabecera_cuota_societaria.periodo
+    
+            UNION
+            SELECT 
+                    'RESERVAS' as concepto,
+                    to_char(fecha, 'MM/YYYY') as periodo,
+                     sum (detalle_pago.monto) as total
+            FROM 
+                public.solicitud_reserva
+            inner join detalle_pago using(idsolicitud_reserva)
+  
+            group by 
+              periodo
+   
+            UNION
+            SELECT    'COLONIA' as concepto,
+                      to_char(fecha_pago, 'MM/YYYY') as periodo,
+                      sum(monto) as total
+            FROM 
+              public.inscripcion_colono_plan_pago
+            where
+              cuota_pagada = true 
+            group by
+                fecha_pago
+            UNION
+            SELECT  'BONO COLABORACION' as concepto, 
+                    to_char(fecha_compra, 'MM/YYYY') as periodo, 
+                    count (*) * talonario_bono_colaboracion.monto as total            
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join talonario_bono_colaboracion on talonario_bono_colaboracion.idtalonario_bono_colaboracion = talonario_nros_bono_colaboracion.idtalonario_bono_colaboracion
+            where 
+                pagado = true 
+            group by 
+              periodo,
+              talonario_bono_colaboracion.monto
+            UNION
+            SELECT      
+                    convenio.titulo as concepto,
+                    to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') as periodo,
+                    sum (consumo_convenio_cuotas.monto) as total
+
+   
+            FROM 
+                public.consumo_convenio
+
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+
+            inner join consumo_convenio_cuotas using (idconsumo_convenio)
+            WHERE
+              convenio.permite_financiacion = true and
+              consumo_convenio_cuotas.cuota_pagada =  true 
+          
+            group by 
+              
+              concepto,
+              to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') ,
+              monto
+            order by 
+              periodo desc";
+      return consultar_fuente($sql);
+  }
 }
 ?>
