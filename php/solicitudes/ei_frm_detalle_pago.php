@@ -10,18 +10,16 @@ class ei_frm_detalle_pago extends mupum_ei_formulario_ml
 		echo "
 		//---- Procesamiento de EFs --------------------------------
 		
-
-	
-
+		
+			
+		
 		{$this->objeto_js}.evt__monto__procesar = function(es_inicial, fila)
 		{
 			total = this.controlador.dep('frm').ef('monto_final').get_estado();
-
 			total_filas = this.total('monto');
-	
 			if (total_filas > total)
 			{
-				alert('El total del detalle supera a monto de reserva, por favor controle los valores de los detalles.');
+				alert('El total del detalle de pago supera a monto final de reserva, por favor controle los valores de los detalles.');
 				this.ef('monto').ir_a_fila(fila).resetear_estado();
 			}
 		}
@@ -33,8 +31,27 @@ class ei_frm_detalle_pago extends mupum_ei_formulario_ml
 			id_fila = this.crear_fila_orig();
 			this.ef('fecha').ir_a_fila(id_fila).set_estado(hoy_texto);
 		}
+		//---- Validacion general ----------------------------------
+		
+		{$this->objeto_js}.evt__validar_datos = function()
+		{
+			total = this.controlador.dep('frm').ef('monto_final').get_estado();
+
+			total_filas = this.total('monto');
+			if (total_filas > total)
+			{
+				alert('El total del detalle de pago supera a monto final de reserva, por favor controle los valores de los detalles.');
+				return false;
+			} else {
+				return true;	
+			}
+				
+		
+		}
 		";
 	}
+
+
 
 }
 ?>

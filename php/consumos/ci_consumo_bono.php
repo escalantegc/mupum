@@ -77,10 +77,10 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__cuadro__borrar($seleccion)
 	{
-		/*$this->cn()->cargar_dr_consumo_bono_propio($seleccion);
+		$this->cn()->cargar_dr_consumo_bono_propio($seleccion);
 		$this->cn()->eliminar_dt_consumo_bono_propio($seleccion);
 		try{
-			$this->cn()->guardar_dr_parametros();
+				$this->cn()->guardar_dr_consumo_bono_propio();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -90,8 +90,8 @@ class ci_consumo_bono extends mupum_ci
 				
 			} 		
 		}
-		$this->cn()->resetear_dr_parametros();
-		$this->set_pantalla('pant_inicial');*/
+		$this->cn()->resetear_dr_consumo_bono_propio();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -141,6 +141,9 @@ class ci_consumo_bono extends mupum_ci
 			//--$this->s__cantidad= $datos['cantidad_bonos'];
 			$this->cn()->agregar_dt_consumo_bono($datos);
 		}
+		$this->cn()->guardar_dr_consumo_bono();
+
+		$consumo = $this->cn()->get_dt_consumo_bono();
 		$numeros = array();
 		foreach ($datos['nro_bono'] as $bono) 
 		{
@@ -154,6 +157,7 @@ class ci_consumo_bono extends mupum_ci
 			$numero['idtalonario_bono'] = $datos['idtalonario_bono'];
 			$numero['idafiliacion'] = $datos['idafiliacion'];
 			$numero['disponible'] ='f';
+			$numero['idconsumo_convenio'] =$consumo['idconsumo_convenio'];
 			$this->cn()->set_dt_talonario_nros_bono($numero);
 			$this->cn()->resetear_cursor_dt_talonario_nros_bono();
 		
@@ -186,7 +190,7 @@ class ci_consumo_bono extends mupum_ci
 	function conf__frm_ml_nros_bonos(mupum_ei_formulario_ml $form_ml)
 	{
 		$filtro['disponible'] = false;
-		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio_filtrado($filtro);
+		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio();
 		$form_ml->set_datos($datos);
 	}
 
@@ -198,6 +202,7 @@ class ci_consumo_bono extends mupum_ci
 			{
 				$datos[$i]['apex_ei_analisis_fila'] = 'M';
 				$datos[$i]['disponible'] = 1;
+				$datos[$i]['idconsumo_convenio'] = null;
 				$datos[$i]['x_dbr_clave'] = $i;
 				//$datos[$i]['nro_bono'] = $datos[$i]['nro_bono'];
 			}

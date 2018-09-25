@@ -48,7 +48,7 @@ class ci_consumo_por_ticket extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_edicion');
+		$this->set_pantalla('pant_nuevo');
 	}
 
 	function evt__planilla()
@@ -85,17 +85,17 @@ class ci_consumo_por_ticket extends mupum_ci
 		$this->cn()->cargar_dr_consumo_convenio($seleccion);
 		$this->cn()->eliminar_dt_consumo_convenio($seleccion);
 		try{
-			$this->cn()->guardar_dr_parametros();
+			$this->cn()->guardar_dr_consumo_convenio();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El consumo del bono esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("El consumo del ticket esta siendo referenciado, no puede eliminarlo",'error');
 				
 			} 		
 		}
-		$this->cn()->resetear_dr_parametros();
+		$this->cn()->resetear_dr_consumo_convenio();
 		$this->set_pantalla('pant_inicial');
 	}
 

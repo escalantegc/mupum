@@ -8,9 +8,9 @@ class ci_administrar_reserva extends mupum_ci
 
 	function evt__procesar()
 	{
-		$this->cn()->guardar_dr_reserva();
+		
 		try{
-			
+			$this->cn()->guardar_dr_reserva();
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
@@ -22,14 +22,12 @@ class ci_administrar_reserva extends mupum_ci
 			if($sql_state=='db_23503')
 			{
 				toba::notificacion()->agregar("El estado civil esta siendo referenciado, no puede eliminarlo",'error');
-				
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_reserva'))
 			{
 				toba::notificacion()->agregar("El estado civil ya esta registrado.",'info');
-				
 			} 
 			
 		}
