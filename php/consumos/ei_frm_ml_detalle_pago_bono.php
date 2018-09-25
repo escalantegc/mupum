@@ -22,6 +22,15 @@ class ei_frm_ml_detalle_pago_bono extends mupum_ei_formulario_ml
 				this.ef('monto').ir_a_fila(fila).resetear_estado();
 			}
 		}
+		{$this->objeto_js}.crear_fila_orig = {$this->objeto_js}.crear_fila; 
+		{$this->objeto_js}.crear_fila       = function() {
+			
+			var hoy = new Date();
+			var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
+			id_fila = this.crear_fila_orig();
+			this.ef('fecha').ir_a_fila(id_fila).set_solo_lectura(true);
+			this.ef('fecha').ir_a_fila(id_fila).set_estado(hoy_texto);
+		}
 		";
 	}
 

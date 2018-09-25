@@ -3659,8 +3659,7 @@ class dao
               public.cabecera_cuota_societaria
               inner join cuota_societaria using(idcabecera_cuota_societaria)
             group by 
-                cabecera_cuota_societaria.periodo
-    
+                cabecera_cuota_societaria.periodo   
             UNION
             SELECT 
                     'RESERVAS' as concepto,
@@ -3669,10 +3668,8 @@ class dao
             FROM 
                 public.solicitud_reserva
             inner join detalle_pago using(idsolicitud_reserva)
-  
             group by 
               periodo
-   
             UNION
             SELECT    'COLONIA' as concepto,
                       to_char(fecha_pago, 'MM/YYYY') as periodo,
@@ -3700,23 +3697,30 @@ class dao
                     convenio.titulo as concepto,
                     to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') as periodo,
                     sum (consumo_convenio_cuotas.monto) as total
-
-   
             FROM 
                 public.consumo_convenio
-
             inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
-
             inner join consumo_convenio_cuotas using (idconsumo_convenio)
             WHERE
               convenio.permite_financiacion = true and
               consumo_convenio_cuotas.cuota_pagada =  true 
-          
             group by 
-              
               concepto,
-              to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') ,
-              monto
+              to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') 
+            UNION
+            SELECT      
+                    convenio.titulo as concepto,
+                    to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
+                    sum (detalle_pago_consumo_convenio.monto) as total
+            FROM 
+                public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join detalle_pago_consumo_convenio using (idconsumo_convenio)
+            
+        
+            group by 
+              concepto,
+              to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') 
             order by 
               periodo desc";
       return consultar_fuente($sql);
