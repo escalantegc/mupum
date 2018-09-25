@@ -8,8 +8,9 @@ class ci_administrar_reserva extends mupum_ci
 
 	function evt__procesar()
 	{
+		$this->cn()->guardar_dr_reserva();
 		try{
-			$this->cn()->guardar_dr_reserva();
+			
 			if (!toba::notificacion()->verificar_mensajes())
 			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');

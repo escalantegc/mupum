@@ -30,7 +30,6 @@ class ei_frm_ml_detalle_pago_ticket extends mupum_ei_formulario_ml
 			var hoy = new Date();
 			var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
 			id_fila = this.crear_fila_orig();
-			this.ef('fecha').ir_a_fila(id_fila).set_solo_lectura(true);
 			this.ef('fecha').ir_a_fila(id_fila).set_estado(hoy_texto);
 		}
 		";

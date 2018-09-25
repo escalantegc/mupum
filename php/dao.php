@@ -3663,7 +3663,7 @@ class dao
             UNION
             SELECT 
                     'RESERVAS' as concepto,
-                    to_char(fecha, 'MM/YYYY') as periodo,
+                    to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
                      sum (detalle_pago.monto) as total
             FROM 
                 public.solicitud_reserva
