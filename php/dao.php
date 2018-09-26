@@ -1032,7 +1032,7 @@ class dao
                     nro_personas,
                     solicitud_reserva.monto,
                     monto_final,
-                    sum (detalle_pago.monto) as pago_detalle
+                    (traer_detalle_pago_cancelado_reserva(solicitud_reserva.idsolicitud_reserva)) as pago_detalle
             FROM 
                 public.solicitud_reserva
             inner join afiliacion using(idafiliacion)
@@ -1086,7 +1086,7 @@ class dao
                     nro_personas,
                     solicitud_reserva.monto,
                     monto_final,
-                    sum (detalle_pago.monto) as pago_detalle
+                    (traer_detalle_pago_cancelado_reserva(solicitud_reserva.idsolicitud_reserva)) as pago_detalle
             FROM 
                 public.solicitud_reserva
             inner join afiliacion using(idafiliacion)
@@ -1143,7 +1143,7 @@ class dao
                     nro_personas,
                     solicitud_reserva.monto,
                     monto_final,
-                    sum (detalle_pago.monto) as pago_detalle
+                    (traer_detalle_pago_cancelado_reserva(solicitud_reserva.idsolicitud_reserva)) as pago_detalle
             FROM 
                 public.solicitud_reserva
             inner join afiliacion using(idafiliacion)
@@ -3664,7 +3664,7 @@ class dao
             SELECT 
                     'RESERVAS' as concepto,
                     to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
-                     sum (detalle_pago.monto) as total
+                    sum (detalle_pago.monto) as total
             FROM 
                 public.solicitud_reserva
             inner join detalle_pago using(idsolicitud_reserva)

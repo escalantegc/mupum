@@ -155,6 +155,15 @@ INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_obje
 INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
 	'mupum', --proyecto
 	'106000212', --objeto
+	'106000020', --asoc_id
+	'106000203', --padre_objeto
+	'106000248', --padre_clave
+	'106000209', --hijo_objeto
+	'106000199'  --hijo_clave
+);
+INSERT INTO apex_objeto_rel_columnas_asoc (proyecto, objeto, asoc_id, padre_objeto, padre_clave, hijo_objeto, hijo_clave) VALUES (
+	'mupum', --proyecto
+	'106000212', --objeto
 	'106000021', --asoc_id
 	'106000203', --padre_objeto
 	'106000247', --padre_clave

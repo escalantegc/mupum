@@ -30,6 +30,22 @@ class ei_frm_ml_detalle_pago_bono extends mupum_ei_formulario_ml
 			id_fila = this.crear_fila_orig();
 			this.ef('fecha').ir_a_fila(id_fila).set_estado(hoy_texto);
 		}
+
+		{$this->objeto_js}.evt__validar_datos = function()
+		{
+			total = this.controlador.dep('frm_edicion').ef('total').get_estado();
+			total_filas = this.total('monto');
+
+			if (total_filas > total)
+			{
+				alert('El total del detalle de pago supera el total del consumo por bonos, por favor controle los valores de los detalles.');
+				return false;
+			} else {
+				return true;	
+			}
+				
+		
+		}
 		";
 	}
 

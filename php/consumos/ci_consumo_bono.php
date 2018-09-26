@@ -165,12 +165,9 @@ class ci_consumo_bono extends mupum_ci
 				
 			$this->cn()->guardar_dr_consumo_bono();
 			} catch( toba_error_db $error){
-			$mensaje_log= $error->get_mensaje_log();
-			
-					toba::notificacion()->agregar($mensaje_log,'info');
-					
-				
-			
+				$mensaje_log= $error->get_mensaje_log();
+				toba::notificacion()->agregar($mensaje_log,'info');
+
 			}
 			$this->cn()->resetear_dt_talonario_nros_bono();
 			$id = null;
@@ -190,12 +187,14 @@ class ci_consumo_bono extends mupum_ci
 	function conf__frm_ml_nros_bonos(mupum_ei_formulario_ml $form_ml)
 	{
 		$filtro['disponible'] = false;
-		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio();
+		$datos = $this->cn()->get_dt_talonario_nros_bonos_propio_filtrado($filtro);
+		
 		$form_ml->set_datos($datos);
 	}
 
 	function evt__frm_ml_nros_bonos__modificacion($datos)
 	{
+		
 		for ($i=0; $i < count($datos); $i++) 
 		{ 
 			if ($datos[$i]['apex_ei_analisis_fila']=='B')
@@ -203,6 +202,7 @@ class ci_consumo_bono extends mupum_ci
 				$datos[$i]['apex_ei_analisis_fila'] = 'M';
 				$datos[$i]['disponible'] = 1;
 				$datos[$i]['idconsumo_convenio'] = null;
+				$datos[$i]['idafiliacion'] = null;
 				$datos[$i]['x_dbr_clave'] = $i;
 				//$datos[$i]['nro_bono'] = $datos[$i]['nro_bono'];
 			}
