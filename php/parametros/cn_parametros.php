@@ -1646,6 +1646,150 @@ class cn_parametros extends mupum_cn
 		$this->dep('dr_parametros')->tabla('dt_concepto_liquidacion')->procesar_filas($datos);
 	}
 
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_pileta($seleccion)
+	{
+		if(!$this->dep('dr_pileta')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_pileta')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_pileta')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function guardar_dr_pileta()
+	{
+		$this->dep('dr_pileta')->sincronizar();
+	}
+
+	function resetear_dr_pileta()
+	{
+		$this->dep('dr_pileta')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-TEMPORADA-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_temporada_pileta($seleccion)
+	{
+		if(!$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	function set_cursor_dt_temporada_pileta($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_temporada_pileta')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_temporada_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_temporada_pileta')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_temporada_pileta()
+	{
+		$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->resetear_cursor();
+	}
+
+	function get_dt_temporada_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_temporada_pileta')->get();
+	}
+
+	function set_dt_temporada_pileta($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->set($datos);
+	}
+
+	function agregar_dt_temporada_pileta($datos)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_temporada_pileta')->nueva_fila($datos);
+		$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->set_cursor($id);
+	}	
+
+	function eliminar_dt_temporada_pileta($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_temporada_pileta')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_temporada_pileta')->eliminar_fila($id[0]);
+	}	
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-COSTO-PILETA-TIPO-SOCIO -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_costo_pileta_tipo_socio($seleccion)
+	{
+		if(!$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+
+	function set_cursor_dt_costo_pileta_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_costo_pileta_tipo_socio()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_costo_pileta_tipo_socio()
+	{
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->resetear_cursor();
+	}
+
+	function get_dt_costo_pileta_tipo_socio()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->get();
+	}
+
+	function set_dt_costo_pileta_tipo_socio($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->set($datos);
+	}
+
+	function agregar_dt_costo_pileta_tipo_socio($datos)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->nueva_fila($datos);
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->set_cursor($id);
+	}	
+
+	function eliminar_dt_costo_pileta_tipo_socio($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->eliminar_fila($id[0]);
+	}
+
+	function get_dt_costo_pileta_tipo_socios()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->get_filas();
+	}
+
+	function procesar_dt_costo_pileta_tipo_socio($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_costo_pileta_tipo_socio')->procesar_filas($datos);
+	}	
+
+
 }
 
 ?>

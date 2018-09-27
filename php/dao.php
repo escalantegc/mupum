@@ -768,7 +768,9 @@ class dao
             inner join  tipo_socio using(idtipo_socio)
             where 
               activa = true and
-              $sql_usuario";
+              $sql_usuario
+            order by
+               persona.apellido,persona.nombres";
 
     return consultar_fuente($sql);
 
@@ -3724,6 +3726,41 @@ class dao
             order by 
               periodo desc";
       return consultar_fuente($sql);
+  }
+
+
+  function get_listado_temporada_pileta($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtemporada_pileta, 
+                    descripcion, 
+                    fecha_inicio, 
+                    fecha_fin
+            FROM 
+              public.temporada_pileta 
+            where
+              $where";
+    return consultar_fuente($sql);
+  }  
+
+  function get_listado_temporada_pileta_vigente($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtemporada_pileta, 
+                    descripcion, 
+                    fecha_inicio, 
+                    fecha_fin
+            FROM 
+              public.temporada_pileta 
+            where
+               current_date between inicio and fin";
+    return consultar_fuente($sql);
   }
 }
 ?>

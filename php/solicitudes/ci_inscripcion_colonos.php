@@ -10,7 +10,31 @@ class ci_inscripcion_colonos extends mupum_ci
 	{
 		try{
 			$this->cn()->guardar_dr_colonia();
-				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			$datos = $this->cn()->get_dt_inscripcion_colono();
+			$colonia = dao::get_datos_configuracion_colonia($datos['idconfiguracion_colonia']);
+			//$inscripcion = dao::get_listado_inscripcion_colono('inscripcion_colono.idafiliacion = '.$datos['idafiliacion'] .' and inscripcion_colono.idpersona_familia= '.$datos['idpersona_familia']);
+
+			$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+			$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
+			$inscripcion['titular'] = $socio[0]['persona'];
+			$inscripcion['correo'] = $socio[0]['correo'];
+		    $inscripcion['colono'] = $familiar[0]['familiar_titular'];
+
+		    $inscripcion['monto'] = $datos['monto'];
+		    $inscripcion['monto_inscripcion'] = $datos['monto_inscripcion'];
+		    $inscripcion['porcentaje_inscripcion'] = $datos['porcentaje_inscripcion'];
+/*
+		    $fecha_inicio = $colonia[0]['fecha_inicio'];
+		    $fecha_fin = $colonia[0]['fecha_fin'];
+		    $domicilio = $colonia[0]['domicilio'];
+		    $concentracion = $colonia[0]['concentracion'];
+		    $salida = $colonia[0]['salida'];
+		    $llegada = $colonia[0]['llegada'];
+		    $finalizacion = $colonia[0]['finalizacion'];*/
+		    $datos_correo = array_merge((array)$colonia[0], (array)$inscripcion); 
+		  
+		  	$this->enviar_correo_constancia_inscripcion($datos_correo);
+			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -149,29 +173,7 @@ class ci_inscripcion_colonos extends mupum_ci
 			$this->cn()->agregar_dt_inscripcion_colono($datos);
 
 		
-			$colonia = dao::get_datos_configuracion_colonia($datos['idconfiguracion_colonia']);
-			//$inscripcion = dao::get_listado_inscripcion_colono('inscripcion_colono.idafiliacion = '.$datos['idafiliacion'] .' and inscripcion_colono.idpersona_familia= '.$datos['idpersona_familia']);
-
-			$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
-			$familiar = dao::get_datos_familiar($datos['idpersona_familia']);
-			$inscripcion['titular'] = $socio[0]['persona'];
-			$inscripcion['correo'] = $socio[0]['correo'];
-		    $inscripcion['colono'] = $familiar[0]['familiar_titular'];
-
-		    $inscripcion['monto'] = $datos['monto'];
-		    $inscripcion['monto_inscripcion'] = $datos['monto_inscripcion'];
-		    $inscripcion['porcentaje_inscripcion'] = $datos['porcentaje_inscripcion'];
-/*
-		    $fecha_inicio = $colonia[0]['fecha_inicio'];
-		    $fecha_fin = $colonia[0]['fecha_fin'];
-		    $domicilio = $colonia[0]['domicilio'];
-		    $concentracion = $colonia[0]['concentracion'];
-		    $salida = $colonia[0]['salida'];
-		    $llegada = $colonia[0]['llegada'];
-		    $finalizacion = $colonia[0]['finalizacion'];*/
-		    $datos_correo = array_merge((array)$colonia[0], (array)$inscripcion); 
-		  
-		  	$this->enviar_correo_constancia_inscripcion($datos_correo);
+			
 		}
 	}
 
