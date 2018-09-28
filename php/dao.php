@@ -2281,11 +2281,11 @@ class dao
     $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
+                    sum(consumo_convenio_cuotas.monto)as total, 
                     fecha, 
                     cantidad_cuotas,
-                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                    consumo_convenio_cuotas.monto  as valor_cuota        
+                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
+                    consumo_convenio_cuotas.monto_puro  as valor_cuota             
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -2305,7 +2305,7 @@ class dao
               total, 
               fecha, 
               cantidad_cuotas,
-              consumo_convenio_cuotas.monto 
+              consumo_convenio_cuotas.monto_puro 
             order by fecha desc";
       return consultar_fuente($sql);
   }  
