@@ -45,6 +45,8 @@ class ei_frm_cabecera_consumo_ticket_gral extends mupum_ei_formulario
 					this.ef('periodo').set_estado(periodo);
 					this.ef('periodo').set_solo_lectura(true);			
 				} else {
+					alert('Debe ingresar un periodo correcto');
+					this.ef('periodo').seleccionar();
 					this.ef('periodo').resetear_estado();
 				}
 				

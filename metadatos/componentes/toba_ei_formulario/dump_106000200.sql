@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_frm_consumo_ticket', --subclase
+	'consumos/ei_frm_consumo_ticket.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_consumo_por_ticket - frm', --nombre
@@ -473,7 +473,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --deshabilitar_rest_func
 	NULL, --estado_defecto
 	'0', --solo_lectura
-	'1', --solo_lectura_modificacion
+	'0', --solo_lectura_modificacion
 	NULL, --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
@@ -501,7 +501,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --edit_resaltar
 	NULL, --edit_ajustable
 	NULL, --edit_confirmar_clave
-	'/^(0[1-9]|1[0-2])\/([0-9]{4})$/', --edit_expreg
+	NULL, --edit_expreg
 	NULL, --popup_item
 	NULL, --popup_proyecto
 	NULL, --popup_editable

@@ -2320,13 +2320,13 @@ class dao
     $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
                     (persona.apellido||', '|| persona.nombres) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    cantidad_cuotas * consumo_convenio_cuotas.monto as total, 
+                    sum(consumo_convenio_cuotas.monto)as total, 
                     fecha, 
                     cantidad_cuotas,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                      (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                      (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as fecha_max_nro_cuota,
-                    consumo_convenio_cuotas.monto  as valor_cuota        
+                    consumo_convenio_cuotas.monto_puro  as valor_cuota        
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -2336,7 +2336,7 @@ class dao
             WHERE
               convenio.ayuda_economica = true and 
                (consumo_convenio_cuotas.cuota_pagada =  false or
-               ((current_date - (2||' months')::interval)  <= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
+               ((current_date - (2||' months')::interval)  <= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and
               $where
             group by 
               consumo_convenio.idconsumo_convenio,
@@ -2347,7 +2347,7 @@ class dao
               total, 
               fecha, 
               cantidad_cuotas,
-              consumo_convenio_cuotas.monto 
+              consumo_convenio_cuotas.monto_puro 
             order by fecha desc";
       return consultar_fuente($sql);
   } 

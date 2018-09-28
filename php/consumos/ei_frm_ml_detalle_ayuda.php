@@ -30,6 +30,9 @@ class ei_frm_ml_detalle_ayuda extends mupum_ei_formulario_ml
 				this.ef('cuota_pagada').ir_a_fila(fila).chequear();
 				this.ef('cuota_pagada').ir_a_fila(fila).set_solo_lectura(true);
 
+				this.ef('interes').ir_a_fila(fila).set_estado(0);
+				this.ef('monto').ir_a_fila(fila).set_estado(this.ef('monto_puro').ir_a_fila(fila).get_estado());
+
 				var hoy = new Date();
 				var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
 				
