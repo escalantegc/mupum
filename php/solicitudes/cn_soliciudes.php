@@ -1210,6 +1210,116 @@ class cn_soliciudes extends mupum_cn
 		$this->dep('dr_administrar_colonia')->tabla('dt_inscripcion_colono_plan_pago')->procesar_filas($datos);
 	}	
 
+
+	//-----------------------------------------------------------------------------------
+	//---- DR-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dr_pileta ()	
+	{
+		if(!$this->dep('dr_pileta')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_pileta')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_pileta')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}
+	
+	function guardar_dr_pileta()
+	{
+		$this->dep('dr_pileta')->sincronizar();
+	}
+
+	function resetear_dr_pileta()
+	{
+		$this->dep('dr_pileta')->resetear();
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-INSCRIPCION-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function cargar_dt_inscripcion_pileta($seleccion)
+	{
+		if(!$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->esta_cargada())
+		{				// verifica si esta cargada el datos relacion			
+			if(!isset($seleccion))
+			{
+				$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->cargar();					// lee de la BD fisica y carga al datos relacion
+			}else{
+				$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->cargar($seleccion);				// lee de la BD fisica y carga al datos relacion
+			}
+		}
+	}	
+	function resetear_dt_inscripcion_pileta()
+	{
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->resetear();					// lee de la BD fisica y carga al datos relacion	
+	}
+	function set_cursor_dt_inscripcion_pileta($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_inscripcion_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_inscripcion_pileta()
+	{
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->resetear_cursor();
+	}
+
+	function get_dt_inscripcion_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->get();
+	}
+
+	function set_dt_inscripcion_pileta($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->set($datos);
+	}
+
+	function agregar_dt_inscripcion_pileta($datos)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->nueva_fila($datos);
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->set_cursor($id);
+	}	
+
+	function eliminar_dt_inscripcion_pileta($seleccion)
+	{
+		$id = $this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_pileta')->tabla('dt_inscripcion_pileta')->eliminar_fila($id[0]);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-INSCRIPCION-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function procesar_dt_detalle_inscripcion_pileta($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_detalle_inscripcion_pileta')->procesar_filas($datos);
+	}
+
+	function get_dt_detalle_inscripcion_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_detalle_inscripcion_pileta')->get_filas();
+	}
+	//-----------------------------------------------------------------------------------
+	//---- DT-DETALLE-PAGO-PILETA -----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+	function procesar_dt_detalle_pago_inscripcion_pileta($datos)
+	{
+		$this->dep('dr_pileta')->tabla('dt_detalle_pago_inscripcion_pileta')->procesar_filas($datos);
+	}
+
+	function get_dt_detalle_pago_inscripcion_pileta()
+	{
+		return $this->dep('dr_pileta')->tabla('dt_detalle_pago_inscripcion_pileta')->get_filas();
+	}
+
+
 }
 
 ?>

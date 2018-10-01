@@ -2664,6 +2664,39 @@ class dao
       return consultar_fuente($sql);
   } 
 
+  function get_listado_familiares($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  familia.idpersona, 
+                    familia.idpersona_familia, 
+                    persona.apellido ||' - '||persona.nombres as titular,
+                    parentesco.descripcion||': '||familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    parentesco.descripcion as parentesco, 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    extract(year from age( familiar.fecha_nacimiento)) as edad,
+                    familiar.fecha_nacimiento,
+                    (CASE WHEN familiar.sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
+                    tipo_documento.sigla ||'-'|| familiar.nro_documento as documento
+
+            FROM 
+                    familia
+            inner join persona on persona.idpersona=familia.idpersona
+            inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+            inner join parentesco using(idparentesco)
+            inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
+            where 
+              
+              $sql_usuario and
+              $where";
+      return consultar_fuente($sql);
+  } 
+
   function get_datos_familiar($idfamiliar = null)
   {
     $sql_usuario = self::get_sql_usuario();
@@ -3459,7 +3492,7 @@ class dao
   {
     $sql = "SELECT  
                     afiliacion.idafiliacion,
-                     tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
+                    tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
                     colonos_de_un_titular_con_plan( afiliacion.idafiliacion) as colonos
 
@@ -3761,6 +3794,232 @@ class dao
             where
                current_date between inicio and fin";
     return consultar_fuente($sql);
+  }
+  function get_cantidad_temporada_pileta_vigente()
+  {
+    $sql = "SELECT  count(*)as cantidad
+            FROM 
+              public.temporada_pileta
+             where current_date between fecha_inicio and fecha_fin";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
+  }
+
+  function get_listado_inscripcion_pileta($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+      $sql = "SELECT  idinscripcion_pileta, 
+                      temporada_pileta.descripcion as temporada, 
+                      persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as titular,
+                      (familiar_de_un_titular(persona.idpersona) ) as grupo_familiar,
+                      costo_grupo_familiar,
+                      total
+              FROM 
+                public.inscripcion_pileta
+              inner join afiliacion using(idafiliacion)
+              inner join persona on persona.idpersona = afiliacion.idpersona
+              inner join temporada_pileta using(idtemporada_pileta)
+              where 
+                $where";
+    return consultar_fuente($sql);
+  }  
+
+  function get_costo_temporada_pileta_tipo_socio($idafiliacion = null)
+  {
+
+     $sql = "SELECT costo_grupo_familiar
+             FROM 
+               public.costo_pileta_tipo_socio
+               
+              inner join afiliacion on afiliacion.idtipo_socio = costo_pileta_tipo_socio.idtipo_socio
+             where   afiliacion.idafiliacion = $idafiliacion";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['costo_grupo_familiar']))
+    {
+      return $res[0]['costo_grupo_familiar'];
+    }
+  } 
+
+  function get_adicional_mayores_edad_temporada_pileta_tipo_socio($idafiliacion = null)
+  {
+
+     $sql = "SELECT adicional_mayores_edad
+             FROM 
+               public.costo_pileta_tipo_socio
+               
+              inner join afiliacion on afiliacion.idtipo_socio = costo_pileta_tipo_socio.idtipo_socio
+             where   afiliacion.idafiliacion = $idafiliacion";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['adicional_mayores_edad']))
+    {
+      return $res[0]['adicional_mayores_edad'];
+    }
+  }
+
+
+  function get_listado_ingresos_0549($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "SELECT      
+                    convenio.titulo as concepto,
+                    consumo_convenio_cuotas.periodo,
+                    sum (consumo_convenio_cuotas.monto) as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion
+            FROM 
+                  public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join consumo_convenio_cuotas using (idconsumo_convenio)
+            inner join afiliacion using (idafiliacion)
+            inner join persona using (idpersona)
+            inner join forma_pago using(idforma_pago)
+            WHERE
+                  convenio.permite_financiacion = true and
+                  forma_pago.planilla = true and
+                  consumo_convenio_cuotas.envio_descuento =  false and
+                  periodo ilike  $periodo
+            group by 
+              concepto,
+              consumo_convenio_cuotas.periodo,
+              persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+           UNION
+            SELECT      
+                    convenio.titulo as concepto,
+                    to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
+                    sum (detalle_pago_consumo_convenio.monto) as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+                public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join detalle_pago_consumo_convenio using (idconsumo_convenio)
+            inner join forma_pago using(idforma_pago)
+            inner join afiliacion using (idafiliacion)
+            inner join persona using (idpersona)
+           
+            WHERE
+                  forma_pago.planilla = true and
+                  detalle_pago_consumo_convenio.envio_descuento =  false and
+                  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ilike $periodo
+            group by 
+              concepto,
+              to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ,
+                persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+            order by 
+              periodo desc";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_ingresos_0548($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "SELECT 
+                    'RESERVAS' as concepto,
+                    to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
+                    sum (detalle_pago.monto) as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+                public.solicitud_reserva
+            inner join detalle_pago using(idsolicitud_reserva)
+            inner join forma_pago  using(idforma_pago)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            WHERE
+              forma_pago.planilla = true and
+              envio_descuento = false and 
+              to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo
+            group by 
+              periodo,
+                 persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+            UNION
+            SELECT  'COLONIA' as concepto,
+                    periodo,
+                    sum(inscripcion_colono_plan_pago.monto) as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+              public.inscripcion_colono_plan_pago
+            inner join forma_pago  using(idforma_pago)
+            inner join inscripcion_colono using(idinscripcion_colono)
+             inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            WHERE
+              forma_pago.planilla = true  and
+              envio_descuento = false and
+              periodo ilike $periodo
+            group by
+               periodo,
+                persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+            UNION
+            SELECT  'PILETA' as concepto, 
+                    to_char(fecha, 'MM/YYYY') as periodo,
+                    sum(monto) as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+              public.detalle_pago_inscripcion_pileta
+            inner join forma_pago using(idforma_pago)
+            inner join inscripcion_pileta using(idinscripcion_pileta)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              forma_pago.planilla = true and
+              envio_descuento = false and
+              to_char(fecha, 'MM/YYYY') ilike $periodo
+
+            group by
+               to_char(fecha, 'MM/YYYY'),
+               persona.legajo,
+              persona.apellido,
+              persona.nombres,
+              afiliacion.idafiliacion";
+      return consultar_fuente($sql);
+  } 
+
+  function get_listado_ingresos_0550($periodo = null)
+  {
+    $sql = " SELECT  'BONO COLABORACION' as concepto, 
+                    to_char(fecha_compra, 'MM/YYYY') as periodo, 
+                    count (*) * talonario_bono_colaboracion.monto as total,
+                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion            
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join talonario_bono_colaboracion on talonario_bono_colaboracion.idtalonario_bono_colaboracion = talonario_nros_bono_colaboracion.idtalonario_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              inner join afiliacion using (idafiliacion )
+              inner join persona using (idpersona)
+            where
+                forma_pago.planilla = true  and
+                pagado = false and
+                to_char(fecha_compra, 'MM/YYYY') ilike $periodo
+            group by 
+              periodo,
+              talonario_bono_colaboracion.monto,
+               persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion";
+      return consultar_fuente($sql);
   }
 }
 ?>

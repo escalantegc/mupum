@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000396]--  - dr_pileta - dt_inscripcion_pileta 
+--[106000413]--  - dr_liquidacion - dt_detalle_liquidacion 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -9,7 +9,7 @@
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'106000396', --objeto
+	'106000413', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
@@ -20,7 +20,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'- dr_pileta - dt_inscripcion_pileta', --nombre
+	'- dr_liquidacion - dt_detalle_liquidacion', --nombre
 	NULL, --titulo
 	NULL, --colapsable
 	NULL, --descripcion
@@ -36,7 +36,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-09-27 19:30:57', --creacion
+	'2018-10-01 19:06:38', --creacion
 	NULL  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 106
@@ -46,14 +46,14 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 ------------------------------------------------------------
 INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, min_registros, punto_montaje, ap, ap_clase, ap_archivo, tabla, tabla_ext, alias, modificar_claves, fuente_datos_proyecto, fuente_datos, permite_actualizacion_automatica, esquema, esquema_ext) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
+	'106000413', --objeto
 	NULL, --max_registros
 	NULL, --min_registros
 	'28', --punto_montaje
 	'1', --ap
 	NULL, --ap_clase
 	NULL, --ap_archivo
-	'inscripcion_pileta', --tabla
+	'detalle_liquidacion', --tabla
 	NULL, --tabla_ext
 	NULL, --alias
 	'0', --modificar_claves
@@ -71,36 +71,36 @@ INSERT INTO apex_objeto_db_registros (objeto_proyecto, objeto, max_registros, mi
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000445', --col_id
-	'idinscripcion_pileta', --columna
+	'106000413', --objeto
+	'106000474', --col_id
+	'iddetalle_liquidacion', --columna
 	'E', --tipo
 	'1', --pk
-	'inscripcion_pileta_idinscripcion_pileta_seq', --secuencia
+	'detalle_liquidacion_iddetalle_liquidacion_seq', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
+	NULL, --externa
+	'detalle_liquidacion'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000446', --col_id
-	'idtemporada_pileta', --columna
+	'106000413', --objeto
+	'106000475', --col_id
+	'idcabecera_liquidacion', --columna
 	'E', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
+	NULL, --externa
+	'detalle_liquidacion'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000447', --col_id
+	'106000413', --objeto
+	'106000476', --col_id
 	'idafiliacion', --columna
 	'E', --tipo
 	'0', --pk
@@ -108,63 +108,35 @@ INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, colum
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
+	NULL, --externa
+	'detalle_liquidacion'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000448', --col_id
-	'costo_grupo_familiar', --columna
+	'106000413', --objeto
+	'106000477', --col_id
+	'monto', --columna
 	'N', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
 	'1', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
+	NULL, --externa
+	'detalle_liquidacion'  --tabla
 );
 INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
 	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000454', --col_id
-	'adicional_mayores_edad', --columna
+	'106000413', --objeto
+	'106000478', --col_id
+	'saldo', --columna
 	'N', --tipo
 	'0', --pk
 	'', --secuencia
 	NULL, --largo
 	NULL, --no_nulo
-	'0', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000455', --col_id
-	'total', --columna
-	'N', --tipo
-	'0', --pk
-	'', --secuencia
-	NULL, --largo
-	NULL, --no_nulo
-	'0', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
-);
-INSERT INTO apex_objeto_db_registros_col (objeto_proyecto, objeto, col_id, columna, tipo, pk, secuencia, largo, no_nulo, no_nulo_db, externa, tabla) VALUES (
-	'mupum', --objeto_proyecto
-	'106000396', --objeto
-	'106000457', --col_id
-	'costo_por_mayor', --columna
-	'N', --tipo
-	'0', --pk
-	'', --secuencia
-	NULL, --largo
-	NULL, --no_nulo
-	'0', --no_nulo_db
-	'0', --externa
-	'inscripcion_pileta'  --tabla
+	'1', --no_nulo_db
+	NULL, --externa
+	'detalle_liquidacion'  --tabla
 );
 --- FIN Grupo de desarrollo 106

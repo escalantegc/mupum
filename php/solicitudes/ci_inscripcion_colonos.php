@@ -172,8 +172,6 @@ class ci_inscripcion_colonos extends mupum_ci
 			$datos['fecha'] = date('Y-m-j');
 			$this->cn()->agregar_dt_inscripcion_colono($datos);
 
-		
-			
 		}
 	}
 
