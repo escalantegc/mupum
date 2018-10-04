@@ -4116,7 +4116,7 @@ class dao
           $concepto_liquidacion = self::get_codigo_concepto_liquidacion($cabecera['idconcepto_liquidacion']);
 
           $temp_nombre = $concepto_liquidacion."_".$periodo.".txt";
-          $temp_archivo = toba::proyecto()->get_www('archivos/'.$this->s__nombrearchivo);
+          $temp_archivo = toba::proyecto()->get_www('archivos/'.$temp_nombre);
      
           //-- Se pasa el contenido al archivo temporal
           $temp_fp = fopen($temp_archivo['path'], 'w');
