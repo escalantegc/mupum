@@ -61,7 +61,7 @@ INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializa
 	'mupum', --proyecto
 	'106000101', --item
 	'106000409', --objeto
-	'0', --orden
+	'1', --orden
 	NULL  --inicializar
 );
 INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializar) VALUES (
@@ -69,6 +69,6 @@ INSERT INTO apex_item_objeto (item_id, proyecto, item, objeto, orden, inicializa
 	'mupum', --proyecto
 	'106000101', --item
 	'106000410', --objeto
-	'0', --orden
+	'2', --orden
 	NULL  --inicializar
 );
