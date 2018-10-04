@@ -71,6 +71,19 @@ class cn_liquidacion extends mupum_cn
 	function set_dt_cabecera_liquidacion($datos)
 	{
 		$this->dep('dr_liquidacion')->tabla('dt_cabecera_liquidacion')->set($datos);
+		if (isset($datos['archivo']))
+		{
+			if ($datos['archivo']['tmp_name']!='') {
+			
+				$fparchivo = fopen($datos['archivo']['tmp_name'], 'rb');
+				
+				$this->dep('dr_liquidacion')->tabla('dt_cabecera_liquidacion')->set_blob('archivo', $fparchivo);
+		 	} else {
+				$fp = null;
+				$this->dep('dr_liquidacion')->tabla('dt_cabecera_liquidacion')->set_blob( 'archivo', $fp);
+					
+			}
+		}
 	}
 
 	function agregar_dt_cabecera_liquidacion($datos)
@@ -96,6 +109,12 @@ class cn_liquidacion extends mupum_cn
 	function get_dt_detalle_liquidacion()
 	{
 		return $this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->get_filas();
+	}
+
+	function agregar_dt_detalle_liquidacion($datos)
+	{
+		return $this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->nueva_fila($datos);
+		
 	}
 	
 	

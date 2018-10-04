@@ -793,6 +793,32 @@ class dao
 
     return consultar_fuente($sql);
 
+  }  
+
+  function get_datos_persona_afiliada_para_archivo($idafiliacion = null)
+  {
+    $sql ="SELECT persona.legajo,
+                  persona.apellido,
+                  persona.nombres,
+                  tipo_documento.sigla as tipodocumento,
+                  persona.nro_documento,
+                  persona.cuil
+
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            inner join tipo_documento using(idtipo_documento)
+            where 
+             
+              afiliacion.idafiliacion = $idafiliacion";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]))
+    {
+      return $res[0];
+    }
+
   }   
 
   function get_descripcion_persona_afiliada($idafiliacion = null)
@@ -800,6 +826,7 @@ class dao
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
                  coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
                  persona.correo,
                  *
             FROM 
@@ -896,7 +923,9 @@ class dao
       return $res[0]['persona'];
     }
 
-  }  
+  }    
+
+
 
   function get_descripcion_persona_idpersona($idpersona = null)
   {
@@ -3629,12 +3658,31 @@ class dao
     }
     $sql = "SELECT  idconcepto_liquidacion, 
                     descripcion, 
-                    codigo
+                    codigo,
+                    codigo ||' - '||descripcion as concepto 
             FROM 
               public.concepto_liquidacion
             where
               $where";
     return consultar_fuente($sql);
+  }  
+
+  function get_codigo_concepto_liquidacion($idconcepto_liquidacion = null)
+  {
+
+    $sql = "SELECT  idconcepto_liquidacion, 
+                    descripcion, 
+                    codigo,
+                    codigo ||' - '||descripcion as concepto 
+            FROM 
+              public.concepto_liquidacion
+            where
+              idconcepto_liquidacion = $idconcepto_liquidacion";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['codigo']))
+    {
+      return $res[0]['codigo'];
+    }
   }
 
   function get_listado_cabecera_cuota_societaria($where = null)
@@ -3867,10 +3915,11 @@ class dao
   {
     $periodo = quote("%{$periodo}%");
     $sql = "SELECT      
-                    convenio.titulo as concepto,
+                    convenio.titulo as beneficio,
                     consumo_convenio_cuotas.periodo,
-                    sum (consumo_convenio_cuotas.monto) as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    sum (consumo_convenio_cuotas.monto) as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
                     afiliacion.idafiliacion
             FROM 
                   public.consumo_convenio
@@ -3883,21 +3932,22 @@ class dao
                   convenio.permite_financiacion = true and
                   forma_pago.planilla = true and
                   consumo_convenio_cuotas.envio_descuento =  false and
-                  periodo ilike  $periodo
+                  consumo_convenio_cuotas.periodo ilike  $periodo
             group by 
-              concepto,
+              beneficio,
               consumo_convenio_cuotas.periodo,
               persona.legajo,
               persona.apellido,
               persona.nombres,
-               afiliacion.idafiliacion
+              afiliacion.idafiliacion
            UNION
             SELECT      
-                    convenio.titulo as concepto,
-                    to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
-                    sum (detalle_pago_consumo_convenio.monto) as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
-                     afiliacion.idafiliacion
+                  convenio.titulo as beneficio,
+                  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
+                  sum(detalle_pago_consumo_convenio.monto),
+                  persona.legajo,
+                  persona.apellido||', '|| persona.nombres as persona,
+                  afiliacion.idafiliacion
             FROM 
                 public.consumo_convenio
             inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
@@ -3911,14 +3961,15 @@ class dao
                   detalle_pago_consumo_convenio.envio_descuento =  false and
                   to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ilike $periodo
             group by 
-              concepto,
+              beneficio,
               to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ,
-                persona.legajo,
+              persona.legajo,
               persona.apellido,
               persona.nombres,
-               afiliacion.idafiliacion
-            order by 
-              periodo desc";
+              afiliacion.idafiliacion
+            order by
+              persona";
+
       return consultar_fuente($sql);
   }
 
@@ -3926,10 +3977,11 @@ class dao
   {
     $periodo = quote("%{$periodo}%");
     $sql = "SELECT 
-                    'RESERVAS' as concepto,
+                    'RESERVAS' as beneficio,
                     to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
-                    sum (detalle_pago.monto) as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    sum (detalle_pago.monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
                      afiliacion.idafiliacion
             FROM 
                 public.solicitud_reserva
@@ -3948,10 +4000,11 @@ class dao
               persona.nombres,
                afiliacion.idafiliacion
             UNION
-            SELECT  'COLONIA' as concepto,
+            SELECT  'COLONIA' as beneficio,
                     periodo,
-                    sum(inscripcion_colono_plan_pago.monto) as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    sum(inscripcion_colono_plan_pago.monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
                      afiliacion.idafiliacion
             FROM 
               public.inscripcion_colono_plan_pago
@@ -3970,10 +4023,11 @@ class dao
               persona.nombres,
                afiliacion.idafiliacion
             UNION
-            SELECT  'PILETA' as concepto, 
+            SELECT  'PILETA' as beneficio, 
                     to_char(fecha, 'MM/YYYY') as periodo,
-                    sum(monto) as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    sum(monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
                      afiliacion.idafiliacion
             FROM 
               public.detalle_pago_inscripcion_pileta
@@ -3991,16 +4045,20 @@ class dao
                persona.legajo,
               persona.apellido,
               persona.nombres,
-              afiliacion.idafiliacion";
+              afiliacion.idafiliacion
+           order by
+              persona";
       return consultar_fuente($sql);
   } 
 
   function get_listado_ingresos_0550($periodo = null)
   {
-    $sql = " SELECT  'BONO COLABORACION' as concepto, 
+    $periodo = quote("%{$periodo}%");
+    $sql = " SELECT  'BONO COLABORACION' as beneficio, 
                     to_char(fecha_compra, 'MM/YYYY') as periodo, 
-                    count (*) * talonario_bono_colaboracion.monto as total,
-                    coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                    count (*) * talonario_bono_colaboracion.monto as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
                      afiliacion.idafiliacion            
             FROM 
               public.talonario_nros_bono_colaboracion
@@ -4015,11 +4073,106 @@ class dao
             group by 
               periodo,
               talonario_bono_colaboracion.monto,
-               persona.legajo,
+              persona.legajo,
               persona.apellido,
               persona.nombres,
-               afiliacion.idafiliacion";
+              afiliacion.idafiliacion
+            order by
+              persona";
       return consultar_fuente($sql);
+  }
+
+  function get_listado_cabecera_liquidacion($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idcabecera_liquidacion, 
+                   concepto_liquidacion.codigo||' - ' ||  concepto_liquidacion.descripcion as concepto, 
+                    periodo, 
+                    concepto_liquidacion.idconcepto_liquidacion,
+                    fecha_liquidacion, 
+                    usuario, 
+                    liquidado, 
+                    exportado, 
+                    conciliado,
+                    archivo
+            FROM 
+              public.cabecera_liquidacion
+            inner join concepto_liquidacion using(idconcepto_liquidacion)
+            where
+              $where";
+    $cabeceras = consultar_fuente($sql);
+    $datos = array();
+    foreach($cabeceras as $cabecera)
+      {
+        if(isset($cabecera['archivo']) and !empty($cabecera['archivo']))
+        {
+          $fp_imagen = $cabecera['archivo'];
+          //-- Se necesita el path fisico y la url de una archivo temporal que va a contener la imagen
+          
+          $periodo = str_replace("/", "-", $cabecera['periodo']);
+          $concepto_liquidacion = self::get_codigo_concepto_liquidacion($cabecera['idconcepto_liquidacion']);
+
+          $temp_nombre = $concepto_liquidacion."_".$periodo.".txt";
+          $temp_archivo = toba::proyecto()->get_www_temp($temp_nombre);
+     
+          //-- Se pasa el contenido al archivo temporal
+          $temp_fp = fopen($temp_archivo['path'], 'w');
+          stream_copy_to_stream($fp_imagen, $temp_fp);
+          fclose($temp_fp);
+          $tamaño = round(filesize($temp_archivo['path']) / 1024);
+          
+          //-- Se muestra la imagen temporal
+          //$datos['imagen_vista_previa'] = "";
+          $enlace="<a href='{$temp_archivo['url']}' target='_blank'>Descargar</a>";
+          $cabecera['archivo'] =$enlace;
+        }
+        $datos[] = $cabecera;
+      }
+      return $datos;
+  }
+
+  function actualizar_envio_descuento_0548($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "  UPDATE public.detalle_pago
+              SET  envio_descuento=true
+              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo 
+
+              UPDATE public.inscripcion_colono_plan_pago
+              SET envio_descuento=true 
+              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  periodo ilike $periodo; 
+
+
+              UPDATE public.detalle_pago_inscripcion_pileta
+              SET envio_descuento=true
+              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago_inscripcion_pileta.fecha, 'MM/YYYY') ilike $periodo;";
+    return consultar_fuente($sql);      
+  }
+
+  function actualizar_envio_descuento_0549($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "UPDATE public.consumo_convenio_cuotas
+            SET envio_descuento=true 
+            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  periodo ilike $periodo ;
+
+            UPDATE public.detalle_pago_consumo_convenio
+            SET envio_descuento=true
+            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ilike $periodo ;";
+    return consultar_fuente($sql);
+  }  
+
+  function actualizar_envio_descuento_0550($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "UPDATE public.talonario_nros_bono_colaboracion
+            SET pagado=true
+            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(fecha_compra, 'MM/YYYY') ilike $periodo;";
+    return consultar_fuente($sql);
+
   }
 }
 ?>

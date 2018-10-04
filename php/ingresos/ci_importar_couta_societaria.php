@@ -84,7 +84,14 @@ class ci_importar_couta_societaria extends mupum_ci
 
 	function conf__cuadro_cuotas(mupum_ei_cuadro $cuadro)
 	{
-		return $this->cn()->get_dt_cuota_societaria();
+		$datos = $this->cn()->get_dt_cuota_societaria();
+		$this->pantalla()->eliminar_evento('procesar');
+		if (count($this->s__cuotas) > 0)
+		{
+			$cuadro->set_datos($datos);
+			$this->pantalla()->agregar_evento('procesar');
+
+		}
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -185,29 +192,7 @@ class ci_importar_couta_societaria extends mupum_ci
 	//---- JAVASCRIPT -------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	/*function extender_objeto_js()
-	{
-		$tiene_cuotas = 'no';
-		if (isset($this->s__cuotas))
-		{
-			$tiene_cuotas = 'si';
-		}
-		echo "
-		var tiene = $tiene_cuotas;
-		{$this->objeto_js}.ini = function () 
-		{
-			if (tiene == 'si')
-			{
-				this.ocultar_boton('validar');
-				this.mostrar_boton('procesar');
-			} else {
-				this.ocultar_boton('procesar');
-				this.mostrar_boton('validar');
-			}
-								
-		}
-		";
-	}*/
+	
 
 
 
