@@ -307,18 +307,22 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function realizar_conciliacion($path)
 	{
-		$file = fopen($path, "r") or exit("No se puede abrir el archivo");
-		//Output a line of the file until the end is reached
-		$descontando = array();
-		while(!feof($file))
+		if(isset($path))
 		{
-			$linea = fgets($file);
-			$vec['legajo'] = substr($linea, 0,6); 
-			$vec['monto'] = substr($linea,65,10); 
-			$descontando[] = $vec;
+			$file = fopen($path, "r") or exit("No se puede abrir el archivo");
+			//Output a line of the file until the end is reached
+			$descontando = array();
+			while(!feof($file))
+			{
+				$linea = fgets($file);
+				$vec['legajo'] = substr($linea, 0,6); 
+				$vec['monto'] = substr($linea,65,10); 
+				$descontando[] = $vec;
+			}
+			return $descontando;
+			fclose($file);
 		}
-		return $descontando;
-		fclose($file);
+		
 	}
 
 
@@ -356,6 +360,21 @@ class ci_generar_liquidacion extends mupum_ci
 			}
 		}
 		return $conciliado;	
+	}
+
+	function evt__cuadro_conciliacion__seleccion($datos)
+	{
+		$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
+	
+		foreach ($datos as $dato) 
+		{
+			$clave['idcabecera_liquidacion'] = $cabecera['idcabecera_liquidacion'];
+			$clave['idafiliacion'] = $dato['idafiliacion'];
+			$this->cn()->set_cursor_dt_detalle_liquidacion($clave);
+			$this->cn()->set_dt_detalle_liquidacion($dato);
+
+			//$this->cn()->agregar_dt_detalle_liquidacion($dato);
+		}
 	}
 
 }

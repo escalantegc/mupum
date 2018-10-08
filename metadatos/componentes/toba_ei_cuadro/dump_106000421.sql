@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_cuadro', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_cuadro_conciliacion', --subclase
+	'liquidacion/ei_cuadro_conciliacion.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'cuadro_conciliacioncuadro_ver_liquidacionci_generar_liquidacion - cuadro_liquidacion', --nombre
@@ -50,7 +50,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'mupum', --proyecto
 	'106000596', --evento_id
 	'106000421', --objeto
-	'exportar', --identificador
+	'seleccion', --identificador
 	'<input  type=''checkbox'' onclick=''seleccion_total("seleccion")'' />', --etiqueta
 	'1', --maneja_datos
 	'1', --sobre_fila
@@ -90,7 +90,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --titulo
 	NULL, --subtitulo
 	NULL, --sql
-	'idafiliacion,monto', --columnas_clave
+	'idafiliacion,monto,saldo', --columnas_clave
 	NULL, --columna_descripcion
 	'0', --clave_dbr
 	NULL, --archivos_callbacks

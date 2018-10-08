@@ -114,9 +114,29 @@ class cn_liquidacion extends mupum_cn
 	function agregar_dt_detalle_liquidacion($datos)
 	{
 		return $this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->nueva_fila($datos);
+	}
+
+	function set_cursor_dt_detalle_liquidacion($seleccion)
+	{
+		$id = $this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->get_id_fila_condicion($seleccion);
+		$this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->set_cursor($id[0]);
+	}
+
+	function hay_cursor_dt_detalle_liquidacion()
+	{
+		return $this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->hay_cursor();
+	}
+
+	function resetear_cursor_dt_detalle_liquidacion()
+	{
+		$this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->resetear_cursor();
+	}
+
+	function set_dt_detalle_liquidacion($datos)
+	{
+		$this->dep('dr_liquidacion')->tabla('dt_detalle_liquidacion')->set($datos);
 		
 	}
-	
 	
 }
 
