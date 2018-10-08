@@ -90,7 +90,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --titulo
 	NULL, --subtitulo
 	NULL, --sql
-	'idafiliacion,monto,beneficio', --columnas_clave
+	'idafiliacion,monto,concepto', --columnas_clave
 	NULL, --columna_descripcion
 	'0', --clave_dbr
 	NULL, --archivos_callbacks
@@ -196,9 +196,9 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'mupum', --objeto_cuadro_proyecto
 	'106000417', --objeto_cuadro
 	'106000418', --objeto_cuadro_col
-	'beneficio', --clave
+	'concepto', --clave
 	'3', --orden
-	'Beneficio', --titulo
+	'Concepto', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
 	NULL, --ancho

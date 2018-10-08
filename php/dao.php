@@ -802,7 +802,9 @@ class dao
                   persona.nombres,
                   tipo_documento.sigla as tipodocumento,
                   persona.nro_documento,
-                  persona.cuil
+                  persona.cuil,
+                  afiliacion.idafiliacion,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
 
             FROM 
               public.afiliacion
@@ -843,6 +845,7 @@ class dao
 
   function get_datos_persona_afiliada_legajo($legajo = null)
   {
+    //--$legajo = quote("%{$legajo}%");
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
                  coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
@@ -855,7 +858,7 @@ class dao
             where 
               activa = true and
               persona.legajo ilike $legajo";
-
+  
     return consultar_fuente($sql);
 
   }  
@@ -3970,7 +3973,32 @@ class dao
             order by
               persona";
 
-      return consultar_fuente($sql);
+    $datos = consultar_fuente($sql);
+    $concepto_liquidacion = dao::get_listado_concepto_liquidacion("codigo ilike  '%0549%'");
+
+    $consumos = array();
+    for( $i = 0; $i<count($datos) ; $i++)
+    {
+        $consumos[$i] = array($datos[$i]['idafiliacion'] => $datos[$i]['monto']);
+    }  
+
+    $totales = array();    
+    foreach($consumos as $dato)
+    {
+        foreach ($dato as $clave=>$valor) 
+        {
+            $totales[$clave]+=$valor;
+        }
+    } 
+    $descuentos = array();
+    foreach ($totales as $key => $value) 
+    {
+      $afiliado = self::get_datos_persona_afiliada_para_archivo($key);
+      $afiliado['monto'] = number_format($value, 2, '.', ''); ;
+      $afiliado['concepto'] = trim($concepto_liquidacion[0]['codigo']);      
+      $descuentos[] = $afiliado;
+    }
+    return $descuentos;
   }
 
   function get_listado_ingresos_0548($periodo = null)
@@ -4048,7 +4076,33 @@ class dao
               afiliacion.idafiliacion
            order by
               persona";
-      return consultar_fuente($sql);
+     
+      $datos = consultar_fuente($sql);
+    $concepto_liquidacion = dao::get_listado_concepto_liquidacion("codigo ilike  '%0548%'");
+
+    $consumos = array();
+    for( $i = 0; $i<count($datos) ; $i++)
+    {
+        $consumos[$i] = array($datos[$i]['idafiliacion'] => $datos[$i]['monto']);
+    }  
+
+    $totales = array();    
+    foreach($consumos as $dato)
+    {
+        foreach ($dato as $clave=>$valor) 
+        {
+            $totales[$clave]+=$valor;
+        }
+    } 
+    $descuentos = array();
+    foreach ($totales as $key => $value) 
+    {
+      $afiliado = self::get_datos_persona_afiliada_para_archivo($key);
+      $afiliado['monto'] = number_format($value, 2, '.', ''); ;
+      $afiliado['concepto'] = trim($concepto_liquidacion[0]['codigo']);
+      $descuentos[] = $afiliado;
+    }
+    return $descuentos;
   } 
 
   function get_listado_ingresos_0550($periodo = null)
@@ -4079,7 +4133,32 @@ class dao
               afiliacion.idafiliacion
             order by
               persona";
-      return consultar_fuente($sql);
+    $datos = consultar_fuente($sql);
+    $concepto_liquidacion = dao::get_listado_concepto_liquidacion("codigo ilike  '%0550%'");
+
+    $consumos = array();
+    for( $i = 0; $i<count($datos) ; $i++)
+    {
+        $consumos[$i] = array($datos[$i]['idafiliacion'] => $datos[$i]['monto']);
+    }  
+
+    $totales = array();    
+    foreach($consumos as $dato)
+    {
+        foreach ($dato as $clave=>$valor) 
+        {
+            $totales[$clave]+=$valor;
+        }
+    } 
+    $descuentos = array();
+    foreach ($totales as $key => $value) 
+    {
+      $afiliado = self::get_datos_persona_afiliada_para_archivo($key);
+      $afiliado['monto'] = number_format($value, 2, '.', ''); ;
+      $afiliado['concepto'] = trim($concepto_liquidacion[0]['codigo']);      
+      $descuentos[] = $afiliado;
+    }
+    return $descuentos;
   }
 
   function get_listado_cabecera_liquidacion($where = null)

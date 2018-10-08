@@ -3,6 +3,7 @@ require_once('dao.php');
 class ci_generar_liquidacion extends mupum_ci
 {
 	public $s__datos_liquidacion;
+	public $s__datos_conciliacion;
 	public $s__nombrearchivo;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
@@ -30,6 +31,7 @@ class ci_generar_liquidacion extends mupum_ci
 		$this->cn()->resetear_dr_liquidacion();
 		$this->set_pantalla('pant_inicial');
 		unset($this->s__datos_liquidacion);
+		unset($this->s__datos_conciliacion);
 	}
 
 	function evt__nuevo()
@@ -82,6 +84,13 @@ class ci_generar_liquidacion extends mupum_ci
 		}
 		$this->cn()->resetear_dr_liquidacion();
 	}
+	
+	function evt__cuadro__conciliar($seleccion)
+	{
+		$this->cn()->cargar_dr_liquidacion($seleccion);
+		$this->cn()->set_cursor_dt_cabecera_liquidacion($seleccion);
+		$this->set_pantalla('pantalla_conso');
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
@@ -128,6 +137,7 @@ class ci_generar_liquidacion extends mupum_ci
 		} else {
 			$datos['usuario'] = toba::usuario()->get_id();
 			$datos['fecha_liquidacion'] = date("d-m-Y"); 
+			$datos['liquidado'] = 1;
 			$this->cn()->agregar_dt_cabecera_liquidacion($datos);
 		}
 
@@ -219,64 +229,45 @@ class ci_generar_liquidacion extends mupum_ci
 		$concepto_liquidacion = dao::get_codigo_concepto_liquidacion($cabecera['idconcepto_liquidacion']);
 		$datos = $this->cn()->get_dt_detalle_liquidacion();
 
-		$consumos = array();
-		for($i=0;$i<count($datos);$i++){
-		    $consumos[$i] = array($datos[$i]['idafiliacion'] => $datos[$i]['monto']);
-		}  
+		$descuentos = array();
+		foreach ($datos as $dato) 
+		{
+			$afiliado = dao::get_datos_persona_afiliada_para_archivo($dato['idafiliacion']);
+			$dato['monto'] = number_format($dato['monto'] , 2, '.', ''); ;
 
+			$descuentos[] = array_merge((array) $dato,(array) $afiliado);
+		}	
 		
 
-
-		$totales = array();    
-		foreach($consumos as $dato)
-		{
-		    foreach ($dato as $clave=>$valor) 
-		    {
-		        $totales[$clave]+=$valor;
-		    }
-		} 
-		$descuentos = array();
-		foreach ($totales as $key => $value) 
-		{
-			$afiliado = dao::get_datos_persona_afiliada_para_archivo($key);
-			$afiliado['monto'] = number_format($value, 2, '.', ''); ;
-			$afiliado['concepto'] = trim($concepto_liquidacion);
-			$descuentos[] = $afiliado;
-		}
 		$periodo = str_replace("/", "-", $cabecera['periodo']);
 		$this->s__nombrearchivo = $concepto_liquidacion."_".$periodo.".txt";
 		$file = fopen(toba::proyecto()->get_path()."/www/archivos/".$this->s__nombrearchivo, "w");
 
 	 	foreach ($descuentos as $descuento) 
 	 	{
+
 	 		$linea =str_pad($descuento['legajo'], 6, "0", STR_PAD_LEFT) .
 							str_pad($descuento['apellido'], 20).
 							str_pad($descuento['nombres'], 20). 
 							str_pad($descuento['tipodocumento'], 4). 
 							str_pad($descuento['nro_documento'], 9,"0", STR_PAD_LEFT) . 
 							str_pad($descuento['monto'], 10,"0", STR_PAD_LEFT). 
-							str_pad($descuento['concepto'], 4, "0", STR_PAD_LEFT).
+							str_pad(trim($descuento['concepto']), 4, "0", STR_PAD_LEFT).
 							str_pad($descuento['cuil'], 11,"0", STR_PAD_LEFT).
-							'N';
-					
-				
-					fwrite($file, $linea . PHP_EOL);
-
-					
+							'N';	
+			fwrite($file, $linea . PHP_EOL);
 	 	}
 
-	 	
 		$archivo = toba::proyecto()->get_www('archivos/'.$this->s__nombrearchivo);
 		//ei_arbol($archivo);
 		$enlace = "<a href='{$archivo['url']}' TARGET='_blank'>Descargar</a>";
-		$cabecera['archivo']['tmp_name'] = $archivo['path'];
-		
+		$cabecera['archivo']['tmp_name'] = $archivo['path'];		
 
+		$cabecera['exportado'] = 1;
 		$this->cn()->set_dt_cabecera_liquidacion($cabecera);
 		try{
 			$this->cn()->guardar_dr_liquidacion();
 			toba::notificacion()->agregar("El archivo se ha generado correctamente",'info');
-			
 			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -285,6 +276,86 @@ class ci_generar_liquidacion extends mupum_ci
 			toba::notificacion()->agregar($mensaje_log,'error');
 		}
 		$this->cn()->resetear_dr_liquidacion();
+	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_consolidacion ------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_consolidacion(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_cabecera_liquidacion())
+		{
+			$datos = $this->cn()->get_dt_cabecera_liquidacion();
+			$form->set_datos($datos);
+		}
+
+	}
+
+	function evt__frm_consolidacion__modificacion($datos)
+	{
+		$this->s__datos_conciliacion = $this->realizar_conciliacion($datos['archivo_unam']['tmp_name']);
+		if ($this->cn()->hay_cursor_dt_cabecera_liquidacion())
+		{
+			$this->cn()->set_dt_cabecera_liquidacion($datos);
+		} else {
+			$datos['conciliado'] = 1;
+			$this->cn()->agregar_dt_cabecera_liquidacion($datos);
+		}
+	}
+
+	function realizar_conciliacion($path)
+	{
+		$file = fopen($path, "r") or exit("No se puede abrir el archivo");
+		//Output a line of the file until the end is reached
+		$descontando = array();
+		while(!feof($file))
+		{
+			$linea = fgets($file);
+			$vec['legajo'] = substr($linea, 0,6); 
+			$vec['monto'] = substr($linea,65,10); 
+			$descontando[] = $vec;
+		}
+		return $descontando;
+		fclose($file);
+	}
+
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_conciliacion ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_conciliacion(mupum_ei_cuadro $cuadro)
+	{
+		$datos = $this->cn()->get_dt_detalle_liquidacion();
+
+		$conciliacion = $this->s__datos_conciliacion;
+
+		$conciliado = array();
+		foreach ($conciliacion as $conso) 
+		{	
+			$legajo = intval($conso['legajo']);
+
+			$legajo = (string) $legajo;
+			
+			$legajo = quote("%{$legajo}%");
+			$afiliado = dao::get_datos_persona_afiliada_legajo($legajo);
+			//--ei_arbol($afiliado);
+			foreach ($datos as $dato) 
+			{
+				if ($afiliado[0]['idafiliacion'] == $dato['idafiliacion'])
+				{
+					$listo['idafiliacion'] = $dato['idafiliacion'];
+					$listo['monto'] = $dato['monto'];
+					$listo['persona'] = $dato['persona'];
+					$listo['saldo'] = floatval($dato['monto']) - floatval($conso['monto']);
+					$conciliado[] = $listo;
+					break;
+				}
+			}
+		}
+		return $conciliado;	
 	}
 
 }

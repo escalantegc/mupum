@@ -22,8 +22,8 @@ class ci_importar_couta_societaria extends mupum_ci
 			$mensaje_log= $error->get_mensaje_log();
 			toba::notificacion()->agregar($mensaje_log,'error');
 		}
-		/*$this->cn()->resetear_dr_importacion();
-		$this->set_pantalla('pant_inicial');*/
+		$this->cn()->resetear_dr_importacion();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	function evt__cancelar()
@@ -88,10 +88,11 @@ class ci_importar_couta_societaria extends mupum_ci
 		$this->pantalla()->eliminar_evento('procesar');
 		if (count($this->s__cuotas) > 0)
 		{
-			$cuadro->set_datos($datos);
 			$this->pantalla()->agregar_evento('procesar');
 
 		}
+					$cuadro->set_datos($datos);
+
 	}
 
 	//-----------------------------------------------------------------------------------

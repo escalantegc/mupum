@@ -152,7 +152,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'auditoria', --carga_fuente
 	NULL, --carga_lista
 	'idconcepto_liquidacion', --carga_col_clave
-	'codigo', --carga_col_desc
+	'concepto', --carga_col_desc
 	'1', --carga_permite_no_seteado
 	'--Seleccione--', --carga_no_seteado
 	'0', --carga_no_seteado_ocultar
