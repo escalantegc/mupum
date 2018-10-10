@@ -70,6 +70,13 @@ class ci_administrar_reserva extends mupum_ci
 		$this->set_pantalla('pant_cancelar');
 
 	}
+	function evt__cuadro__ver($seleccion)
+	{
+		$this->cn()->cargar_dr_reserva($seleccion);
+		$this->cn()->set_cursor_dt_reserva($seleccion);
+		$this->set_pantalla('pant_visualizar');
+	}
+
 
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_historial -------------------------------------------------------------
@@ -93,6 +100,13 @@ class ci_administrar_reserva extends mupum_ci
 		$this->cn()->set_cursor_dt_reserva($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
+	function evt__cuadro_historial__ver($seleccion)
+	{
+		$this->cn()->cargar_dr_reserva($seleccion);
+		$this->cn()->set_cursor_dt_reserva($seleccion);
+		$this->set_pantalla('pant_edicion');
+	}
+
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -222,6 +236,43 @@ class ci_administrar_reserva extends mupum_ci
 	}
 
 
+
+	
+	
+	//-----------------------------------------------------------------------------------
+	//---- frm_ver ----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ver(mupum_ei_formulario $form)
+	{
+		if ($this->cn()->hay_cursor_dt_reserva())
+		{
+			$datos = $this->cn()->get_dt_reserva();
+
+			$form->set_datos($datos);
+		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_detalle_pago_ver ---------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_detalle_pago_ver(ei_frm_detalle_pago $form_ml)
+	{
+		$datos = $this->cn()->get_dt_detalle_pago();
+		$form_ml->set_datos($datos);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_detalle_modificacion_monto_ver ----------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_detalle_modificacion_monto_ver(ei_frm_ml_aumento_descuento $form_ml)
+	{
+		$datos = $this->cn()->get_detalle_modificacion_monto();
+		$form_ml->set_datos($datos);
+
+	}
 
 }
 ?>
