@@ -3397,6 +3397,71 @@ class dao
                     persona.correo,
                     configuracion_colonia.anio
              order by
+              fecha desc,
+              anio desc,
+              colono";
+      return consultar_fuente($sql);
+  }  
+
+
+  function get_listado_inscripcion_colono_sin_plan($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    inscripcion_colono.fecha,
+                    colono.apellido ||', '|| colono.nombres as colono,
+                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular,
+                    cantidad_cuotas,
+                    inscripcion_colono.monto,
+                    porcentaje_inscripcion,
+                    monto_inscripcion,
+                    persona.correo,
+                    inscripcion_colono.baja ,
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan,
+                    configuracion_colonia.anio
+
+              FROM 
+              public.inscripcion_colono
+            inner join configuracion_colonia using(idconfiguracion_colonia)
+            inner join familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+            left outer join  inscripcion_colono_plan_pago using(idinscripcion_colono)
+            WHERE
+              inscripcion_colono_plan_pago.idinscripcion_colono is null and
+              inscripcion_colono.baja = false and
+              $sql_usuario and
+              $where
+
+             group by 
+                    idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido,
+                    colono.nombres ,
+                    tipo_socio.descripcion,
+                    persona.apellido ,
+                    persona.nombres,
+                    persona.correo,
+                    configuracion_colonia.anio
+             order by
               fecha,
               colono";
       return consultar_fuente($sql);
@@ -3511,14 +3576,17 @@ class dao
     }
   }
 
-  function get_colonos_del_afiliado()
+  function get_colonos_del_afiliado($where = null)
   {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
     $sql = "SELECT  
                     afiliacion.idafiliacion,
                      tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos,
-                    inscripcion_colono.idinscripcion_colono
+                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos
 
               FROM 
               public.inscripcion_colono
@@ -3531,24 +3599,27 @@ class dao
             left outer join  inscripcion_colono_plan_pago using(idinscripcion_colono)
             WHERE
               inscripcion_colono_plan_pago.idinscripcion_colono is null and
-              inscripcion_colono.baja = false
+              inscripcion_colono.baja = false and
+              $where
             group by
                   afiliacion.idafiliacion,
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion,
-                  inscripcion_colono.idinscripcion_colono,
-                  inscripcion_colono.fecha
+                  tipo_socio.descripcion
             order by 
-              inscripcion_colono.fecha,
+             configuracion_colonia.anio desc,
               titular";
     return consultar_fuente($sql);
 
   } 
 
-  function get_colonos_del_afiliado_con_plan()
+  function get_colonos_del_afiliado_con_plan($where = null)
   {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
     $sql = "SELECT  
                     afiliacion.idafiliacion,
                     tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
@@ -3564,16 +3635,16 @@ class dao
             inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
             inner join persona on afiliacion.idpersona=persona.idpersona
             inner join inscripcion_colono_plan_pago using(idinscripcion_colono)
-          
+          where
+            $where
            group by
                   afiliacion.idafiliacion,
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion,
-                  inscripcion_colono.fecha
+                  tipo_socio.descripcion
             order by 
-              inscripcion_colono.fecha,
+            configuracion_colonia.anio,
               titular";
     return consultar_fuente($sql);
 

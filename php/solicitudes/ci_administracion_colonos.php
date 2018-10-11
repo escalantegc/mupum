@@ -2,6 +2,8 @@
 class ci_administracion_colonos extends mupum_ci
 {
 	protected $s__seleccion_adm_plan;
+	protected $s__where;
+	protected $s__datos_filtro;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -73,23 +75,8 @@ class ci_administracion_colonos extends mupum_ci
 
 	function evt__cuadro__borrar($seleccion)
 	{
-		$this->cn()->cargar_dt_inscripcion_colono1($seleccion);
-		$this->cn()->eliminar_dt_inscripcion_colono1($seleccion);
-		try{
-			$this->cn()->guardar_dr_administrar_colonia();
-				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			
-
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
-				
-			} 		
-		}
-		$this->cn()->resetear_dr_administrar_colonia();
-		$this->set_pantalla('pant_inicial');
+$this->s__seleccion_adm_plan = $seleccion;
+		$this->set_pantalla('pant_baja');
 	}
 	//----------------------------------------------------------------------------------
 	//---- cuadro_colono_plan -----------------------------------------------------------
@@ -269,6 +256,38 @@ class ci_administracion_colonos extends mupum_ci
 	function evt__frm_ml_plan_externo__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_bajas -----------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_bajas(mupum_ei_cuadro $cuadro)
+	{
+	    $where = 'afiliacion.idafiliacion =' .$this->s__seleccion_adm_plan['idafiliacion'];
+		$datos = dao::get_listado_inscripcion_colono_sin_plan($where);
+		$cuadro->set_datos($datos);
+	}
+
+	function evt__cuadro_bajas__borrar($seleccion)
+	{
+		$this->cn()->cargar_dt_inscripcion_colono1($seleccion);
+		$this->cn()->eliminar_dt_inscripcion_colono1($seleccion);
+		try{
+			$this->cn()->guardar_dr_administrar_colonia();
+				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+		} catch( toba_error_db $error){
+			$sql_state= $error->get_sqlstate();
+			
+
+			if($sql_state=='db_23503')
+			{
+				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
+				
+			} 		
+		}
+		$this->cn()->resetear_dr_administrar_colonia();
+		$this->set_pantalla('pant_inicial');
 	}
 
 }

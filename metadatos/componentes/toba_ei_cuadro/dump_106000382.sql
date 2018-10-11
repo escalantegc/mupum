@@ -164,7 +164,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'106000431', --objeto_cuadro_col
 	'descuento', --clave
 	'2', --orden
-	'Descuento', --titulo
+	'Planilla', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'col-num-p1', --estilo
 	NULL, --ancho
