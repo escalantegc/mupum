@@ -60,7 +60,7 @@ class ci_inscripcion_colonos extends mupum_ci
 			$disponible =$cupo - $cantidad_inscriptos; 
 			if ($cantidad_inscriptos < $cupo)
 			{
-				$this->set_pantalla('pant_edicion');	
+				$this->set_pantalla('pant_nuevo');	
 				toba::notificacion()->agregar("Se encuentran disponibles " .$disponible. " vacantes para inscripcion de colonos.",'info');
 			} else {
 				toba::notificacion()->agregar("La vacantes de inscripcion ha llegado al cupo maximo de :".$cupo. ". No se aceptan mas inscriptos",'info');
@@ -77,6 +77,7 @@ class ci_inscripcion_colonos extends mupum_ci
 		$this->set_pantalla('pant_inicial');
 	}
 
+	
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -125,6 +126,13 @@ class ci_inscripcion_colonos extends mupum_ci
 		}
 		$this->cn()->resetear_dr_colonia();
 		$this->set_pantalla('pant_inicial');
+	}
+
+	function evt__cuadro__ver($seleccion)
+	{
+		$this->cn()->cargar_dr_colonia($seleccion);
+		$this->cn()->set_cursor_dt_inscripcion_colono($seleccion);
+		$this->set_pantalla('pant_ver');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -287,6 +295,46 @@ class ci_inscripcion_colonos extends mupum_ci
             toba::notificacion()->agregar($chupo, 'info');
         }
 	}
+
+
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_nuevo --------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_nuevo(ei_frm_inscripcion_colonia $form)
+	{		
+		if ($this->cn()->hay_cursor_dt_inscripcion_colono())
+		{
+			$datos = $this->cn()->get_dt_inscripcion_colono();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_nuevo__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_inscripcion_colono())
+		{
+			$this->cn()->set_dt_inscripcion_colono($datos);
+		} else {
+			$datos['fecha'] = date('Y-m-j');
+			$this->cn()->agregar_dt_inscripcion_colono($datos);
+
+		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_telefonos_contacto_ver ---------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_telefonos_contacto_ver(mupum_ei_formulario_ml $form_ml)
+	{
+		return $this->cn()->get_dt_telefono_inscripcion_colono();
+	}
+
+
+
+
 
 }
 ?>

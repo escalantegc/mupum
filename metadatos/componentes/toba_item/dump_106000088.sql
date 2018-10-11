@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000088]--  Listado de Pagos 
+--[106000088]--  Listado de Egresos 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Listado de Pagos', --nombre
+	'Listado de Egresos', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion

@@ -3301,6 +3301,24 @@ class dao
       return consultar_fuente($sql);
   }  
 
+  function get_listado_configuracion_colonia_controlada()
+  {
+   
+    $sql ="SELECT idconfiguracion_colonia, 
+                  anio, 
+                  inicio, 
+                  fin, 
+                  inicio_inscripcion, 
+                  fin_inscripcion,
+                  cupo
+          FROM 
+            public.configuracion_colonia
+          WHERE
+              current_date between inicio_inscripcion and fin_inscripcion
+              ";
+      return consultar_fuente($sql);
+  }  
+
   function get_datos_configuracion_colonia($idconfiguracion_colonia = null)
   {
 
@@ -3346,11 +3364,13 @@ class dao
                     monto_inscripcion,
                     persona.correo,
                     inscripcion_colono.baja ,
-                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan,
+                    configuracion_colonia.anio
 
               FROM 
               public.inscripcion_colono
-            inner join  familia using(idpersona_familia)
+            inner join configuracion_colonia using(idconfiguracion_colonia)
+            inner join familia using(idpersona_familia)
             inner join persona colono on familia.idpersona_familia = colono.idpersona
             inner join afiliacion using(idafiliacion)
             inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
@@ -3374,7 +3394,8 @@ class dao
                     tipo_socio.descripcion,
                     persona.apellido ,
                     persona.nombres,
-                    persona.correo 
+                    persona.correo,
+                    configuracion_colonia.anio
              order by
               fecha,
               colono";
@@ -3496,7 +3517,8 @@ class dao
                     afiliacion.idafiliacion,
                      tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos
+                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos,
+                    inscripcion_colono.idinscripcion_colono
 
               FROM 
               public.inscripcion_colono
@@ -3515,7 +3537,8 @@ class dao
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion";
+                  tipo_socio.descripcion,
+                  inscripcion_colono.idinscripcion_colono";
     return consultar_fuente($sql);
 
   } 

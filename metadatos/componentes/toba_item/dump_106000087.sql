@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000087]--  Listado Egresos 
+--[106000087]--  Listado de egresos mal 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,11 +23,11 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Listado Egresos', --nombre
+	'Listado de egresos mal', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
-	'1', --menu
+	'0', --menu
 	NULL, --orden
 	'0', --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
