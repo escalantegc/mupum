@@ -79,11 +79,48 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --desplegable_activo
 	'0', --scroll
 	NULL, --scroll_alto
-	NULL, --cc_modo
-	NULL, --cc_modo_anidado_colap
+	't', --cc_modo
+	'0', --cc_modo_anidado_colap
 	NULL, --cc_modo_anidado_totcol
 	NULL  --cc_modo_anidado_totcua
 );
+
+------------------------------------------------------------
+-- apex_objeto_cuadro_cc
+------------------------------------------------------------
+
+--- INICIO Grupo de desarrollo 106
+INSERT INTO apex_objeto_cuadro_cc (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_cc, identificador, descripcion, orden, columnas_id, columnas_descripcion, pie_contar_filas, pie_mostrar_titular, pie_mostrar_titulos, imp_paginar, modo_inicio_colapsado) VALUES (
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000027', --objeto_cuadro_cc
+	'concepto', --identificador
+	'Concepto', --descripcion
+	'2', --orden
+	'concepto', --columnas_id
+	'concepto', --columnas_descripcion
+	'0', --pie_contar_filas
+	'0', --pie_mostrar_titular
+	'0', --pie_mostrar_titulos
+	NULL, --imp_paginar
+	'0'  --modo_inicio_colapsado
+);
+INSERT INTO apex_objeto_cuadro_cc (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_cc, identificador, descripcion, orden, columnas_id, columnas_descripcion, pie_contar_filas, pie_mostrar_titular, pie_mostrar_titulos, imp_paginar, modo_inicio_colapsado) VALUES (
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000028', --objeto_cuadro_cc
+	'periodo', --identificador
+	'Periodo', --descripcion
+	'1', --orden
+	'periodo', --columnas_id
+	'periodo', --columnas_descripcion
+	'0', --pie_contar_filas
+	'0', --pie_mostrar_titular
+	'0', --pie_mostrar_titulos
+	NULL, --imp_paginar
+	'0'  --modo_inicio_colapsado
+);
+--- FIN Grupo de desarrollo 106
 
 ------------------------------------------------------------
 -- apex_objeto_ei_cuadro_columna
@@ -94,9 +131,9 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'mupum', --objeto_cuadro_proyecto
 	'106000382', --objeto_cuadro
 	'106000383', --objeto_cuadro_col
-	'concepto', --clave
+	'detalle', --clave
 	'1', --orden
-	'Concepto', --titulo
+	'Detalle', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
 	NULL, --ancho
@@ -124,23 +161,23 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
 	'106000382', --objeto_cuadro
-	'106000384', --objeto_cuadro_col
-	'periodo', --clave
+	'106000431', --objeto_cuadro_col
+	'descuento', --clave
 	'2', --orden
-	'Periodo', --titulo
+	'Descuento', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-num-p1', --estilo
 	NULL, --ancho
-	'1', --formateo
+	'2', --formateo
 	NULL, --vinculo_indice
-	NULL, --no_ordenar
+	'0', --no_ordenar
 	NULL, --mostrar_xls
 	NULL, --mostrar_pdf
 	NULL, --pdf_propiedades
 	NULL, --desabilitado
-	NULL, --total
+	'1', --total
 	NULL, --total_cc
-	NULL, --usar_vinculo
+	'0', --usar_vinculo
 	NULL, --vinculo_carpeta
 	NULL, --vinculo_item
 	NULL, --vinculo_popup
@@ -155,12 +192,12 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, clave, orden, titulo, estilo_titulo, estilo, ancho, formateo, vinculo_indice, no_ordenar, mostrar_xls, mostrar_pdf, pdf_propiedades, desabilitado, total, total_cc, usar_vinculo, vinculo_carpeta, vinculo_item, vinculo_popup, vinculo_popup_param, vinculo_target, vinculo_celda, vinculo_servicio, permitir_html, grupo, evento_asociado) VALUES (
 	'mupum', --objeto_cuadro_proyecto
 	'106000382', --objeto_cuadro
-	'106000385', --objeto_cuadro_col
-	'total', --clave
+	'106000432', --objeto_cuadro_col
+	'otros', --clave
 	'3', --orden
-	'Total', --titulo
+	'Otros', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
-	'4', --estilo
+	'col-num-p1', --estilo
 	NULL, --ancho
 	'2', --formateo
 	NULL, --vinculo_indice
@@ -184,3 +221,35 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	NULL  --evento_asociado
 );
 --- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_objeto_cuadro_col_cc
+------------------------------------------------------------
+INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
+	'106000027', --objeto_cuadro_cc
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000431', --objeto_cuadro_col
+	'1'  --total
+);
+INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
+	'106000028', --objeto_cuadro_cc
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000431', --objeto_cuadro_col
+	'1'  --total
+);
+INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
+	'106000027', --objeto_cuadro_cc
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000432', --objeto_cuadro_col
+	'1'  --total
+);
+INSERT INTO apex_objeto_cuadro_col_cc (objeto_cuadro_cc, objeto_cuadro_proyecto, objeto_cuadro, objeto_cuadro_col, total) VALUES (
+	'106000028', --objeto_cuadro_cc
+	'mupum', --objeto_cuadro_proyecto
+	'106000382', --objeto_cuadro
+	'106000432', --objeto_cuadro_col
+	'1'  --total
+);

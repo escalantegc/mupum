@@ -3761,9 +3761,11 @@ class dao
   function get_listado_ingresos()
   {
     $sql = "SELECT  
-                    'CUOTA SOCIETARIA' as concepto,
+                    '0547' as concepto,
+                    'CUOTA SOCIETARIA' AS detalle,
                     cabecera_cuota_societaria.periodo, 
-                    sum(cuota_societaria.monto) as total
+                    sum(cuota_societaria.monto) as descuento,
+                    0 as otros
             FROM 
               public.cabecera_cuota_societaria
               inner join cuota_societaria using(idcabecera_cuota_societaria)
@@ -3771,65 +3773,109 @@ class dao
                 cabecera_cuota_societaria.periodo   
             UNION
             SELECT 
-                    'RESERVAS' as concepto,
+                    '0548' as concepto,
+                    'RESERVA' as detalle,
                     to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
-                    sum (detalle_pago.monto) as total
+                     0 as descuento,
+                     sum (detalle_pago.monto) as otros
+                    
             FROM 
                 public.solicitud_reserva
             inner join detalle_pago using(idsolicitud_reserva)
+            inner join forma_pago using(idforma_pago)
+            where
+    forma_pago.planilla = false
             group by 
+     forma_pago.descripcion,
               periodo
             UNION
-            SELECT    'COLONIA' as concepto,
+            SELECT    '0548' as concepto,
+      'COLONIA' as detalle,  
                       to_char(fecha_pago, 'MM/YYYY') as periodo,
-                      sum(monto) as total
+                     0 as descuento,
+                     sum (monto) as otros
             FROM 
               public.inscripcion_colono_plan_pago
+             inner join forma_pago using(idforma_pago)
             where
+         forma_pago.planilla = false and  
               cuota_pagada = true 
             group by
-                fecha_pago
+                fecha_pago,
+                forma_pago.descripcion 
             UNION
-            SELECT  'BONO COLABORACION' as concepto, 
+            SELECT  '0550' as concepto, 
+        'BONO COLABORACION' as detalle,
                     to_char(fecha_compra, 'MM/YYYY') as periodo, 
-                    count (*) * talonario_bono_colaboracion.monto as total            
+                    0 as descuento,       
+                    count (*) * talonario_bono_colaboracion.monto as otros
+                   
             FROM 
               public.talonario_nros_bono_colaboracion
-              inner join talonario_bono_colaboracion on talonario_bono_colaboracion.idtalonario_bono_colaboracion = talonario_nros_bono_colaboracion.idtalonario_bono_colaboracion
+              inner join talonario_bono_colaboracion using(idtalonario_bono_colaboracion)
+              inner join forma_pago using(idforma_pago)
             where 
+    forma_pago.planilla = false and   
                 pagado = true 
             group by 
               periodo,
-              talonario_bono_colaboracion.monto
+              talonario_bono_colaboracion.monto,
+              forma_pago.descripcion 
             UNION
             SELECT      
-                    convenio.titulo as concepto,
+                    '0549' as concepto,
+                    convenio.titulo as detalle,
                     to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') as periodo,
-                    sum (consumo_convenio_cuotas.monto) as total
+        0 as descuento,  
+                    sum (consumo_convenio_cuotas.monto) as otros
+                    
             FROM 
                 public.consumo_convenio
             inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
             inner join consumo_convenio_cuotas using (idconsumo_convenio)
+            inner join forma_pago using(idforma_pago)
             WHERE
               convenio.permite_financiacion = true and
-              consumo_convenio_cuotas.cuota_pagada =  true 
+              consumo_convenio_cuotas.cuota_pagada =  true and
+              forma_pago.planilla = false
             group by 
               concepto,
-              to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') 
+              to_char(consumo_convenio_cuotas.fecha_pago, 'MM/YYYY') ,
+               forma_pago.descripcion ,
+               convenio.titulo
             UNION
             SELECT      
-                    convenio.titulo as concepto,
+                   '0549' as concepto,
+                   convenio.titulo as detalle,
                     to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
-                    sum (detalle_pago_consumo_convenio.monto) as total
+     0 as descuento  ,  
+                    sum (detalle_pago_consumo_convenio.monto) as otros
+                   
             FROM 
                 public.consumo_convenio
             inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
             inner join detalle_pago_consumo_convenio using (idconsumo_convenio)
-            
-        
+            inner join forma_pago using(idforma_pago)
+        WHERE
+             forma_pago.planilla = false
             group by 
               concepto,
-              to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') 
+              to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ,
+              forma_pago.descripcion ,
+              convenio.titulo
+          UNION
+          SELECT 
+              concepto_liquidacion.codigo as concepto,
+              'LIQUIDACION' as detalle,
+              cabecera_liquidacion.periodo,
+              sum(detalle_liquidacion.monto) - sum(detalle_liquidacion.saldo) as descuento,
+               0 as otros
+          FROM public.cabecera_liquidacion
+          inner join detalle_liquidacion using(idcabecera_liquidacion)
+          inner join concepto_liquidacion using (idconcepto_liquidacion)
+          group by
+            concepto_liquidacion.codigo ,
+            cabecera_liquidacion.periodo
             order by 
               periodo desc";
       return consultar_fuente($sql);
