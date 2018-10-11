@@ -103,6 +103,12 @@ class ci_inscripcion_pileta extends mupum_ci
 		$this->cn()->resetear_dr_pileta();
 		$this->set_pantalla('pant_inicial');
 	}
+	function evt__cuadro__ver($seleccion)
+	{
+		$this->cn()->cargar_dr_pileta($seleccion);
+		$this->cn()->set_cursor_dt_inscripcion_pileta($seleccion);
+		$this->set_pantalla('pant_ver');
+	}
 
 	//-----------------------------------------------------------------------------------
 	//---- filtro -----------------------------------------------------------------------
@@ -275,6 +281,32 @@ class ci_inscripcion_pileta extends mupum_ci
 		}
 		
 		$respuesta->set($result);
+	}
+
+
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ml_grupo_familiar_ver ----------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ml_grupo_familiar_ver(eI_frm_ml_grupo_familiar $form_ml)
+	{
+				return $this->cn()->get_dt_detalle_inscripcion_pileta();
+
+	}
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ver ----------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ver(ei_frm_pileta $form)
+	{
+		if ($this->cn()->hay_cursor_dt_inscripcion_pileta())
+		{
+			$datos = $this->cn()->get_dt_inscripcion_pileta();
+			$form->set_datos($datos);
+		
+		}
 	}
 
 }

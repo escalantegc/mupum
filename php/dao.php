@@ -3538,7 +3538,11 @@ class dao
                   persona.nombres,
                   configuracion_colonia.anio,
                   tipo_socio.descripcion,
-                  inscripcion_colono.idinscripcion_colono";
+                  inscripcion_colono.idinscripcion_colono,
+                  inscripcion_colono.fecha
+            order by 
+              inscripcion_colono.fecha,
+              titular";
     return consultar_fuente($sql);
 
   } 
@@ -3566,7 +3570,11 @@ class dao
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion";
+                  tipo_socio.descripcion,
+                  inscripcion_colono.fecha
+            order by 
+              inscripcion_colono.fecha,
+              titular";
     return consultar_fuente($sql);
 
   }

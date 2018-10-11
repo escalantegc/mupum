@@ -80,13 +80,15 @@ class ci_administracion_colonos extends mupum_ci
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
+			
+
 			if($sql_state=='db_23503')
 			{
 				toba::notificacion()->agregar("No puede borrar al inscripcion del colono, la misma tiene plan de pago.",'error');
 				
 			} 		
 		}
-		$this->cn()->resetear_dr_colonia();
+		$this->cn()->resetear_dr_administrar_colonia();
 		$this->set_pantalla('pant_inicial');
 	}
 	//----------------------------------------------------------------------------------

@@ -26,6 +26,12 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	'mupum', --proyecto
 	'admin', --usuario_grupo_acc
 	NULL, --item_id
+	'1'  --item
+);
+INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	NULL, --item_id
 	'2'  --item
 );
 INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, item) VALUES (
@@ -605,3 +611,12 @@ INSERT INTO apex_usuario_grupo_acc_item (proyecto, usuario_grupo_acc, item_id, i
 	'106000101'  --item
 );
 --- FIN Grupo de desarrollo 106
+
+------------------------------------------------------------
+-- apex_grupo_acc_restriccion_funcional
+------------------------------------------------------------
+INSERT INTO apex_grupo_acc_restriccion_funcional (proyecto, usuario_grupo_acc, restriccion_funcional) VALUES (
+	'mupum', --proyecto
+	'admin', --usuario_grupo_acc
+	'106000003'  --restriccion_funcional
+);
