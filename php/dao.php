@@ -2853,7 +2853,7 @@ class dao
             inner join parentesco using(idparentesco)
             inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
             where 
-              extract(year from age( familiar.fecha_nacimiento)) < 18 and
+              extract(year from age( familiar.fecha_nacimiento)) <= 21 and
               $sql_usuario and
               parentesco.colonia = true and
               afiliacion.activa =true and
@@ -2917,6 +2917,7 @@ class dao
     {
       $where = '1 = 1';
     }
+    $sql_usuario = self::get_sql_usuario();
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
                     familiar.apellido ||' - '||familiar.nombres as familiar_titular,
@@ -2935,6 +2936,7 @@ class dao
               inner join persona on familia.idpersona=persona.idpersona
               inner join configuracion_bolsita using(idconfiguracion_bolsita)
             where 
+              $sql_usuario and 
               $where";
       return consultar_fuente($sql);
   }  

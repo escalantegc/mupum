@@ -69,8 +69,20 @@ class ci_mis_solicitudes_subsidio extends mupum_ci
 	function evt__cuadro__borrar($seleccion)
 	{
 		$this->cn()->cargar_dt_solicitud_subsidio($seleccion);
+		$this->cn()->set_cursor_dt_solicitud_subsidio($seleccion);
+		$datos = $this->cn()->get_dt_solicitud_subsidio();
+
+		$socio = dao::get_datos_persona_afiliada($datos['idafiliacion']);
+		$tipo_subsidio = dao::get_listado_tipo_subsidio('idtipo_subsidio = '.$datos['idtipo_subsidio']);
+		$datos_correo['tipo_subsidio']= $tipo_subsidio[0]['descripcion'];
+	   	$datos_correo['monto'] = $datos['monto'];
+	    $datos_correo['socio'] = $socio[0]['persona'];
+	    $datos_correo['correo'] = $socio[0]['correo'];
+	    
+
 		$this->cn()->eliminar_dt_solicitud_subsidio($seleccion);
 		try{
+			$this->enviar_correo_baja_solicitud_subsidio($datos_correo);
 			$this->cn()->guardar_dr_subsidio();
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
@@ -95,6 +107,7 @@ class ci_mis_solicitudes_subsidio extends mupum_ci
 		{
 			$filtro->set_datos($this->s__datos_filtro);
 			$this->s__where = $filtro->get_sql_where();
+			
 		}
 	}
 
@@ -158,6 +171,36 @@ class ci_mis_solicitudes_subsidio extends mupum_ci
 				"Monto: $". $monto. "<br/>".
 				"<b>IMPORTANTE : Para acceder al beneficio deberá presentar la siguiente documentación: <br/ >
 				Certificado de nacimiento vivo o de casamiento y nota de solicitud del subsidio para archivo.</b> <br/>".
+				"<p>No responda este correo, fue generado por sistema. </p>";
+
+        try 
+        {
+            $mail = new toba_mail('escalantegc@gmail.com', $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+            $mail->set_html(true);
+            $cc[] = trim($datos['correo']);
+            $mail->set_cc($cc);
+            $mail->enviar();
+        } catch (toba_error $error) {
+            $chupo = $error->get_mensaje_log();
+            toba::notificacion()->agregar($chupo, 'info');
+        }
+	}	
+
+
+	function enviar_correo_baja_solicitud_subsidio($datos)
+	{
+	    $tipo = $datos['tipo_subsidio'];
+	    $monto = $datos['monto'];
+	    $socio = $datos['socio'];
+
+	    //Armo el mail nuevo &oacute;
+	    $asunto = "Constancia de Baja de Solicitud de Subsidio ";
+	    
+		$cuerpo_mail = "Por medio del presente se deja Constancia de la Baja de  Solicitud de Subsidio.<br/> ".
+				"Los datos de la solicitud son:<br/>".
+				"Socio Titular: ".$socio. "<br/>".
+				"Tipo Subsidio: ".$tipo. "<br/>".
+				"Monto: $". $monto. "<br/>".
 				"<p>No responda este correo, fue generado por sistema. </p>";
 
         try 

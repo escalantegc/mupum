@@ -19,14 +19,14 @@ class ci_configurar_bono_colaboracion extends mupum_ci
 			
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El tipo de subsidio esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("El el talonario de bono esta siendo referenciado, no puede eliminarlo",'error');
 				
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_descripcion'))
+			if(strstr($mensaje_log,'talonario_bono_colaboracion_descripcion_idx'))
 			{
-				toba::notificacion()->agregar("El tipo de subsidio ya esta registrado.",'info');
+				toba::notificacion()->agregar("El talonario de bono ya esta registrado.",'info');
 				
 			} 
 			
@@ -79,7 +79,7 @@ class ci_configurar_bono_colaboracion extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El tipo de subsidio esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("El el talonario de bono esta siendo referenciado, no puede eliminarlo",'error');
 				
 			} 		
 		}

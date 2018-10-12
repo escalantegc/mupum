@@ -266,7 +266,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_consulta_php
 	NULL, --carga_sql
 	'auditoria', --carga_fuente
-	'true/PAGADO,false/RECHAZADO', --carga_lista
+	'true/PAGADO,false/RECHAZADO,null/PENDIENTE', --carga_lista
 	NULL, --carga_col_clave
 	NULL, --carga_col_desc
 	'0', --carga_permite_no_seteado
@@ -299,7 +299,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --selec_tamano
 	NULL, --selec_ancho
 	NULL, --selec_serializar
-	'2', --selec_cant_columnas
+	'3', --selec_cant_columnas
 	NULL  --placeholder
 );
 --- FIN Grupo de desarrollo 106

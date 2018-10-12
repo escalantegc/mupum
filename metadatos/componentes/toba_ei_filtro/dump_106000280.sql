@@ -215,11 +215,11 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
 	NULL, --carga_maestros
-	NULL, --edit_tamano
-	NULL, --edit_maximo
+	'6', --edit_tamano
+	'5', --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
-	NULL, --edit_rango
+	'[0..*]', --edit_rango
 	NULL, --edit_expreg
 	NULL, --estilo
 	NULL, --popup_item

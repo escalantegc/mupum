@@ -84,6 +84,7 @@ $this->s__seleccion_adm_plan = $seleccion;
 
 	function conf__cuadro_colono_plan(mupum_ei_cuadro $cuadro)
 	{
+		
 		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_colonos_del_afiliado_con_plan($this->s__where);
@@ -109,6 +110,7 @@ $this->s__seleccion_adm_plan = $seleccion;
 		{
 			$filtro->set_datos($this->s__datos_filtro);
 			$this->s__where = $filtro->get_sql_where();
+
 		}
 	}
 

@@ -19,25 +19,18 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 			edad = this.ef('edad').get_estado();
 			if (minima!='')
 			{	
-				if (edad < minima)
+				if ((edad >= minima) && (edad <= maxima))
 				{
-					this.ef('edad').set_error('La edad del familiar no respeta la minima permitida por el nivel seleccionado.');
-					return false;
-				} else {
+					this.ef('edad').resetear_error();
 					return true;
+					
+				} else {
+					this.ef('edad').set_error('La edad del familiar no respeta el rango de edades permitido.');
+					return false;
 				}
 				
 			}
-			if (maxima!='')
-			{
-				if (edad > maxima)
-				{
-					this.ef('edad').set_error('La edad del familiar no respeta la maxima permitida por el nivel seleccionado.');
-					return false;
-				} else {
-					return true;		
-				}
-			}
+			
 		}
 		";
 	}
