@@ -195,7 +195,17 @@ class ci_administrar_bonos_colaboracion extends mupum_ci
 		}
 	}
 
-
+	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
+	{
+		$fp = dao::get_listado_forma_pago('idforma_pago = '.$idfp);
+		
+		$forma_pago['planilla'] = 'no';
+		if ($fp[0]['planilla']==1)
+		{
+			$forma_pago['planilla'] = 'si';
+		}
+		$respuesta->set($forma_pago);	
+	}
 
 }
 ?>

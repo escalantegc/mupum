@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_cuadro', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'cuadro_configurar_bono_colaboracion', --subclase
+	'solicitudes/cuadro_configurar_bono_colaboracion.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'cuadroci_configurar_bono_colaboracion - cuadro', --nombre

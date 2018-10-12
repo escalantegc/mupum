@@ -3196,7 +3196,7 @@ class dao
     return consultar_fuente($sql);
   }   
 
-  function get_nros_vendidos_combo_editable($filtro = null)
+  function get_nros_vendidos_combo_editable($filtro = null,$idtalonario_bono_colaboracion = null)
   {
     if (! isset($filtro) || trim($filtro)=='')
     {
@@ -3221,6 +3221,7 @@ class dao
               left outer join persona pex on pex.idpersona = talonario_nros_bono_colaboracion.idpersona_externa
             where 
                 pagado = true and
+                talonario_nros_bono_colaboracion.idtalonario_bono_colaboracion = $idtalonario_bono_colaboracion and
                (case when idafiliacion is not null then 'Nro bono: '||nro_bono||' - Comprador: '||persona.legajo||' - '|| persona.apellido||', '|| persona.nombres else  'Nro bono: '||nro_bono||' - Comprador: '||pex.apellido||', '|| pex.nombres  end) ilike $filtro limit 20
 
             ";
@@ -4402,6 +4403,22 @@ class dao
             WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(fecha_compra, 'MM/YYYY') ilike $periodo;";
     return consultar_fuente($sql);
 
+  }
+
+
+  function get_fecha_sorteo_bono_colaboracion($idtalonario_bono_colaboracion= null)
+  {
+    $sql = "SELECT to_char(fecha_sorteo, 'DD/MM/YYYY') as fecha_sorteo   
+            FROM 
+              public.talonario_bono_colaboracion
+            where
+             idtalonario_bono_colaboracion =$idtalonario_bono_colaboracion ";
+    $res = consultar_fuente($sql);
+
+    if (isset($res[0]['fecha_sorteo']))
+    {
+      return $res[0]['fecha_sorteo'];
+    }
   }
 }
 ?>

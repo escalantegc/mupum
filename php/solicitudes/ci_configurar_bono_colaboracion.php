@@ -148,6 +148,14 @@ class ci_configurar_bono_colaboracion extends mupum_ci
 		$this->cn()->procesar_dt_premio_sorteo($datos);
 	}
 
+	function get_nros_vendidos($filtro = null)
+ 	{
+ 		$datos = $this->cn()->get_dt_talonario_bono_colaboracion();
+ 		$idtalonario_bono_colaboracion = $datos['idtalonario_bono_colaboracion'];
+ 		return dao::get_nros_vendidos_combo_editable($filtro ,$idtalonario_bono_colaboracion );
+  
+ 	}
+
 }
 
 ?>
