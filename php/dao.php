@@ -2672,8 +2672,8 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql = "SELECT  familia.idpersona, 
                     familia.idpersona_familia, 
-                    persona.apellido ||' - '||persona.nombres as titular,
-                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    persona.apellido ||', '||persona.nombres as titular,
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
                     parentesco.descripcion as parentesco, 
                     fecha_relacion, 
                     acargo, 
@@ -2920,8 +2920,8 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
-                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
-                    persona.apellido ||' - '||persona.nombres as titular,
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
+                    persona.apellido ||', '||persona.nombres as titular,
                     solicitud_bolsita.fecha_solicitud, 
                     nivel.descripcion as nivel, 
                     observacion, 
@@ -2949,7 +2949,7 @@ class dao
     }
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
-                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
                     persona.legajo ||' - '||persona.apellido ||', '||persona.nombres as titular,
                     solicitud_bolsita.fecha_solicitud, 
                     nivel.descripcion as nivel, 
@@ -2978,8 +2978,8 @@ class dao
     }
     $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
                     familia.idpersona_familia, 
-                    familiar.apellido ||' - '||familiar.nombres as familiar_titular,
-                    persona.legajo ||' - '||persona.apellido ||', '||persona.nombres as titular,
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
+                    persona.legajo ||', '||persona.apellido ||', '||persona.nombres as titular,
                     solicitud_bolsita.fecha_solicitud, 
                     nivel.descripcion as nivel, 
                     observacion, 
