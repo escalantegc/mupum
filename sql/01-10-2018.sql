@@ -83,7 +83,7 @@ $BODY$
 
 CREATE TABLE public.cabecera_liquidacion
 (
-  idcabecera_liquidacion serial NOT NULL DEFAULT ,
+  idcabecera_liquidacion serial NOT NULL  ,
   idconcepto_liquidacion integer NOT NULL,
   periodo character(7) NOT NULL,
   fecha_liquidacion date NOT NULL,
@@ -123,4 +123,4 @@ CREATE TABLE public.detalle_liquidacion
 WITH (
   OIDS=FALSE
 );
-stgres;
+

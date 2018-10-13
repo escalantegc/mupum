@@ -46,6 +46,12 @@ class ci_administrar_bonos_colaboracion extends mupum_ci
 		$this->cn()->resetear_cursor_dt_talonario_nros_bono_colaboracion();
 		$this->set_pantalla('pant_edicion');
 	}
+
+	function evt__volver_cancelar()
+	{
+		$this->cn()->resetear_dr_nros_bono_colaboracion_nros();
+		$this->set_pantalla('pant_inicial');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -67,7 +73,12 @@ class ci_administrar_bonos_colaboracion extends mupum_ci
 		$this->cn()->set_cursor_dt_talonario_bono_colaboracion_nros($seleccion);
 		$this->set_pantalla('pant_edicion');
 	}
-
+	function evt__cuadro__ver($seleccion)
+	{
+		$this->cn()->cargar_dr_nros_bono_colaboracion_nros($seleccion);
+		$this->cn()->set_cursor_dt_talonario_bono_colaboracion_nros($seleccion);
+		$this->set_pantalla('pant_visualizar');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_vendidos --------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -206,6 +217,21 @@ class ci_administrar_bonos_colaboracion extends mupum_ci
 		}
 		$respuesta->set($forma_pago);	
 	}
+
+	//-----------------------------------------------------------------------------------
+	//---- cuadro_vendidos_ver ----------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__cuadro_vendidos_ver(mupum_ei_cuadro $cuadro)
+	{
+		$talonario = $this->cn()->get_dt_talonario_bono_colaboracion_nros();
+		$datos = dao::get_nros_vendidos($talonario['idtalonario_bono_colaboracion']);
+		$cuadro->set_datos($datos);
+	}
+
+
+
+
 
 }
 ?>

@@ -105,10 +105,8 @@ class ei_frm_bono_colaboracion extends mupum_ei_formulario
 		{$this->objeto_js}.evt__idforma_pago__procesar = function(es_inicial)
 		{
 			var idfp = this.ef('idforma_pago').get_estado();
-			if (this.ef('persona_externa').chequeado())
-			{
-				this.controlador.ajax('es_planilla', idfp, this, this.mostrar_campos); 	
-			}
+			this.controlador.ajax('es_planilla', idfp, this, this.mostrar_campos); 	
+			
 		}
 
 
@@ -117,9 +115,17 @@ class ei_frm_bono_colaboracion extends mupum_ei_formulario
 			var planilla = (datos['planilla']);     
 			if (planilla=='si')
 			{
-				alert('No puede seleccionar forma de pago planilla para personas externas.');
-				this.ef('idforma_pago').resetear_estado();
-			}          
+				if (this.ef('persona_externa').chequeado())
+				{
+					alert('No puede seleccionar forma de pago planilla para personas externas.');
+					this.ef('idforma_pago').resetear_estado();	
+					this.ef('pagado').set_solo_lectura(false);			
+				} else {
+					this.ef('pagado').set_solo_lectura(true);
+				}
+			} else {
+				this.ef('pagado').set_solo_lectura(false);
+			}        
 		}
 		";
 	}

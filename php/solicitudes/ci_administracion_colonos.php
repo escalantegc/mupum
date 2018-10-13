@@ -75,7 +75,7 @@ class ci_administracion_colonos extends mupum_ci
 
 	function evt__cuadro__borrar($seleccion)
 	{
-$this->s__seleccion_adm_plan = $seleccion;
+		$this->s__seleccion_adm_plan = $seleccion;
 		$this->set_pantalla('pant_baja');
 	}
 	//----------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ $this->s__seleccion_adm_plan = $seleccion;
 	function conf__cuadro_plan(mupum_ei_cuadro $cuadro)
 	{
 
-		$where = 'afiliacion.idafiliacion =' .$this->s__seleccion_adm_plan['idafiliacion'];
+		$where = 'afiliacion.idafiliacion =' .$this->s__seleccion_adm_plan['idafiliacion'].' and inscripcion_colono.idconfiguracion_colonia ='.$this->s__seleccion_adm_plan['idconfiguracion_colonia'];
 		$datos = dao::get_listado_inscripcion_colono_sin_baja($where);
 		$cuadro->set_datos($datos);
 	}

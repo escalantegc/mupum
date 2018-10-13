@@ -963,7 +963,9 @@ class dao
               FROM 
                 public.instalacion 
               where 
-                $where";
+                $where
+              order by
+                nombre";
       return consultar_fuente($sql);
   }  
 
@@ -1605,11 +1607,35 @@ class dao
                   descripcion,
                   senia,
                   pago_infraestructura,
-                  proveedor
+                  proveedor,
+                  reserva
             FROM public.concepto
 
             where
-              $where";
+              $where
+            order by
+              descripcion";
+    return consultar_fuente($sql);
+  }  
+  function get_listado_concepto_reserva($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql =" SELECT idconcepto, 
+                  descripcion,
+                  senia,
+                  pago_infraestructura,
+                  proveedor,
+                  reserva
+            FROM public.concepto
+
+            where
+              reserva = true and
+              $where
+            order by
+              descripcion";
     return consultar_fuente($sql);
   }  
 
@@ -3589,7 +3615,8 @@ class dao
                     afiliacion.idafiliacion,
                      tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion) as colonos
+                    configuracion_colonia.idconfiguracion_colonia,
+                    colonos_de_un_titular_sin_plan( afiliacion.idafiliacion,configuracion_colonia.idconfiguracion_colonia) as colonos
 
               FROM 
               public.inscripcion_colono
@@ -3609,7 +3636,8 @@ class dao
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion
+                  tipo_socio.descripcion,
+                  configuracion_colonia.idconfiguracion_colonia
             order by 
              configuracion_colonia.anio desc,
               titular";
@@ -3627,7 +3655,8 @@ class dao
                     afiliacion.idafiliacion,
                     tipo_socio.descripcion||': '|| persona.apellido ||', '|| persona.nombres as titular,
                     configuracion_colonia.anio,
-                    colonos_de_un_titular_con_plan( afiliacion.idafiliacion) as colonos
+                    configuracion_colonia.idconfiguracion_colonia,
+                    colonos_de_un_titular_con_plan( afiliacion.idafiliacion,configuracion_colonia.idconfiguracion_colonia) as colonos
 
               FROM 
               public.inscripcion_colono
@@ -3645,9 +3674,10 @@ class dao
                   persona.apellido,
                   persona.nombres,
                   configuracion_colonia.anio,
-                  tipo_socio.descripcion
+                  tipo_socio.descripcion,
+                  configuracion_colonia.idconfiguracion_colonia
             order by 
-            configuracion_colonia.anio,
+            configuracion_colonia.anio desc,
               titular";
     return consultar_fuente($sql);
 
