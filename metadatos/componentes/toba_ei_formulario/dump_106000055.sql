@@ -540,8 +540,8 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
-	NULL, --edit_tamano
-	NULL, --edit_maximo
+	'5', --edit_tamano
+	'5', --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango
@@ -826,7 +826,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000055', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'capacidad_permitida', --identificador
-	'ef_editable', --elemento_formulario
+	'ef_fijo', --elemento_formulario
 	'capacidad_permitida', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
@@ -1146,7 +1146,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'106000055', --objeto_ei_formulario
 	'mupum', --objeto_ei_formulario_proyecto
 	'capacidad_maxima', --identificador
-	'ef_editable', --elemento_formulario
+	'ef_fijo', --elemento_formulario
 	'capacidad_maxima', --columnas
 	'0', --obligatorio
 	'0', --oculto_relaja_obligatorio
