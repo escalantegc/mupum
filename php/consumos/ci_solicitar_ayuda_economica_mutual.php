@@ -100,6 +100,48 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 		}
 		$this->cn()->resetear_dr_consumo_convenio();
 	}
+
+	function evt__cuadro__aceptar($seleccion)
+	{
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$datos['pagado'] = 1;
+
+		$this->cn()->set_dt_consumo_convenio($datos);
+		try{
+			$this->cn()->guardar_dr_consumo_convenio();
+			toba::notificacion()->agregar("La solicitud de ayuda economica ha sido aceptada correctamente",'info');
+			
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
+				
+				toba::notificacion()->agregar($mensaje_log,'error');
+		}
+	
+		$this->cn()->resetear_dr_consumo_convenio();
+	}
+
+	function evt__cuadro__rechazar($seleccion)
+	{
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$datos['pagado'] = 0;
+
+		$this->cn()->set_dt_consumo_convenio($datos);
+		try{
+			$this->cn()->guardar_dr_consumo_convenio();
+			toba::notificacion()->agregar("La solicitud de ayuda economica ha sido rechazada",'info');
+			
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
+				
+				toba::notificacion()->agregar($mensaje_log,'error');
+		}
+	
+		$this->cn()->resetear_dr_consumo_convenio();
+
+	}
+
 	//-----------------------------------------------------------------------------------
 	//---- cuadro_historico -------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -219,6 +261,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 			$cuadro->set_datos($cuotas);
 		}
 	}
+
 
 
 

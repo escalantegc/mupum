@@ -2384,7 +2384,8 @@ class dao
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                      (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                      (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as fecha_max_nro_cuota,
-                    consumo_convenio_cuotas.monto_puro  as valor_cuota        
+                    consumo_convenio_cuotas.monto_puro  as valor_cuota,
+                    (case when pagado = true then 'ACEPTADA' else (case when pagado = false then 'RECHAZADA' else 'PENDIENTE' end) end) as pagado        
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -2424,7 +2425,9 @@ class dao
                     fecha, 
                     cantidad_cuotas,
                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                    consumo_convenio_cuotas.monto  as valor_cuota        
+                    consumo_convenio_cuotas.monto  as valor_cuota,
+                    (case when pagado = true then 'ACEPTADA' else (case when pagado = false then 'RECHAZADA' else 'PENDIENTE' end) end) as pagado        
+        
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -3737,6 +3740,7 @@ class dao
                 inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
               WHERE
                     convenio.ayuda_economica = true and
+                    convenio.pagado = true and
                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) ilike $valor_where
               group by
                   categoria_comercio.descripcion,
@@ -4457,24 +4461,27 @@ class dao
     }
  
     $sql = "SELECT  consumo_convenio.idconsumo_convenio,               
-                    (persona.legajo||' - '||persona.apellido||', '|| persona.nombres) as socio,                  
+                    ('Socio: '||persona.legajo||' - '||persona.apellido||', '|| persona.nombres||' | Fecha Solicitud: '||to_char(fecha,'DD/MM/YYYY')||'| Monto: $ ' ||consumo_convenio.total||' | Cuotas: '||cantidad_cuotas) as socio,                  
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
-                    sum(consumo_convenio_cuotas.monto)as total, 
-                    fecha, 
-                    cantidad_cuotas,
-                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                    consumo_convenio_cuotas.monto_puro  as valor_cuota,     
-                    comercios_por_convenio.porcentaje_interes ,
-                    consumo_convenio.total as monto_ayuda 
+                    consumo_convenio_cuotas.nro_cuota, 
+                    consumo_convenio_cuotas.periodo,
+                    consumo_convenio_cuotas.monto_puro  as monto_puro,  
+                    consumo_convenio_cuotas.interes, 
+                    consumo_convenio_cuotas.monto as monto_a_pagar, 
+                    forma_pago.descripcion as forma_pago,
+                    cuota_pagada,
+                    fecha_pago
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
             left outer join persona on persona.idpersona = afiliacion.idpersona
             inner join convenio using(idconvenio)
-            inner join comercios_por_convenio using (idconvenio)
             inner join consumo_convenio_cuotas using(idconsumo_convenio)
+            inner join forma_pago using (idforma_pago)
+
             WHERE
               convenio.ayuda_economica = true and 
+              consumo_convenio.pagado = true and
               $where
             group by 
               consumo_convenio.idconsumo_convenio,
@@ -4484,11 +4491,16 @@ class dao
               convenio.titulo,
               convenio.monto_maximo_mensual,
               total, 
-              fecha, 
-              cantidad_cuotas,
-              consumo_convenio_cuotas.monto_puro,
-              comercios_por_convenio.porcentaje_interes
-            order by fecha, monto_ayuda, socio desc";
+              fecha,
+               consumo_convenio_cuotas.nro_cuota, 
+                   consumo_convenio_cuotas.periodo,
+                   consumo_convenio_cuotas.monto_puro  ,  
+                   consumo_convenio_cuotas.interes, 
+                   consumo_convenio_cuotas.monto, 
+                    forma_pago.descripcion ,
+                    cuota_pagada,
+                    fecha_pago
+            order by nro_cuota,fecha, total, socio desc";
       return consultar_fuente($sql);
   } 
 }
