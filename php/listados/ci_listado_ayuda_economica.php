@@ -1,6 +1,5 @@
 <?php
-require_once('dao.php');
-class ci_listado_ingresos extends mupum_ci
+class ci_listado_ayuda_economica extends mupum_ci
 {
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
@@ -10,9 +9,9 @@ class ci_listado_ingresos extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_ingresos($this->s__datos_filtro);
+			$datos = dao::get_listado_ayudas_economicas($this->s__where);
 		}else{
-			$datos = dao::get_listado_ingresos();
+			$datos = dao::get_listado_ayudas_economicas();
 		}
 		
 		$cuadro->set_datos($datos);
@@ -24,7 +23,6 @@ class ci_listado_ingresos extends mupum_ci
 
 	function conf__filtro(mupum_ei_filtro $filtro)
 	{
-		$filtro->columna('periodo')->set_condicion_fija('es_igual_a');
 		if(isset($this->s__datos_filtro))
 		{
 			$filtro->set_datos($this->s__datos_filtro);
@@ -35,7 +33,6 @@ class ci_listado_ingresos extends mupum_ci
 	function evt__filtro__filtrar($datos)
 	{
 		$this->s__datos_filtro = $datos;
-
 	}
 
 	function evt__filtro__cancelar()
@@ -44,4 +41,5 @@ class ci_listado_ingresos extends mupum_ci
 	}
 
 }
+
 ?>

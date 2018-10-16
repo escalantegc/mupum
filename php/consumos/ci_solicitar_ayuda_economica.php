@@ -164,11 +164,8 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
 			$datos = $this->cn()->get_dt_consumo_convenio();
-			$datos['fecha'] = date("d-m-Y");   
 			$form->set_datos($datos);
 		}
-		$datos['fecha'] = date("Y-m-d");   
-		$form->set_datos($datos);
 	}
 
 	function evt__frm__modificacion($datos)

@@ -190,7 +190,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'106000173', --objeto_ei_filtro_col
 	'106000357', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
-	'cadena', --tipo
+	'numero', --tipo
 	'total', --nombre
 	'total', --expresion
 	'Total', --etiqueta
@@ -215,8 +215,8 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_no_seteado
 	NULL, --carga_no_seteado_ocultar
 	NULL, --carga_maestros
-	NULL, --edit_tamano
-	NULL, --edit_maximo
+	'9', --edit_tamano
+	'9', --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango

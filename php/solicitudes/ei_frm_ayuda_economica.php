@@ -88,8 +88,20 @@ class ei_frm_ayuda_economica extends mupum_ei_formulario
 				
 			}
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__fecha__procesar = function(es_inicial)
+		{
+			if (es_inicial)
+			{
+				var hoy = new Date();
+				var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
+				this.ef('fecha').set_estado(hoy_texto);
+			}
+		}
 		";
 	}
+
 
 
 

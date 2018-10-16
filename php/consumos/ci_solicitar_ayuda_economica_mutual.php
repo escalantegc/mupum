@@ -159,11 +159,8 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
 			$datos = $this->cn()->get_dt_consumo_convenio();
-			$datos['fecha'] = date("d-m-Y");   
 			$form->set_datos($datos);
 		}
-		$datos['fecha'] = date("Y-m-d");   
-		$form->set_datos($datos);
 	}
 
 	function evt__frm_ayuda_mutual__modificacion($datos)
@@ -172,6 +169,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 		{
 			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
+
 			$this->cn()->agregar_dt_consumo_convenio($datos);
 		}
 	}

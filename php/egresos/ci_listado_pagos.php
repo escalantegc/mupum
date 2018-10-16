@@ -7,11 +7,11 @@ class ci_listado_pagos extends mupum_ci
 
 	function conf__cuadro(mupum_ei_cuadro $cuadro)
 	{
-	if(isset($this->s__datos_filtro))
+		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_pagos($this->s__datos_filtro);
+			$datos = dao::get_listado_egresos($this->s__datos_filtro);
 		}else{
-			$datos = dao::get_listado_pagos();
+			$datos = dao::get_listado_egresos();
 		}
 		
 		$cuadro->set_datos($datos);
