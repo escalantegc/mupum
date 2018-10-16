@@ -909,6 +909,32 @@ class dao
 
   }
 
+  function get_personas_afiliadas_activas_combo_editable($filtro = null)
+  {
+    if (! isset($filtro) || trim($filtro)=='')
+    {
+      return array();
+    }
+    $filtro = quote("%{$filtro}%");
+
+    $sql_usuario = self::get_sql_usuario();
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              $sql_usuario and
+              persona.legajo||' - '|| persona.apellido||', '|| persona.nombres ilike $filtro limit 10";
+
+    return consultar_fuente($sql);
+
+
+  }
+
   function get_descripcion_persona($idafiliacion = null)
   {
     
@@ -2343,7 +2369,9 @@ class dao
                     fecha, 
                     cantidad_cuotas,
                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
-                    consumo_convenio_cuotas.monto_puro  as valor_cuota             
+                    consumo_convenio_cuotas.monto_puro  as valor_cuota ,
+                    (case when pagado = true then 'ACEPTADA' else (case when pagado = false then 'RECHAZADA' else 'PENDIENTE' end) end) as pagado        
+           
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -3740,7 +3768,7 @@ class dao
                 inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
               WHERE
                     convenio.ayuda_economica = true and
-                    convenio.pagado = true and
+                    consumo_convenio.pagado = true and
                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) ilike $valor_where
               group by
                   categoria_comercio.descripcion,
@@ -4503,5 +4531,129 @@ class dao
             order by nro_cuota,fecha, total, socio desc";
       return consultar_fuente($sql);
   } 
+
+   function get_listado_solicitudes_bolsitas($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  solicitud_bolsita.idsolicitud_bolsita, 
+                    familia.idpersona_familia, 
+                    familiar.apellido ||', '||familiar.nombres as familiar_titular,
+                    persona.legajo ||' - '||persona.apellido ||', '||persona.nombres as titular,
+                    solicitud_bolsita.fecha_solicitud, 
+                    nivel.descripcion as nivel, 
+                    observacion, 
+                    fecha_entrega,
+                    (case when entregado is null then 'PENDIENTE' else (case when entregado = true then 'ENTREGADO' else 'RECHAZADO' end) end) as estado,
+                    configuracion_bolsita.anio
+            FROM 
+              public.solicitud_bolsita
+              inner join nivel using(idnivel) 
+              inner join familia using(idpersona_familia)
+              inner join persona familiar on familiar.idpersona=familia.idpersona_familia
+              inner join persona on familia.idpersona=persona.idpersona
+              inner join configuracion_bolsita using(idconfiguracion_bolsita)
+            where 
+              $where 
+            order by
+              configuracion_bolsita.anio,  solicitud_bolsita.fecha_solicitud, titular";
+      return consultar_fuente($sql);
+  }
+
+
+  function get_listado_solicitudes_subsidio($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql= "SELECT solicitud_subsidio.idsolicitud_subsidio, 
+                  persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as socio,
+                  tipo_subsidio.descripcion as tipo_subsidio, 
+                  solicitud_subsidio.fecha_solicitud, 
+                  fecha_pago, 
+                  solicitud_subsidio.monto, 
+                  observacion, 
+                  (case when pagado is null then 'PENDIENTE' else (case when pagado = true then 'PAGADO' else 'RECHAZADO' end) end) as estado
+           FROM 
+              public.solicitud_subsidio
+            inner join  tipo_subsidio using(idtipo_subsidio)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+                $sql_usuario and
+                $where 
+            order by
+              solicitud_subsidio.fecha_solicitud desc,socio,tipo_subsidio";
+      return consultar_fuente($sql);
+  }
+
+  function get_listado_inscripciones_colonos($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido ||', '|| colono.nombres as colono,
+                    tipo_socio.descripcion||': '||persona.apellido ||', '|| persona.nombres as titular,
+                    cantidad_cuotas,
+                    monto,
+                    porcentaje_inscripcion,
+                    monto_inscripcion,
+                    persona.correo,
+                    medicamentos_toma,
+                    inscripcion_colono.baja ,
+                    (case when cantidad_cuotas > 0 then 'SI' else 'NO' end) as tiene_plan,
+                    configuracion_colonia.anio,
+                    (select telefonos_del_colono(inscripcion_colono.idinscripcion_colono)) as telefonos
+
+              FROM 
+              public.inscripcion_colono
+            inner join configuracion_colonia using(idconfiguracion_colonia)
+            inner join familia using(idpersona_familia)
+            inner join persona colono on familia.idpersona_familia = colono.idpersona
+            inner join afiliacion using(idafiliacion)
+            inner join tipo_socio on tipo_socio.idtipo_socio=afiliacion.idtipo_socio
+            inner join persona on afiliacion.idpersona=persona.idpersona
+            WHERE
+              inscripcion_colono.baja = false and
+              $sql_usuario and
+              $where
+
+             group by 
+                    idinscripcion_colono, 
+                    idconfiguracion_colonia, 
+                    idpersona_familia, 
+                    es_alergico, 
+                    alergias, 
+                    informacion_complementaria, 
+                    idafiliacion, 
+                    fecha,
+                    colono.apellido,
+                    colono.nombres ,
+                    tipo_socio.descripcion,
+                    persona.apellido ,
+                    persona.nombres,
+                    persona.correo,
+                    configuracion_colonia.anio
+             order by
+              fecha desc,
+              anio desc,
+              colono";
+      return consultar_fuente($sql);
+  }  
+
 }
 ?>

@@ -144,6 +144,10 @@ class ci_administrar_bolsitas extends mupum_ci
 		{
 			$filtro->set_datos($this->s__datos_filtro);
 			$this->s__where=$filtro->get_sql_where();
+			if (strstr($this->s__where, "entregado = 'null'"))
+			{
+				$this->s__where = str_replace("entregado = 'null'", "entregado is null", $this->s__where);
+			}
 		}
 	}
 
