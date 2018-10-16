@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_calendario', --clase
 	'28', --punto_montaje
-	'ei_calendario', --subclase
-	'solicitudes/ei_calendario.php', --subclase_archivo
+	NULL, --subclase
+	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_solicitud_reserva - calendario', --nombre

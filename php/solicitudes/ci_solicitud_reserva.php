@@ -60,6 +60,7 @@ class ci_solicitud_reserva extends mupum_ci
 	function conf__calendario(mupum_ei_calendario $calendario)
 	{
 		$datos = dao::cargar_calendario_reserva();
+		
 		$calendario->set_ver_contenidos(true);
 		
 		$nuevafecha = date ( 'Y-m-j' );
@@ -109,7 +110,7 @@ class ci_solicitud_reserva extends mupum_ci
 				unset($this->s__dia);
 			}
 		} else {
-			toba::notificacion()->agregar("No puede realizar una reserva de una fecha anterior a la del dia de hoy.",'info');
+			toba::notificacion()->agregar("No puede realizar la reserva de una fecha anterior al dia de hoy.",'info');
 			unset($this->s__dia);
 		}
 

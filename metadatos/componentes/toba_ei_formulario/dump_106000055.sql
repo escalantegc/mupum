@@ -148,13 +148,13 @@ INSERT INTO apex_objeto_ut_formulario (objeto_ut_formulario_proyecto, objeto_ut_
 			<td>
 				[ef id=idinstalacion]</td>
 			<td>
-				[ef id=excedente]</td>
+				[ef id=monto_persona_extra]</td>
 		</tr>
 		<tr>
 			<td>
 				[ef id=idmotivo_tipo_socio]</td>
 			<td>
-				[ef id=monto_persona_extra]</td>
+				[ef id=excedente]</td>
 		</tr>
 		<tr>
 			<td>
@@ -544,7 +544,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	'5', --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
-	NULL, --edit_rango
+	'[1..*]', --edit_rango
 	NULL, --edit_filas
 	NULL, --edit_columnas
 	NULL, --edit_wrap
