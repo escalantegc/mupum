@@ -4655,5 +4655,31 @@ class dao
       return consultar_fuente($sql);
   }  
 
+  function get_listado_talonarios_bono_colaboracion($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idtalonario_bono_colaboracion, 
+                    descripcion, 
+                    nro_talonario, 
+                    nro_inicio, 
+                    nro_fin, 
+                    (cantidad_numeros_talonario_bono_colaboracion(idtalonario_bono_colaboracion)) as cantidad,
+                    fecha_sorteo, 
+                    monto,
+                    (cantidad_numeros_vendidos_talonario_bono_colaboracion(idtalonario_bono_colaboracion)) as vendidos,
+                    (premios_del_bono_colaboracion(idtalonario_bono_colaboracion)) as premios
+            FROM 
+              public.talonario_bono_colaboracion
+            WHERE
+              $where
+            order by
+            fecha_sorteo";
+      return consultar_fuente($sql);
+  }
+
+
 }
 ?>
