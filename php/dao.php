@@ -2508,13 +2508,14 @@ class dao
                     categoria_comercio.descripcion as concepto,
                     idafiliacion, 
                     consumo_convenio.idconvenio, 
-                    idcomercio, total, 
+                    comercio.idcomercio, total, 
                     fecha, 
                     monto_proforma, 
                     (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas, 
                     consumo_convenio.descripcion, 
                     idtalonario_bono, 
                     cantidad_bonos, 
+                    comercio.nombre as comercio,
                     '$'||' '||(case when monto_bono > 0 then monto_bono else null end ) as monto_bono, 
                     (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
                     (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas
@@ -2523,12 +2524,30 @@ class dao
          inner join afiliacion using(idafiliacion)
          inner join persona on persona.idpersona = afiliacion.idpersona
          inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+         inner join comercios_por_convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
+         inner join comercio on comercio.idcomercio = comercios_por_convenio.idcomercio
          inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
-         WHERE
+         where
           $sql_usuario and
           $where
+         group by
+             persona.apellido, 
+             persona.nombres,
+              convenio.titulo ,
+              idconsumo_convenio, 
+              categoria_comercio.descripcion ,
+              idafiliacion, 
+              consumo_convenio.idconvenio, 
+              comercio.idcomercio, total, 
+              fecha, 
+              monto_proforma, 
+             cantidad_cuotas, 
+              consumo_convenio.descripcion, 
+              idtalonario_bono, 
+              cantidad_bonos, 
+              comercio.nombre 
          order by 
-                periodo desc, concepto asc  ";
+                periodo desc, concepto asc   ";
         return consultar_fuente($sql);
   }
 
