@@ -1598,7 +1598,9 @@ class dao
             FROM 
               public.categoria_comercio
             where
-              $where";
+              $where
+            order by
+              descripcion";
     return consultar_fuente($sql);
   }
 
@@ -1615,12 +1617,14 @@ class dao
                     localidad.descripcion as localidad, 
                     categoria_comercio.descripcion as categoria,
                     codigo,
-                    (case when tipo ='co' then 'Comercio' else (case when tipo ='pr' then 'Proveedor' else 'Comercio/Proveedor' end ) end ) as tipo
+                    (case when tipo ='co' then 'Comercio' else (case when tipo ='pr' then 'Proveedor' else 'Comercio-Proveedor' end ) end ) as tipo
             FROM public.comercio
             inner join localidad using(idlocalidad)
             inner join categoria_comercio using(idcategoria_comercio)
             where
-              $where";
+              $where
+            order by
+              categoria_comercio.descripcion";
     return consultar_fuente($sql);
   }  
   function get_listado_concepto($where = null)
@@ -2096,12 +2100,15 @@ class dao
                     nro_talonario, 
                     nro_inicio, 
                     nro_fin,
-                    monto_bono
+                    monto_bono,
+                    (cantidad_numeros_vendidos_talonario_bono(talonario_bono.idtalonario_bono)) as cantidad_vendidos
             FROM public.talonario_bono
             inner join comercio using(idcomercio)
             inner join convenio using(idconvenio)
             where 
-                $where";
+                $where
+            order by
+              convenio, comercio.nombre";
       return consultar_fuente($sql);
   }
 
@@ -2172,7 +2179,9 @@ class dao
             inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
             WHERE
              extract(month from fecha ) < extract(month from (current_date - (2||' months')::interval)) and
-              $where";
+              $where
+            order by
+              fecha desc";
       return consultar_fuente($sql);
   }    
 
@@ -2199,7 +2208,9 @@ class dao
             inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
             inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
             where extract(month from fecha ) between extract(month from (current_date - (2||' months')::interval)) and extract(month from current_date ) and
-                  $where";
+                  $where
+            order by
+              convenio.titulo,fecha desc,socio";
       return consultar_fuente($sql);
   }  
 
@@ -3357,7 +3368,9 @@ class dao
           FROM 
             public.configuracion_colonia
           WHERE
-              $where";
+              $where
+          order by
+            anio desc";
       return consultar_fuente($sql);
   }  
 
@@ -3457,8 +3470,9 @@ class dao
                     persona.correo,
                     configuracion_colonia.anio
              order by
+             anio desc,
               fecha desc,
-              anio desc,
+              
               colono";
       return consultar_fuente($sql);
   }  
@@ -4052,7 +4066,7 @@ class dao
             FROM 
               public.temporada_pileta 
             where
-               current_date between inicio and fin";
+               current_date between fecha_inicio and fecha_fin";
     return consultar_fuente($sql);
   }
   function get_cantidad_temporada_pileta_vigente()
@@ -4103,6 +4117,8 @@ class dao
     if (isset($res[0]['costo_grupo_familiar']))
     {
       return $res[0]['costo_grupo_familiar'];
+    } else {
+       return 0;
     }
   } 
 
@@ -4119,6 +4135,8 @@ class dao
     if (isset($res[0]['adicional_mayores_edad']))
     {
       return $res[0]['adicional_mayores_edad'];
+    } else {
+      return 0;
     }
   }
 

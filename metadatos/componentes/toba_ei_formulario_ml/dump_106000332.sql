@@ -494,7 +494,7 @@ INSERT INTO apex_objeto_ei_formulario_ef (objeto_ei_formulario_fila, objeto_ei_f
 	NULL, --edit_maximo
 	NULL, --edit_mascara
 	NULL, --edit_unidad
-	'[1..99]', --edit_rango
+	'[1..12]', --edit_rango
 	NULL, --edit_filas
 	NULL, --edit_columnas
 	NULL, --edit_wrap

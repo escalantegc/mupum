@@ -67,7 +67,7 @@ class ci_talonario_bonos extends mupum_ci
 
 	function evt__cuadro__borrar($seleccion)
 	{
-				$this->cn()->cargar_dr_convenio($seleccion);
+				$this->cn()->cargar_dt_talonario_bono($seleccion);
 		$this->cn()->eliminar_dt_talonario_bono($seleccion);
 		try{
 			$this->cn()->guardar_dr_convenio();

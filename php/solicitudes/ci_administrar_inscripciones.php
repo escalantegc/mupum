@@ -62,12 +62,12 @@ class ci_administrar_inscripciones extends mupum_ci
 	function evt__cuadro__borrar($seleccion)
 	{
 		$this->cn()->cargar_dr_pileta($seleccion);
-		$this->cn()->set_cursor_dt_inscripcion_pileta($seleccion);
 		$this->cn()->eliminar_dt_inscripcion_pileta($seleccion);
+		$this->cn()->guardar_dr_pileta();
 		try{
 			
 
-			$this->cn()->guardar_dr_pileta();
+			
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();

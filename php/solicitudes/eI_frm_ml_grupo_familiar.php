@@ -13,7 +13,8 @@ class eI_frm_ml_grupo_familiar extends mupum_ei_formulario_ml
 		{$this->objeto_js}.evt__edad__procesar = function(es_inicial, fila)
 		{
 			var edad = this.ef('edad').ir_a_fila(fila).get_estado();
-		
+		this.ef('edad').ir_a_fila(fila).set_solo_lectura(true);
+				this.ef('costo_extra').ir_a_fila(fila).set_solo_lectura(true);
 			var costo_extra = 0;
 			if (edad > 21)
 			{	

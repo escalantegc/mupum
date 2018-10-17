@@ -12,7 +12,7 @@ class ei_frm_configuracion_colonia extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__inicio__procesar = function(es_inicial)
 		{
-
+		
 			var inicio = this.ef('inicio').fecha();
 			var fin = this.ef('fin').fecha();
 			if (!es_inicial)
@@ -27,10 +27,10 @@ class ei_frm_configuracion_colonia extends mupum_ei_formulario
 							this.ef('fin').resetear_estado();
 							this.ef('inicio').resetear_estado();
 						} 
-
+		
 					}
 				}
-
+		
 			}
 		}
 		
@@ -96,9 +96,53 @@ class ei_frm_configuracion_colonia extends mupum_ei_formulario
 				}
 			}	
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__hora_salida__procesar = function(es_inicial)
+		{
+			var llegada = this.ef('hora_llegada').hora();
+			var salida = this.ef('hora_salida').hora();
+			if (!es_inicial)
+			{
+				if (llegada != null)
+				{
+					if (salida != null)
+					{
+						if(salida > llegada)
+						{
+							alert('La hora de llegada  no puede ser mayor a la hora de salida.');
+							this.ef('hora_salida').resetear_estado();
+							this.ef('hora_llegada').resetear_estado();
+						} 
+					}
+				}
+			}
+		}
+		
+		{$this->objeto_js}.evt__hora_llegada__procesar = function(es_inicial)
+		{
+			var llegada = this.ef('hora_llegada').hora();
+			var salida = this.ef('hora_salida').hora();
+			
+			if (!es_inicial)
+			{
+				if (llegada != null)
+				{
+					if (salida != null)
+					{
+						if(llegada < salida )
+						{
+							alert('La hora de llegada  no puede ser menor a la hora de salida.');
+							this.ef('hora_salida').resetear_estado();
+							this.ef('hora_llegada').resetear_estado();
+						} 
+					}
+				}
+			}
+		}
 		";
 	}
 
-}
 
+}
 ?>

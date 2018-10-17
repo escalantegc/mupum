@@ -76,9 +76,8 @@ class ci_configurar_temporada extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El tipo de subsidio esta siendo referenciado, no puede eliminarlo",'error');
-				
-			} 		
+				toba::notificacion()->agregar("La temporada de pileta esta siendo referenciado, no puede eliminarla",'error');
+			} 	
 		}
 		$this->cn()->resetear_dr_pileta();
 		$this->set_pantalla('pant_inicial');

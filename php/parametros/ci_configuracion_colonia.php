@@ -77,7 +77,7 @@ class ci_configuracion_colonia extends mupum_ci
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
 			{
-				toba::notificacion()->agregar("El tipo de subsidio esta siendo referenciado, no puede eliminarlo",'error');
+				toba::notificacion()->agregar("La colonia esta siendo referenciado, no puede eliminarla",'error');
 				
 			} 		
 		}

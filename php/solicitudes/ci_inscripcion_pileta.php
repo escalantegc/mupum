@@ -37,6 +37,11 @@ class ci_inscripcion_pileta extends mupum_ci
 				toba::notificacion()->agregar("Su grupo familiar ya se encuentra inscripto, si desea agregar mas personas al grupo debe editar la inscripcion..",'info');
 	
 			} 
+			if(strstr($mensaje_log,'detalle_inscripcion_pileta_idpersona_familia_idx'))
+			{
+				toba::notificacion()->agregar("Su grupo familiar ya se encuentra inscripto, si desea agregar mas personas al grupo debe editar la inscripcion..",'info');
+	
+			} 
 			
 		}
 		$this->cn()->resetear_dr_pileta();
@@ -85,12 +90,12 @@ class ci_inscripcion_pileta extends mupum_ci
 	function evt__cuadro__borrar($seleccion)
 	{
 		$this->cn()->cargar_dr_pileta($seleccion);
-		$this->cn()->set_cursor_dt_inscripcion_pileta($seleccion);
 		$this->cn()->eliminar_dt_inscripcion_pileta($seleccion);
+		$this->cn()->guardar_dr_pileta();
 		try{
 			
 
-			$this->cn()->guardar_dr_pileta();
+			
 				toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
