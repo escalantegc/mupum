@@ -4093,7 +4093,8 @@ class dao
                       persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as titular,
                       (familiar_de_un_titular(persona.idpersona) ) as grupo_familiar,
                       costo_grupo_familiar,
-                      total
+                      total,
+                      (total_abonado_detalle_pago_inscripcion_pileta(idinscripcion_pileta)) as total_abonado
               FROM 
                 public.inscripcion_pileta
               inner join afiliacion using(idafiliacion)
