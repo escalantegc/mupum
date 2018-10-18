@@ -14,16 +14,10 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
-			if($sql_state=='db_23503')
-			{
-				toba::notificacion()->agregar("El consumo por ticket  esta siendo referenciado, no puede eliminarlo",'error');
-				
-			} 
-
 			$mensaje_log= $error->get_mensaje_log();
 			if(strstr($mensaje_log,'idx_consumo_convenio'))
 			{
-				toba::notificacion()->agregar("El consumo del ticket ya esta registrado.",'info');
+				toba::notificacion()->agregar("La ayuda economica ya esta registrada.",'info');
 				
 			}  else {
 
@@ -121,7 +115,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 					toba::notificacion()->agregar($mensaje_log,'error');
 			}
 		} else {
-			toba::notificacion()->agregar("No puede borrar la ayuda economica, la misma tiene cuotas sin saldar",'info');
+				toba::notificacion()->agregar("No puede borrar la ayuda economica, la misma tiene cuotas pagadas",'error');
 		}
 		$this->cn()->resetear_dr_consumo_convenio();
 	}

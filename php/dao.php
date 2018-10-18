@@ -1802,6 +1802,32 @@ class dao
                 $where";
       return consultar_fuente($sql);
           
+  }  
+
+  function get_listado_convenios_segun_categoria($idcategoria_comercio = null)
+  {
+
+      $sql = "SELECT  idconvenio, 
+                      categoria_comercio.descripcion as categoria, 
+                      titulo, 
+                      fecha_inicio, 
+                      fecha_fin, 
+                      maximo_cuotas, 
+                      monto_maximo_mensual, 
+                      permite_financiacion, 
+                      activo, 
+                      maneja_bono,
+                      consumo_ticket,
+                      ayuda_economica,
+                      (case when activo = true then 'Activos' else 'Inactivos' end) as estado
+              FROM 
+                public.convenio
+              inner join categoria_comercio using (idcategoria_comercio)
+              where 
+
+                convenio.idcategoria_comercio = $idcategoria_comercio";
+      return consultar_fuente($sql);
+          
   }
 
   function get_listado_convenios_con_bono($where = null)
@@ -4718,6 +4744,66 @@ class dao
       return consultar_fuente($sql);
   }
 
+    function get_listado_consumos($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
+                    convenio.titulo as convenio,
+                    idconsumo_convenio, 
+                    categoria_comercio.descripcion as categoria,
+                    idafiliacion, 
+                    consumo_convenio.idconvenio, 
+                    comercio.idcomercio, total, 
+                    fecha, 
+                    monto_proforma, 
+                    (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas, 
+                    consumo_convenio.descripcion, 
+                    idtalonario_bono, 
+                    cantidad_bonos, 
+                    comercio.nombre as comercio,
+                    '$'||' '||(case when monto_bono > 0 then monto_bono else null end ) as monto_bono, 
+                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
+                    (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas,
+                    (case when consumo_ticket=true then 'Ticket' else (case when maneja_bono=true then 'Bono' else (case when permite_financiacion=true and ayuda_economica=false then 'Financiado' else 'Ayuda Economica' end) end) end) as tipo
+           FROM 
+            public.consumo_convenio
+         inner join afiliacion using(idafiliacion)
+         inner join persona on persona.idpersona = afiliacion.idpersona
+         inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+         inner join comercios_por_convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
+         inner join comercio on comercio.idcomercio = comercios_por_convenio.idcomercio
+         inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
+         where
+          $sql_usuario and
+          $where
+         group by
+             persona.apellido, 
+             persona.nombres,
+              convenio.titulo ,
+              idconsumo_convenio, 
+              categoria_comercio.descripcion ,
+              idafiliacion, 
+              consumo_convenio.idconvenio, 
+              comercio.idcomercio, total, 
+              fecha, 
+              monto_proforma, 
+             cantidad_cuotas, 
+              consumo_convenio.descripcion, 
+              idtalonario_bono, 
+              cantidad_bonos, 
+              comercio.nombre,
+              consumo_ticket,
+              maneja_bono,
+              permite_financiacion,
+              ayuda_economica
+         order by 
+                periodo desc, categoria asc   ";
+        return consultar_fuente($sql);
+  }
 
 }
 ?>
