@@ -140,6 +140,18 @@ class ei_frm_configuracion_colonia extends mupum_ei_formulario
 				}
 			}
 		}
+
+		{$this->objeto_js}.ini = function () {
+		
+
+			this.ef('direccion').input().onchange = function() {
+				var ef = {$this->objeto_js}.ef('direccion');
+				var cadena = ef.get_estado().toUpperCase();
+			
+				ef.set_estado(cadena);
+			}
+		
+		}
 		";
 	}
 

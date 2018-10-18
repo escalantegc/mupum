@@ -33,7 +33,11 @@ class ei_form_ml_plan_pago_inscripcion_colono extends mupum_ei_formulario_ml
 				var hoy_texto = hoy.getDate() + '/' + (hoy.getMonth() +1)  + '/' + hoy.getFullYear();
 				
 				//--this.ef('fecha_pago').ir_a_fila(fila).set_solo_lectura(true);
-				this.ef('fecha_pago').ir_a_fila(fila).set_estado(hoy_texto);
+				if (this.ef('fecha_pago').ir_a_fila(fila).get_estado()=='')
+				{
+					this.ef('fecha_pago').ir_a_fila(fila).set_estado(hoy_texto);
+				}
+				
 			} else {
 				this.ef('cuota_pagada').ir_a_fila(fila).ocultar();
 				this.ef('fecha_pago').ir_a_fila(fila).ocultar();				
