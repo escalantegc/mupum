@@ -9,7 +9,7 @@ class ci_listado_pagos extends mupum_ci
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_talonarios_bono_colaboracion($this->s__datos_filtro);
+			$datos = dao::get_listado_egresos($this->s__datos_filtro);
 		}else{
 			$datos = dao::get_listado_egresos();
 		}

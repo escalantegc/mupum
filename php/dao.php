@@ -4150,7 +4150,7 @@ class dao
     return consultar_fuente($sql);
   }  
 
-  function get_costo_temporada_pileta_tipo_socio($idafiliacion = null)
+  function get_costo_temporada_pileta_tipo_socio($idtemporada_pileta = null, $idafiliacion = null)
   {
 
      $sql = "SELECT costo_grupo_familiar
@@ -4158,7 +4158,7 @@ class dao
                public.costo_pileta_tipo_socio
                
               inner join afiliacion on afiliacion.idtipo_socio = costo_pileta_tipo_socio.idtipo_socio
-             where   afiliacion.idafiliacion = $idafiliacion";
+             where   afiliacion.idafiliacion = $idafiliacion and costo_pileta_tipo_socio.idtemporada_pileta=$idtemporada_pileta";
     $res = consultar_fuente($sql);
     if (isset($res[0]['costo_grupo_familiar']))
     {
@@ -4168,7 +4168,7 @@ class dao
     }
   } 
 
-  function get_adicional_mayores_edad_temporada_pileta_tipo_socio($idafiliacion = null)
+  function get_adicional_mayores_edad_temporada_pileta_tipo_socio($idtemporada_pileta = null,$idafiliacion = null)
   {
 
      $sql = "SELECT adicional_mayores_edad
@@ -4176,7 +4176,7 @@ class dao
                public.costo_pileta_tipo_socio
                
               inner join afiliacion on afiliacion.idtipo_socio = costo_pileta_tipo_socio.idtipo_socio
-             where   afiliacion.idafiliacion = $idafiliacion";
+             where   afiliacion.idafiliacion = $idafiliacion and costo_pileta_tipo_socio.idtemporada_pileta=$idtemporada_pileta";
     $res = consultar_fuente($sql);
     if (isset($res[0]['adicional_mayores_edad']))
     {
