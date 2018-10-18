@@ -4801,8 +4801,210 @@ class dao
               permite_financiacion,
               ayuda_economica
          order by 
-                periodo desc, categoria asc   ";
+             periodo desc, tipo, categoria asc ,  socio  ";
         return consultar_fuente($sql);
+  }
+
+  function get_estado_situacion($periodo = null, $idafiliacion = null)
+  {
+    $periodo_anterior = self::calcular_periodo_anterior($periodo);
+    $periodo_anterior = quote("%{$periodo_anterior}%");
+    $periodo = quote("%{$periodo}%");
+        
+    $sql = "SELECT      
+                    convenio.titulo as beneficio,
+                    consumo_convenio_cuotas.periodo,
+                    sum (consumo_convenio_cuotas.monto) as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion
+            FROM 
+                  public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join consumo_convenio_cuotas using (idconsumo_convenio)
+            inner join afiliacion using (idafiliacion)
+            inner join persona using (idpersona)
+            inner join forma_pago using(idforma_pago)
+            WHERE
+                  convenio.permite_financiacion = true and
+                  forma_pago.planilla = true and
+                  consumo_convenio_cuotas.envio_descuento =  false and
+                  afiliacion.idafiliacion = $idafiliacion and 
+                  consumo_convenio_cuotas.periodo ilike  $periodo
+            group by 
+              beneficio,
+              consumo_convenio_cuotas.periodo,
+              persona.legajo,
+              persona.apellido,
+              persona.nombres,
+              afiliacion.idafiliacion
+           UNION
+            SELECT      
+                  convenio.titulo as beneficio,
+                  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY')  as periodo,
+                  sum(detalle_pago_consumo_convenio.monto),
+                  persona.legajo,
+                  persona.apellido||', '|| persona.nombres as persona,
+                  afiliacion.idafiliacion
+            FROM 
+                public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join detalle_pago_consumo_convenio using (idconsumo_convenio)
+            inner join forma_pago using(idforma_pago)
+            inner join afiliacion using (idafiliacion)
+            inner join persona using (idpersona)
+           
+            WHERE
+                  forma_pago.planilla = true and
+                  detalle_pago_consumo_convenio.envio_descuento =  false and
+                  afiliacion.idafiliacion = $idafiliacion and 
+                  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ilike $periodo
+            group by 
+              beneficio,
+              to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ,
+              persona.legajo,
+              persona.apellido,
+              persona.nombres,
+              afiliacion.idafiliacion
+           
+            UNION
+              SELECT 
+                    'RESERVAS' as beneficio,
+                    to_char(detalle_pago.fecha, 'MM/YYYY') as periodo,
+                    sum (detalle_pago.monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+                public.solicitud_reserva
+            inner join detalle_pago using(idsolicitud_reserva)
+            inner join forma_pago  using(idforma_pago)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            WHERE
+              forma_pago.planilla = true and
+              envio_descuento = false and 
+              afiliacion.idafiliacion = $idafiliacion and 
+              to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo
+            group by 
+              periodo,
+                 persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+            UNION
+            SELECT  'COLONIA' as beneficio,
+                    periodo,
+                    sum(inscripcion_colono_plan_pago.monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+              public.inscripcion_colono_plan_pago
+            inner join forma_pago  using(idforma_pago)
+            inner join inscripcion_colono using(idinscripcion_colono)
+             inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            WHERE
+              forma_pago.planilla = true  and
+              envio_descuento = false and
+              afiliacion.idafiliacion = $idafiliacion and 
+              periodo ilike $periodo
+            group by
+               periodo,
+                persona.legajo,
+              persona.apellido,
+              persona.nombres,
+               afiliacion.idafiliacion
+            UNION
+            SELECT  'PILETA' as beneficio, 
+                    to_char(fecha, 'MM/YYYY') as periodo,
+                    sum(monto) as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion
+            FROM 
+              public.detalle_pago_inscripcion_pileta
+            inner join forma_pago using(idforma_pago)
+            inner join inscripcion_pileta using(idinscripcion_pileta)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              forma_pago.planilla = true and
+              envio_descuento = false and
+              afiliacion.idafiliacion = $idafiliacion and 
+              to_char(fecha, 'MM/YYYY') ilike $periodo
+
+            group by
+               to_char(fecha, 'MM/YYYY'),
+               persona.legajo,
+              persona.apellido,
+              persona.nombres,
+              afiliacion.idafiliacion
+          
+            UNION  
+           SELECT  'BONO COLABORACION' as beneficio, 
+                    to_char(fecha_compra, 'MM/YYYY') as periodo, 
+                    count (*) * talonario_bono_colaboracion.monto as monto,
+                     persona.legajo,
+                     persona.apellido||', '|| persona.nombres as persona,
+                     afiliacion.idafiliacion            
+            FROM 
+              public.talonario_nros_bono_colaboracion
+              inner join talonario_bono_colaboracion on talonario_bono_colaboracion.idtalonario_bono_colaboracion = talonario_nros_bono_colaboracion.idtalonario_bono_colaboracion
+              inner join forma_pago using(idforma_pago)
+              inner join afiliacion using (idafiliacion )
+              inner join persona using (idpersona)
+            where
+                forma_pago.planilla = true  and
+                pagado = false and
+                afiliacion.idafiliacion = $idafiliacion and 
+                to_char(fecha_compra, 'MM/YYYY') ilike $periodo
+            group by 
+              periodo,
+              talonario_bono_colaboracion.monto,
+              persona.legajo,
+              persona.apellido,
+              persona.nombres,
+              afiliacion.idafiliacion
+            UNION
+            SELECT 'SALDO LIQUIDACION ANTERIOR' as beneficio,
+                    periodo,
+                    saldo as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion  
+            FROM public.cabecera_liquidacion
+            inner join detalle_liquidacion using(idcabecera_liquidacion)
+            inner join afiliacion using (idafiliacion )
+            inner join persona using (idpersona)
+              where
+                afiliacion.idafiliacion = $idafiliacion and 
+                periodo ilike $periodo_anterior
+            order by
+              persona";
+
+     return consultar_fuente($sql);
+
+  }
+
+  function calcular_periodo_anterior($periodo)
+  {
+    list($mes, $anio) = explode('/', $periodo);
+    $mes_anterior = '0';
+    $anio_anterior = '0';
+
+    if ($mes=='01')
+    {
+      $mes_anterior = 12;
+      $anio_anterior =(int) $anio -1;
+    } else {
+      $mes_anterior = (int)$mes -1 ;
+      $anio_anterior =(int) $anio ;
+    }
+
+    return $mes_anterior.'/'.$anio_anterior;
+
   }
 
 }
