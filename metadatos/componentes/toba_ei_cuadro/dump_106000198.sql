@@ -198,7 +198,7 @@ INSERT INTO apex_objeto_cuadro_cc (objeto_cuadro_proyecto, objeto_cuadro, objeto
 	'106000198', --objeto_cuadro
 	'106000012', --objeto_cuadro_cc
 	'mes', --identificador
-	'Periodo:', --descripcion
+	'Periodo', --descripcion
 	'3', --orden
 	'mes', --columnas_id
 	'mes', --columnas_descripcion
@@ -224,7 +224,7 @@ INSERT INTO apex_objeto_ei_cuadro_columna (objeto_cuadro_proyecto, objeto_cuadro
 	'Socio', --titulo
 	'ei-cuadro-col-tit', --estilo_titulo
 	'4', --estilo
-	NULL, --ancho
+	'50%', --ancho
 	'1', --formateo
 	NULL, --vinculo_indice
 	NULL, --no_ordenar

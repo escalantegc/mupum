@@ -483,7 +483,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'numero', --tipo
 	'monto', --nombre
 	'consumo_convenio.total', --expresion
-	'Totol', --etiqueta
+	'Total', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'0', --inicial

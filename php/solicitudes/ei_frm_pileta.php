@@ -33,9 +33,11 @@ class ei_frm_pileta extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__costo_grupo_familiar__procesar = function(es_inicial)
 		{
-			if (this.ef('costo_grupo_familiar').get_estado()!=null)
+			var costo = this.ef('costo_grupo_familiar').get_estado();
+			if (costo != null)
 			{
 				this.ef('costo_grupo_familiar').desactivar();
+				this.ef('total').set_estado(costo);
 			}
 			
 		}

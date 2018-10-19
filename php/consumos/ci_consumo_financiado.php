@@ -41,7 +41,18 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_edicion');
+		$conf = dao::get_configuracion();
+		$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado();
+		$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado();
+		
+		if ( $cuotas_faltantes <= $minimo)
+		{
+			
+				$this->set_pantalla('pant_edicion');	
+		} else {
+			toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
+
+		}
 	}
 
 	//-----------------------------------------------------------------------------------

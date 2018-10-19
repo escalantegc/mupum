@@ -2265,7 +2265,7 @@ class dao
               substring(periodo, 1,2)::integer between extract(month from (current_date - (2||' months')::interval)) and extract(month from current_date ) and
               convenio.consumo_ticket = true and
               $where
-            order by mes desc";
+            order by mes desc,socio ";
       return consultar_fuente($sql);
   }
   function get_listado_consumos_ticket_historico($where = null)
@@ -2692,6 +2692,23 @@ class dao
     {
       return $res[0]['faltando_cuotas'];
     }
+  }  
+
+  function get_minimo_coutas_para_pedir_otra_consumo_financiado()
+  {
+    $sql = "SELECT  faltando_cuotas
+            FROM 
+              public.convenio
+            where 
+              ayuda_economica = false and
+              permite_financiacion = true and
+              activo = true";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['faltando_cuotas']))
+    {
+      return $res[0]['faltando_cuotas'];
+    }
   }
   
   function get_cuotas_faltantes_ayuda()
@@ -2707,6 +2724,32 @@ class dao
                       inner join persona on persona.idpersona = afiliacion.idpersona
                       WHERE
                         convenio.ayuda_economica = true and
+                        consumo_convenio_cuotas.cuota_pagada =  false and
+                        $sql_usuario";
+      $res = consultar_fuente($sql);
+      $cuotasfaltantes = 0;
+      if (isset($res[0]['cuotas_sin_pagar']))
+      {
+        $cuotasfaltantes = $res[0]['cuotas_sin_pagar'];
+      }
+      return $cuotasfaltantes;
+
+  }  
+
+  function get_cuotas_faltantes_consumo_financiado()
+  {
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
+       
+                      FROM 
+                          public.consumo_convenio
+                      inner  join afiliacion using(idafiliacion)
+                      inner join convenio  using(idconvenio)
+                      inner join consumo_convenio_cuotas using (idconsumo_convenio)
+                      inner join persona on persona.idpersona = afiliacion.idpersona
+                      WHERE
+                        convenio.permite_financiacion = true and
+                        convenio.ayuda_economica = false and
                         consumo_convenio_cuotas.cuota_pagada =  false and
                         $sql_usuario";
       $res = consultar_fuente($sql);

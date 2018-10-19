@@ -13,7 +13,6 @@ class ci_listado_pagos extends mupum_ci
 		}else{
 			$datos = dao::get_listado_egresos();
 		}
-		
 		$cuadro->set_datos($datos);
 	}
 
