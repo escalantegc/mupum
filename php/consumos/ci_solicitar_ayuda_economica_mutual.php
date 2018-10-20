@@ -7,8 +7,12 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 	function evt__procesar()
 	{
 		try{
-			$this->cn()->guardar_dr_consumo_convenio();
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				$this->cn()->guardar_dr_consumo_convenio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
 			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -37,7 +41,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 	function evt__nuevo_libre()
 	{
-		$this->set_pantalla('pant_edicion');
+		$this->set_pantalla('pant_nuevo');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -261,6 +265,50 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 
 
 
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_ayuda_mutual_nuevo -------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_ayuda_mutual_nuevo(ei_frm_ayuda_economica $form)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$datos = $this->cn()->get_dt_consumo_convenio();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_ayuda_mutual_nuevo__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$this->cn()->set_dt_consumo_convenio($datos);
+		} else {
+
+			$conf = dao::get_configuracion();
+			$minimo = dao::get_minimo_coutas_para_pedir_otra_ayuda();
+			$cuotas_faltantes = dao::get_cuotas_faltantes_ayuda_socio($datos['idafiliacion']);
+			$pendientes = dao::get_ayuda_economicas_pendientes_socio($datos['idafiliacion']);
+			
+			if ($pendientes > 0)
+			{
+				toba::notificacion()->agregar("Este socio tiene una ayuda economica pendiente de aprobacion. Por favor verifique la solicitudes realizadas." ,'info');
+
+			} else {
+				if ( $cuotas_faltantes <= $minimo)
+				{
+					$this->cn()->agregar_dt_consumo_convenio($datos);
+				
+				} else {
+					toba::notificacion()->agregar("El socio tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+
+				}
+			}
+		}
+
+
+	}
 
 }
 ?>

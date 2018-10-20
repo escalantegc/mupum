@@ -10,9 +10,9 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__procesar()
 	{
-		
+		$this->cn()->guardar_dr_consumo_bono_propio();
 		try{
-			$this->cn()->guardar_dr_consumo_bono_propio();
+			
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
 			
 		} catch( toba_error_db $error){

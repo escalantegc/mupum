@@ -26,9 +26,9 @@ class ci_consumo_por_ticket extends mupum_ci
 			} 
 
 			$mensaje_log= $error->get_mensaje_log();
-			if(strstr($mensaje_log,'idx_consumo_convenio'))
+			if(strstr($mensaje_log,'idx_consumo_ticket'))
 			{
-				toba::notificacion()->agregar("El consumo del ticket ya esta registrado.",'info');
+				toba::notificacion()->agregar("El consumo del ticket para ese socio en ese periodo y comercio ya esta registrado.",'info');
 				
 			}  else {
 

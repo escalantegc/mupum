@@ -793,6 +793,29 @@ class dao
 
     return consultar_fuente($sql);
 
+  }    
+
+  function get_datos_persona_afiliada_descripcion($idafiliacion = null)
+  {
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                 persona.correo,
+                 *
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
+              afiliacion.idafiliacion = $idafiliacion";
+
+    $res = consultar_fuente($sql);
+    if(isset($res[0]['persona']))
+    {
+      return $res[0]['persona']; 
+    }
+
   }  
 
   function get_datos_persona_afiliada_para_archivo($idafiliacion = null)
@@ -2253,7 +2276,8 @@ class dao
                     convenio.titulo||' - Monto mensual permitido: $'|| convenio.monto_maximo_mensual  as convenio ,
                     total,
                     periodo,
-                    periodo   as mes                
+                    periodo   as mes,
+                    (total_abonado_detalle_pago_consumo_convenio(consumo_convenio.idconsumo_convenio)) as total_abonado                
             FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -2405,6 +2429,7 @@ class dao
                     sum(consumo_convenio_cuotas.monto)as total, 
                     fecha, 
                     cantidad_cuotas,
+                    consumo_convenio.total as total_solicitado,
                     (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                     consumo_convenio_cuotas.monto_puro  as valor_cuota ,
                     (case when pagado = true then 'ACEPTADA' else (case when pagado = false then 'RECHAZADA' else 'PENDIENTE' end) end) as pagado        
@@ -2446,6 +2471,7 @@ class dao
                     sum(consumo_convenio_cuotas.monto)as total, 
                     fecha, 
                     cantidad_cuotas,
+                    consumo_convenio.total as total_solicitado,
                      (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas,
                      (select traer_periodo_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as perido_max_nro_cuota,
                      (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)) as fecha_max_nro_cuota,
@@ -2692,9 +2718,49 @@ class dao
     {
       return $res[0]['faltando_cuotas'];
     }
+  }   
+  
+  function get_ayuda_economicas_pendientes()
+  {
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  count(*) as cantidad
+            FROM public.consumo_convenio
+            inner join convenio using(idconvenio)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              ayuda_economica = true and
+              pagado is null and
+              $sql_usuario";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
+  }  
+  function get_ayuda_economicas_pendientes_socio($idafiliacion)
+  {
+    $sql = "SELECT  count(*) as cantidad
+            FROM public.consumo_convenio
+            inner join convenio using(idconvenio)
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              ayuda_economica = true and
+              pagado is null and
+              afiliacion.idafiliacion = $idafiliacion";
+
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['cantidad']))
+    {
+      return $res[0]['cantidad'];
+    }
   }  
 
-  function get_minimo_coutas_para_pedir_otra_consumo_financiado()
+
+
+  function get_minimo_coutas_para_pedir_otra_consumo_financiado($idconvenio)
   {
     $sql = "SELECT  faltando_cuotas
             FROM 
@@ -2702,7 +2768,8 @@ class dao
             where 
               ayuda_economica = false and
               permite_financiacion = true and
-              activo = true";
+              activo = true and
+              convenio.idconvenio = $idconvenio";
 
     $res = consultar_fuente($sql);
     if (isset($res[0]['faltando_cuotas']))
@@ -2734,9 +2801,33 @@ class dao
       }
       return $cuotasfaltantes;
 
+  }   
+
+  function get_cuotas_faltantes_ayuda_socio($idafiliacion)
+  {
+    $sql = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
+       
+                      FROM 
+                          public.consumo_convenio
+                      inner  join afiliacion using(idafiliacion)
+                      inner join convenio  using(idconvenio)
+                      inner join consumo_convenio_cuotas using (idconsumo_convenio)
+                      inner join persona on persona.idpersona = afiliacion.idpersona
+                      WHERE
+                        convenio.ayuda_economica = true and
+                        consumo_convenio_cuotas.cuota_pagada =  false and
+                        afiliacion.idafiliacion = $idafiliacion";
+      $res = consultar_fuente($sql);
+      $cuotasfaltantes = 0;
+      if (isset($res[0]['cuotas_sin_pagar']))
+      {
+        $cuotasfaltantes = $res[0]['cuotas_sin_pagar'];
+      }
+      return $cuotasfaltantes;
+
   }  
 
-  function get_cuotas_faltantes_consumo_financiado()
+  function get_cuotas_faltantes_consumo_financiado($idconvenio)
   {
     $sql_usuario = self::get_sql_usuario();
     $sql = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
@@ -2751,7 +2842,8 @@ class dao
                         convenio.permite_financiacion = true and
                         convenio.ayuda_economica = false and
                         consumo_convenio_cuotas.cuota_pagada =  false and
-                        $sql_usuario";
+                        $sql_usuario and
+                        convenio.idconvenio = $idconvenio";
       $res = consultar_fuente($sql);
       $cuotasfaltantes = 0;
       if (isset($res[0]['cuotas_sin_pagar']))

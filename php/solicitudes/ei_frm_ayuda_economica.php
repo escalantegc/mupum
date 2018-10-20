@@ -99,8 +99,18 @@ class ei_frm_ayuda_economica extends mupum_ei_formulario
 				this.ef('fecha').set_estado(hoy_texto);
 			}
 		}
+		//---- Procesamiento de EFs --------------------------------
+		
+		{$this->objeto_js}.evt__idafiliacion__procesar = function(es_inicial)
+		{
+			if (es_inicial)
+			{
+				this.ef('idafiliacion').ocultar();		
+			}
+		}
 		";
 	}
+
 
 
 

@@ -40,20 +40,28 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		$conf = dao::get_configuracion();
 		$minimo = dao::get_minimo_coutas_para_pedir_otra_ayuda();
 		$cuotas_faltantes = dao::get_cuotas_faltantes_ayuda();
+		$pendientes = dao::get_ayuda_economicas_pendientes();
 		
-		if ( $cuotas_faltantes <= $minimo)
+		if ($pendientes > 0)
 		{
-			$diahoy = date("d"); 
-			if ((int)$diahoy > (int) $conf['fecha_limite_pedido_convenio'])
-			{
-				toba::notificacion()->agregar("Puede solicitar ayuda economica solamente hasta el: ".$conf['fecha_limite_pedido_convenio']. " del mes." ,'info');
-			} else {
-				$this->set_pantalla('pant_edicion');	
-			}
-		} else {
-			toba::notificacion()->agregar("Usted tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+			toba::notificacion()->agregar("Usted tiene una ayuda economica pendiente de aprobacion. Por favor comuniquese con el personal de la mutual." ,'info');
 
+		} else {
+			if ( $cuotas_faltantes <= $minimo)
+			{
+				$diahoy = date("d"); 
+				if ((int)$diahoy > (int) $conf['fecha_limite_pedido_convenio'])
+				{
+					toba::notificacion()->agregar("Puede solicitar ayuda economica solamente hasta el: ".$conf['fecha_limite_pedido_convenio']. " del mes." ,'info');
+				} else {
+					$this->set_pantalla('pant_edicion');	
+				}
+			} else {
+				toba::notificacion()->agregar("Usted tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+
+			}
 		}
+		
 	
 		
 	
@@ -64,7 +72,11 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 	{
 		$this->set_pantalla('pant_edicion');	
 	}
-
+	function evt__volver()
+	{
+		$this->cn()->resetear_dr_consumo_convenio();
+		$this->set_pantalla('pant_inicial');
+	}
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -246,6 +258,8 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		}
 		$respuesta->set($forma_pago);	
 	}
+
+
 
 
 

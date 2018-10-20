@@ -9,9 +9,12 @@ class ci_consumo_financiado extends mupum_ci
 	{
 		
 		try{
-			$this->cn()->guardar_dr_consumo_convenio();
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-			
+
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				$this->cn()->guardar_dr_consumo_convenio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -41,18 +44,10 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$conf = dao::get_configuracion();
-		$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado();
-		$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado();
-		
-		if ( $cuotas_faltantes <= $minimo)
-		{
-			
-				$this->set_pantalla('pant_edicion');	
-		} else {
-			toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
 
-		}
+		$this->set_pantalla('pant_nuevo');	
+		
+		
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -222,6 +217,39 @@ class ci_consumo_financiado extends mupum_ci
 	}
 
 
+
+	//-----------------------------------------------------------------------------------
+	//---- frm_nuevo --------------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
+
+	function conf__frm_nuevo(ei_frm_consumo_financiado $form)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$datos = $this->cn()->get_dt_consumo_convenio();
+			$form->set_datos($datos);
+		}
+	}
+
+	function evt__frm_nuevo__modificacion($datos)
+	{
+		if ($this->cn()->hay_cursor_dt_consumo_convenio())
+		{
+			$this->cn()->set_dt_consumo_convenio($datos);
+		} else {
+
+			$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
+			$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio']);
+			
+			if ( $cuotas_faltantes <= $minimo)
+			{
+				$this->cn()->agregar_dt_consumo_convenio($datos);
+			} else {
+				toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
+			}
+			
+		}
+	}
 
 }
 ?>
