@@ -301,7 +301,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 					$this->cn()->agregar_dt_consumo_convenio($datos);
 				
 				} else {
-					toba::notificacion()->agregar("El socio tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+					toba::notificacion()->agregar("El socio tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba como minimo ".$minimo. " cuotas." ,'info');
 
 				}
 			}

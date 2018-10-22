@@ -1,13 +1,15 @@
 <?php
 class ci_listado_colonia extends mupum_ci
 {
+	protected $s__where;
+	protected $s__datos_filtro;
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
 	function conf__cuadro(ei_cuadro_inscripcion_colono $cuadro)
 	{
-				if(isset($this->s__datos_filtro))
+		if(isset($this->s__datos_filtro))
 		{
 			$datos = dao::get_listado_inscripciones_colonos($this->s__where);
 		}else{

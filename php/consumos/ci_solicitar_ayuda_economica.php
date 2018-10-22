@@ -57,7 +57,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 					$this->set_pantalla('pant_edicion');	
 				}
 			} else {
-				toba::notificacion()->agregar("Usted tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba ".$minimo. " cuotas o menos." ,'info');
+				toba::notificacion()->agregar("Usted tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba como minimo ".$minimo. " cuotas." ,'info');
 
 			}
 		}

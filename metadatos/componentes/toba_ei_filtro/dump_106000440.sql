@@ -191,8 +191,8 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'106000440', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
 	'opciones', --tipo
-	'idafiliacion', --nombre
-	'afiliacion.idafiliacion', --expresion
+	'idpersona', --nombre
+	'persona.idpersona', --expresion
 	'Socio', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
@@ -209,7 +209,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_sql
 	'auditoria', --carga_fuente
 	NULL, --carga_lista
-	'idafiliacion', --carga_col_clave
+	'idpersona', --carga_col_clave
 	'persona', --carga_col_desc
 	'0', --carga_permite_no_seteado
 	NULL, --carga_no_seteado
@@ -308,7 +308,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'fecha', --tipo
 	'fecha_solicitud', --nombre
-	'fecha_solicitud', --expresion
+	'solicitud_subsidio.fecha_solicitud', --expresion
 	'Fecha solicitud', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
@@ -366,7 +366,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
 	'monto', --nombre
-	'monto', --expresion
+	'solicitud_subsidio.monto', --expresion
 	'Monto', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio

@@ -1575,10 +1575,29 @@ class dao
             inner join public_auditoria.logs_persona familiar on familiar.idpersona=logs_familia.idpersona_familia
             inner join public_auditoria.logs_parentesco using(idparentesco)
             inner join public_auditoria.logs_tipo_documento on familiar.idtipo_documento = logs_tipo_documento.idtipo_documento
-
             where
               logs_familia.auditoria_operacion != 'U' and
               $where
+          group by
+                    logs_familia.idpersona, 
+                    logs_familia.idpersona_familia, 
+                    logs_persona.apellido,
+                    logs_persona.nombres ,
+                    familiar.apellido ,
+                    familiar.nombres ,
+                    logs_parentesco.descripcion , 
+                    fecha_relacion, 
+                    acargo, 
+                    fecha_carga,
+                    logs_familia.auditoria_usuario, 
+                    logs_familia.auditoria_fecha, 
+                    familiar.fecha_nacimiento,
+                    familiar.sexo ,
+                    logs_familia.auditoria_operacion,
+                    logs_familia.auditoria_id_solicitud,
+                    logs_tipo_documento.sigla,
+                     familiar.nro_documento 
+            
             order by
               logs_familia.auditoria_fecha desc";
               
@@ -2717,6 +2736,8 @@ class dao
     if (isset($res[0]['faltando_cuotas']))
     {
       return $res[0]['faltando_cuotas'];
+    } else {
+      return 0;
     }
   }   
   
@@ -4727,7 +4748,7 @@ class dao
                     forma_pago.descripcion ,
                     cuota_pagada,
                     fecha_pago
-            order by nro_cuota,fecha, total, socio desc";
+            order by fecha,nro_cuota, total, socio desc";
       return consultar_fuente($sql);
   } 
 
