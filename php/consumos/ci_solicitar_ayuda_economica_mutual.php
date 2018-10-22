@@ -270,7 +270,7 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 	//---- frm_ayuda_mutual_nuevo -------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_ayuda_mutual_nuevo(ei_frm_ayuda_economica $form)
+	function conf__frm_ayuda_mutual_nuevo(ei_frm_ayuda_economica_mutual $form)
 	{
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
