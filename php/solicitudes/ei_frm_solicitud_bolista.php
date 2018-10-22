@@ -27,14 +27,19 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 						
 					} else {
 						this.ef('edad').set_error('La edad del familiar no respeta el rango de edades permitido.');
+						this.ef('idpersona_familia').resetear_estado();
 						return false;
 					}
 					
 				}
 			}
 		}
+		
+
 		";
 	}
+
+
 
 
 
