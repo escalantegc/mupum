@@ -14,8 +14,12 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__edad__validar = function()
 		{
+			this.ef('edad').resetear_error();
 			minima = this.ef('minima').get_estado();
 			maxima = this.ef('maxima').get_estado();
+
+			alert(minima);
+			alert(maxima);
 			edad = this.ef('edad').get_estado();
 			if (minima!='')
 			{	if (maxima!='')
