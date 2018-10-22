@@ -20,7 +20,7 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 			if (minima!='')
 			{	if (maxima!='')
 				{	
-					if ((edad >= minima) && (edad <= maxima))
+					if (edad >= minima && edad <= maxima)
 					{
 						this.ef('edad').resetear_error();
 						return true;
