@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_formulario', --clase
 	'28', --punto_montaje
-	'ei_frm_ayuda_economica', --subclase
-	'solicitudes/ei_frm_ayuda_economica.php', --subclase_archivo
+	'ei_frm_ayuda_economica_mutual', --subclase
+	'consumos/ei_frm_ayuda_economica_mutual.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_solicitar_ayuda_economica - frm', --nombre
