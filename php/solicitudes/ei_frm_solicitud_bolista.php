@@ -9,10 +9,12 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 	{
 		echo "
 			
+	
 		
-		//---- Validacion de EFs -----------------------------------
 		
-		{$this->objeto_js}.evt__edad__validar = function()
+		//---- Validacion general ----------------------------------
+		
+		{$this->objeto_js}.evt__validar_datos = function()
 		{
 			minima = this.ef('minima').get_estado();
 			maxima = this.ef('maxima').get_estado();
@@ -34,10 +36,9 @@ class ei_frm_solicitud_bolista extends mupum_ei_formulario
 				}
 			}
 		}
-		
-
 		";
 	}
+
 
 
 
