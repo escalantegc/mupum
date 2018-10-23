@@ -4634,7 +4634,7 @@ class dao
           
           //-- Se muestra la imagen temporal
           //$datos['imagen_vista_previa'] = "";
-          $enlace="<a href='{$temp_archivo['url']}' target='_blank'>Descargar</a>";
+          $enlace="<a href='{$temp_archivo['url']}' target='_blank'>Ver archivo</a>";
           $cabecera['archivo'] =$enlace;
         }
         $datos[] = $cabecera;
@@ -4647,7 +4647,7 @@ class dao
     $periodo = quote("%{$periodo}%");
     $sql = "  UPDATE public.detalle_pago
               SET  envio_descuento=true
-              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo 
+              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo ;
 
               UPDATE public.inscripcion_colono_plan_pago
               SET envio_descuento=true 
@@ -4677,7 +4677,7 @@ class dao
   {
     $periodo = quote("%{$periodo}%");
     $sql = "UPDATE public.talonario_nros_bono_colaboracion
-            SET pagado=true
+            SET pagado = true
             WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(fecha_compra, 'MM/YYYY') ilike $periodo;";
     return consultar_fuente($sql);
 
