@@ -4345,6 +4345,8 @@ class dao
 
   function get_listado_ingresos_0549($periodo = null)
   {
+    $periodo_anterior = self::calcular_periodo_anterior($periodo);
+    $periodo_anterior = quote("%{$periodo_anterior}%");
     $periodo = quote("%{$periodo}%");
     $sql = "SELECT      
                     convenio.titulo as beneficio,
@@ -4399,6 +4401,20 @@ class dao
               persona.apellido,
               persona.nombres,
               afiliacion.idafiliacion
+            UNION
+             SELECT 'SALDO LIQUIDACION ANTERIOR' as beneficio,
+                    periodo,
+                    saldo as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion  
+            FROM public.cabecera_liquidacion
+            inner join detalle_liquidacion using(idcabecera_liquidacion)
+            inner join afiliacion using (idafiliacion )
+            inner join persona using (idpersona)
+              where
+                detalle_liquidacion.concepto ilike '%0549%' and
+                periodo ilike $periodo_anterior
             order by
               persona";
 
@@ -4432,6 +4448,8 @@ class dao
 
   function get_listado_ingresos_0548($periodo = null)
   {
+    $periodo_anterior = self::calcular_periodo_anterior($periodo);
+    $periodo_anterior = quote("%{$periodo_anterior}%");
     $periodo = quote("%{$periodo}%");
     $sql = "SELECT 
                     'RESERVAS' as beneficio,
@@ -4503,6 +4521,20 @@ class dao
               persona.apellido,
               persona.nombres,
               afiliacion.idafiliacion
+            UNION
+             SELECT 'SALDO LIQUIDACION ANTERIOR' as beneficio,
+                    periodo,
+                    saldo as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion  
+            FROM public.cabecera_liquidacion
+            inner join detalle_liquidacion using(idcabecera_liquidacion)
+            inner join afiliacion using (idafiliacion )
+            inner join persona using (idpersona)
+              where
+                detalle_liquidacion.concepto ilike '%0548%' and
+                periodo ilike $periodo_anterior
            order by
               persona";
      
@@ -4536,6 +4568,8 @@ class dao
 
   function get_listado_ingresos_0550($periodo = null)
   {
+    $periodo_anterior = self::calcular_periodo_anterior($periodo);
+    $periodo_anterior = quote("%{$periodo_anterior}%");
     $periodo = quote("%{$periodo}%");
     $sql = " SELECT  'BONO COLABORACION' as beneficio, 
                     to_char(fecha_compra, 'MM/YYYY') as periodo, 
@@ -4560,6 +4594,20 @@ class dao
               persona.apellido,
               persona.nombres,
               afiliacion.idafiliacion
+              UNION
+             SELECT 'SALDO LIQUIDACION ANTERIOR' as beneficio,
+                    periodo,
+                    saldo as monto,
+                    persona.legajo,
+                    persona.apellido||', '|| persona.nombres as persona,
+                    afiliacion.idafiliacion  
+            FROM public.cabecera_liquidacion
+            inner join detalle_liquidacion using(idcabecera_liquidacion)
+            inner join afiliacion using (idafiliacion )
+            inner join persona using (idpersona)
+              where
+                detalle_liquidacion.concepto ilike '%0550%' and
+                periodo ilike $periodo_anterior
             order by
               persona";
     $datos = consultar_fuente($sql);

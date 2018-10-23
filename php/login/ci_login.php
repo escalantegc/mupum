@@ -379,8 +379,8 @@ class ci_login extends toba_ci
 			if ($this->s__persona['externo'] == 'no')
 			{
 				$this->enviar_correo($this->s__persona);
-				$parametros = array('ts' => 'vista_jasperreports');
-				toba::vinculador()->navegar_a('mupum', '3945', $parametros);
+				//--$parametros = array('ts' => 'vista_jasperreports');
+				//--toba::vinculador()->navegar_a('mupum', '3945', $parametros);
 				toba::notificacion()->agregar("La solicitud de afiliacion ha sido enviada correctamente",'info');
 
 			} else {

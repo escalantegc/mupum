@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000009]--  Afiliacion 
+--[106000009]--  Afiliados 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,7 +23,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Afiliacion', --nombre
+	'Afiliados', --nombre
 	NULL, --descripcion
 	NULL, --punto_montaje
 	NULL, --actividad_accion

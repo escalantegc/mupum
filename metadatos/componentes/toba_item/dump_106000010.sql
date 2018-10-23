@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000010]--  Solicitudes 
+--[106000010]--  Solicitudes de afiliacion 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -23,12 +23,12 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Solicitudes', --nombre
+	'Solicitudes de afiliacion', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
 	'1', --menu
-	'0', --orden
+	'1', --orden
 	'0', --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
 	NULL, --solicitud_obs_tipo

@@ -222,7 +222,7 @@ class ci_consumo_financiado extends mupum_ci
 	//---- frm_nuevo --------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__frm_nuevo(ei_frm_consumo_financiado_edicion $form)
+	function conf__frm_nuevo(mupum_ei_formulario $form)
 	{
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{

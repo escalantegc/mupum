@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[3947]--  Socios 
+--[3947]--  Mis Datos 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -13,7 +13,7 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	'3947', --item
 	NULL, --padre_id
 	'mupum', --padre_proyecto
-	'1', --padre
+	'106000009', --padre
 	'0', --carpeta
 	'0', --nivel_acceso
 	'web', --solicitud_tipo
@@ -23,12 +23,12 @@ INSERT INTO apex_item (item_id, proyecto, item, padre_id, padre_proyecto, padre,
 	NULL, --actividad_buffer
 	NULL, --actividad_patron_proyecto
 	NULL, --actividad_patron
-	'Socios', --nombre
+	'Mis Datos', --nombre
 	NULL, --descripcion
 	'28', --punto_montaje
 	NULL, --actividad_accion
 	'1', --menu
-	'1', --orden
+	'0', --orden
 	'0', --solicitud_registrar
 	NULL, --solicitud_obs_tipo_proyecto
 	NULL, --solicitud_obs_tipo

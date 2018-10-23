@@ -186,10 +186,35 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function evt__cuadro_liquidacion__seleccion($datos)
 	{
-		foreach ($datos as $dato) 
+		$crudos = $this->s__datos_liquidacion;
+		$liquidados = array();
+		foreach ($crudos as $crudo) 
+		{
+			$encontro = 'no';
+			foreach ($datos as $dato) 
+			{
+				if ($dato['idafiliacion'] == $crudo['idafiliacion'] )
+				{
+					$encontro = 'si';
+					break;
+				} 
+
+			}
+			if ($encontro=='no')
+			{
+				$crudo['saldo'] = $crudo['monto'];
+				$liquidados[] = $crudo;
+			} else{
+
+				$liquidados[] = $crudo;
+			}
+			
+		}
+
+		foreach ($liquidados as $liquidado) 
 		{
 
-			$this->cn()->agregar_dt_detalle_liquidacion($dato);
+			$this->cn()->agregar_dt_detalle_liquidacion($liquidado);
 			
 		}
 	}
@@ -232,10 +257,14 @@ class ci_generar_liquidacion extends mupum_ci
 		$descuentos = array();
 		foreach ($datos as $dato) 
 		{
-			$afiliado = dao::get_datos_persona_afiliada_para_archivo($dato['idafiliacion']);
-			$dato['monto'] = number_format($dato['monto'] , 2, '.', ''); ;
+			if ($dato['saldo'] ==0)
+			{
+				$afiliado = dao::get_datos_persona_afiliada_para_archivo($dato['idafiliacion']);
+				$dato['monto'] = number_format($dato['monto'] , 2, '.', ''); ;
 
-			$descuentos[] = array_merge((array) $dato,(array) $afiliado);
+				$descuentos[] = array_merge((array) $dato,(array) $afiliado);
+			}
+
 		}	
 		
 
