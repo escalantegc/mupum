@@ -2848,7 +2848,7 @@ class dao
 
   }  
 
-  function get_cuotas_faltantes_consumo_financiado($idconvenio)
+  function get_cuotas_faltantes_consumo_financiado($idconvenio, $idafiliacion)
   {
     $sql_usuario = self::get_sql_usuario();
     $sql = "  SELECT  count(idconsumo_convenio_cuotas)  as cuotas_sin_pagar            
@@ -2863,7 +2863,7 @@ class dao
                         convenio.permite_financiacion = true and
                         convenio.ayuda_economica = false and
                         consumo_convenio_cuotas.cuota_pagada =  false and
-                        $sql_usuario and
+                        afiliacion.idafiliacion = $idafiliacion and
                         convenio.idconvenio = $idconvenio";
       $res = consultar_fuente($sql);
       $cuotasfaltantes = 0;

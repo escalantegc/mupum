@@ -239,7 +239,7 @@ class ci_consumo_financiado extends mupum_ci
 		} else {
 
 			$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
-			$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio']);
+			$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio'], $datos['idafiliacion']);
 			
 			if ( $cuotas_faltantes <= $minimo)
 			{
