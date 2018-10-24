@@ -141,39 +141,68 @@ class ci_consumo_bono extends mupum_ci
 			//--$this->s__cantidad= $datos['cantidad_bonos'];
 			$this->cn()->agregar_dt_consumo_bono($datos);
 		}
-		$this->cn()->guardar_dr_consumo_bono();
+		$total_por_consumir = $datos['total'];
 
-		$consumo = $this->cn()->get_dt_consumo_bono();
-		$numeros = array();
-		foreach ($datos['nro_bono'] as $bono) 
-		{
-			$id['nro_bono'] = $bono;
-			$id['idtalonario_bono'] = $datos['idtalonario_bono'];
-			
-
-			$this->cn()->cargar_dt_talonario_nros_bonos($id);
-			$this->cn()->set_cursor_dt_talonario_nros_bono($id);
-			$numero['nro_bono'] = $bono;
-			$numero['idtalonario_bono'] = $datos['idtalonario_bono'];
-			$numero['idafiliacion'] = $datos['idafiliacion'];
-			$numero['disponible'] ='f';
-			$numero['idconsumo_convenio'] =$consumo['idconsumo_convenio'];
-			$this->cn()->set_dt_talonario_nros_bono($numero);
-			$this->cn()->resetear_cursor_dt_talonario_nros_bono();
+		$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+		$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
 		
-			try{
+		$periodo = dao::sacar_periodo_fecha($datos['fecha']);
+		$estado_situacion = dao::get_total_estado_situacion($idafiliacion, $periodo);
+		$configuracion = dao::get_configuracion();
+		$limite_socio = $configuracion['limite_por_socio']
+
+
+		$total = $total_por_consumir + $total_consumido;
+
+		$estado_total = $estado_situacion + $total_por_consumir;  
+		if ($estado_total < $limite_socio)
+		{
+			if ($total < $maximo_por_convenio)
+			{
+				$this->cn()->guardar_dr_consumo_bono();
+
+				$consumo = $this->cn()->get_dt_consumo_bono();
+				$numeros = array();
+				foreach ($datos['nro_bono'] as $bono) 
+				{
+					$id['nro_bono'] = $bono;
+					$id['idtalonario_bono'] = $datos['idtalonario_bono'];
+					
+
+					$this->cn()->cargar_dt_talonario_nros_bonos($id);
+					$this->cn()->set_cursor_dt_talonario_nros_bono($id);
+					$numero['nro_bono'] = $bono;
+					$numero['idtalonario_bono'] = $datos['idtalonario_bono'];
+					$numero['idafiliacion'] = $datos['idafiliacion'];
+					$numero['disponible'] ='f';
+					$numero['idconsumo_convenio'] =$consumo['idconsumo_convenio'];
+					$this->cn()->set_dt_talonario_nros_bono($numero);
+					$this->cn()->resetear_cursor_dt_talonario_nros_bono();
 				
-			$this->cn()->guardar_dr_consumo_bono();
-			} catch( toba_error_db $error){
-				$mensaje_log= $error->get_mensaje_log();
-				toba::notificacion()->agregar($mensaje_log,'info');
+					try{
+						
+					$this->cn()->guardar_dr_consumo_bono();
+					} catch( toba_error_db $error){
+						$mensaje_log= $error->get_mensaje_log();
+						toba::notificacion()->agregar($mensaje_log,'info');
 
+					}
+					$this->cn()->resetear_dt_talonario_nros_bono();
+					$id = null;
+					$numero = null;
+
+				}
+			} else {
+
+				toba::notificacion()->agregar("El afiliado lleva consumido por este convenio un total de : $".$total_consumido.", mas lo que desea consumir : $".$total_por_consumir. ". Supera el maximo permitido por convenio de : $" .$maximo_por_convenio ,'info');
 			}
-			$this->cn()->resetear_dt_talonario_nros_bono();
-			$id = null;
-			$numero = null;
+		} else {
 
+			toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas lo que desea consumir : $".$total_por_consumir. " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
 		}
+		
+
+	
 
 		
 	

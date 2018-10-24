@@ -5211,5 +5211,75 @@ class dao
 
   }
 
+  function get_total_consumido_en_bono_por_convenio_por_socio($idafiliacion = null, $idconvenio = null)
+  {
+    $sql = "SELECT  sum(consumo_convenio.total) as total
+            FROM public.consumo_convenio
+            where
+              idafiliacion = $idafiliacion and
+              idconvenio = $idconvenio"; 
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['total']))
+    {
+      return $res[0]['total'];
+    }
+  }
+
+  function get_monto_maximo_mensual_convenio($idconvenio = null)
+  {
+    $sql = "SELECT monto_maximo_mensual
+            FROM 
+              public.convenio
+            where
+              idconvenio = $idconvenio";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['monto_maximo_mensual']))
+    {
+      return $res[0]['monto_maximo_mensual'];
+    }
+  }
+
+  function get_total_estado_situacion($periodo = null, $idafiliacion = null)
+  {
+    $periodo_anterior = self::calcular_periodo_anterior($periodo);
+    $periodo_anterior = quote("%{$periodo_anterior}%");
+    $periodo = quote("%{$periodo}%");
+
+   $sql = "SELECT traer_estad_situacion_afiliado($idafiliacion,$periodo) as total";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['total']))
+    {
+      return $res[0]['total'];
+    }
+  }
+  function sacar_periodo_fecha($fecha)
+  {
+    $termino_año=false;
+    $termino_mes=false;
+      $año='';
+      $mes='';
+      $dia='';
+      for($i=0; $i<strlen($fecha); $i++){
+        if(($i < 4) ){
+          $año .=$fecha[$i];
+        }else{
+          
+          if($i>3 and $i<6){
+            $mes.=$fecha[$i];
+          }else{
+            $dia .=$fecha[$i];
+          }
+        } 
+      } 
+      if(isset($año) && isset($mes) && isset($dia))
+      {
+        $resultado = $mes.'/'.$dia;
+      } else {
+        $resultado = null;
+      }
+    
+      
+      return $resultado;
+  }
 }
 ?>
