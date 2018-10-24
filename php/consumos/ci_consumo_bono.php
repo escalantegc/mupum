@@ -10,11 +10,15 @@ class ci_consumo_bono extends mupum_ci
 
 	function evt__procesar()
 	{
-		$this->cn()->guardar_dr_consumo_bono_propio();
+		
 		try{
-			
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-			
+
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				$this->cn()->guardar_dr_consumo_bono_propio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
+
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -147,9 +151,9 @@ class ci_consumo_bono extends mupum_ci
 		$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
 		
 		$periodo = dao::sacar_periodo_fecha($datos['fecha']);
-		$estado_situacion = dao::get_total_estado_situacion($idafiliacion, $periodo);
+		$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
 		$configuracion = dao::get_configuracion();
-		$limite_socio = $configuracion['limite_por_socio']
+		$limite_socio = $configuracion['limite_por_socio'];
 
 
 		$total = $total_por_consumir + $total_consumido;

@@ -5245,7 +5245,7 @@ class dao
     $periodo_anterior = quote("%{$periodo_anterior}%");
     $periodo = quote("%{$periodo}%");
 
-   $sql = "SELECT traer_estad_situacion_afiliado($idafiliacion,$periodo) as total";
+   $sql = "SELECT traer_estad_situacion_afiliado($idafiliacion,$periodo,$periodo_anterior) as total";
     $res = consultar_fuente($sql);
     if (isset($res[0]['total']))
     {
@@ -5254,32 +5254,8 @@ class dao
   }
   function sacar_periodo_fecha($fecha)
   {
-    $termino_año=false;
-    $termino_mes=false;
-      $año='';
-      $mes='';
-      $dia='';
-      for($i=0; $i<strlen($fecha); $i++){
-        if(($i < 4) ){
-          $año .=$fecha[$i];
-        }else{
-          
-          if($i>3 and $i<6){
-            $mes.=$fecha[$i];
-          }else{
-            $dia .=$fecha[$i];
-          }
-        } 
-      } 
-      if(isset($año) && isset($mes) && isset($dia))
-      {
-        $resultado = $mes.'/'.$dia;
-      } else {
-        $resultado = null;
-      }
-    
-      
-      return $resultado;
+      list($anio,$mes,$dia) = explode('-', $fecha);  
+      return $mes.'/'.$anio;
   }
 }
 ?>

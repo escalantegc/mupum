@@ -238,16 +238,37 @@ class ci_consumo_financiado extends mupum_ci
 			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
 
-			$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
-			$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio'], $datos['idafiliacion']);
+			$total_por_consumir = $datos['total']/$datos['cantidad_cuotas'];
+			///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+			//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
 			
-			if ( $cuotas_faltantes <= $minimo)
+			$periodo = dao::sacar_periodo_fecha($datos['fecha']);
+			$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
+			$configuracion = dao::get_configuracion();
+			$limite_socio = $configuracion['limite_por_socio'];
+
+
+			//--$total = $total_por_consumir + $total_consumido;
+
+			$estado_total = $estado_situacion + $total_por_consumir;  
+			if ($estado_total < $limite_socio)
 			{
-				$this->cn()->agregar_dt_consumo_convenio($datos);
+				$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
+				$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio'], $datos['idafiliacion']);
+				
+				if ( $cuotas_faltantes <= $minimo)
+				{
+					$this->cn()->agregar_dt_consumo_convenio($datos);
+				} else {
+					toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
+				}
 			} else {
-				toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
+
+				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas lo que desea consumir : $".$total_por_consumir. " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
 			}
-			
+
+				
+				
 		}
 	}
 
