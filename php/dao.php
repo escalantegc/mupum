@@ -2401,8 +2401,7 @@ class dao
                     monto_proforma, 
                     cantidad_cuotas, 
                     descripcion,  
-   
-                    count(consumo_convenio_cuotas.idconsumo_convenio_cuotas) as cantidad_pagas
+                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
             FROM 
                 public.consumo_convenio
             inner  join afiliacion using(idafiliacion)
