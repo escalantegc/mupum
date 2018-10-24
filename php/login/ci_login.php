@@ -703,7 +703,7 @@ class ci_login extends toba_ci
 	        	$bloqueado = 'si';
 	        } else {
 	        	toba::instancia()->agregar_usuario($user,$nombre,$clave,$atributos);
-		        $perfil = 'afiliado';
+		        $perfil = 'titular';
 			    toba::instancia()->vincular_usuario('mupum',$user,$perfil);
 	        }
 

@@ -2413,9 +2413,8 @@ class dao
             inner join consumo_convenio_cuotas using (idconsumo_convenio)
             WHERE
               convenio.permite_financiacion = true and
-              consumo_convenio_cuotas.envio_descuento =  true and 
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
-                (consumo_convenio_cuotas.cuota_pagada =  false or
+               (consumo_convenio_cuotas.cuota_pagada =  false or
                ((current_date - (3||' months')::interval)  >= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
               $where
           

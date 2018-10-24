@@ -8,8 +8,13 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 	function evt__procesar()
 	{
 		try{
-			$this->cn()->guardar_dr_consumo_convenio();
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+
+			if(!toba::notificacion()->verificar_mensajes())
+			{
+				$this->cn()->guardar_dr_consumo_convenio();
+				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
+			
 			
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
@@ -180,8 +185,34 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		{
 			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
-			$this->cn()->agregar_dt_consumo_convenio($datos);
-		}
+			$total_por_consumir = $datos['total']/$datos['cantidad_cuotas'];
+			///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+			//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
+			
+			$periodo = dao::sacar_periodo_fecha($datos['fecha']);
+			$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
+			$configuracion = dao::get_configuracion();
+			$limite_socio = $configuracion['limite_por_socio'];
+
+
+			//--$total = $total_por_consumir + $total_consumido;
+
+			$estado_total = $estado_situacion + $total_por_consumir;  
+			if ($estado_total < $limite_socio)
+			{
+				$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
+				$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio'], $datos['idafiliacion']);
+				
+				if ( $cuotas_faltantes <= $minimo)
+				{
+					$this->cn()->agregar_dt_consumo_convenio($datos);
+				} else {
+					toba::notificacion()->agregar("Este socio tiene un consumo financiado vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otro consumo financiado cuando deba ".$minimo. " cuotas o menos." ,'info');
+				}
+			} else {
+
+				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota de la ayuda que desea solicitar : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+			}		}
 	}
 
 	//-----------------------------------------------------------------------------------

@@ -264,7 +264,7 @@ class ci_consumo_financiado extends mupum_ci
 				}
 			} else {
 
-				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas lo que desea consumir : $".$total_por_consumir. " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valo de la cuota de financiamiento que desea consumir : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
 			}
 
 				

@@ -296,14 +296,16 @@ class ci_solicitar_ayuda_economica_mutual extends mupum_ci
 				toba::notificacion()->agregar("Este socio tiene una ayuda economica pendiente de aprobacion. Por favor verifique la solicitudes realizadas." ,'info');
 
 			} else {
-				if ( $cuotas_faltantes <= $minimo)
-				{
-					$this->cn()->agregar_dt_consumo_convenio($datos);
+
+				$this->cn()->agregar_dt_consumo_convenio($datos);
 				
+				/*if ( $cuotas_faltantes <= $minimo)
+				{
+					
 				} else {
 					toba::notificacion()->agregar("El socio tiene una ayuda economica vigente y debe ".$cuotas_faltantes. " cuotas. Solo podra solicitar otra ayuda cuando deba como minimo ".$minimo. " cuotas." ,'info');
 
-				}
+				}*/
 			}
 		}
 
