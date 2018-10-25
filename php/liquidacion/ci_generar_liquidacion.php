@@ -12,8 +12,20 @@ class ci_generar_liquidacion extends mupum_ci
 	function evt__procesar()
 	{
 		try{
+
+
 			$this->cn()->guardar_dr_liquidacion();
 			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
+			$concepto = dao::get_listado_concepto_liquidacion('concepto_liquidacion.idconcepto_liquidacion = '.$cabecera['idconcepto_liquidacion']);
+
+			switch (trim($concepto[0]['codigo'])) {
+				case '0548':
+					dao::setear_envio_descuento_true_0548($cabecera['periodo']);
+					break;
+				
+				
+			}
 			
 			
 		} catch( toba_error_db $error){
@@ -70,10 +82,23 @@ class ci_generar_liquidacion extends mupum_ci
 	function evt__cuadro__borrar($seleccion)
 	{
 		$this->cn()->cargar_dr_liquidacion($seleccion);
+		$this->cn()->set_cursor_dt_cabecera_liquidacion($seleccion);
+		$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
+
 		$this->cn()->eliminar_dt_cabecera_liquidacion($seleccion);
-			try{
+		try{
 			$this->cn()->guardar_dr_liquidacion();
 			toba::notificacion()->agregar("Los datos se han borrado correctamente",'info');
+			
+			$concepto = dao::get_listado_concepto_liquidacion('concepto_liquidacion.idconcepto_liquidacion = '.$cabecera['idconcepto_liquidacion']);
+
+			switch (trim($concepto[0]['codigo'])) {
+				case '0548':
+					dao::setear_envio_descuento_false_0548($cabecera['periodo']);
+					break;
+				
+				
+			}
 			
 			
 		} catch( toba_error_db $error){
@@ -213,9 +238,7 @@ class ci_generar_liquidacion extends mupum_ci
 
 		foreach ($liquidados as $liquidado) 
 		{
-
 			$this->cn()->agregar_dt_detalle_liquidacion($liquidado);
-			
 		}
 	}
 

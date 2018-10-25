@@ -1289,6 +1289,25 @@ class dao
               order by
                   planilla desc";
       return consultar_fuente($sql);
+  }     
+
+  function get_forma_pago_idforma_pago($idforma_pago = null)
+  {
+      
+      $sql = "SELECT  idforma_pago, 
+                      descripcion,
+                      planilla,
+                      efectivo,
+                      requiere_nro_comprobante 
+
+              FROM 
+                  public.forma_pago 
+              
+              where
+                idforma_pago = $idforma_pago
+              order by
+                  planilla desc";
+      return consultar_fuente($sql);
   }   
 
   function get_listado_forma_pago_menos_planilla($where = null)
@@ -2366,7 +2385,7 @@ class dao
             inner join consumo_convenio_cuotas using (idconsumo_convenio)
             WHERE
               convenio.permite_financiacion = true and
-              consumo_convenio_cuotas.envio_descuento =  false and 
+              
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
                 (consumo_convenio_cuotas.cuota_pagada =  false or
                ((current_date - (2||' months')::interval)  <= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
@@ -2401,7 +2420,7 @@ class dao
                     monto_proforma, 
                     cantidad_cuotas, 
                     descripcion,  
-                    (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
+                    (traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) as cantidad_pagas
             FROM 
                 public.consumo_convenio
             inner  join afiliacion using(idafiliacion)
@@ -2412,9 +2431,10 @@ class dao
             inner join consumo_convenio_cuotas using (idconsumo_convenio)
             WHERE
               convenio.permite_financiacion = true and
+               consumo_convenio_cuotas.cuota_pagada =  true and
               (convenio.ayuda_economica is null or convenio.ayuda_economica = false) and
-               (consumo_convenio_cuotas.cuota_pagada =  false or
-               ((current_date - (3||' months')::interval)  >= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio)))) and 
+               
+               ((current_date - (3||' months')::interval)  >= (select traer_fecha_pago_max_nro_cuota(consumo_convenio.idconsumo_convenio))) and 
               $where
           
             group by 
@@ -4287,7 +4307,8 @@ class dao
     {
       $where = '1 = 1';
     }
-      $sql = "SELECT  idinscripcion_pileta, 
+    $sql_usuario = self::get_sql_usuario();
+    $sql = "SELECT  idinscripcion_pileta, 
                       temporada_pileta.descripcion as temporada, 
                       persona.legajo||' - '|| persona.apellido||', '|| persona.nombres as titular,
                       (familiar_de_un_titular(persona.idpersona) ) as grupo_familiar,
@@ -4300,6 +4321,7 @@ class dao
               inner join persona on persona.idpersona = afiliacion.idpersona
               inner join temporada_pileta using(idtemporada_pileta)
               where 
+                $sql_usuario and
                 $where";
     return consultar_fuente($sql);
   }  
@@ -4688,21 +4710,16 @@ class dao
       return $datos;
   }
 
-  function actualizar_envio_descuento_0548($periodo = null)
+  function setear_envio_descuento_true_0548($periodo = null)
   {
     $periodo = quote("%{$periodo}%");
-    $sql = "  UPDATE public.detalle_pago
-              SET  envio_descuento=true
-              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago.fecha, 'MM/YYYY') ilike $periodo ;
-
-              UPDATE public.inscripcion_colono_plan_pago
-              SET envio_descuento=true 
-              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  periodo ilike $periodo; 
-
-
-              UPDATE public.detalle_pago_inscripcion_pileta
-              SET envio_descuento=true
-              WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago_inscripcion_pileta.fecha, 'MM/YYYY') ilike $periodo;";
+    $sql = "select actualizar_campo_envio_descuento_true0548($periodo)";
+    return consultar_fuente($sql);      
+  }  
+  function setear_envio_descuento_false_0548($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "select actualizar_campo_envio_descuento_false0548($periodo)";
     return consultar_fuente($sql);      
   }
 
@@ -4743,6 +4760,17 @@ class dao
     {
       return $res[0]['fecha_sorteo'];
     }
+  }  
+
+  function get_valor_bono_colaboracion($idtalonario_bono_colaboracion= null)
+  {
+    $sql = "SELECT monto  as monto_bono
+            FROM 
+              public.talonario_bono_colaboracion
+            where
+             idtalonario_bono_colaboracion =$idtalonario_bono_colaboracion ";
+    return consultar_fuente($sql);
+
   }
 
 

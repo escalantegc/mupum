@@ -12,8 +12,10 @@ class ci_administracion_colonos extends mupum_ci
 	{
 		try{
 				$this->cn()->guardar_dr_administrar_colonia();
-
+			if (!toba::notificacion()->verificar_mensajes())
+			{
 				toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
+			}
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			
@@ -137,6 +139,57 @@ class ci_administracion_colonos extends mupum_ci
 	function evt__frm_ml_colonos__modificacion($datos)
 	{
 		$this->cn()->procesar_dt_inscripcion_colonos($datos);
+
+		$detalles = array();
+		//ei_arbol($datos);
+		foreach ($datos as $dato) 
+		{
+			$periodo = dao::sacar_periodo_fecha($dato['fecha']);			
+			$dato['periodo'] = $periodo;	
+	
+			$dato['monto']= ($dato['monto'] - $dato['monto_inscripcion'])/$dato['cantidad_cuotas'];
+			$detalles[] = $dato;	
+		}
+
+		for ($i=0;$i<count($detalles);$i++)
+		{
+		    for ($j = $i+1; $j<count($detalles);$j++)
+		    {
+		     if ($detalles[$i]['periodo'] == $detalles[$j]['periodo'])
+		       {
+		        $detalles[$i]['monto'] = $detalles[$i]['monto'] + $detalles[$j]['monto'];
+		        $detalles[$j]['monto'] = 0;
+		       }
+		    }
+		}
+		$hoy = date("m/Y");  
+		$bandera = 'no';  
+		foreach ($detalles as $detalle) 
+		{
+			if ($detalle['periodo'] == $hoy)
+			{
+				if ($detalle['monto'] > 0)
+				{
+					
+					$total_por_consumir = $detalle['monto'];
+					///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+					//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
+					$estado_situacion = dao::get_total_estado_situacion($detalle['periodo'],$detalle['idafiliacion']);
+					$configuracion = dao::get_configuracion();
+					$limite_socio = $configuracion['limite_por_socio'];
+					//--$total = $total_por_consumir + $total_consumido;
+					$estado_total = $estado_situacion + $total_por_consumir;  
+					if ($estado_total <= $limite_socio)
+					{
+						$bandera = 'si';
+					} else {
+
+						toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota del plan de pago de colonia : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+						toba::notificacion()->agregar("El plan de pago se genero igualmente, por favor ingrese al mismo y modifique las formas de pago." ,'info');
+					}
+				} 
+			} 
+		}
 	}
 
 
@@ -200,7 +253,7 @@ class ci_administracion_colonos extends mupum_ci
 		$this->cn()->set_dt_inscripcion_colono1($datos);
 		try{
 			$this->cn()->guardar_dr_administrar_colonia();
-				toba::notificacion()->agregar("Los datos se han recuperado correctamente",'info');
+			toba::notificacion()->agregar("Los datos se han recuperado correctamente",'info');
 		} catch( toba_error_db $error){
 			$sql_state= $error->get_sqlstate();
 			if($sql_state=='db_23503')
@@ -226,6 +279,8 @@ class ci_administracion_colonos extends mupum_ci
 	{
 		$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
 
+		
+		
 	}
 	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
 	{

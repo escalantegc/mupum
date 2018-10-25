@@ -44,10 +44,13 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__nuevo()
 	{
-
 		$this->set_pantalla('pant_nuevo');	
-		
-		
+	}
+	
+	function evt__volver()
+	{
+		$this->cn()->resetear_dr_consumo_convenio();
+		$this->set_pantalla('pant_inicial');
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -184,9 +187,11 @@ class ci_consumo_financiado extends mupum_ci
 		
 		$cuadro->set_datos($datos);
 	}
-
-	function evt__cuadro_historico__seleccion($seleccion)
+	function evt__cuadro_historico__ver($seleccion)
 	{
+		$this->cn()->cargar_dr_consumo_convenio($seleccion);
+		$this->cn()->set_cursor_dt_consumo_convenio($seleccion);
+		$this->set_pantalla('pant_visualizar');
 	}
 
 	function ajax__es_planilla($idfp, toba_ajax_respuesta $respuesta)
@@ -264,13 +269,17 @@ class ci_consumo_financiado extends mupum_ci
 				}
 			} else {
 
-				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valo de la cuota de financiamiento que desea consumir : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo : $".$estado_situacion. ", mas el valo de la cuota de financiamiento que desea consumir : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
 			}
 
 				
 				
 		}
 	}
+
+
+
+
 
 }
 ?>
