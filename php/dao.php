@@ -4180,10 +4180,49 @@ class dao
     $sql = "SELECT  idconcepto_liquidacion, 
                     descripcion, 
                     codigo,
-                    codigo ||' - '||descripcion as concepto 
+                    codigo ||' - '||descripcion as concepto,
+                    liquidable
             FROM 
               public.concepto_liquidacion
             where
+              $where";
+    return consultar_fuente($sql);
+  }  
+
+  function get_listado_concepto_liquidacion_liquidables($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconcepto_liquidacion, 
+                    descripcion, 
+                    codigo,
+                    codigo ||' - '||descripcion as concepto,
+                    liquidable
+            FROM 
+              public.concepto_liquidacion
+            where
+              liquidable = true and
+              $where";
+    return consultar_fuente($sql);
+  }    
+
+  function get_listado_concepto_liquidacion_no_liquidables($where = null)
+  {
+    if (!isset($where))
+    {
+      $where = '1 = 1';
+    }
+    $sql = "SELECT  idconcepto_liquidacion, 
+                    descripcion, 
+                    codigo,
+                    codigo ||' - '||descripcion as concepto,
+                    liquidable
+            FROM 
+              public.concepto_liquidacion
+            where
+              liquidable = false and
               $where";
     return consultar_fuente($sql);
   }  
@@ -4750,9 +4789,6 @@ class dao
     $sql = "select actualizar_campo_envio_descuento_false0550($periodo)";
     return consultar_fuente($sql);
   }  
-
-  
-
 
 
   function get_fecha_sorteo_bono_colaboracion($idtalonario_bono_colaboracion= null)
