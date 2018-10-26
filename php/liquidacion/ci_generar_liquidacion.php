@@ -118,6 +118,7 @@ class ci_generar_liquidacion extends mupum_ci
 			toba::notificacion()->agregar($mensaje_log,'error');
 		}
 		$this->cn()->resetear_dr_liquidacion();
+		unset($this->s__datos_liquidacion);
 	}
 	
 	function evt__cuadro__conciliar($seleccion)
