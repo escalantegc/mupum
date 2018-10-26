@@ -2610,7 +2610,7 @@ class dao
           FROM 
             public.consumo_convenio
               inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
-              inner join comercio on comercio.idcomercio = consumo_convenio.idcomercio
+              left outer join comercio on comercio.idcomercio = consumo_convenio.idcomercio
               inner join afiliacion using(idafiliacion)
               inner join persona using(idpersona)
          where
