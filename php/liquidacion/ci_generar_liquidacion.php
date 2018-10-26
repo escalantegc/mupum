@@ -22,6 +22,12 @@ class ci_generar_liquidacion extends mupum_ci
 			switch (trim($concepto[0]['codigo'])) {
 				case '0548':
 					dao::setear_envio_descuento_true_0548($cabecera['periodo']);
+					break;				
+					case '0549':
+					dao::setear_envio_descuento_true_0549($cabecera['periodo']);
+					break;				
+					case '0550':
+					dao::setear_envio_descuento_true_0550($cabecera['periodo']);
 					break;
 				
 				
@@ -96,8 +102,12 @@ class ci_generar_liquidacion extends mupum_ci
 				case '0548':
 					dao::setear_envio_descuento_false_0548($cabecera['periodo']);
 					break;
-				
-				
+				case '0549':
+					dao::setear_envio_descuento_false_0549($cabecera['periodo']);
+					break;
+				case '0550':
+					dao::setear_envio_descuento_false_0550($cabecera['periodo']);
+					break;
 			}
 			
 			

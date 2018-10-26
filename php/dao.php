@@ -4723,28 +4723,36 @@ class dao
     return consultar_fuente($sql);      
   }
 
-  function actualizar_envio_descuento_0549($periodo = null)
+  function setear_envio_descuento_true_0549($periodo = null)
   {
     $periodo = quote("%{$periodo}%");
-    $sql = "UPDATE public.consumo_convenio_cuotas
-            SET envio_descuento=true 
-            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  periodo ilike $periodo ;
+    $sql = "select actualizar_campo_envio_descuento_true0549($periodo)";
+    return consultar_fuente($sql);
+  }    
 
-            UPDATE public.detalle_pago_consumo_convenio
-            SET envio_descuento=true
-            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago_consumo_convenio.fecha, 'MM/YYYY') ilike $periodo ;";
+  function setear_envio_descuento_false_0549($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "select actualizar_campo_envio_descuento_false0549($periodo)";
+    return consultar_fuente($sql);
+  }   
+
+  function setear_envio_descuento_true_0550($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "select actualizar_campo_envio_descuento_true0550($periodo)";
+    return consultar_fuente($sql);
+  }    
+
+  function setear_envio_descuento_false_0550($periodo = null)
+  {
+    $periodo = quote("%{$periodo}%");
+    $sql = "select actualizar_campo_envio_descuento_false0550($periodo)";
     return consultar_fuente($sql);
   }  
 
-  function actualizar_envio_descuento_0550($periodo = null)
-  {
-    $periodo = quote("%{$periodo}%");
-    $sql = "UPDATE public.talonario_nros_bono_colaboracion
-            SET pagado = true
-            WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(fecha_compra, 'MM/YYYY') ilike $periodo;";
-    return consultar_fuente($sql);
+  
 
-  }
 
 
   function get_fecha_sorteo_bono_colaboracion($idtalonario_bono_colaboracion= null)
