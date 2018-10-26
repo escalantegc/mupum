@@ -2594,7 +2594,6 @@ class dao
     $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
                     convenio.titulo as convenio,
                     idconsumo_convenio, 
-                    categoria_comercio.descripcion as concepto,
                     idafiliacion, 
                     consumo_convenio.idconvenio, 
                     comercio.idcomercio, total, 
@@ -2610,12 +2609,10 @@ class dao
                     (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas
           FROM 
             public.consumo_convenio
-         inner join afiliacion using(idafiliacion)
-         inner join persona on persona.idpersona = afiliacion.idpersona
-         inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
-         inner join comercios_por_convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
-         inner join comercio on comercio.idcomercio = comercios_por_convenio.idcomercio
-         inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
+              inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+              inner join comercio on comercio.idcomercio = consumo_convenio.idcomercio
+              inner join afiliacion using(idafiliacion)
+              inner join persona using(idpersona)
          where
           $sql_usuario and
           $where
@@ -2624,7 +2621,6 @@ class dao
              persona.nombres,
               convenio.titulo ,
               idconsumo_convenio, 
-              categoria_comercio.descripcion ,
               idafiliacion, 
               consumo_convenio.idconvenio, 
               comercio.idcomercio, total, 
@@ -2636,7 +2632,7 @@ class dao
               cantidad_bonos, 
               comercio.nombre 
          order by 
-                periodo desc, concepto asc   ";
+                periodo desc  ";
         return consultar_fuente($sql);
   }
 
