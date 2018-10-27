@@ -23,10 +23,12 @@ class ci_legajo extends mupum_ci
 		$path=toba::proyecto()->get_path().'/exportaciones/'.$reporte;	
 
 		$path_logo=toba::proyecto()->get_path().'/www/logo/logo.gif';	
-		//$path_subreport = toba::proyecto()->get_path().'/exportaciones/';
-
+		
 
 		$report->set_path_reporte($path);
+		$path_subreport = toba::proyecto()->get_path().'/exportaciones/';
+
+		$report->set_parametro('SUBREPORT_DIR','S',$path_subreport);
 		//$report->set_parametro('SUBREPORT_DIR','S',$path_subreport);
 		//Parametro para el titulo
 		$report->set_parametro('titulo','S','LEGAJO DEL AFILIADO ');

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="telefonos" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f1731819-b5bd-4e7a-9435-cc0cfd3b5b83">
+	<property name="ireport.zoom" value="2.8531167061100033"/>
+	<property name="ireport.x" value="877"/>
+	<property name="ireport.y" value="7"/>
+	<parameter name="idpersona" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT tipo_telefono.descripcion, nro_telefono
+  FROM public.telefono_por_persona
+  inner join tipo_telefono using(idtipo_telefono)
+where
+public.telefono_por_persona.idpersona = $P!{idpersona}]]>
+	</queryString>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="nro_telefono" class="java.lang.String"/>
+	<columnHeader>
+		<band height="42" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="0" width="563" height="20" uuid="384331a1-a865-4881-96cc-f6df6ba60bfd"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="0" width="118" height="20" uuid="703a72ed-9ccc-481a-9b83-557d141dfb26"/>
+				<textElement>
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[NROS DE TELEFONO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="22" width="100" height="20" uuid="3a7b1a8a-f5a8-41c8-8f86-361b30a0b2c7"/>
+				<text><![CDATA[Tipo telefono]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="22" width="100" height="20" uuid="64c2c0bf-530c-4494-91a4-1509aaab5995"/>
+				<text><![CDATA[Nro Telefono]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<line>
+				<reportElement x="1" y="3" width="563" height="1" uuid="6290ef0d-8146-413c-b437-9fcf700247d7"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1" y="5" width="121" height="20" uuid="20f56309-10e5-45c6-b526-2a52c77d09d2"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="132" y="5" width="100" height="20" uuid="e6430825-88a0-448a-92ec-5707a02b5b93"/>
+				<textFieldExpression><![CDATA[$F{nro_telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="38">
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="1" y="0" width="555" height="35" isRemoveLineWhenBlank="true" uuid="66be0a91-cb53-4e25-af2e-1987c1e12b00">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}.equals(0)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Liberation Sans" size="20"/>
+				</textElement>
+				<text><![CDATA[No posee tefelefonos declarados]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

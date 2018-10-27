@@ -132,7 +132,7 @@ BEGIN
 
 
       UPDATE public.detalle_pago_inscripcion_pileta
-      SET envio_descuento=true
+      SET envio_descuento=false
       WHERE idforma_pago = (SELECT idforma_pago  FROM public.forma_pago where planilla = true) and  to_char(detalle_pago_inscripcion_pileta.fecha, 'MM/YYYY') ilike $1;
  
       

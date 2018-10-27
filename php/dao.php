@@ -139,10 +139,12 @@ class dao
                   calle, altura, 
                   piso, 
                   depto, 
-                  idestado_civil,
+                  estado_civil.descripcion as estado_civil,
                   (CASE WHEN sexo = 'm' THEN 'MASCULINO' else 'FEMENINO' end) as sexo,
-                  tipo_socio.descripcion as tipo
+                  tipo_socio.descripcion as tipo,
+                  afiliacion.fecha_alta 
           FROM public.persona
+            inner join estado_civil using(idestado_civil)
             inner join tipo_documento using(idtipo_documento)
             inner join afiliacion using (idpersona)
             inner join tipo_socio using(idtipo_socio)
@@ -2593,46 +2595,61 @@ class dao
     $sql_usuario = self::get_sql_usuario();
     $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
                     convenio.titulo as convenio,
-                    idconsumo_convenio, 
-                    idafiliacion, 
-                    consumo_convenio.idconvenio, 
-                    comercio.idcomercio, total, 
-                    fecha, 
-                    monto_proforma, 
-                    (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas, 
-                    consumo_convenio.descripcion, 
-                    idtalonario_bono, 
-                    cantidad_bonos, 
-                    comercio.nombre as comercio,
-                    '$'||' '||(case when monto_bono > 0 then monto_bono else null end ) as monto_bono, 
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    total, 
                     (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
-                    (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas
-          FROM 
-            public.consumo_convenio
-              inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
-              left outer join comercio on comercio.idcomercio = consumo_convenio.idcomercio
-              inner join afiliacion using(idafiliacion)
-              inner join persona using(idpersona)
-         where
-          $sql_usuario and
-          $where
-         group by
-             persona.apellido, 
-             persona.nombres,
-              convenio.titulo ,
-              idconsumo_convenio, 
-              idafiliacion, 
-              consumo_convenio.idconvenio, 
-              comercio.idcomercio, total, 
-              fecha, 
-              monto_proforma, 
-             cantidad_cuotas, 
-              consumo_convenio.descripcion, 
-              idtalonario_bono, 
-              cantidad_bonos, 
-              comercio.nombre 
-         order by 
-                periodo desc  ";
+                    (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas,
+                    (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas,
+                    null as monto_bono,
+                    null as cantidad_bonos
+                  
+            FROM 
+              public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join comercio on comercio.idcomercio = consumo_convenio.idcomercio
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              $sql_usuario and 
+              $where
+            group by
+                    persona.apellido, 
+                    persona.nombres,
+                    convenio.titulo ,
+                    comercio.codigo,
+                    comercio.nombre , 
+                    total, 
+                    fecha, 
+                    periodo,
+                    cantidad_cuotas, 
+                    cantidad_bonos, 
+                    comercio.nombre ,
+                    consumo_convenio.idconsumo_convenio
+            UNION
+            SELECT 
+                  (persona.apellido||', '|| persona.nombres) as socio,
+                  convenio.titulo as convenio,
+                  comercio.codigo ||'-'||comercio.nombre as comercio, 
+                  cantidad_bonos *   talonario_bono.monto_bono as total,
+                  (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
+                  null as cantidad_cuotas,
+                  null as cuotas_pagas,
+                  talonario_bono.monto_bono,
+                  cantidad_bonos
+                    
+                    
+              FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner  join talonario_bono using(idtalonario_bono) 
+            inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
+            inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
+            where
+              $sql_usuario and 
+              $where
+            order by
+              convenio,socio";
         return consultar_fuente($sql);
   }
 
@@ -4357,7 +4374,9 @@ class dao
               inner join temporada_pileta using(idtemporada_pileta)
               where 
                 $sql_usuario and
-                $where";
+                $where
+              order by
+                temporada, titular";
     return consultar_fuente($sql);
   }  
 
@@ -5021,7 +5040,7 @@ class dao
       $where = '1 = 1';
     }
     $sql_usuario = self::get_sql_usuario();
-    $sql = "SELECT  (persona.apellido||', '|| persona.nombres) as socio,
+    $sql = "SELECT   (persona.apellido||', '|| persona.nombres) as socio,
                     convenio.titulo as convenio,
                     idconsumo_convenio, 
                     categoria_comercio.descripcion as categoria,
@@ -5032,27 +5051,26 @@ class dao
                     monto_proforma, 
                     (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas, 
                     consumo_convenio.descripcion, 
-                    idtalonario_bono, 
                     cantidad_bonos, 
-                    comercio.nombre as comercio,
+                  comercio.codigo ||'-'||comercio.nombre as comercio, 
                     '$'||' '||(case when monto_bono > 0 then monto_bono else null end ) as monto_bono, 
                     (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
                     (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas,
                     (case when consumo_ticket=true then 'Ticket' else (case when maneja_bono=true then 'Bono' else (case when permite_financiacion=true and ayuda_economica=false then 'Financiado' else 'Ayuda Economica' end) end) end) as tipo
-           FROM 
-            public.consumo_convenio
-         inner join afiliacion using(idafiliacion)
-         inner join persona on persona.idpersona = afiliacion.idpersona
-         inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
-         inner join comercios_por_convenio on convenio.idconvenio = comercios_por_convenio.idconvenio
-         inner join comercio on comercio.idcomercio = comercios_por_convenio.idcomercio
-         inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
-         where
-          $sql_usuario and
-          $where
-         group by
-             persona.apellido, 
-             persona.nombres,
+                  
+            FROM 
+              public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
+            inner join comercio on comercio.idcomercio = consumo_convenio.idcomercio
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              $sql_usuario and
+              $where
+            group by
+              persona.apellido, 
+              persona.nombres,
               convenio.titulo ,
               idconsumo_convenio, 
               categoria_comercio.descripcion ,
@@ -5061,9 +5079,63 @@ class dao
               comercio.idcomercio, total, 
               fecha, 
               monto_proforma, 
-             cantidad_cuotas, 
+              cantidad_cuotas, 
               consumo_convenio.descripcion, 
-              idtalonario_bono, 
+              cantidad_bonos, 
+              comercio.nombre,
+              consumo_ticket,
+              maneja_bono,
+              permite_financiacion,
+              ayuda_economica
+            
+            UNION
+            SELECT 
+                (persona.apellido||', '|| persona.nombres) as socio,
+                convenio.titulo as convenio,
+                idconsumo_convenio, 
+                categoria_comercio.descripcion as categoria,
+                idafiliacion, 
+                consumo_convenio.idconvenio, 
+                comercio.idcomercio, 
+                cantidad_bonos *   talonario_bono.monto_bono as total,
+                fecha, 
+                null as   monto_proforma, 
+                null as cantidad_cuotas,
+                consumo_convenio.descripcion, 
+                cantidad_bonos, 
+                comercio.codigo ||'-'||comercio.nombre as comercio, 
+                '$'||' '||(case when talonario_bono.monto_bono > 0 then talonario_bono.monto_bono else null end ) as monto_bono, 
+                (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
+                null as cantidad_pagas,
+                (case when consumo_ticket=true then 'Ticket' else (case when maneja_bono=true then 'Bono' else (case when permite_financiacion=true and ayuda_economica=false then 'Financiado' else 'Ayuda Economica' end) end) end) as tipo
+
+                    
+              FROM 
+                public.consumo_convenio
+            left outer  join afiliacion using(idafiliacion)
+            left outer join persona on persona.idpersona = afiliacion.idpersona
+            inner  join talonario_bono using(idtalonario_bono) 
+            inner join convenio on convenio.idconvenio = talonario_bono.idconvenio
+                        inner join categoria_comercio on categoria_comercio.idcategoria_comercio = convenio.idcategoria_comercio
+
+            inner join comercio on comercio.idcomercio= talonario_bono.idcomercio
+            where
+              $sql_usuario and
+              $where    
+            group by
+              persona.apellido, 
+              persona.nombres,
+              convenio.titulo ,
+              idconsumo_convenio, 
+              categoria_comercio.descripcion ,
+              idafiliacion, 
+              consumo_convenio.idconvenio, 
+              comercio.idcomercio, total, 
+              fecha, 
+              monto_proforma, 
+              cantidad_cuotas, 
+              consumo_convenio.descripcion, 
+              talonario_bono.monto_bono,
               cantidad_bonos, 
               comercio.nombre,
               consumo_ticket,
@@ -5215,7 +5287,7 @@ class dao
             UNION  
            SELECT  'BONO COLABORACION' as beneficio, 
                     to_char(fecha_compra, 'MM/YYYY') as periodo, 
-                    count (*) * talonario_bono_colaboracion.monto as monto,
+                    sum(talonario_bono_colaboracion.monto) as monto,
                      persona.legajo,
                      persona.apellido||', '|| persona.nombres as persona,
                      afiliacion.idafiliacion            

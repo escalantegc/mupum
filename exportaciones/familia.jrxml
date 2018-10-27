@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="familia" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f1731819-b5bd-4e7a-9435-cc0cfd3b5b83">
+	<property name="ireport.zoom" value="1.6105100000000077"/>
+	<property name="ireport.x" value="253"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idpersona" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT persona.apellido||', '||persona.nombres as familiar,
+	parentesco.descripcion
+  FROM public.familia
+  inner join persona on persona.idpersona=familia.idpersona_familia
+  inner join parentesco using(idparentesco)
+where familia.idpersona = $P!{idpersona}]]>
+	</queryString>
+	<field name="familiar" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="563" height="20" uuid="7e4d1889-eb2e-4509-8546-0e9d9f93098d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1" y="21" width="100" height="20" uuid="722d815c-ece0-4d04-aeda-28ce8b564a67"/>
+				<text><![CDATA[Apellido y Nmbres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="21" width="100" height="20" uuid="f7e2da10-f7da-49f7-afae-a8c3df0fa54e"/>
+				<text><![CDATA[Parentesco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="52" height="20" uuid="cb3c57e8-8dbe-436e-97e7-387ed10c1d2e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FAMILIA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<line>
+				<reportElement x="1" y="3" width="562" height="1" uuid="6290ef0d-8146-413c-b437-9fcf700247d7"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1" y="4" width="383" height="20" uuid="3eac61dd-34c9-4b79-86a3-8da0d7236e8f"/>
+				<textFieldExpression><![CDATA[$F{familiar}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="384" y="3" width="179" height="20" uuid="efce6438-5622-4e75-b640-a8a9ef1971fb"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="38">
+			<staticText>
+				<reportElement isPrintRepeatedValues="false" x="8" y="0" width="555" height="35" isRemoveLineWhenBlank="true" uuid="512a2528-f4e2-439e-8b54-1c742325d322">
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT}.equals(0)]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Liberation Sans" size="20"/>
+				</textElement>
+				<text><![CDATA[No posee familiares declarados]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

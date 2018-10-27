@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="legajo" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04f58be6-3a1e-406c-85bf-856781b23da8">
-	<property name="ireport.zoom" value="2.357947691000003"/>
+	<property name="ireport.zoom" value="0.9313819845887326"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="148"/>
+	<property name="ireport.y" value="96"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="idpersona" class="java.lang.Integer"/>
@@ -10,6 +10,7 @@
 	<parameter name="direccion" class="java.lang.String"/>
 	<parameter name="telefono" class="java.lang.String"/>
 	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT 	idpersona,
 	(tipo_documento.sigla ||'-'||nro_documento) as documento,
@@ -42,7 +43,7 @@ left outer join claustro using(idclaustro)
 left outer join unidad_academica using(idunidad_academica)
 where
     afiliacion.activa = true and
-    persona.idpersona = $P{idpersona}]]>
+    persona.idpersona = $P!{idpersona}]]>
 	</queryString>
 	<field name="idpersona" class="java.lang.Integer"/>
 	<field name="documento" class="java.lang.String"/>
@@ -115,7 +116,7 @@ where
 				<reportElement x="1" y="28" width="100" height="20" uuid="a3ba0a4b-240a-4d32-8170-c871101086fb"/>
 				<text><![CDATA[Apellido:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="101" y="28" width="100" height="20" uuid="001ac1b9-d3f3-475e-87b0-9159bf9c9998"/>
 				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
 			</textField>
@@ -123,7 +124,7 @@ where
 				<reportElement x="278" y="28" width="100" height="20" uuid="94ebfd3f-5b8d-4c8c-8dcd-81a698a32551"/>
 				<text><![CDATA[Nombres:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="378" y="28" width="100" height="20" uuid="9372f773-9b19-46e8-a4b7-348f1af35e85"/>
 				<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
 			</textField>
@@ -131,7 +132,7 @@ where
 				<reportElement x="2" y="57" width="100" height="20" uuid="4c6a960a-5505-4eaa-9770-722cb4625d3d"/>
 				<text><![CDATA[Tipo documento:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="57" width="100" height="20" uuid="9e24d8c1-bd58-4e46-83bc-5442bad307a1"/>
 				<textFieldExpression><![CDATA[$F{tipo_documento}]]></textFieldExpression>
 			</textField>
@@ -139,7 +140,7 @@ where
 				<reportElement x="279" y="57" width="100" height="20" uuid="a67f5be8-3271-493e-b981-61320e6f7ab7"/>
 				<text><![CDATA[Nro documento:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="57" width="100" height="20" uuid="c19d9d7e-6b0e-4044-9495-a48217662f70"/>
 				<textFieldExpression><![CDATA[$F{nro_documento}]]></textFieldExpression>
 			</textField>
@@ -147,7 +148,7 @@ where
 				<reportElement x="2" y="85" width="100" height="20" uuid="48d77c30-a6aa-46a2-8e93-956d827fe938"/>
 				<text><![CDATA[Fecha nacimiento:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="85" width="100" height="20" uuid="9b8ab57c-a02a-469b-8322-b4b3501dfa3d"/>
 				<textFieldExpression><![CDATA[$F{fecha_nacimiento}]]></textFieldExpression>
 			</textField>
@@ -155,7 +156,7 @@ where
 				<reportElement x="278" y="85" width="100" height="20" uuid="5bc05c10-bde4-421f-82a6-7e321d2f7c7b"/>
 				<text><![CDATA[Edad:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="378" y="85" width="100" height="20" uuid="18823d00-679b-4be3-84e0-9fcfbecf779d"/>
 				<textFieldExpression><![CDATA[$F{edad}]]></textFieldExpression>
 			</textField>
@@ -163,7 +164,7 @@ where
 				<reportElement x="2" y="109" width="100" height="20" uuid="2cff0949-4bd2-460c-a427-9d9df12c4990"/>
 				<text><![CDATA[Sexo:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="109" width="100" height="20" uuid="4f55e952-ad65-4636-ae89-62ec2955bbf5"/>
 				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
 			</textField>
@@ -171,7 +172,7 @@ where
 				<reportElement x="278" y="109" width="100" height="20" uuid="41204b2d-1027-4f34-8551-e13a94569b17"/>
 				<text><![CDATA[Estado civil:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="378" y="109" width="100" height="20" uuid="6ce5c459-ade2-4550-9612-e8b8cb229b27"/>
 				<textFieldExpression><![CDATA[$F{estado_civil}]]></textFieldExpression>
 			</textField>
@@ -179,7 +180,7 @@ where
 				<reportElement x="2" y="133" width="100" height="20" uuid="84e11273-5eb8-4141-a036-e5d7fb52f455"/>
 				<text><![CDATA[Legajo:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="133" width="100" height="20" uuid="949b98ca-405f-4793-98ed-a4f3b3f951db"/>
 				<textFieldExpression><![CDATA[$F{legajo}]]></textFieldExpression>
 			</textField>
@@ -187,7 +188,7 @@ where
 				<reportElement x="278" y="133" width="100" height="20" uuid="b5ae1bfb-3309-449d-8132-cda9e73290f7"/>
 				<text><![CDATA[Correo:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="378" y="133" width="100" height="20" uuid="ea84106d-846a-415d-bf5a-9f090ee8fa28"/>
 				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
 			</textField>
@@ -195,7 +196,7 @@ where
 				<reportElement x="2" y="157" width="100" height="20" uuid="8a140bf4-d623-4a5c-b0a4-b6185399083c"/>
 				<text><![CDATA[Cuil:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="157" width="100" height="20" uuid="3f49a554-58ad-490a-bb5d-8de144d9dd67"/>
 				<textFieldExpression><![CDATA[$F{cuil}]]></textFieldExpression>
 			</textField>
@@ -203,7 +204,7 @@ where
 				<reportElement x="278" y="157" width="100" height="20" uuid="fb6b0a61-bd08-4e4d-8649-89d070136e85"/>
 				<text><![CDATA[CBU:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="378" y="157" width="100" height="20" uuid="a8f49b20-5368-4490-9a9c-de5e88bcb61d"/>
 				<textFieldExpression><![CDATA[$F{cbu}]]></textFieldExpression>
 			</textField>
@@ -231,7 +232,7 @@ where
 				<reportElement x="2" y="218" width="100" height="20" uuid="6e2bbb43-0f2d-40e1-814b-fed4cb0e4c82"/>
 				<text><![CDATA[Claustro:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="218" width="100" height="20" uuid="f38b992f-b1c5-420d-acb5-f5e4dd6f18a9"/>
 				<textFieldExpression><![CDATA[$F{claustro}]]></textFieldExpression>
 			</textField>
@@ -239,7 +240,7 @@ where
 				<reportElement x="279" y="218" width="100" height="20" uuid="9f7996d3-7260-4297-aa30-fae4299bf1dc"/>
 				<text><![CDATA[Unidad academica:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="218" width="100" height="20" uuid="936c36e9-cfe5-4c7c-b49f-2961e4b58b79"/>
 				<textFieldExpression><![CDATA[$F{unidad_academica}]]></textFieldExpression>
 			</textField>
@@ -257,7 +258,7 @@ where
 				<reportElement x="2" y="268" width="100" height="20" uuid="86b84f28-6e6e-4c72-a36e-3002ec4da9e4"/>
 				<text><![CDATA[Calle:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="101" y="268" width="100" height="20" uuid="d1b43336-5657-4238-982c-7ff2577b4186"/>
 				<textFieldExpression><![CDATA[$F{calle}]]></textFieldExpression>
 			</textField>
@@ -265,7 +266,7 @@ where
 				<reportElement x="279" y="270" width="100" height="20" uuid="d1f5d630-8d30-47ac-b414-92ba7f434178"/>
 				<text><![CDATA[Altura:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="270" width="100" height="20" uuid="09b401b9-b77b-4fed-80d1-eed5affa5a7b"/>
 				<textFieldExpression><![CDATA[$F{altura}]]></textFieldExpression>
 			</textField>
@@ -273,7 +274,7 @@ where
 				<reportElement x="2" y="293" width="100" height="20" uuid="8b952b32-511b-4549-ac2e-ddc2a3d3c172"/>
 				<text><![CDATA[Piso:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="293" width="100" height="20" uuid="65caaf56-2859-43d7-9244-dc68f10878ff"/>
 				<textFieldExpression><![CDATA[$F{piso}]]></textFieldExpression>
 			</textField>
@@ -281,7 +282,7 @@ where
 				<reportElement x="279" y="293" width="100" height="20" uuid="73211411-7cab-4e25-aa0e-da023841233f"/>
 				<text><![CDATA[Depto:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="379" y="293" width="100" height="20" uuid="d4575cb4-da89-4112-a19e-1829d0380b7c"/>
 				<textFieldExpression><![CDATA[$F{depto}]]></textFieldExpression>
 			</textField>
@@ -289,10 +290,30 @@ where
 				<reportElement x="2" y="318" width="100" height="20" uuid="fe77caf9-bd47-4ae6-9d16-64c77d1ef42d"/>
 				<text><![CDATA[Localidad:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="318" width="100" height="20" uuid="1645cfc1-88f4-44f3-9d15-275f96a03b5f"/>
 				<textFieldExpression><![CDATA[$F{localdad}]]></textFieldExpression>
 			</textField>
+		</band>
+		<band height="67">
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="0" width="550" height="67" uuid="dd910586-6ce6-4e68-85ec-c70f974894a5"/>
+				<subreportParameter name="idpersona">
+					<subreportParameterExpression><![CDATA[$P{idpersona}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "familia.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="72">
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="0" width="550" height="67" uuid="6d4a66e4-c663-481c-a742-1bee0b827044"/>
+				<subreportParameter name="idpersona">
+					<subreportParameterExpression><![CDATA[$P{idpersona}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+ "telefonos.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<pageFooter>

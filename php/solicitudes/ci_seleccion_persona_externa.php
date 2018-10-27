@@ -42,7 +42,7 @@ class ci_seleccion_persona_externa extends mupum_ci
 
 	function evt__nuevo()
 	{
-		$this->set_pantalla('pant_inicial');
+		$this->set_pantalla('pant_edicion');
 	}
 
 	//-----------------------------------------------------------------------------------

@@ -162,6 +162,8 @@ class ci_administrar_inscripciones extends mupum_ci
 						$detalles[] = $dato;	
 					}
 				}	
+			} else {
+				$detalles[] = $dato;
 			}
 	
 		}
@@ -170,11 +172,11 @@ class ci_administrar_inscripciones extends mupum_ci
 		{
 		    for ($j = $i+1; $j<count($detalles);$j++)
 		    {
-		     if ($detalles[$i]['periodo'] == $detalles[$j]['periodo'])
-		       {
-		        $detalles[$i]['monto'] = $detalles[$i]['monto'] + $detalles[$j]['monto'];
-		        $detalles[$j]['monto'] = 0;
-		       }
+	    		if ($detalles[$i]['periodo'] == $detalles[$j]['periodo'])
+				{
+					$detalles[$i]['monto'] = $detalles[$i]['monto'] + $detalles[$j]['monto'];
+					$detalles[$j]['monto'] = 0;
+				}	
 		    }
 		}
 		$hoy = date("m/Y");  
@@ -212,7 +214,13 @@ class ci_administrar_inscripciones extends mupum_ci
 						$bandera = 'si';
 					}
 				} 
+			} else {
+				if ($detalle['apex_ei_analisis_fila'] == 'B')
+				{
+					$bandera = 'si';
+				}
 			}
+			
 
 		}
 

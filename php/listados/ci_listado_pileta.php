@@ -1,5 +1,5 @@
 <?php
-class ci_listado_consumos extends mupum_ci
+class ci_listado_pileta extends mupum_ci
 {
 	protected $s__where;
 	protected $s__datos_filtro;
@@ -7,15 +7,14 @@ class ci_listado_consumos extends mupum_ci
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
 
-	function conf__cuadro(mupum_ei_cuadro $cuadro)
+	function conf__cuadro(ei_cuadro_inscripcion_pileta_admin $cuadro)
 	{
 		if(isset($this->s__datos_filtro))
 		{
-			$datos = dao::get_listado_consumos($this->s__where);
+			$datos = dao::get_listado_inscripcion_pileta($this->s__where);
 		}else{
-			$datos = dao::get_listado_consumos();
+			$datos = dao::get_listado_inscripcion_pileta();
 		}
-		
 		$cuadro->set_datos($datos);
 	}
 
@@ -25,30 +24,10 @@ class ci_listado_consumos extends mupum_ci
 
 	function conf__filtro(mupum_ei_filtro $filtro)
 	{
- 		$filtro->columna('tipo')->set_condicion_fija('es_igual_a');
-
 		if(isset($this->s__datos_filtro))
 		{
 			$filtro->set_datos($this->s__datos_filtro);
-			$this->s__where = $filtro->get_sql_where();
-			
-			if (strstr($this->s__where, "tipo = 'bn'"))
-			{
-				$this->s__where = str_replace("tipo = 'bn'", "maneja_bono =true", $this->s__where);
-			}
-			if (strstr($this->s__where, "tipo = 'tk'"))
-			{
-				$this->s__where = str_replace("tipo = 'tk'", "consumo_ticket =true", $this->s__where);
-			}			
-
-			if (strstr($this->s__where, "tipo = 'fi'"))
-			{
-				$this->s__where = str_replace("tipo = 'fi'", "permite_financiacion =true and ayuda_economica=false", $this->s__where);
-			}			
-			if (strstr($this->s__where, "tipo = 'ay'"))
-			{
-				$this->s__where = str_replace("tipo = 'ay'", "ayuda_economica =true", $this->s__where);
-			}
+			$this->s__where=$filtro->get_sql_where();
 		}
 	}
 

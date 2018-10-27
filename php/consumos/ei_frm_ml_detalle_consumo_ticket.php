@@ -38,6 +38,8 @@ class ei_frm_ml_detalle_consumo_ticket extends mupum_ei_formulario_ml
 				this.ef('monto').ir_a_fila(fila).resetear_estado();
 			}
 		}
+
+		
 		";
 	}
 

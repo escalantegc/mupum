@@ -46,6 +46,22 @@ class ei_frm_ml_detalle_pago_bono extends mupum_ei_formulario_ml
 				
 		
 		}
+		{$this->objeto_js}.evt__envio_descuento__procesar = function(es_inicial, fila)
+		{
+			if (this.ef('envio_descuento').ir_a_fila(fila).chequeado())
+			{
+				this.ef('idforma_pago').ir_a_fila(fila).set_solo_lectura(true);
+				this.ef('monto').ir_a_fila(fila).set_solo_lectura(true);
+				this.ef('fecha').ir_a_fila(fila).set_solo_lectura(true);
+				this.ef('descripcion').ir_a_fila(fila).set_solo_lectura(true);
+			} else {
+				this.ef('idforma_pago').ir_a_fila(fila).set_solo_lectura(false);
+				this.ef('monto').ir_a_fila(fila).set_solo_lectura(false);
+				this.ef('fecha').ir_a_fila(fila).set_solo_lectura(false);
+				this.ef('descripcion').ir_a_fila(fila).set_solo_lectura(false);
+			}
+
+		}
 		";
 	}
 
