@@ -86,7 +86,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 	'borrar', --identificador
 	NULL, --etiqueta
 	'1', --maneja_datos
-	'1', --sobre_fila
+	'0', --sobre_fila
 	'¿Esta seguro de borrar el registro?', --confirmacion
 	NULL, --estilo
 	'apex', --imagen_recurso_origen

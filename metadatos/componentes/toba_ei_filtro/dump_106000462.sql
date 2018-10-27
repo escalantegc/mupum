@@ -1,5 +1,5 @@
 ------------------------------------------------------------
---[106000450]--  filtroci_mis_consumos - filtro 
+--[106000462]--  filtroci_socios_principal - filtro 
 ------------------------------------------------------------
 
 ------------------------------------------------------------
@@ -9,7 +9,7 @@
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, clase_proyecto, clase, punto_montaje, subclase, subclase_archivo, objeto_categoria_proyecto, objeto_categoria, nombre, titulo, colapsable, descripcion, fuente_datos_proyecto, fuente_datos, solicitud_registrar, solicitud_obj_obs_tipo, solicitud_obj_observacion, parametro_a, parametro_b, parametro_c, parametro_d, parametro_e, parametro_f, usuario, creacion, posicion_botonera) VALUES (
 	'mupum', --proyecto
-	'106000450', --objeto
+	'106000462', --objeto
 	NULL, --anterior
 	NULL, --identificador
 	NULL, --reflexivo
@@ -20,12 +20,12 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
-	'filtroci_mis_consumos - filtro', --nombre
+	'filtroci_socios_principal - filtro', --nombre
 	'Busqueda', --titulo
 	'0', --colapsable
 	NULL, --descripcion
 	'mupum', --fuente_datos_proyecto
-	'auditoria', --fuente_datos
+	'mupum', --fuente_datos
 	NULL, --solicitud_registrar
 	NULL, --solicitud_obj_obs_tipo
 	NULL, --solicitud_obj_observacion
@@ -36,7 +36,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	NULL, --parametro_e
 	NULL, --parametro_f
 	NULL, --usuario
-	'2018-09-18 20:38:09', --creacion
+	'2018-05-28 18:45:31', --creacion
 	'abajo'  --posicion_botonera
 );
 --- FIN Grupo de desarrollo 106
@@ -48,8 +48,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'106000645', --evento_id
-	'106000450', --objeto
+	'106000663', --evento_id
+	'106000462', --objeto
 	'filtrar', --identificador
 	'&Filtrar', --etiqueta
 	'1', --maneja_datos
@@ -81,8 +81,8 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 );
 INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, etiqueta, maneja_datos, sobre_fila, confirmacion, estilo, imagen_recurso_origen, imagen, en_botonera, ayuda, orden, ci_predep, implicito, defecto, display_datos_cargados, grupo, accion, accion_imphtml_debug, accion_vinculo_carpeta, accion_vinculo_item, accion_vinculo_objeto, accion_vinculo_popup, accion_vinculo_popup_param, accion_vinculo_target, accion_vinculo_celda, accion_vinculo_servicio, es_seleccion_multiple, es_autovinculo) VALUES (
 	'mupum', --proyecto
-	'106000644', --evento_id
-	'106000450', --objeto
+	'106000662', --evento_id
+	'106000462', --objeto
 	'cancelar', --identificador
 	'&Limpiar', --etiqueta
 	'0', --maneja_datos
@@ -119,7 +119,7 @@ INSERT INTO apex_objeto_eventos (proyecto, evento_id, objeto, identificador, eti
 ------------------------------------------------------------
 INSERT INTO apex_objeto_ei_filtro (objeto_ei_filtro_proyecto, objeto_ei_filtro, ancho) VALUES (
 	'mupum', --objeto_ei_filtro_proyecto
-	'106000450', --objeto_ei_filtro
+	'106000462', --objeto_ei_filtro
 	'100%'  --ancho
 );
 
@@ -129,77 +129,19 @@ INSERT INTO apex_objeto_ei_filtro (objeto_ei_filtro_proyecto, objeto_ei_filtro, 
 
 --- INICIO Grupo de desarrollo 106
 INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000242', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
+	'106000265', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
-	'opciones', --tipo
-	'idafiliacion', --nombre
-	'idafiliacion', --expresion
-	'Socio', --etiqueta
+	'cadena', --tipo
+	'legajo', --nombre
+	'legajo', --expresion
+	'Legajo', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
 	'1', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
-	'ef_combo_editable', --opciones_ef
-	'get_personas_afiliadas_combo_editable', --carga_metodo
-	NULL, --carga_clase
-	NULL, --carga_include
-	NULL, --carga_dt
-	'106000001', --carga_consulta_php
-	NULL, --carga_sql
-	'auditoria', --carga_fuente
-	NULL, --carga_lista
-	'idafiliacion', --carga_col_clave
-	'persona', --carga_col_desc
-	'0', --carga_permite_no_seteado
-	NULL, --carga_no_seteado
-	'0', --carga_no_seteado_ocultar
-	NULL, --carga_maestros
-	'400', --edit_tamano
-	NULL, --edit_maximo
-	NULL, --edit_mascara
-	NULL, --edit_unidad
-	NULL, --edit_rango
-	NULL, --edit_expreg
-	NULL, --estilo
-	NULL, --popup_item
-	NULL, --popup_proyecto
-	NULL, --popup_editable
-	NULL, --popup_ventana
-	'get_descripcion_persona', --popup_carga_desc_metodo
-	'dao', --popup_carga_desc_clase
-	'dao.php', --popup_carga_desc_include
-	NULL, --popup_puede_borrar_estado
-	'28', --punto_montaje
-	NULL, --check_valor_si
-	NULL, --check_valor_no
-	NULL, --check_desc_si
-	NULL, --check_desc_no
-	NULL, --selec_cant_minima
-	NULL, --selec_cant_maxima
-	NULL, --selec_utilidades
-	NULL, --selec_tamano
-	NULL, --selec_ancho
-	NULL, --selec_serializar
-	NULL, --selec_cant_columnas
-	NULL  --placeholder
-);
-INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000243', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
-	'mupum', --objeto_ei_filtro_proyecto
-	'cadena', --tipo
-	'periodo', --nombre
-	'(case when fecha is null then periodo else to_char(fecha, ''MM/YYYY'') end)', --expresion
-	'Periodo', --etiqueta
-	NULL, --descripcion
-	'0', --obligatorio
-	'1', --inicial
-	'6', --orden
-	NULL, --estado_defecto
-	'0', --opciones_es_multiple
 	NULL, --opciones_ef
 	NULL, --carga_metodo
 	NULL, --carga_clase
@@ -220,7 +162,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --edit_mascara
 	NULL, --edit_unidad
 	NULL, --edit_rango
-	'/^(0[1-9]|1[0-2])\/([0-9]{4})$/', --edit_expreg
+	NULL, --edit_expreg
 	NULL, --estilo
 	NULL, --popup_item
 	NULL, --popup_proyecto
@@ -245,137 +187,195 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000244', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
+	'106000266', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
 	'numero', --tipo
-	'cantidad_cuotas', --nombre
-	'cantidad_cuotas', --expresion
-	'Cantidad Cuotas', --etiqueta
-	NULL, --descripcion
-	'0', --obligatorio
-	'1', --inicial
-	'7', --orden
-	NULL, --estado_defecto
-	'0', --opciones_es_multiple
-	NULL, --opciones_ef
-	NULL, --carga_metodo
-	NULL, --carga_clase
-	NULL, --carga_include
-	NULL, --carga_dt
-	NULL, --carga_consulta_php
-	NULL, --carga_sql
-	NULL, --carga_fuente
-	NULL, --carga_lista
-	NULL, --carga_col_clave
-	NULL, --carga_col_desc
-	'0', --carga_permite_no_seteado
-	NULL, --carga_no_seteado
-	NULL, --carga_no_seteado_ocultar
-	NULL, --carga_maestros
-	'9', --edit_tamano
-	'9', --edit_maximo
-	NULL, --edit_mascara
-	NULL, --edit_unidad
-	NULL, --edit_rango
-	NULL, --edit_expreg
-	NULL, --estilo
-	NULL, --popup_item
-	NULL, --popup_proyecto
-	NULL, --popup_editable
-	NULL, --popup_ventana
-	NULL, --popup_carga_desc_metodo
-	NULL, --popup_carga_desc_clase
-	NULL, --popup_carga_desc_include
-	NULL, --popup_puede_borrar_estado
-	NULL, --punto_montaje
-	NULL, --check_valor_si
-	NULL, --check_valor_no
-	NULL, --check_desc_si
-	NULL, --check_desc_no
-	NULL, --selec_cant_minima
-	NULL, --selec_cant_maxima
-	NULL, --selec_utilidades
-	NULL, --selec_tamano
-	NULL, --selec_ancho
-	NULL, --selec_serializar
-	NULL, --selec_cant_columnas
-	NULL  --placeholder
-);
-INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000245', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
-	'mupum', --objeto_ei_filtro_proyecto
-	'opciones', --tipo
-	'idconvenio', --nombre
-	'convenio.idconvenio', --expresion
-	'Convenio', --etiqueta
-	NULL, --descripcion
-	'0', --obligatorio
-	'1', --inicial
-	'3', --orden
-	NULL, --estado_defecto
-	'0', --opciones_es_multiple
-	'ef_combo', --opciones_ef
-	'get_listado_convenios_segun_categoria', --carga_metodo
-	NULL, --carga_clase
-	NULL, --carga_include
-	NULL, --carga_dt
-	'106000001', --carga_consulta_php
-	NULL, --carga_sql
-	'auditoria', --carga_fuente
-	NULL, --carga_lista
-	'idconvenio', --carga_col_clave
-	'titulo', --carga_col_desc
-	'1', --carga_permite_no_seteado
-	'--Seleccione--', --carga_no_seteado
-	'0', --carga_no_seteado_ocultar
-	'idcategoria_comercio', --carga_maestros
-	NULL, --edit_tamano
-	NULL, --edit_maximo
-	NULL, --edit_mascara
-	NULL, --edit_unidad
-	NULL, --edit_rango
-	NULL, --edit_expreg
-	NULL, --estilo
-	NULL, --popup_item
-	NULL, --popup_proyecto
-	NULL, --popup_editable
-	NULL, --popup_ventana
-	NULL, --popup_carga_desc_metodo
-	NULL, --popup_carga_desc_clase
-	NULL, --popup_carga_desc_include
-	NULL, --popup_puede_borrar_estado
-	'28', --punto_montaje
-	NULL, --check_valor_si
-	NULL, --check_valor_no
-	NULL, --check_desc_si
-	NULL, --check_desc_no
-	NULL, --selec_cant_minima
-	NULL, --selec_cant_maxima
-	NULL, --selec_utilidades
-	NULL, --selec_tamano
-	NULL, --selec_ancho
-	NULL, --selec_serializar
-	NULL, --selec_cant_columnas
-	NULL  --placeholder
-);
-INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000246', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
-	'mupum', --objeto_ei_filtro_proyecto
-	'opciones', --tipo
-	'idcategoria_comercio', --nombre
-	'convenio.idcategoria_comercio', --expresion
-	'Categoria', --etiqueta
+	'nro_documento', --nombre
+	'nro_documento', --expresion
+	'Nro Documento', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
 	'2', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
+	NULL, --opciones_ef
+	NULL, --carga_metodo
+	NULL, --carga_clase
+	NULL, --carga_include
+	NULL, --carga_dt
+	NULL, --carga_consulta_php
+	NULL, --carga_sql
+	NULL, --carga_fuente
+	NULL, --carga_lista
+	NULL, --carga_col_clave
+	NULL, --carga_col_desc
+	'0', --carga_permite_no_seteado
+	NULL, --carga_no_seteado
+	NULL, --carga_no_seteado_ocultar
+	NULL, --carga_maestros
+	NULL, --edit_tamano
+	NULL, --edit_maximo
+	NULL, --edit_mascara
+	NULL, --edit_unidad
+	NULL, --edit_rango
+	NULL, --edit_expreg
+	NULL, --estilo
+	NULL, --popup_item
+	NULL, --popup_proyecto
+	NULL, --popup_editable
+	NULL, --popup_ventana
+	NULL, --popup_carga_desc_metodo
+	NULL, --popup_carga_desc_clase
+	NULL, --popup_carga_desc_include
+	NULL, --popup_puede_borrar_estado
+	NULL, --punto_montaje
+	NULL, --check_valor_si
+	NULL, --check_valor_no
+	NULL, --check_desc_si
+	NULL, --check_desc_no
+	NULL, --selec_cant_minima
+	NULL, --selec_cant_maxima
+	NULL, --selec_utilidades
+	NULL, --selec_tamano
+	NULL, --selec_ancho
+	NULL, --selec_serializar
+	NULL, --selec_cant_columnas
+	NULL  --placeholder
+);
+INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
+	'106000267', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
+	'mupum', --objeto_ei_filtro_proyecto
+	'cadena', --tipo
+	'apellido', --nombre
+	'apellido', --expresion
+	'Apellido', --etiqueta
+	NULL, --descripcion
+	'0', --obligatorio
+	'1', --inicial
+	'3', --orden
+	NULL, --estado_defecto
+	'0', --opciones_es_multiple
+	NULL, --opciones_ef
+	NULL, --carga_metodo
+	NULL, --carga_clase
+	NULL, --carga_include
+	NULL, --carga_dt
+	NULL, --carga_consulta_php
+	NULL, --carga_sql
+	NULL, --carga_fuente
+	NULL, --carga_lista
+	NULL, --carga_col_clave
+	NULL, --carga_col_desc
+	'0', --carga_permite_no_seteado
+	NULL, --carga_no_seteado
+	NULL, --carga_no_seteado_ocultar
+	NULL, --carga_maestros
+	NULL, --edit_tamano
+	NULL, --edit_maximo
+	NULL, --edit_mascara
+	NULL, --edit_unidad
+	NULL, --edit_rango
+	NULL, --edit_expreg
+	NULL, --estilo
+	NULL, --popup_item
+	NULL, --popup_proyecto
+	NULL, --popup_editable
+	NULL, --popup_ventana
+	NULL, --popup_carga_desc_metodo
+	NULL, --popup_carga_desc_clase
+	NULL, --popup_carga_desc_include
+	NULL, --popup_puede_borrar_estado
+	NULL, --punto_montaje
+	NULL, --check_valor_si
+	NULL, --check_valor_no
+	NULL, --check_desc_si
+	NULL, --check_desc_no
+	NULL, --selec_cant_minima
+	NULL, --selec_cant_maxima
+	NULL, --selec_utilidades
+	NULL, --selec_tamano
+	NULL, --selec_ancho
+	NULL, --selec_serializar
+	NULL, --selec_cant_columnas
+	NULL  --placeholder
+);
+INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
+	'106000268', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
+	'mupum', --objeto_ei_filtro_proyecto
+	'cadena', --tipo
+	'nombres', --nombre
+	'nombres', --expresion
+	'Nombres', --etiqueta
+	NULL, --descripcion
+	'0', --obligatorio
+	'1', --inicial
+	'4', --orden
+	NULL, --estado_defecto
+	'0', --opciones_es_multiple
+	NULL, --opciones_ef
+	NULL, --carga_metodo
+	NULL, --carga_clase
+	NULL, --carga_include
+	NULL, --carga_dt
+	NULL, --carga_consulta_php
+	NULL, --carga_sql
+	NULL, --carga_fuente
+	NULL, --carga_lista
+	NULL, --carga_col_clave
+	NULL, --carga_col_desc
+	'0', --carga_permite_no_seteado
+	NULL, --carga_no_seteado
+	NULL, --carga_no_seteado_ocultar
+	NULL, --carga_maestros
+	NULL, --edit_tamano
+	NULL, --edit_maximo
+	NULL, --edit_mascara
+	NULL, --edit_unidad
+	NULL, --edit_rango
+	NULL, --edit_expreg
+	NULL, --estilo
+	NULL, --popup_item
+	NULL, --popup_proyecto
+	NULL, --popup_editable
+	NULL, --popup_ventana
+	NULL, --popup_carga_desc_metodo
+	NULL, --popup_carga_desc_clase
+	NULL, --popup_carga_desc_include
+	NULL, --popup_puede_borrar_estado
+	NULL, --punto_montaje
+	NULL, --check_valor_si
+	NULL, --check_valor_no
+	NULL, --check_desc_si
+	NULL, --check_desc_no
+	NULL, --selec_cant_minima
+	NULL, --selec_cant_maxima
+	NULL, --selec_utilidades
+	NULL, --selec_tamano
+	NULL, --selec_ancho
+	NULL, --selec_serializar
+	NULL, --selec_cant_columnas
+	NULL  --placeholder
+);
+INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
+	'106000269', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
+	'mupum', --objeto_ei_filtro_proyecto
+	'opciones', --tipo
+	'idtipo_socio', --nombre
+	'afiliacion.idtipo_socio', --expresion
+	'Tipo Afiliacion', --etiqueta
+	NULL, --descripcion
+	'0', --obligatorio
+	'1', --inicial
+	'9', --orden
+	NULL, --estado_defecto
+	'0', --opciones_es_multiple
 	'ef_combo', --opciones_ef
-	'get_listado_categoria_comercio', --carga_metodo
+	'get_listado_tipo_socio', --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
@@ -383,7 +383,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_sql
 	'auditoria', --carga_fuente
 	NULL, --carga_lista
-	'idcategoria_comercio', --carga_col_clave
+	'idtipo_socio', --carga_col_clave
 	'descripcion', --carga_col_desc
 	'1', --carga_permite_no_seteado
 	'--Seleccione--', --carga_no_seteado
@@ -419,20 +419,78 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000247', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
+	'106000270', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
-	'opciones', --tipo
-	'tipo', --nombre
-	'tipo', --expresion
-	'Tipo Convenio', --etiqueta
+	'fecha', --tipo
+	'fecha_nacimiento', --nombre
+	'fecha_nacimiento', --expresion
+	'Fecha nacimiento', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
 	'5', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
-	'ef_radio', --opciones_ef
+	NULL, --opciones_ef
+	NULL, --carga_metodo
+	NULL, --carga_clase
+	NULL, --carga_include
+	NULL, --carga_dt
+	NULL, --carga_consulta_php
+	NULL, --carga_sql
+	NULL, --carga_fuente
+	NULL, --carga_lista
+	NULL, --carga_col_clave
+	NULL, --carga_col_desc
+	'0', --carga_permite_no_seteado
+	NULL, --carga_no_seteado
+	NULL, --carga_no_seteado_ocultar
+	NULL, --carga_maestros
+	NULL, --edit_tamano
+	NULL, --edit_maximo
+	NULL, --edit_mascara
+	NULL, --edit_unidad
+	NULL, --edit_rango
+	NULL, --edit_expreg
+	NULL, --estilo
+	NULL, --popup_item
+	NULL, --popup_proyecto
+	NULL, --popup_editable
+	NULL, --popup_ventana
+	NULL, --popup_carga_desc_metodo
+	NULL, --popup_carga_desc_clase
+	NULL, --popup_carga_desc_include
+	NULL, --popup_puede_borrar_estado
+	NULL, --punto_montaje
+	NULL, --check_valor_si
+	NULL, --check_valor_no
+	NULL, --check_desc_si
+	NULL, --check_desc_no
+	NULL, --selec_cant_minima
+	NULL, --selec_cant_maxima
+	NULL, --selec_utilidades
+	NULL, --selec_tamano
+	NULL, --selec_ancho
+	NULL, --selec_serializar
+	NULL, --selec_cant_columnas
+	NULL  --placeholder
+);
+INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
+	'106000271', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
+	'mupum', --objeto_ei_filtro_proyecto
+	'opciones', --tipo
+	'sexo', --nombre
+	'sexo', --expresion
+	'Sexo', --etiqueta
+	NULL, --descripcion
+	'0', --obligatorio
+	'1', --inicial
+	'6', --orden
+	NULL, --estado_defecto
+	'0', --opciones_es_multiple
+	'ef_combo', --opciones_ef
 	NULL, --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
@@ -440,11 +498,11 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --carga_consulta_php
 	NULL, --carga_sql
 	'auditoria', --carga_fuente
-	'tk/Tickets,bn/Bono,fi/Financiado,ay/Ayuda Economica', --carga_lista
+	'm/MASCULINO,f/FEMENIMO', --carga_lista
 	NULL, --carga_col_clave
 	NULL, --carga_col_desc
-	'0', --carga_permite_no_seteado
-	NULL, --carga_no_seteado
+	'1', --carga_permite_no_seteado
+	'--Seleccione--', --carga_no_seteado
 	'0', --carga_no_seteado_ocultar
 	NULL, --carga_maestros
 	NULL, --edit_tamano
@@ -473,17 +531,75 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --selec_tamano
 	NULL, --selec_ancho
 	NULL, --selec_serializar
-	'4', --selec_cant_columnas
+	NULL, --selec_cant_columnas
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000248', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
+	'106000272', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
-	'numero', --tipo
-	'cuotas_pagas', --nombre
-	'traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)', --expresion
-	'Cuotas Pagas', --etiqueta
+	'opciones', --tipo
+	'idestado_civil', --nombre
+	'persona.idestado_civil', --expresion
+	'Estado Civil', --etiqueta
+	NULL, --descripcion
+	'0', --obligatorio
+	'1', --inicial
+	'7', --orden
+	NULL, --estado_defecto
+	'0', --opciones_es_multiple
+	'ef_combo', --opciones_ef
+	'get_listado_estado_civil', --carga_metodo
+	NULL, --carga_clase
+	NULL, --carga_include
+	NULL, --carga_dt
+	'106000001', --carga_consulta_php
+	NULL, --carga_sql
+	'auditoria', --carga_fuente
+	NULL, --carga_lista
+	'idestado_civil', --carga_col_clave
+	'descripcion', --carga_col_desc
+	'1', --carga_permite_no_seteado
+	'--Seleccione--', --carga_no_seteado
+	'0', --carga_no_seteado_ocultar
+	NULL, --carga_maestros
+	NULL, --edit_tamano
+	NULL, --edit_maximo
+	NULL, --edit_mascara
+	NULL, --edit_unidad
+	NULL, --edit_rango
+	NULL, --edit_expreg
+	NULL, --estilo
+	NULL, --popup_item
+	NULL, --popup_proyecto
+	NULL, --popup_editable
+	NULL, --popup_ventana
+	NULL, --popup_carga_desc_metodo
+	NULL, --popup_carga_desc_clase
+	NULL, --popup_carga_desc_include
+	NULL, --popup_puede_borrar_estado
+	'28', --punto_montaje
+	NULL, --check_valor_si
+	NULL, --check_valor_no
+	NULL, --check_desc_si
+	NULL, --check_desc_no
+	NULL, --selec_cant_minima
+	NULL, --selec_cant_maxima
+	NULL, --selec_utilidades
+	NULL, --selec_tamano
+	NULL, --selec_ancho
+	NULL, --selec_serializar
+	NULL, --selec_cant_columnas
+	NULL  --placeholder
+);
+INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
+	'106000273', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
+	'mupum', --objeto_ei_filtro_proyecto
+	'cadena', --tipo
+	'correo', --nombre
+	'correo', --expresion
+	'Correo', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
@@ -535,34 +651,34 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL  --placeholder
 );
 INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, objeto_ei_filtro_proyecto, tipo, nombre, expresion, etiqueta, descripcion, obligatorio, inicial, orden, estado_defecto, opciones_es_multiple, opciones_ef, carga_metodo, carga_clase, carga_include, carga_dt, carga_consulta_php, carga_sql, carga_fuente, carga_lista, carga_col_clave, carga_col_desc, carga_permite_no_seteado, carga_no_seteado, carga_no_seteado_ocultar, carga_maestros, edit_tamano, edit_maximo, edit_mascara, edit_unidad, edit_rango, edit_expreg, estilo, popup_item, popup_proyecto, popup_editable, popup_ventana, popup_carga_desc_metodo, popup_carga_desc_clase, popup_carga_desc_include, popup_puede_borrar_estado, punto_montaje, check_valor_si, check_valor_no, check_desc_si, check_desc_no, selec_cant_minima, selec_cant_maxima, selec_utilidades, selec_tamano, selec_ancho, selec_serializar, selec_cant_columnas, placeholder) VALUES (
-	'106000260', --objeto_ei_filtro_col
-	'106000450', --objeto_ei_filtro
+	'106000274', --objeto_ei_filtro_col
+	'106000462', --objeto_ei_filtro
 	'mupum', --objeto_ei_filtro_proyecto
-	'opciones', --tipo
-	'idcomercio', --nombre
-	'comercio.idcomercio', --expresion
-	'Comercio', --etiqueta
+	'fecha', --tipo
+	'fecha_alta', --nombre
+	'afiliacion.fecha_alta', --expresion
+	'Fecha alta', --etiqueta
 	NULL, --descripcion
 	'0', --obligatorio
 	'1', --inicial
-	'4', --orden
+	'10', --orden
 	NULL, --estado_defecto
 	'0', --opciones_es_multiple
-	'ef_combo', --opciones_ef
-	'get_listado_comercios_por_convenio', --carga_metodo
+	NULL, --opciones_ef
+	NULL, --carga_metodo
 	NULL, --carga_clase
 	NULL, --carga_include
 	NULL, --carga_dt
-	'106000001', --carga_consulta_php
+	NULL, --carga_consulta_php
 	NULL, --carga_sql
-	'auditoria', --carga_fuente
+	NULL, --carga_fuente
 	NULL, --carga_lista
-	'idcomercio', --carga_col_clave
-	'nombre', --carga_col_desc
-	'1', --carga_permite_no_seteado
-	'--Seleccione--', --carga_no_seteado
-	'0', --carga_no_seteado_ocultar
-	'idconvenio', --carga_maestros
+	NULL, --carga_col_clave
+	NULL, --carga_col_desc
+	'0', --carga_permite_no_seteado
+	NULL, --carga_no_seteado
+	NULL, --carga_no_seteado_ocultar
+	NULL, --carga_maestros
 	NULL, --edit_tamano
 	NULL, --edit_maximo
 	NULL, --edit_mascara
@@ -578,7 +694,7 @@ INSERT INTO apex_objeto_ei_filtro_col (objeto_ei_filtro_col, objeto_ei_filtro, o
 	NULL, --popup_carga_desc_clase
 	NULL, --popup_carga_desc_include
 	NULL, --popup_puede_borrar_estado
-	'28', --punto_montaje
+	NULL, --punto_montaje
 	NULL, --check_valor_si
 	NULL, --check_valor_no
 	NULL, --check_desc_si

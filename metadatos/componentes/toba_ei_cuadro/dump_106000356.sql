@@ -50,7 +50,7 @@ INSERT INTO apex_objeto_cuadro (objeto_cuadro_proyecto, objeto_cuadro, titulo, s
 	NULL, --titulo
 	NULL, --subtitulo
 	NULL, --sql
-	'idconsumo_convenio', --columnas_clave
+	NULL, --columnas_clave
 	NULL, --columna_descripcion
 	'0', --clave_dbr
 	NULL, --archivos_callbacks
