@@ -5304,7 +5304,6 @@ class dao
                 to_char(fecha_compra, 'MM/YYYY') ilike $periodo
             group by 
               periodo,
-              talonario_bono_colaboracion.monto,
               persona.legajo,
               persona.apellido,
               persona.nombres,
