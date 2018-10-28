@@ -161,7 +161,7 @@ class ci_consumo_bono extends mupum_ci
 		$estado_total = $estado_situacion + $total_por_consumir;  
 		if ($estado_total < $limite_socio)
 		{
-			if ($total < $maximo_por_convenio)
+			if ($total <= $maximo_por_convenio)
 			{
 				$this->cn()->guardar_dr_consumo_bono();
 
@@ -197,7 +197,10 @@ class ci_consumo_bono extends mupum_ci
 
 				}
 			} else {
-
+				if (!isset($total_consumido))
+				{
+					$total_consumido = 0;
+				}
 				toba::notificacion()->agregar("El afiliado lleva consumido por este convenio un total de : $".$total_consumido.", mas lo que desea consumir : $".$total_por_consumir. ". Supera el maximo permitido por convenio de : $" .$maximo_por_convenio ,'info');
 			}
 		} else {

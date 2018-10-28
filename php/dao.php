@@ -1242,7 +1242,7 @@ class dao
             inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
             inner join instalacion on solicitud_reserva.idinstalacion = instalacion.idinstalacion
             where
-              extract(MONTH FROM solicitud_reserva.fecha) != extract(MONTH FROM current_date) and
+              extract(MONTH FROM solicitud_reserva.fecha) < extract(MONTH FROM current_date) and
               $where
             group by 
               solicitud_reserva.idsolicitud_reserva,

@@ -202,7 +202,7 @@ class ci_administrar_inscripciones extends mupum_ci
 						//--$total = $total_por_consumir + $total_consumido;
 
 						$estado_total = $estado_situacion + $total_por_consumir;  
-						if ($estado_total < $limite_socio)
+						if ($estado_total <= $limite_socio)
 						{
 							$bandera = 'si';
 							

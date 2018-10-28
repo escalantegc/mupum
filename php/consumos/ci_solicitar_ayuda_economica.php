@@ -198,7 +198,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 			//--$total = $total_por_consumir + $total_consumido;
 
 			$estado_total = $estado_situacion + $total_por_consumir;  
-			if ($estado_total < $limite_socio)
+			if ($estado_total <= $limite_socio)
 			{
 				$minimo = dao::get_minimo_coutas_para_pedir_otra_consumo_financiado($datos['idconvenio']);
 				$cuotas_faltantes = dao::get_cuotas_faltantes_consumo_financiado($datos['idconvenio'], $datos['idafiliacion']);
