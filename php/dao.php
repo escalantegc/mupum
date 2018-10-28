@@ -144,7 +144,7 @@ class dao
                   tipo_socio.descripcion as tipo,
                   afiliacion.fecha_alta 
           FROM public.persona
-            inner join estado_civil using(idestado_civil)
+            left outer join estado_civil using(idestado_civil)
             inner join tipo_documento using(idtipo_documento)
             inner join afiliacion using (idpersona)
             inner join tipo_socio using(idtipo_socio)
@@ -783,7 +783,7 @@ class dao
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
                  coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
-                 persona.apellido as nombre_completo,
+                 persona.apellido gas nombre_completo,
                  persona.correo,
                  *
             FROM 
