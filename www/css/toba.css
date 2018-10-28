@@ -494,6 +494,9 @@ a.nivel-0:hover, a.nivel-0:focus, a.nivel-0.rollover, a.nivel-0.rollover:visited
 .ef-fijo {
 	font-size: 13px;
 }
+.ef-fijo-moneda {
+	font-size: 13px;
+}
 .ei-form-etiq, .ei-form-etiq-oblig {}
 
 /********************************
