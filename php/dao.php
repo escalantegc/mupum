@@ -2852,6 +2852,7 @@ class dao
                       inner join persona on persona.idpersona = afiliacion.idpersona
                       WHERE
                         convenio.ayuda_economica = true and
+                        consumo_convenio.pagado = true and
                         consumo_convenio_cuotas.cuota_pagada =  false and
                         $sql_usuario";
       $res = consultar_fuente($sql);
