@@ -2074,7 +2074,7 @@ class dao
 
   }  
 
-  function get_listado_solicitudes_reempadronamientos ()
+  function get_listado_solicitudes_reempadronamientos ($idreempadronamiento = null)
   {
 
     $sql = "SELECT  idreempadronamiento,  
@@ -2093,7 +2093,8 @@ class dao
             inner join persona on persona.idpersona = afiliacion.idpersona
             inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
             where 
-                  notificaciones = 0
+                  notificaciones = 0 and
+                  solicitud_reempadronamiento.idreempadronamiento =$idreempadronamiento
             order by
                   apellido, nombres
             limit 50";
@@ -2101,7 +2102,7 @@ class dao
 
   }  
 
-  function get_listado_solicitudes_reempadronamientos_enviadas ()
+  function get_listado_solicitudes_reempadronamientos_enviadas ($idreempadronamiento = null)
   {
 
     $sql = "SELECT  idreempadronamiento,  
@@ -2120,7 +2121,8 @@ class dao
             inner join persona on persona.idpersona = afiliacion.idpersona
             inner join tipo_documento on tipo_documento.idtipo_documento = persona.idtipo_documento
             where 
-                  notificaciones != 0
+                  notificaciones != 0 and
+                  solicitud_reempadronamiento.idreempadronamiento = $idreempadronamiento
             order by
                   apellido, nombres";
       return consultar_fuente($sql);
@@ -2145,6 +2147,8 @@ class dao
             inner join persona on persona.idpersona = afiliacion.idpersona
             where 
                   atendida = false and
+                  afiliacion.activa = true and
+                  notificaciones > 0 and
                   persona.idpersona =$idpersona";
       return consultar_fuente($sql);
 
@@ -2169,7 +2173,11 @@ class dao
   {
     $sql = "SELECT count(*) as cantidad 
             FROM public.solicitud_reempadronamiento
-            where atendida = false";
+             inner join afiliacion using(idafiliacion)
+            where 
+              atendida = false and
+                  afiliacion.activa = true and
+                  notificaciones > 0 ";
     $res = consultar_fuente($sql);
     if (isset($res[0]['cantidad']))
     {

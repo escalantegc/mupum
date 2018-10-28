@@ -2,6 +2,7 @@
 require_once('dao.php');
 class ci_reempadronamiento extends mupum_ci
 {
+	protected $s__seleccion;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -72,6 +73,7 @@ class ci_reempadronamiento extends mupum_ci
 	}
 	function evt__cuadro__notificar($seleccion)
 	{
+		$this->s__seleccion = $seleccion;
 		$this->set_pantalla('pant_notificaciones');
 	}
 	//-----------------------------------------------------------------------------------
@@ -80,7 +82,8 @@ class ci_reempadronamiento extends mupum_ci
 
 	function conf__cuadro_solicitudes(mupum_ei_cuadro $cuadro)
 	{
-		$datos = dao::get_listado_solicitudes_reempadronamientos();
+
+		$datos = dao::get_listado_solicitudes_reempadronamientos($this->s__seleccion['idreempadronamiento']);
 		$cuadro->set_datos($datos);
 		if ($datos ==null)
 		{
@@ -137,7 +140,7 @@ class ci_reempadronamiento extends mupum_ci
 	function conf__cuadro_solicitudes_enviadas(mupum_ei_cuadro $cuadro)
 	{
 	
-		$datos = dao::get_listado_solicitudes_reempadronamientos_enviadas();
+		$datos = dao::get_listado_solicitudes_reempadronamientos_enviadas($this->s__seleccion['idreempadronamiento']);
 		$cuadro->set_datos($datos);
 	}
 	

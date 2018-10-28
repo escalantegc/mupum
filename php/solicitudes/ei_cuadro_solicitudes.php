@@ -21,6 +21,15 @@ class ei_cuadro_solicitudes extends mupum_ei_cuadro
       }
     };";
 	}
-}
+	//---- Config. EVENTOS sobre fila ---------------------------------------------------
 
+	function conf_evt__seleccion($evento, $fila)
+	{
+		if ( $this->datos[$fila]['correo']=='') 
+		{
+			$evento->anular();    
+		}
+	}
+
+}
 ?>
