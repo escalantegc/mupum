@@ -3,6 +3,7 @@ class ci_estado_situacion extends mupum_ci
 {
 	protected $s__where;
 	protected $s__datos_filtro;
+	public $s__afiliado;
 	//-----------------------------------------------------------------------------------
 	//---- cuadro -----------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------
@@ -13,6 +14,7 @@ class ci_estado_situacion extends mupum_ci
 		{
 			$datos = dao::get_estado_situacion($this->s__datos_filtro['periodo']['valor'],$this->s__datos_filtro['idafiliacion']['valor']);
 			$cuadro->set_datos($datos);
+			
 		}
 		
 		
@@ -41,6 +43,18 @@ class ci_estado_situacion extends mupum_ci
 		unset($this->s__datos_filtro);
 	}
 
-}
+	//-----------------------------------------------------------------------------------
+	//---- Configuraciones --------------------------------------------------------------
+	//-----------------------------------------------------------------------------------
 
+	function conf()
+	{
+		if (isset($this->s__datos_filtro['idafiliacion']['valor']))
+		{
+			$this->s__afiliado = dao::get_datos_persona_afiliada($this->s__datos_filtro['idafiliacion']['valor']);	
+		}
+		
+	}
+
+}
 ?>

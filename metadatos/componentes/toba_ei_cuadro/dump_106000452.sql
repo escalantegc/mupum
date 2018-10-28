@@ -16,8 +16,8 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'toba', --clase_proyecto
 	'toba_ei_cuadro', --clase
 	'28', --punto_montaje
-	NULL, --subclase
-	NULL, --subclase_archivo
+	'ei_cuadro_estado_situacion', --subclase
+	'listados/ei_cuadro_estado_situacion.php', --subclase_archivo
 	NULL, --objeto_categoria_proyecto
 	NULL, --objeto_categoria
 	'ci_estado_situacion - cuadro', --nombre

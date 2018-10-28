@@ -783,6 +783,7 @@ class dao
     $sql ="SELECT afiliacion.idafiliacion, 
                   afiliacion.idpersona,
                  coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                 persona.apellido as nombre_completo,
                  persona.correo,
                  *
             FROM 
