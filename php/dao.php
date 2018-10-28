@@ -2096,8 +2096,7 @@ class dao
                   notificaciones = 0 and
                   solicitud_reempadronamiento.idreempadronamiento =$idreempadronamiento
             order by
-                  apellido, nombres
-            limit 50";
+                  apellido, nombres";
       return consultar_fuente($sql);
 
   }  
