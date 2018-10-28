@@ -1185,7 +1185,8 @@ class dao
             inner join motivo on motivo.idmotivo = motivo_tipo_socio.idmotivo
             inner join instalacion on solicitud_reserva.idinstalacion = instalacion.idinstalacion
             where
-              extract(MONTH FROM solicitud_reserva.fecha) = extract(MONTH FROM current_date) and
+              solicitud_reserva.fecha >= ('01'||'/'||extract(MONTH FROM current_date)||'/'||extract(year FROM current_date))::date and
+
               $where
             group by 
               solicitud_reserva.idsolicitud_reserva,
@@ -1200,7 +1201,7 @@ class dao
               monto_final,
               estado.confirmada 
             order by 
-              estado.confirmada desc,fecha desc";
+              estado.confirmada desc,fecha asc";
       $datos = consultar_fuente($sql);
       $resultado = array();
       foreach ($datos as $dato) 

@@ -64,7 +64,7 @@ class ci_solicitud_reserva extends mupum_ci
 		$calendario->set_ver_contenidos(true);
 		
 		$nuevafecha = date ( 'Y-m-j' );
-		$hoy =  date("Y", strtotime($nuevafecha));
+		$hoy =  date("Y", strtotime($nuevafecha))+1;
 
 		$calendario->set_rango_anios(2016,$hoy);
 		$calendario->set_datos($datos);
