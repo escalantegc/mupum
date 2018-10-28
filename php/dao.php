@@ -5179,6 +5179,7 @@ class dao
             WHERE
                   convenio.permite_financiacion = true and
                   forma_pago.planilla = true and
+                  consumo_convenio.pagado = true and
                   consumo_convenio_cuotas.envio_descuento =  false and
                   afiliacion.idafiliacion = $idafiliacion and 
                   consumo_convenio_cuotas.periodo ilike  $periodo

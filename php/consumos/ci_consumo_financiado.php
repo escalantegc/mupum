@@ -146,10 +146,12 @@ class ci_consumo_financiado extends mupum_ci
 
 	function evt__frm__modificacion($datos)
 	{
+		$datos['pagado'] =1;
 		if ($this->cn()->hay_cursor_dt_consumo_convenio())
 		{
 			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
+
 			$this->cn()->agregar_dt_consumo_convenio($datos);
 		}
 	}
