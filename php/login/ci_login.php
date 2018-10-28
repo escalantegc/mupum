@@ -733,7 +733,7 @@ class ci_login extends toba_ci
 
         try 
         {
-                $mail = new toba_mail(trim($persona['correo']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
+                $mail = new toba_mail(trim($persona['correo_correcto']), $asunto, $cuerpo_mail,'info@mupum.unam.edu.ar');
                 $mail->set_html(true);
                 //--$mail->set_cc();
                 $mail->enviar();
