@@ -64,7 +64,7 @@ class cn_socio extends mupum_cn
  			$temp_nombre_archivo_logo = 'foto_'.$datos['nro_documento'].'.jpg';
 			$archivologo = toba::proyecto()->get_www($temp_nombre_archivo_logo);
 			//ei_arbol($archivologo);
-			$temp_archivo_logo = fopen($archivologo['path'], 'r');
+			$temp_archivo_logo = fopen($archivologo['path'], 'w');
 			stream_copy_to_stream($fp_logo1, $temp_archivo_logo);
 			fclose($temp_archivo_logo);
 		                                        
