@@ -4465,6 +4465,7 @@ class dao
             WHERE
                   convenio.permite_financiacion = true and
                   forma_pago.planilla = true and
+                  consumo_convenio.pagado =  true and
                   consumo_convenio_cuotas.envio_descuento =  false and
                   consumo_convenio_cuotas.periodo ilike  $periodo
             group by 
@@ -4590,6 +4591,7 @@ class dao
             WHERE
               forma_pago.planilla = true  and
               envio_descuento = false and
+              inscripcion_colono.baja = false and
               periodo ilike $periodo
             group by
                periodo,
