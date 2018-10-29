@@ -272,24 +272,29 @@ class ci_administracion_colonos extends mupum_ci
 			{
 				if ($detalle['monto'] > 0)
 				{
-					
-					$total_por_consumir = $detalle['monto'];
-					///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
-					//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
-					$estado_situacion = dao::get_total_estado_situacion($detalle['periodo'],$this->s__seleccion_adm_plan['idafiliacion']);
-					$configuracion = dao::get_configuracion();
-					$limite_socio = $configuracion['limite_por_socio'];
-					//--$total = $total_por_consumir + $total_consumido;
-					$estado_total = $estado_situacion + $total_por_consumir;  
-					if ($estado_total <= $limite_socio)
+					if ($detalle['planilla']=='si')
 					{
-						$bandera = 'si';
-					} else {
+					
+						$total_por_consumir = $detalle['monto'];
+						///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+						//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
+						$estado_situacion = dao::get_total_estado_situacion($detalle['periodo'],$this->s__seleccion_adm_plan['idafiliacion']);
+						$configuracion = dao::get_configuracion();
+						$limite_socio = $configuracion['limite_por_socio'];
+						//--$total = $total_por_consumir + $total_consumido;
+						$estado_total = $estado_situacion + $total_por_consumir;  
+						if ($estado_total <= $limite_socio)
+						{
+							$bandera = 'si';
+						} else {
 
-						toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota del plan de pago de colonia : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
-					}
+							toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota del plan de pago de colonia : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+						}
+					} else {
+						$bandera = 'si';
+					} 
 				} 
-			} 
+			}
 		}
 		if ($bandera == 'si')
 		{

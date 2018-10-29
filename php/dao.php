@@ -4174,6 +4174,22 @@ class dao
               forma_pago.descripcion ,
               convenio.titulo
           UNION
+            SELECT '0548' as concepto,
+    'PILETA' as detalle,
+      to_char(fecha, 'MM/YYYY')  as periodo,
+      0 as descuento,
+    sum(monto) as otros
+    
+    FROM public.detalle_pago_inscripcion_pileta
+     inner join forma_pago using(idforma_pago)
+        WHERE
+             forma_pago.planilla = false and
+             to_char(fecha,'MM/YYYY') ilike $valor_where
+          group by 
+              concepto,
+              to_char(fecha, 'MM/YYYY') ,
+              forma_pago.descripcion 
+          UNION
           SELECT 
               concepto_liquidacion.codigo as concepto,
               'LIQUIDACION' as detalle,
