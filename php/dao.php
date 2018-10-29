@@ -5261,6 +5261,7 @@ class dao
             WHERE
               forma_pago.planilla = true  and
               envio_descuento = false and
+               inscripcion_colono.baja = false and
               afiliacion.idafiliacion = $idafiliacion and 
               periodo ilike $periodo
             group by
