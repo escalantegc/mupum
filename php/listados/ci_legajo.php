@@ -22,7 +22,7 @@ class ci_legajo extends mupum_ci
 		$reporte='legajo.jasper';
 		$path=toba::proyecto()->get_path().'/exportaciones/'.$reporte;	
 
-		$path_logo=toba::proyecto()->get_path().'/www/logo/logo.gif';	
+		$path_logo=toba::proyecto()->get_path().'/www/logo/logo.jpg';	
 		
 
 		$report->set_path_reporte($path);
