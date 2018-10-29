@@ -11,13 +11,7 @@ class ei_cuadro_inscripcion_pileta extends mupum_ei_cuadro
 		}
 	}
 
-	function conf_evt__seleccion($evento, $fila)
-	{
-		if ($this->datos[$fila]['total_abonado'] > 0) 
-		{
-			$evento->anular();    
-		}
-	}
+	
 
 }
 ?>
