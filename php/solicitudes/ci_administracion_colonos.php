@@ -276,7 +276,7 @@ class ci_administracion_colonos extends mupum_ci
 					$total_por_consumir = $detalle['monto'];
 					///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
 					//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
-					$estado_situacion = dao::get_total_estado_situacion($detalle['periodo'],$detalle['idafiliacion']);
+					$estado_situacion = dao::get_total_estado_situacion($detalle['periodo'],$this->s__seleccion_adm_plan['idafiliacion']);
 					$configuracion = dao::get_configuracion();
 					$limite_socio = $configuracion['limite_por_socio'];
 					//--$total = $total_por_consumir + $total_consumido;
@@ -291,7 +291,7 @@ class ci_administracion_colonos extends mupum_ci
 				} 
 			} 
 		}
-		f ($bandera == 'si')
+		if ($bandera == 'si')
 		{
 			$this->cn()->procesar_dt_inscripcion_colono_plan_pago($datos);
 		}
