@@ -55,6 +55,7 @@ class ci_generar_liquidacion extends mupum_ci
 	function evt__nuevo()
 	{
 		$this->set_pantalla('pant_edicion');
+		unset($this->s__datos_liquidacion);
 	}
 	function evt__validar()
 	{
@@ -359,11 +360,12 @@ class ci_generar_liquidacion extends mupum_ci
 	function evt__frm_consolidacion__modificacion($datos)
 	{
 		$this->s__datos_conciliacion = $this->realizar_conciliacion($datos['archivo_unam']['tmp_name']);
+		$datos['conciliado'] = 1;
+
 		if ($this->cn()->hay_cursor_dt_cabecera_liquidacion())
 		{
 			$this->cn()->set_dt_cabecera_liquidacion($datos);
 		} else {
-			$datos['conciliado'] = 1;
 			$this->cn()->agregar_dt_cabecera_liquidacion($datos);
 		}
 	}
