@@ -2025,6 +2025,23 @@ class dao
     return consultar_fuente($sql);
   }  
 
+  function get_interes_comercio_por_convenio($idconvenio = null, $idcomercio = null)
+  {
+    $sql = "SELECT porcentaje_interes 
+            FROM 
+              public.comercios_por_convenio
+            where 
+              idconvenio = $idconvenio and
+              idcomercio = $idcomercio";
+    $res  = consultar_fuente($sql);
+    if (isset($res['0']['porcentaje_interes']))
+    {
+      return $res['0']['porcentaje_interes'];
+    } else {
+      return 0;
+    }
+  }
+
   function get_comercios_combo_editable($filtro = null)
   {
     if (! isset($filtro) || trim($filtro)=='')

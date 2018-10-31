@@ -185,7 +185,16 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 		{
 			$this->cn()->set_dt_consumo_convenio($datos);
 		} else {
-			$total_por_consumir = $datos['total']/$datos['cantidad_cuotas'];
+			
+			$monto_cuota = $datos['total']/$datos['cantidad_cuotas'];
+
+			$interes = dao::get_interes_comercio_por_convenio($datos['idconvenio'],$datos['idcomercio']);
+			$inter_total = $datos['cantidad_cuotas'] * $interes; 
+     		$monto_interes =$datos['total'] * ($inter_total/100);
+    		$monto_interes_redondeado = number_format($monto_interes, 2, '.', '');
+     		$monto_interes_cuota = number_format($monto_interes_redondeado / $datos['cantidad_cuotas'], 2, '.', ''); 
+     		$total_por_consumir = $monto_interes_cuota + $monto_cuota;
+
 			///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
 			//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
 			
@@ -211,7 +220,7 @@ class ci_solicitar_ayuda_economica extends mupum_ci
 				}
 			} else {
 
-				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota de la ayuda que desea solicitar : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+				toba::notificacion()->agregar("El afiliado lleva consumido en este periodo de : $".$estado_situacion. ", mas el valor de la cuota a pagar de la ayuda que desea solicitar : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
 			}		}
 	}
 
