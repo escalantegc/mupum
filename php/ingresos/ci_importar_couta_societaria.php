@@ -58,6 +58,7 @@ class ci_importar_couta_societaria extends mupum_ci
 		$this->cn()->cargar_dr_importacion($seleccion);
 		$this->cn()->set_cursor_dt_cabecera_cuota_societaria($seleccion);
 		$this->set_pantalla('pant_edicion');
+		$this->pantalla()->eliminar_evento('validar');
 	}
 
 	function evt__cuadro__borrar($seleccion)
@@ -86,6 +87,7 @@ class ci_importar_couta_societaria extends mupum_ci
 	{
 		$datos = $this->cn()->get_dt_cuota_societaria();
 		$this->pantalla()->eliminar_evento('procesar');
+		
 		if (count($this->s__cuotas) > 0)
 		{
 			$this->pantalla()->agregar_evento('procesar');

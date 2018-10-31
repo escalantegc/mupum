@@ -2619,6 +2619,41 @@ class dao
             inner join afiliacion using(idafiliacion)
             inner join persona using(idpersona)
             where
+              convenio.consumo_ticket = true and
+              $sql_usuario and 
+              $where
+            group by
+                    persona.apellido, 
+                    persona.nombres,
+                    convenio.titulo ,
+                    comercio.codigo,
+                    comercio.nombre , 
+                    total, 
+                    fecha, 
+                    periodo,
+                    cantidad_cuotas, 
+                    cantidad_bonos, 
+                    comercio.nombre ,
+                    consumo_convenio.idconsumo_convenio
+            UNION
+            SELECT  (persona.apellido||', '|| persona.nombres) as socio,
+                    convenio.titulo as convenio,
+                    comercio.codigo ||'-'||comercio.nombre as comercio, 
+                    total, 
+                    (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
+                    (case when cantidad_cuotas > 0 then cantidad_cuotas else null end ) as cantidad_cuotas,
+                    (case when (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) > 0 then (select traer_cuotas_pagas(consumo_convenio.idconsumo_convenio)) else null end) as cantidad_pagas,
+                    null as monto_bono,
+                    null as cantidad_bonos
+                  
+            FROM 
+              public.consumo_convenio
+            inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
+            inner join comercio on comercio.idcomercio = consumo_convenio.idcomercio
+            inner join afiliacion using(idafiliacion)
+            inner join persona using(idpersona)
+            where
+              consumo_convenio.pagado = true and
               $sql_usuario and 
               $where
             group by
@@ -2643,10 +2678,9 @@ class dao
                   (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo,
                   null as cantidad_cuotas,
                   null as cuotas_pagas,
-                  talonario_bono.monto_bono,
-                  cantidad_bonos
-                    
-                    
+                  talonario_bono.monto_bono::text,
+                  cantidad_bonos::text
+       
               FROM 
                 public.consumo_convenio
             left outer  join afiliacion using(idafiliacion)
@@ -4017,7 +4051,7 @@ class dao
               UNION 
               SELECT  categoria_comercio.descripcion as concepto,
                       sum (total) as monto, 
-                      (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) as periodo
+                      to_char(fecha, 'MM/YYYY')  as periodo_fecha
               FROM 
                       public.consumo_convenio
                 inner join convenio on convenio.idconvenio = consumo_convenio.idconvenio
@@ -4025,12 +4059,10 @@ class dao
               WHERE
                     convenio.ayuda_economica = true and
                     consumo_convenio.pagado = true and
-                   (case when fecha is null then periodo else to_char(fecha, 'MM/YYYY') end) ilike $valor_where
+                    to_char(fecha, 'MM/YYYY') ilike $valor_where
               group by
-                  categoria_comercio.descripcion,
-                  fecha,
-                  total,
-                  periodo
+                  categoria_comercio.descripcion,             
+                  periodo_fecha
              
            
               UNION
