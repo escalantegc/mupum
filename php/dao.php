@@ -3887,7 +3887,7 @@ class dao
       return consultar_fuente($sql);
   }
 
-  function get_monto_costo_colonia_tipo_socio($idafiliacion)
+  function get_monto_costo_colonia_tipo_socio($idafiliacion, $idconfiguracion_colonia)
   {
     $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
                     costo_colonia_tipo_socio.idconfiguracion_colonia, 
@@ -3897,7 +3897,9 @@ class dao
               public.costo_colonia_tipo_socio
             inner join afiliacion using(idtipo_socio)
             where 
-              afiliacion.idafiliacion = $idafiliacion";  
+              afiliacion.idafiliacion = $idafiliacion and
+              costo_colonia_tipo_socio.idconfiguracion_colonia = $idconfiguracion_colonia
+              ";  
     $res = consultar_fuente($sql);
     if (isset($res[0]['monto']))
     {
@@ -3905,7 +3907,7 @@ class dao
     }
   }  
 
-  function get_porcentaje_costo_colonia_tipo_socio($idafiliacion)
+  function get_porcentaje_costo_colonia_tipo_socio($idafiliacion, $idconfiguracion_colonia)
   {
     $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
                     costo_colonia_tipo_socio.idconfiguracion_colonia, 
@@ -3915,7 +3917,9 @@ class dao
               public.costo_colonia_tipo_socio
             inner join afiliacion using(idtipo_socio)
             where 
-              afiliacion.idafiliacion = $idafiliacion";  
+              afiliacion.idafiliacion = $idafiliacion and
+              costo_colonia_tipo_socio.idconfiguracion_colonia = $idconfiguracion_colonia
+              ";  
     $res = consultar_fuente($sql);
     if (isset($res[0]['porcentaje_inscripcion']))
     {
@@ -3923,7 +3927,7 @@ class dao
     }
   }  
 
-  function get_monto_porcentaje_costo_colonia_tipo_socio($idafiliacion)
+  function get_monto_porcentaje_costo_colonia_tipo_socio($idafiliacion, $idconfiguracion_colonia)
   {
     $sql = "SELECT  costo_colonia_tipo_socio.idcosto_colonia_tipo_socio, 
                     costo_colonia_tipo_socio.idconfiguracion_colonia, 
@@ -3935,7 +3939,9 @@ class dao
               public.costo_colonia_tipo_socio
             inner join afiliacion using(idtipo_socio)
             where 
-              afiliacion.idafiliacion = $idafiliacion";  
+              afiliacion.idafiliacion = $idafiliacion and
+              costo_colonia_tipo_socio.idconfiguracion_colonia = $idconfiguracion_colonia
+              ";    
     $res = consultar_fuente($sql);
     if (isset($res[0]['inscripcion']))
     {
