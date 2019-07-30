@@ -19,7 +19,7 @@ class ei_frm_ml_aumento_descuento extends mupum_ei_formulario_ml
 					this.ef('tipo_movimiento').ir_a_fila(filas[id_fila]).desactivar();
 					this.ef('descripcion').ir_a_fila(filas[id_fila]).desactivar();
 					
-				  }
+				  } 
 				}
 			}
 			
@@ -79,10 +79,14 @@ class ei_frm_ml_aumento_descuento extends mupum_ei_formulario_ml
 						monto_total = monto - monto_mov;
 						this.controlador.dep('frm').ef('monto_final').set_estado(monto_total);				
 					}	
-					this.ef('monto').ir_a_fila(fila).desactivar();
-					this.ef('idconcepto').ir_a_fila(fila).desactivar();
-					this.ef('tipo_movimiento').ir_a_fila(fila).desactivar();
-					this.ef('descripcion').ir_a_fila(fila).desactivar();
+					if (monto_mov !='')
+					{
+						this.ef('monto').ir_a_fila(fila).desactivar();
+						this.ef('idconcepto').ir_a_fila(fila).desactivar();
+						this.ef('tipo_movimiento').ir_a_fila(fila).desactivar();
+						this.ef('descripcion').ir_a_fila(fila).desactivar();	
+					}
+					
 				}
 				
 				
