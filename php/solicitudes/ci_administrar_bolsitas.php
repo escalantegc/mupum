@@ -293,16 +293,15 @@ class ci_administrar_bolsitas extends mupum_ci
 	{
 	   
 	    //Armo el mail nuevo &oacute;
-	    $asunto = "Solicitud de Bolsita Escolar Aceptada ";
+	    $asunto = "Bolsita Escolar entregada ";
 	    
 		$cuerpo_mail = "Estimado/a: ".$socio. "<br/>".
 
-				"Por medio del presente le informamos que la Solicitud de Bolsita Escolar referente al: .<br/> ".
+				"Por medio del presente se deja constancia de la entrega de la Escolar al: .<br/> ".
 				"Estudiante: ".$estudiante. "<br/>".
 				"Documento: ".$dni. "<br/>".
 				"Nivel de Bolsita: ". $nivel. "<br/>".
-				"Ha sido Aceptada, puede acercarse a las instalaciones de la mutual o llamar por telefono para coordinar el retiro de la misma.<br/>".
-				"<p>No responda este correo, fue generado por sistema. </p>";
+ 				"<p>No responda este correo, fue generado por sistema. </p>";
 
         try 
         {

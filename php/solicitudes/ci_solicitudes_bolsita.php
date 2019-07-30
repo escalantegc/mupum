@@ -166,6 +166,9 @@ class ci_solicitudes_bolsita extends mupum_ci
 				"Estudiante: ".$estudiante. "<br/>".
 				"Nivel de Bolsita: ". $nivel. "<br/>".
 				"A cargo del Socio Titular: ".$socio. "<br/>".
+
+				"Por favor acercarse a las instalaciones de la mutual o llamar por telefono para coordinar la entrega.<br/>".
+
 				"<p>No responda este correo, fue generado por sistema. </p>";
 
         try 
