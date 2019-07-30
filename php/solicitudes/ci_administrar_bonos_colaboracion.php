@@ -210,24 +210,33 @@ class ci_administrar_bonos_colaboracion extends mupum_ci
 			$total_por_consumir = $datos['monto_bono'];
 			///--$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
 			//--$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
+
+			$forma_pago = dao::get_forma_pago_idforma_pago($datos['idforma_pago']);
+
 			if (isset($datos['idafiliacion']))
 			{	
-				$periodo = dao::sacar_periodo_fecha($datos['fecha_compra']);
-				$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
-				$configuracion = dao::get_configuracion();
-				$limite_socio = $configuracion['limite_por_socio'];
+				if ($forma_pago[0]['planilla']==1)
+				{
+					$periodo = dao::sacar_periodo_fecha($datos['fecha_compra']);
+					$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
+					$configuracion = dao::get_configuracion();
+					$limite_socio = $configuracion['limite_por_socio'];
 
 
 				//--$total = $total_por_consumir + $total_consumido;
+			
+					$estado_total = $estado_situacion + $total_por_consumir;  
+					if ($estado_total <= $limite_socio)
+					{
+						$this->cn()->set_dt_talonario_nros_bono_colaboracion($datos);
+					} else {
 
-				$estado_total = $estado_situacion + $total_por_consumir;  
-				if ($estado_total <= $limite_socio)
-				{
-					$this->cn()->set_dt_talonario_nros_bono_colaboracion($datos);
+						toba::notificacion()->agregar("El afiliado lleva consumido en este periodo : $".$estado_situacion. ", mas el valor del bono : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+					}
 				} else {
-
-					toba::notificacion()->agregar("El afiliado lleva consumido en este periodo : $".$estado_situacion. ", mas el valor del bono : $".round($total_por_consumir,2). " .Supera el limite maximo permitido por periodo por socio en la mutual de : $" .$limite_socio ,'info');
+					$this->cn()->set_dt_talonario_nros_bono_colaboracion($datos);
 				}
+				
 			} else {
 				$this->cn()->set_dt_talonario_nros_bono_colaboracion($datos);
 			}
