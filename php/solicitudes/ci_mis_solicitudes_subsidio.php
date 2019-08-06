@@ -26,6 +26,12 @@ class ci_mis_solicitudes_subsidio extends mupum_ci
 			{
 				toba::notificacion()->agregar("La solicitud de subsidio ya esta registrado.",'info');
 				
+			} 		
+
+			if(strstr($mensaje_log,'idx_idpersona_familia'))
+			{
+				toba::notificacion()->agregar("Ya se encuentra registrada la solicitud de subsidio por este hijo. Recuerde que puede solicitar usted o su pareja.",'info');
+				
 			} 
 			
 		}
