@@ -16,11 +16,13 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 		{
 			cantidad = this.ef('cantidad').get_estado();
 			limite = this.ef('limite').get_estado();
+			
 			if (cantidad >= limite)
 			{
 				this.ef('cantidad').set_error('Usted ya pidio la cantidad de veces permitidas para el tipo de subsidio.');
 				return false;
-			}
+			} 
+					
 			return true;
 		}
 		//---- Procesamiento de EFs --------------------------------
@@ -54,25 +56,50 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 					{
 						this.ef('idpersona_familia').ocultar();
 						this.ef('idpersona_familia').resetear_estado();
+						this.ef('edad_maxima_subsidio_nacimiento').ocultar();
+						this.ef('edad').ocultar();
 		
 					} else {
 						
 						this.ef('idpersona_familia').mostrar();
+						this.ef('edad_maxima_subsidio_nacimiento').mostrar();
+						this.ef('edad').mostrar();
 					} 
 				} else {
 					
 					this.ef('idpersona_familia').ocultar();
 					this.ef('idpersona_familia').resetear_estado();
+					this.ef('edad_maxima_subsidio_nacimiento').ocultar();
+					this.ef('edad').ocultar();
 				}
 			} else {
 					
 				this.ef('idpersona_familia').ocultar();
 				this.ef('idpersona_familia').resetear_estado();
+				this.ef('edad_maxima_subsidio_nacimiento').ocultar();
+				this.ef('edad').ocultar();
 				
 			} 
 		}
+		//---- Validacion de EFs -----------------------------------
+		
+		{$this->objeto_js}.evt__edad__validar = function()
+		{
+		
+			edad = this.ef('edad').get_estado();
+			edad_maxima = this.ef('edad_maxima_subsidio_nacimiento').get_estado();
+			
+			if (edad > edad_maxima)
+			{
+				this.ef('edad').set_error('No puede solicitar subsidio por hijos mayores de '+edad_maxima + ' a&ntilde;os');
+				return false;
+			}
+			return true;
+			
+		}
 		";
 	}
+
 
 
 

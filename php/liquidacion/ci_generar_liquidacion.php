@@ -380,8 +380,10 @@ class ci_generar_liquidacion extends mupum_ci
 			while(!feof($file))
 			{
 				$linea = fgets($file);
+				//se toma los primeros 6 caracteres para el legajo, y a partir del 66 10 caracteres para el monto 
 				$vec['legajo'] = substr($linea, 0,6); 
-				$vec['monto'] = substr($linea,65,10); 
+				$vec['monto'] = substr($linea,66,10); 
+				
 				$descontando[] = $vec;
 			}
 			return $descontando;
@@ -399,12 +401,30 @@ class ci_generar_liquidacion extends mupum_ci
 	{
 		$datos = $this->cn()->get_dt_detalle_liquidacion();
 
-		$conciliacion = $this->s__datos_conciliacion;
+		$liquidados = $this->s__datos_conciliacion;
+		$controlados = array();
+		$asoc = null;
+		foreach ($liquidados as $liquidado) 
+		{
+			$controlados[][$liquidado['legajo']] = $liquidado['monto'];
+			
+		}
+
+		$corregidos = array();
+		foreach($controlados as $controlado)
+		{
+		    foreach ($controlado as $clave=>$valor) 
+		    {
+		        $corregidos[$clave]+=$valor;
+		        
+		    }
+		}  
+		//--ei_arbol($corregidos);
 
 		$conciliado = array();
-		foreach ($conciliacion as $conso) 
+		foreach ($corregidos as $clave=>$valor) 
 		{	
-			$legajo = intval($conso['legajo']);
+			$legajo = intval($clave);
 
 			$legajo = (string) $legajo;
 			
@@ -417,10 +437,11 @@ class ci_generar_liquidacion extends mupum_ci
 				{
 					$listo['idafiliacion'] = $dato['idafiliacion'];
 					$listo['monto'] = $dato['monto'];
+					$listo['descontado'] = floatval($valor);
 					$listo['persona'] = $dato['persona'];
-					$listo['saldo'] = floatval($dato['monto']) - floatval($conso['monto']);
+					$listo['concepto'] = $dato['concepto'];
+					$listo['saldo'] = floatval($dato['monto']) - floatval($valor);
 					$conciliado[] = $listo;
-					break;
 				}
 			}
 		}

@@ -1513,13 +1513,34 @@ class dao
                     minimo_meses_afiliacion, 
                     idconfiguracion,
                     limite_por_socio,
-                    fecha_limite_pedido_convenio
+                    fecha_limite_pedido_convenio,
+                    edad_maxima_subsidio_nacimiento
             FROM 
               public.configuracion;";
     $res = consultar_fuente($sql);
     if (isset($res[0]))
     {
       return $res[0]; 
+    }
+  }
+
+    function get_configuracion_subsidio()
+  {
+    $sql = "SELECT  edad_maxima_bolsita_escolar,  
+                    dias_confirmacion_reserva, 
+                    limite_dias_para_reserva, 
+                    porcentaje_confirmacion_reserva, 
+                    minimo_meses_afiliacion, 
+                    idconfiguracion,
+                    limite_por_socio,
+                    fecha_limite_pedido_convenio,
+                    edad_maxima_subsidio_nacimiento
+            FROM 
+              public.configuracion;";
+    $res = consultar_fuente($sql);
+    if (isset($res[0]['edad_maxima_subsidio_nacimiento']))
+    {
+      return $res[0]['edad_maxima_subsidio_nacimiento']; 
     }
   }
 
@@ -3158,6 +3179,8 @@ class dao
   function get_listado_familia_recien_nacidos($idafiliacion = null)
   {
      $sql_usuario = self::get_sql_usuario();
+
+    $configuracion = self::get_configuracion();
       $sql = "SELECT  familia.idpersona, 
                     familia.idpersona_familia, 
                     persona.apellido ||' - '||persona.nombres as titular,
@@ -3179,7 +3202,7 @@ class dao
             inner join parentesco using(idparentesco)
             inner join tipo_documento on familiar.idtipo_documento = tipo_documento.idtipo_documento
             where 
-              extract(year from age( familiar.fecha_nacimiento)) < 1 and
+             -- extract(year from age( familiar.fecha_nacimiento)) <= ".$configuracion['edad_maxima_subsidio_nacimiento']." and
               $sql_usuario and
               afiliacion.activa =true and
               afiliacion.idafiliacion = $idafiliacion ";
