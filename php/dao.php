@@ -3503,12 +3503,14 @@ class dao
                   fecha_pago, 
                   solicitud_subsidio.monto, 
                   observacion, 
+                  (case when traer_apellido_nombres_persona(solicitud_subsidio.idpersona_familia) is null then tipo_subsidio.descripcion else tipo_subsidio.descripcion||': '|| traer_apellido_nombres_persona(solicitud_subsidio.idpersona_familia) end  ) as subsidio,
                   (case when pagado is null then 'PENDIENTE' else (case when pagado = true then 'PAGADO' else 'RECHAZADO' end) end) as estado
            FROM 
               public.solicitud_subsidio
             inner join  tipo_subsidio using(idtipo_subsidio)
             inner join afiliacion using(idafiliacion)
             inner join persona using(idpersona)
+
             where
                 $sql_usuario and
                 $where 
