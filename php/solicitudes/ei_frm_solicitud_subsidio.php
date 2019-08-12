@@ -14,8 +14,8 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__cantidad__validar = function()
 		{
-			cantidad = this.ef('cantidad').get_estado();
-			limite = this.ef('limite').get_estado();
+			cantidad = parseInt(this.ef('cantidad').get_estado());
+			limite = parseInt(this.ef('limite').get_estado());
 			
 			if (cantidad >= limite)
 			{
@@ -85,9 +85,10 @@ class ei_frm_solicitud_subsidio extends mupum_ei_formulario
 		
 		{$this->objeto_js}.evt__edad__validar = function()
 		{
-		
-			edad = this.ef('edad').get_estado();
-			edad_maxima = this.ef('edad_maxima_subsidio_nacimiento').get_estado();
+	
+			edad = parseInt(this.ef('edad').get_estado());
+			edad_maxima =  parseInt(this.ef('edad_maxima_subsidio_nacimiento').get_estado());
+			
 			
 			if (edad > edad_maxima)
 			{
