@@ -146,11 +146,11 @@ class ci_consumo_bono extends mupum_ci
 			$this->cn()->agregar_dt_consumo_bono($datos);
 		}
 		$total_por_consumir = $datos['total'];
-
-		$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio']);
+		$periodo = dao::sacar_periodo_fecha($datos['fecha']);
+		$total_consumido = dao::get_total_consumido_en_bono_por_convenio_por_socio($datos['idafiliacion'],$datos['idconvenio'],$periodo);
 		$maximo_por_convenio = dao::get_monto_maximo_mensual_convenio($datos['idconvenio']); 
 		
-		$periodo = dao::sacar_periodo_fecha($datos['fecha']);
+		
 		$estado_situacion = dao::get_total_estado_situacion($periodo,$datos['idafiliacion']);
 		$configuracion = dao::get_configuracion();
 		$limite_socio = $configuracion['limite_por_socio'];
@@ -201,7 +201,7 @@ class ci_consumo_bono extends mupum_ci
 				{
 					$total_consumido = 0;
 				}
-				toba::notificacion()->agregar("El afiliado lleva consumido por este convenio un total de : $".$total_consumido.", mas lo que desea consumir : $".$total_por_consumir. ". Supera el maximo permitido por convenio de : $" .$maximo_por_convenio ,'info');
+				toba::notificacion()->agregar("El afiliado lleva consumido por este convenio en el periodo ".$periodo." un total de : $".$total_consumido.", mas lo que desea consumir : $".$total_por_consumir. ". Supera el maximo permitido por convenio de : $" .$maximo_por_convenio ,'info');
 			}
 		} else {
 

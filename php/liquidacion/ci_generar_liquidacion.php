@@ -4,6 +4,8 @@ class ci_generar_liquidacion extends mupum_ci
 {
 	public $s__datos_liquidacion;
 	public $s__datos_conciliacion;
+	public $s__datos_seleccionados;
+	public $s__datos_seleccionados_c;
 	public $s__nombrearchivo;
 	//-----------------------------------------------------------------------------------
 	//---- Eventos ----------------------------------------------------------------------
@@ -11,14 +13,15 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function evt__procesar()
 	{
-		try{
+		if (isset($this->s__datos_seleccionados) and is_array($this->s__datos_seleccionados))
+		{
+			try{
 
-
-			$this->cn()->guardar_dr_liquidacion();
-			toba::notificacion()->agregar("Los datos se han guardado correctamente",'info');
-			$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
-			$concepto = dao::get_listado_concepto_liquidacion('concepto_liquidacion.idconcepto_liquidacion = '.$cabecera['idconcepto_liquidacion']);
-
+				$this->cn()->guardar_dr_liquidacion();
+				toba::notificacion()->agregar("La liquidacion se ha generado correctamente",'info');
+				$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
+				$concepto = dao::get_listado_concepto_liquidacion('concepto_liquidacion.idconcepto_liquidacion = '.$cabecera['idconcepto_liquidacion']);
+				unset($this->s__datos_seleccionados);
 			switch (trim($concepto[0]['codigo'])) {
 				case '0548':
 					dao::setear_envio_descuento_true_0548($cabecera['periodo']);
@@ -34,14 +37,60 @@ class ci_generar_liquidacion extends mupum_ci
 			}
 			
 			
-		} catch( toba_error_db $error){
-			$sql_state= $error->get_sqlstate();
-			
-			$mensaje_log= $error->get_mensaje_log();
-			toba::notificacion()->agregar($mensaje_log,'error');
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
+				
+				$mensaje_log= $error->get_mensaje_log();
+				toba::notificacion()->agregar($mensaje_log,'error');
+			}
+			$this->cn()->resetear_dr_liquidacion();
+			$this->set_pantalla('pant_inicial');
+		
+
+		}else {
+			toba::notificacion()->agregar("Debe seleccionar los movimientos para poder generar la liquidacion",'info');
 		}
-		$this->cn()->resetear_dr_liquidacion();
-		$this->set_pantalla('pant_inicial');
+		
+	}
+	function evt__procesar_conciliacion()
+	{
+		if (isset($this->s__datos_seleccionados_c) and is_array($this->s__datos_seleccionados_c))
+		{
+			try{
+
+				$this->cn()->guardar_dr_liquidacion();
+				toba::notificacion()->agregar("La conciliacion se ha realizado correctamente",'info');
+				$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
+				$concepto = dao::get_listado_concepto_liquidacion('concepto_liquidacion.idconcepto_liquidacion = '.$cabecera['idconcepto_liquidacion']);
+				unset($this->s__datos_seleccionados_c);
+			switch (trim($concepto[0]['codigo'])) {
+				case '0548':
+					dao::setear_envio_descuento_true_0548($cabecera['periodo']);
+					break;				
+					case '0549':
+					dao::setear_envio_descuento_true_0549($cabecera['periodo']);
+					break;				
+					case '0550':
+					dao::setear_envio_descuento_true_0550($cabecera['periodo']);
+					break;
+				
+				
+			}
+			
+			
+			} catch( toba_error_db $error){
+				$sql_state= $error->get_sqlstate();
+				
+				$mensaje_log= $error->get_mensaje_log();
+				toba::notificacion()->agregar($mensaje_log,'error');
+			}
+			$this->cn()->resetear_dr_liquidacion();
+			$this->set_pantalla('pant_inicial');
+		
+
+		}else {
+			toba::notificacion()->agregar("Debe seleccionar los movimientos para poder realizar la conciliacion ",'info');
+		}
 	}
 
 	function evt__cancelar()
@@ -50,6 +99,8 @@ class ci_generar_liquidacion extends mupum_ci
 		$this->set_pantalla('pant_inicial');
 		unset($this->s__datos_liquidacion);
 		unset($this->s__datos_conciliacion);
+		unset($this->s__datos_seleccionados);
+		unset($this->s__datos_seleccionados_c );
 	}
 
 	function evt__nuevo()
@@ -192,7 +243,6 @@ class ci_generar_liquidacion extends mupum_ci
 				break;
 		}
 
-		
 	}
 	
 
@@ -209,21 +259,24 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function conf__cuadro_liquidacion(mupum_ei_cuadro $cuadro)
 	{
-		$this->pantalla()->eliminar_evento('procesar');
 		
-		if (count($this->s__datos_liquidacion) > 0)
+		if (isset($this->s__datos_liquidacion))
 		{
-			$cuadro->set_datos($this->s__datos_liquidacion);
-			$cuadro->descolapsar();
-			$this->pantalla()->agregar_evento('procesar');
-		} else{
-			$cuadro->colapsar();
+			if (count($this->s__datos_liquidacion) > 0)
+			{
+				$cuadro->set_datos($this->s__datos_liquidacion);
+				$cuadro->descolapsar();
+			} else{
+				$cuadro->colapsar();
+			}
 		}
 	}
 
 	function evt__cuadro_liquidacion__seleccion($datos)
 	{
+
 		$crudos = $this->s__datos_liquidacion;
+		$this->s__datos_seleccionados = $datos;
 		$liquidados = array();
 		foreach ($crudos as $crudo) 
 		{
@@ -359,6 +412,7 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function evt__frm_consolidacion__modificacion($datos)
 	{
+		
 		$this->s__datos_conciliacion = $this->realizar_conciliacion($datos['archivo_unam']['tmp_name']);
 		$datos['conciliado'] = 1;
 
@@ -450,18 +504,21 @@ class ci_generar_liquidacion extends mupum_ci
 
 	function evt__cuadro_conciliacion__seleccion($datos)
 	{
+
+		$this->s__datos_seleccionados_c = $datos;
 		$cabecera = $this->cn()->get_dt_cabecera_liquidacion();
-	
+			
 		foreach ($datos as $dato) 
 		{
+
 			$clave['idcabecera_liquidacion'] = $cabecera['idcabecera_liquidacion'];
 			$clave['idafiliacion'] = $dato['idafiliacion'];
 			$this->cn()->set_cursor_dt_detalle_liquidacion($clave);
 			$this->cn()->set_dt_detalle_liquidacion($dato);
 
-			//$this->cn()->agregar_dt_detalle_liquidacion($dato);
 		}
 	}
+
 
 }
 ?>

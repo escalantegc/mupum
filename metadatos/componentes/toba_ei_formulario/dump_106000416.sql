@@ -25,7 +25,7 @@ INSERT INTO apex_objeto (proyecto, objeto, anterior, identificador, reflexivo, c
 	'0', --colapsable
 	NULL, --descripcion
 	'mupum', --fuente_datos_proyecto
-	'auditoria', --fuente_datos
+	'mupum', --fuente_datos
 	NULL, --solicitud_registrar
 	NULL, --solicitud_obj_obs_tipo
 	NULL, --solicitud_obj_observacion

@@ -5490,13 +5490,15 @@ class dao
 
   }
 
-  function get_total_consumido_en_bono_por_convenio_por_socio($idafiliacion = null, $idconvenio = null)
+  function get_total_consumido_en_bono_por_convenio_por_socio($idafiliacion = null, $idconvenio = null,$periodo = null)
   {
+    $periodo = quote("%{$periodo}%");
     $sql = "SELECT  sum(consumo_convenio.total) as total
             FROM public.consumo_convenio
             where
               idafiliacion = $idafiliacion and
-              idconvenio = $idconvenio"; 
+              idconvenio = $idconvenio and
+              to_char(fecha, 'MM/YYYY') ilike $periodo"; 
     $res = consultar_fuente($sql);
     if (isset($res[0]['total']))
     {
