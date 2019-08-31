@@ -166,7 +166,7 @@ class ci_importar_couta_societaria extends mupum_ci
 				$legajo = quote("%{$legajo}%");
 
 				
-				$afiliado = dao::get_datos_persona_afiliada_legajo($legajo);
+				$afiliado = dao::get_datos_persona_afiliada_legajo_ceros($legajo);
 
 				$datos['idafiliacion'] = $afiliado[0]['idafiliacion'];
 				$datos['idpersona'] = $afiliado[0]['idpersona'];
@@ -180,7 +180,13 @@ class ci_importar_couta_societaria extends mupum_ci
 				$datos['nro_documento'] =  substr($linea, 56, 9);
 				$datos['monto'] =  substr($linea, 65, 10);
 				$datos['idconcepto_liquidacion'] =  $cabecera['idconcepto_liquidacion'];
-				$cuotas[] = $datos;
+
+				if ($datos['monto'] >0)
+				{
+					$cuotas[] = $datos;
+				}
+					
+				
 			}
 			
 			return $cuotas;

@@ -883,6 +883,25 @@ class dao
             inner join  tipo_socio using(idtipo_socio)
             where 
               activa = true and
+              persona.legajo = $legajo";
+  
+    return consultar_fuente($sql);
+
+  }  
+  function get_datos_persona_afiliada_legajo_ceros($legajo = null)
+  {
+    //--$legajo = quote("%{$legajo}%");
+    $sql ="SELECT afiliacion.idafiliacion, 
+                  afiliacion.idpersona,
+                 coalesce (persona.legajo,'0000')||' - '|| persona.apellido||', '|| persona.nombres as persona,
+                 persona.correo,
+                 *
+            FROM 
+              public.afiliacion
+            inner join persona using (idpersona)
+            inner join  tipo_socio using(idtipo_socio)
+            where 
+              activa = true and
               persona.legajo ilike $legajo";
   
     return consultar_fuente($sql);
@@ -4577,7 +4596,7 @@ class dao
             WHERE
                   convenio.permite_financiacion = true and
                   forma_pago.planilla = true and
-                  consumo_convenio.pagado =  true and
+                 -- consumo_convenio.pagado =  true and
                   consumo_convenio_cuotas.envio_descuento =  false and
                   consumo_convenio_cuotas.periodo ilike  $periodo
             group by 
@@ -5310,7 +5329,7 @@ class dao
             WHERE
                   convenio.permite_financiacion = true and
                   forma_pago.planilla = true and
-                  consumo_convenio.pagado = true and
+                 -- consumo_convenio.pagado = true and
                   consumo_convenio_cuotas.envio_descuento =  false and
                   afiliacion.idafiliacion = $idafiliacion and 
                   consumo_convenio_cuotas.periodo ilike  $periodo

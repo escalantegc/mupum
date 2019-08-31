@@ -126,7 +126,7 @@ class ci_generar_liquidacion extends mupum_ci
 			$datos = dao::get_listado_cabecera_liquidacion();
 		}
 		
-	
+		
 		$cuadro->set_datos($datos);
 	}
 
@@ -458,9 +458,13 @@ class ci_generar_liquidacion extends mupum_ci
 		$liquidados = $this->s__datos_conciliacion;
 		$controlados = array();
 		$asoc = null;
+
 		foreach ($liquidados as $liquidado) 
 		{
-			$controlados[][$liquidado['legajo']] = $liquidado['monto'];
+			if ($liquidado['monto']> 0)
+			{
+				$controlados[][$liquidado['legajo']] = $liquidado['monto'];
+			}
 			
 		}
 
@@ -473,7 +477,7 @@ class ci_generar_liquidacion extends mupum_ci
 		        
 		    }
 		}  
-		//--ei_arbol($corregidos);
+		
 
 		$conciliado = array();
 		foreach ($corregidos as $clave=>$valor) 
@@ -482,7 +486,7 @@ class ci_generar_liquidacion extends mupum_ci
 
 			$legajo = (string) $legajo;
 			
-			$legajo = quote("%{$legajo}%");
+			$legajo = quote("{$legajo}");
 			$afiliado = dao::get_datos_persona_afiliada_legajo($legajo);
 			//--ei_arbol($afiliado);
 			foreach ($datos as $dato) 
